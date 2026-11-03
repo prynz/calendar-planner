@@ -12,3 +12,6 @@ Die Auswertung steht in [`MASTER_PROMPT.md` §5.1](../../../MASTER_PROMPT.md).
 | `r3-activity-planner-purple-lime.png` | „Activity Planner“: Lila + Lime, Onboarding, schwebende Tab-Bar |
 | `r4-heatmap-dark.png` | Heatmap-Kalender, dunkel mit Lime-Intensität |
 | `r5-swipe-cards-cream.png` | Helle Creme-Variante, Swipe-Kartenstapel |
+
+**Phase-0-Prüfung (2026-11-03):** Alle 5 Dateien gesichtet. Die Analyse in §5.1 trifft zu. Abgeleitete Tokens und
+Prinzipien: [design-system.md §1](../design-system.md).
