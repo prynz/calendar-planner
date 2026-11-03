@@ -1,11 +1,11 @@
 # Design-Referenzen (vom PO)
 
-> **Status:** 2026-11-03 · Ordner angelegt, Bilddateien werden vom PO hochgeladen.
+> **Status:** 2026-11-03 · Alle 5 Referenzen vorhanden.
 
 Externe Konzept-Shots als **Inspiration**. Sie werden nicht kopiert und nicht ausgeliefert, nur als Referenz genutzt.
 Die Auswertung steht in [`MASTER_PROMPT.md` §5.1](../../../MASTER_PROMPT.md).
 
-| Datei (erwarteter Name) | Inhalt |
+| Datei | Inhalt |
 | --- | --- |
 | `r1-claims-dark-lime.png` | Dunkle „Claims“-App, Neon-Lime-Akzent, Bento-Kacheln, Pill-Tabs |
 | `r2-tasks-timeline-navy.png` | „My Tasks“: Navy, Datumsleiste, Timeline mit Pastellkarten |
