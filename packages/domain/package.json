@@ -1,0 +1,13 @@
+{
+  "name": "@nowish/domain",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Pure domain logic (time zones, days, event status; later RRULE, anti-chaos engine, votes, cost split).",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  }
+}

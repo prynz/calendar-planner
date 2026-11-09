@@ -1,0 +1,19 @@
+{
+  "name": "@nowish/demo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Demo world for the prototype (ADR 0008): fictional people and plans relative to 'today'. Pure TS.",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@nowish/domain": "workspace:*"
+  },
+  "devDependencies": {
+    "@nowish/ui": "workspace:*"
+  }
+}
