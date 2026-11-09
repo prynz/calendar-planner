@@ -145,7 +145,7 @@ Ziel: 60 fps (120 fps auf ProMotion), Animationen nur auf UI-Thread (Reanimated 
 
 - Ein einheitliches Icon-Set mit abgerundeten Strichen (2 px bei 24 px). Kandidaten mit offener Lizenz:
   Lucide (ISC), Phosphor (MIT). Entscheidung Phase 1. Keine Mischung mehrerer Sets.
-- Illustrationen: flächig, organische Blob-Formen (R1), Pastelle + Lime, ohne Verläufe, mit dem Buddy „Tick“ (optional).
+- Illustrationen: flächig, organische Blob-Formen (R1), Pastelle + Lime, ohne Verläufe, abstrakt (kein Maskottchen, PO-Entscheidung).
 
 ## 7. Komponenteninventar (`packages/ui`)
 
@@ -168,7 +168,7 @@ Ziel: 60 fps (120 fps auf ProMotion), Animationen nur auf UI-Thread (Reanimated 
 | `Sheet` / `Modal` / `Dialog` | | Fokus-Falle, Escape/Back |
 | `TextField`, `TextArea`, `DateTimePicker`, `Select`, `Switch`, `Checkbox`, `Stepper` | | Fehlertext unter Feld |
 | `Toast` / `Banner` | info, success, warning, error, offline | |
-| `EmptyState` | Illustration/Buddy + Titel + Text + 1 Aktion | |
+| `EmptyState` | Illustration + Titel + Text + 1 Aktion | |
 | `Skeleton` | Zeile, Karte, Raster | |
 | `ErrorState` | mit Retry | |
 | `HouseAdSlot` | Karte, Banner, Interstitial | prüft Tabu-Zonen zur Laufzeit + Test |

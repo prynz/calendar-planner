@@ -1,6 +1,6 @@
 # Brand Foundation
 
-> **Status:** v0.2 · 2026-11-09 · Entwurf Phase 0. Arbeitsname **Nowish** (PO-Entscheidung), Logo und Maskottchen **nicht final**.
+> **Status:** v0.2 · 2026-11-09 · Entwurf Phase 0. Arbeitsname **Nowish** (PO-Entscheidung), **kein Maskottchen** (PO), Logo **nicht final**.
 > Marken- und Domainprüfung erfolgt durch den PO. Umsetzung zentral in `packages/brand` (ab Phase 1).
 
 ## 1. Name
@@ -97,12 +97,15 @@ EN „You show up. We handle the rest.“ · „From now-ish to right on time.�
 - Schutzraum = Höhe des Punkts × 2; Mindestgröße Icon 24 px.
 - Erste Skizzen folgen als **Mockup** in Phase 1 unter `docs/design/concept/`.
 
-## 6. Maskottchen („Organisations-Buddy“) – optional
+## 6. Kein Maskottchen – professionelle Bildmarke (PO-Entscheidung 2026-11-09)
 
-Vorschlag: **„Tick“**, eine kleine runde Figur mit Uhr-Gesicht und zwei Zeigern als Antennen. Erscheint in
-Leerzuständen, Onboarding und (optional, abschaltbar) in Erinnerungen. Emotionen: entspannt, aufgeregt, stolz,
-schläfrig, „hopp hopp“. Eigenständig gestaltet – keine Anlehnung an bestehende Figuren.
-Nie in Ernst-Modus-Screens. Entscheidung, ob es ein Maskottchen gibt: PO.
+Die Marke trägt sich über **Bildmarke, Wortmarke, Farbe und Typografie**, nicht über eine Figur. Konsequenzen:
+
+- Leerzustände nutzen abstrakte, flächige Illustrationen (Blob-Formen, Uhr-/Pfeil-Motiv aus der Bildmarke), keine Charaktere.
+- Die Bildmarke (§5) wird professionell ausgearbeitet: Raster, optische Korrekturen, Varianten, Mindestgrößen,
+  App-Icon-Masken (iOS, Android adaptive), Monochrom. Entwürfe in Phase 1 als **Mockup** unter `docs/design/concept/`.
+- Optional später eine Animation der Bildmarke (Zeiger wird zum Pfeil) für Splash und Erfolgsmomente
+  (Reduced Motion: statisch).
 
 ## 7. Do / Don’t
 
@@ -117,4 +120,4 @@ Nie in Ernst-Modus-Screens. Entscheidung, ob es ein Maskottchen gibt: PO.
 ## 8. Brand-Book-Struktur (wächst ab Phase 1)
 
 `docs/brand/` → `brand-foundation.md` (dieses Dokument) · `logo.md` · `voice-examples.md` (DE/EN-Textpaare) ·
-`illustrations.md` · `mascot.md` · `example-screens.md` (nur echte Screenshots oder gekennzeichnete Mockups).
+`illustrations.md` · `example-screens.md` (nur echte Screenshots oder gekennzeichnete Mockups).

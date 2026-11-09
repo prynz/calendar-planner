@@ -57,10 +57,11 @@ Neue Abhängigkeiten mit Datenfluss nach außen werden hier eingetragen **bevor*
 | Expo Push Service | Push-Zustellung | USA | geplant; Alternative: direkt APNs/FCM aus Edge Function (prüfen in Phase 5) |
 | E-Mail-Versand | Magic Links, Gast-Updates | EU-Anbieter bevorzugt | offen (Phase 2) |
 | Crash-Reporting | Stabilität | EU-Region (z. B. Sentry EU) | offen (Phase 1/10) |
-| Routing/Geocoding | Wegzeit, Ortssuche | abhängig vom Anbieter | offen (ADR 0005) |
+| Google Maps Platform (Places, Routes) | Ortssuche, Wegzeit | Google (Drittland, DPA + SCC) | entschieden (ADR 0005); Aufruf nur über Edge Function, ohne Nutzer-ID, Koordinaten gerundet |
+| PayPal (nur Link) | `paypal.me`-Deep-Link im Kosten-Modul | – (wir übertragen nichts an PayPal) | entschieden; Nutzer öffnet PayPal selbst |
 | Bot-Schutz Gast-Web | Spam-Schutz | abhängig vom Anbieter | offen (Phase 4) |
 | Wetter-API | Plan B | – | Phase 9 |
-| KI-Anbieter | Assistent | EU-Verarbeitung erforderlich | v2, nur opt-in |
+| KI-Anbieter | Assistent | EU-Verarbeitung erforderlich | eingeplant, nicht entschieden; nur opt-in |
 
 **Ausgeschlossen:** Werbe-SDKs, Attribution-SDKs, Analytics mit Geräte-IDs, Session-Replay, Facebook-SDK
 (auch nicht für späteren Facebook-Login ohne erneute Prüfung).

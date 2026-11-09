@@ -83,7 +83,7 @@ Siehe Karte in [CLAUDE.md](../../CLAUDE.md). Wichtigste Verantwortlichkeiten:
   `api/` (Supabase-Client, Query-Keys).
 - **State:** TanStack Query (Server-State, Cache) · Zustand (flüchtiger UI-State) · SQLite (persistente
   Offline-Kopie + Outbox).
-- **Animation:** Reanimated, Gesture Handler, Skia nur lazy (Heatmap, Ringe, Konfetti), Lottie (House Ads, Buddy).
+- **Animation:** Reanimated, Gesture Handler, Skia nur lazy (Heatmap, Ringe, Konfetti), Lottie (House Ads, Logo-Animation).
 
 ### 4.1 Offline & Sync
 

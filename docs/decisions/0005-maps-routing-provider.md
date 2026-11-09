@@ -1,6 +1,6 @@
 # ADR 0005 – Karten-, Geocoding- und Routing-Anbieter
 
-> **Status:** vorgeschlagen · 2026-11-03 · **Endgültige Entscheidung in Phase 6** nach Kosten- und Datenschutzvergleich.
+> **Status:** akzeptiert · 2026-11-09 · PO-Entscheidung: **Google** für Ortssuche und Routing.
 
 ## Kontext
 
@@ -21,6 +21,17 @@ Routing ist der Kosten- und Datenschutztreiber: Jede Losgeh-Berechnung ist ein A
 
 Bewertungskriterien in Phase 6: ÖPNV-Abdeckung DACH, Verkehrsdaten, Preis pro 1.000 Anfragen, Free-Tier,
 Lizenzbedingungen (Caching erlaubt? Anzeige auf fremder Karte erlaubt?), Datenort/AV-Vertrag.
+
+## Entscheidung (PO, 2026-11-09)
+
+**Google Maps Platform**: Places API (Autocomplete, Details) und Routes API (Wegzeit mit Verkehr, ÖPNV, Rad, zu Fuß).
+Kartenanzeige weiterhin mit `react-native-maps` (iOS Apple Maps, Android Google Maps). Begründung: beste
+ÖPNV- und Verkehrsabdeckung in DACH, eine Plattform, gute Doku. Die Google-Nutzungsbedingungen zur Anzeige von
+Places-Daten (Attribution, Caching-Grenzen) werden in Phase 6 umgesetzt.
+
+Folgen für den Datenschutz: Google ist Auftragsverarbeiter mit Drittlandbezug; Start- und Zielkoordinaten gehen an
+Google. Gegenmaßnahmen: Aufruf nur über unsere Edge Function (keine Nutzer-ID an Google), Koordinaten auf ca. 100 m
+gerundet, manuelle Wegzeit bleibt immer möglich. Im Prototyp: eigenes Google-Cloud-Projekt mit Budget-Alarm.
 
 ## Kostenschutz (unabhängig vom Anbieter)
 

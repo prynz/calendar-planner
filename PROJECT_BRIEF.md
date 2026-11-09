@@ -1,6 +1,6 @@
 # PROJECT BRIEF – Nowish (Arbeitsname)
 
-> **Status:** v0.1 · 2026-11-03 · Ergebnis von Phase 0, **Entwurf zur Freigabe durch den PO**.
+> **Status:** v0.2 · 2026-11-09 · Ergebnis von Phase 0 inkl. PO-Entscheidungen aus dem Review.
 > Quelle: [MASTER_PROMPT.md](MASTER_PROMPT.md). Offene Punkte: [Milestone-Report Phase 0](docs/previews/milestone-reports/phase-0.md).
 
 ## 1. Vision
@@ -53,9 +53,9 @@ ICS, Events mit Rollen und RSVP, Gast-Web-Link, Basis-Vorlagen, Chat, Umfragen m
 Mitbringliste, Dateien, Anti-Chaos-Engine (inkl. Wegzeit), Familie und Gruppen, Kalender-Sync
 (Google, Outlook, iCloud), Abos + transparente Paywall, Admin-Dashboard, House Ads, DE + EN.
 
-**v1.x (Phase 9):** Kosten-Split, Wetter/Plan B, Mitfahren, Erinnerungs-Album, Premium-Themes.
+**v1.x (Phase 9):** Kosten-Split (mit PayPal-Links), Wetter/Plan B, Mitfahren, Erinnerungs-Album, Premium-Themes.
 
-**Später (v2+):** KI-Assistent, Widgets/Live Activities in voller Tiefe, Smartwatch, QR-Check-in,
+**Später (v2+):** KI-Assistent (architektonisch eingeplant, Entscheidung offen), Widgets/Live Activities in voller Tiefe, Smartwatch, QR-Check-in,
 rotierende Gruppen-Rituale, Geschenke-Pool, Vereins-Funktionen, E2E-verschlüsselter Chat, weitere Sprachen inkl. RTL.
 
 **Nicht geplant:** eigene Zahlungsabwicklung, externe Werbe-SDKs, öffentliche Event-Discovery/Ticketing.
@@ -83,7 +83,9 @@ für Free-Nutzer. Gast-Funktionen sind immer kostenlos. Details: [monetization.m
 
 ## 8. Rahmenbedingungen
 
-- Launch-Markt: DACH zuerst (DE/EN), Architektur international.
+- **Prototyp zuerst** ([ADR 0008](docs/decisions/0008-prototype-first.md)): alles wird mit Beispieldaten gebaut und
+  erprobt; Veröffentlichung erst, wenn das Produkt überzeugt.
+- Markt: **nur DACH** zum Start (DE/EN), Architektur international.
 - Mindestalter-Vorschlag **16+** ([ADR 0004](docs/decisions/0004-minimum-age.md)); Kinderprofile ohne Login.
 - EU-Hosting (Supabase Frankfurt, [ADR 0002](docs/decisions/0002-backend-supabase-eu.md)).
 - Rechtstexte sind Entwürfe; die Rechtsprüfung übernimmt der PO.
@@ -95,5 +97,5 @@ für Free-Nutzer. Gast-Funktionen sind immer kostenlos. Details: [monetization.m
 2. **Netzwerkeffekt / Kaltstart:** Ein Social-Planner braucht Gäste. Gegenmittel: Gast-Web-Link ohne
    App-Zwang, nützlicher Solo-Kalender.
 3. **Kalender-Sync-Komplexität** (drei Anbieter, Konflikte, Quoten, Google-OAuth-Verifizierung).
-4. **Kosten für Routing/Wegzeit-APIs** bei vielen Losgeh-Berechnungen ([ADR 0005](docs/decisions/0005-maps-routing-provider.md)).
+4. **Kosten für Google-Routing** bei vielen Losgeh-Berechnungen ([ADR 0005](docs/decisions/0005-maps-routing-provider.md)).
 5. **Rechtliches:** DSGVO (Standort, Kinderdaten), Store-Richtlinien, Markenrecht beim Namen.

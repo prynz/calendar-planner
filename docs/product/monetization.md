@@ -1,7 +1,7 @@
 # Monetarisierung: Abos, Paywall, House Ads, Admin-Steuerung
 
-> **Status:** v0.1 · 2026-11-03 · Entwurf Phase 0. Preise sind **Vorschläge** zur Entscheidung durch den
-> PO; Umsetzung in Phase 8. Technik: [ADR 0003](../decisions/0003-subscriptions-revenuecat.md).
+> **Status:** v0.2 · 2026-11-09 · Preise vom PO entschieden (günstigere Family-Variante). Umsetzung der Logik in
+> Phase 8 mit **Demo-Käufen** ([ADR 0008](../decisions/0008-prototype-first.md)); echte Store-Abos erst in Phase 10. Technik: [ADR 0003](../decisions/0003-subscriptions-revenuecat.md).
 
 ## 1. Grundsätze (verbindlich)
 
@@ -27,8 +27,8 @@ Eine Quelle der Wahrheit im Code: `packages/entitlements` (Limits als Daten, nic
 
 | | **Free** | **Plus** | **Pro** | **Family** |
 | --- | --- | --- | --- | --- |
-| Zielgruppe | Einsteiger, Gäste | Chaos-Chris, ADHS-Alex | Orga-Olivia | Familien-Frank (bis 6 Personen) |
-| Preis mtl. / jährl. (Vorschlag) | 0 € | 2,99 € / 24,99 € | 5,99 € / 49,99 € | 7,99 € / 64,99 € |
+| Zielgruppe | Einsteiger, Gäste | Chaos-Chris, ADHS-Alex | Orga-Olivia | Familien-Frank (bis 6 Erwachsene/Konten; Kinderprofile zählen nicht) |
+| Preis mtl. / jährl. (PO 2026-11-09) | 0 € | 2,99 € / 24,99 € | 5,99 € / 49,99 € | 6,99 € / 59,99 € |
 | Kostenlose Testphase | – | 14 Tage | 14 Tage | 14 Tage |
 | House Ads | ja (dezent) | nein | nein | nein |
 | Persönliche Termine & Kalender | unbegrenzt | unbegrenzt | unbegrenzt | unbegrenzt |
@@ -50,10 +50,11 @@ Eine Quelle der Wahrheit im Code: `packages/entitlements` (Limits als Daten, nic
 - **Anti-Chaos-Basis in Free:** Der USP muss erlebbar sein, sonst gibt es keinen Grund für ein Upgrade.
 - **14 statt 7 Tage Trial:** Ein Planungszyklus (Event planen → stattfinden) dauert typischerweise
   1–2 Wochen. Erinnerung **3 Tage vor Ablauf** (Push + In-App), nicht nur am letzten Tag.
-- **Preisempfehlung:** Plus und Pro so lassen. Für **Family** zwei Optionen:
-  (A) 7,99 € / 64,99 € wie im Entwurf, oder (B) 6,99 € / 59,99 €, näher am Benchmark
-  (Cozi/FamilyWall ~40 $, Tiimo-Familie ~120 $). Empfehlung: **(B) zum Launch** mit Gründerpreis,
-  später per A/B-Test prüfen. Entscheidung durch PO.
+- **Preise (PO-Entscheidung 2026-11-09):** günstigere Variante – Family **6,99 € / 59,99 €**, näher am Benchmark
+  (Cozi/FamilyWall ~40 $, Tiimo-Familie ~120 $). Plus und Pro wie im Entwurf.
+- **Kinderprofile zählen nicht** zu den 6 Family-Plätzen (Entscheidung nach CLAUDE.md-Regel „sinnvoll entscheiden“):
+  Sie haben keinen Account und verursachen kaum Kosten; eine Familie mit 2 Erwachsenen und 4 Kindern soll nicht
+  an eine Grenze stoßen. Änderbar, da Limits in `packages/entitlements` liegen.
 - **Gründer-Preis:** Wer im ersten Jahr ein Jahresabo abschließt, behält den Preis, solange das Abo
   ununterbrochen läuft (Store-Mechanik „Preiserhöhung nur für Neukunden“).
 - **Empfehlungsprogramm:** 1 Monat Plus für beide, wenn der Eingeladene ein eigenes Konto anlegt und
@@ -136,5 +137,6 @@ A/B-Varianten · Vorschau pro Gerät/Theme · **Not-Aus** (globales Flag `house_
   zur Store-Verwaltung Pflicht. Rechtliche Bestätigung nötig.
 - Empfehlungsprogramm: Bedingungen transparent veröffentlichen.
 - House Ads für eigene Produkte sind Werbung im Sinne des UWG → klar als „Anzeige“ kennzeichnen.
-- Zahlungs-Deep-Links (PayPal.me o. ä.) im Kosten-Modul: keine eigene Zahlungsabwicklung, aber prüfen,
-  ob Store-Richtlinien (Apple 3.1.x) und Zahlungsdiensterecht berührt sind.
+- **PayPal-Links** (PO-Entscheidung: PayPal) im Kosten-Modul: nur externer `paypal.me`-Deep-Link, keine eigene
+  Zahlungsabwicklung. Vor Veröffentlichung prüfen, ob Store-Richtlinien (Apple 3.1.x) und Zahlungsdiensterecht
+  berührt sind (Phase 10).

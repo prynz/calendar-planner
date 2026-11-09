@@ -1,7 +1,7 @@
 # Modul 5 – Ort & Karte
 
 > **Status:** v0.1 · 2026-11-03 · Spezifikation (Entwurf). Ortsangabe: Phase 4 · Karte, Wegzeit, Live-ETA: Phase 6.
-> Anbieterwahl offen: [ADR 0005](../../decisions/0005-maps-routing-provider.md).
+> Anbieter: **Google** Places + Routes ([ADR 0005](../../decisions/0005-maps-routing-provider.md)).
 
 ## User Stories
 

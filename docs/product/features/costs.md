@@ -12,14 +12,16 @@
 | CST-03 | Teilnehmer | Salden sehen („Du bekommst 12,40 € von Tom“) | ich weiß, wo ich stehe |
 | CST-04 | Teilnehmer | eine minimale Ausgleichsliste („3 Überweisungen statt 12“) | Begleichen einfach ist |
 | CST-05 | Teilnehmer | einen Ausgleich als „erledigt“ markieren (beide Seiten bestätigen) | Salden stimmen |
-| CST-06 | Teilnehmer | optional einen PayPal.me-Link (o. ä.) hinterlegen | ich schnell bezahlt werde |
+| CST-06 | Teilnehmer | optional meinen PayPal.me-Namen hinterlegen | ich schnell bezahlt werde |
 
 ## Akzeptanzkriterien
 
 - Beträge in **Minor Units (Cent) als Integer**, eine Währung pro Event (v1). Rundungsreste deterministisch
   auf die Zahler verteilt (Algorithmus in `packages/domain`, Property-based Tests: Summe der Anteile = Betrag).
 - Ausgleichsliste: Greedy-Minimierung der Transaktionen, deterministisch.
-- Zahlungs-Links nur als **externe Deep-Links**, keine Zahlung in der App. **Rechtliche und Store-Prüfung offen** (PO).
+- **PayPal** (PO-Entscheidung 2026-11-09): Link `https://paypal.me/<name>/<betrag>EUR` öffnet die PayPal-App bzw. Website;
+  keine Zahlung in der App, keine PayPal-API, keine Bestätigung von PayPal. Der Ausgleich wird manuell als
+  „erledigt“ markiert. Rechtliche und Store-Prüfung vor Veröffentlichung (Phase 10).
 - Keine Limits auf das Erfassen von Ausgaben (Abgrenzung zu Splitwise).
 
 ## Free / Premium

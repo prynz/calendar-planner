@@ -1,6 +1,6 @@
 # CLAUDE.md – Arbeitsregeln für Nowish
 
-> **Status:** 2026-11-09 · Phase 0 (Discovery & Fundament) abgeschlossen, **Review läuft** (Name entschieden: Nowish).
+> **Status:** 2026-11-09 · Phase 0 abgeschlossen, PO-Entscheidungen eingearbeitet (Fragen 1–7, 9, 10; Frage 8 offen).
 > Es existiert noch **kein App-Code**. Phase 1 startet erst nach Freigabe.
 
 Social-Planner-App (iOS + Android) für alle, die sonst planlos sind: Kalender, Terminplaner und
@@ -22,7 +22,7 @@ Sprache: Doku und Kommunikation mit dem PO **Deutsch**; Code, Commits, Identifie
 | `apps/web`              | Gast-Web-Ansicht für Event-Links (Next.js, öffentlich, ohne Admin-Code)        |
 | `apps/admin`            | Admin-Dashboard (Next.js + Tailwind), eigenes Deployment, nur Admin-Rollen     |
 | `packages/ui`           | Designsystem: Tokens, Komponenten, Motion, Haptik                              |
-| `packages/brand`        | Name, Claims, Logo, Icon, Maskottchen – zentral & austauschbar                 |
+| `packages/brand`        | Name, Claims, Logo, Icon (kein Maskottchen) – zentral & austauschbar          |
 | `packages/i18n`         | Übersetzungen de/en (ICU), Formatierung, Schlüssel-Prüfung                     |
 | `packages/domain`       | Reine Logik: Termine, RRULE, Anti-Chaos-Engine, Kosten-Split, Votes            |
 | `packages/validation`   | zod-Verträge Client ↔ Server                                                   |
@@ -49,7 +49,10 @@ Abhängigkeitsrichtung: `apps/* → packages/*`; reine Pakete (`domain`, `entitl
    [monetization.md §4](docs/product/monetization.md)). Gast-Funktionen sind immer kostenlos.
 7. **Keine Dark Patterns:** kein künstlicher Zeitdruck, kein vorausgewähltes teuerstes Paket, Kündigung
    in 2 Taps erklärt, Preise inkl. MwSt.
-8. **Technik ≠ Rechtsfreigabe.** Datenschutzerklärung, Impressum, AGB, Zahlungs-Links und Mindestalter
+8. **Prototyp zuerst** ([ADR 0008](docs/decisions/0008-prototype-first.md)): nichts wird veröffentlicht vor Phase 10.
+   Beispieldaten und Simulationen (z. B. Demo-Kauf) sind in der UI als **„Demo“** gekennzeichnet; keine echten
+   Personendaten im Prototyp. Sicherheit (RLS, Tests) trotzdem von Anfang an vollständig.
+9. **Technik ≠ Rechtsfreigabe.** Datenschutzerklärung, Impressum, AGB, Zahlungs-Links und Mindestalter
    sind Entwürfe, bis ein Fachanwalt (Sache des PO) sie freigibt.
 
 ## Arbeitsweise

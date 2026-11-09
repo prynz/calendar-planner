@@ -1,7 +1,7 @@
 # Modul 10 – Erinnerungen & Anti-Chaos-Engine (USP)
 
-> **Status:** v0.1 · 2026-11-03 · Spezifikation (Entwurf). Basis (manuelle Wegzeit, Stufen lokal,
-> Bereit-Check): **Vorschlag Phase 3** · Voll (Routing, Puffer-Lernen, Live-ETA, Widgets): Phase 6.
+> **Status:** v0.2 · 2026-11-09 · Spezifikation (Entwurf). Basis (manuelle Wegzeit, Stufen lokal,
+> Bereit-Check): **Phase 3 (PO-Entscheidung)** · Voll (Google-Routing, Puffer-Lernen, Live-ETA, Widgets): Phase 6.
 
 **Ziel:** Die App plant **rückwärts** vom Termin. Nicht „Party um 20:00“, sondern „**Losgehen um 19:32**“.
 

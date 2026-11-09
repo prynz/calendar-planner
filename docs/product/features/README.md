@@ -24,7 +24,7 @@
 ## Gemeinsame Regeln für alle Module
 
 - **Zustände:** Jeder Screen definiert *Laden* (Skeleton statt Spinner, wo möglich), *Leer*
-  (freundlich, mit genau einer klaren Aktion, optional Buddy), *Fehler* (verständlich, mit „Nochmal
+  (freundlich, mit genau einer klaren Aktion, optional Illustration), *Fehler* (verständlich, mit „Nochmal
   versuchen“, keine technischen Codes ohne Erklärung) und *Offline* (zuletzt synchronisierter Stand
   sichtbar und gekennzeichnet; Schreibaktionen landen in der Outbox und sind als „wird gesendet“ markiert).
 - **Berechtigungen** prüft immer der Server (RLS/Edge Function). Die UI blendet nur aus.

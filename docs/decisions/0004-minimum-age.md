@@ -1,6 +1,7 @@
 # ADR 0004 – Mindestalter 16+, Kinderprofile ohne Account
 
-> **Status:** vorgeschlagen · 2026-11-03 · **Rechtliche Prüfung durch den PO erforderlich.**
+> **Status:** vorgeschlagen · 2026-11-09 · Für den Prototyp nicht blockierend (keine echten Nutzer). Wird technisch
+> als Bestätigungs-Häkchen 16+ umgesetzt; **rechtliche Prüfung vor Veröffentlichung (Phase 10)**.
 
 ## Kontext
 

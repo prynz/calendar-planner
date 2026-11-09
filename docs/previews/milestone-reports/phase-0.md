@@ -1,6 +1,6 @@
 # Milestone-Report Phase 0 – Discovery & Fundament
 
-> **Status:** 2026-11-09 · Phase 0 abgeschlossen · **Review läuft** (Frage 1 entschieden, Fragen 2–10 offen).
+> **Status:** 2026-11-09 · Phase 0 abgeschlossen · Review: Fragen 1–7, 9, 10 entschieden, Frage 8 offen.
 
 ## 1. Ergebnis in einem Satz
 
@@ -18,13 +18,13 @@ Datenschutz, ADRs). **Es wurde bewusst kein App-Code geschrieben.**
 | Feature-Specs | [features/](../../product/features/README.md) | 15 Module mit User Stories, Akzeptanzkriterien, Zuständen, Free/Premium |
 | Roadmap & MoSCoW | [roadmap.md](../../product/roadmap.md) | Priorisierung mit Begründung, Abhängigkeiten |
 | Monetarisierung | [monetization.md](../../product/monetization.md) | Abo-Matrix, Paywall-Regeln, House Ads inkl. Tabu-Zonen, Comp-Abos |
-| Brand Foundation | [brand-foundation.md](../../brand/brand-foundation.md) | 5 Namensvorschläge, Werte, Stimme, Logo-/Maskottchen-Idee |
+| Brand Foundation | [brand-foundation.md](../../brand/brand-foundation.md) | Name Nowish, Werte, Stimme, Logo-Idee |
 | Design-System | [design-system.md](../../design/design-system.md) | Token-Entwurf, **berechnete Kontrast-Matrix**, Motion, Komponenteninventar, QA-Checkliste |
 | Architektur | [overview.md](../../architecture/overview.md) | Systembild, Vertrauensgrenzen, Offline/Outbox, Benachrichtigungen, Sync |
 | Datenmodell | [data-model.md](../../architecture/data-model.md) | ERD, ~50 Tabellen, RLS-Hilfsfunktionen, Policy-Matrix, Aufbewahrung |
 | Threat Model | [threat-model.md](../../security/threat-model.md) | STRIDE für 10 Komponenten, Top-5-Risiken |
 | Datenschutz | [privacy.md](../../security/privacy.md) | Datenarten, Rechtsgrundlagen (Entwurf), Fristen, SDK-Liste |
-| ADRs | [decisions/](../../decisions/README.md) | 0001–0007 |
+| ADRs | [decisions/](../../decisions/README.md) | 0001–0008 |
 
 **Design-Referenzen:** Alle 5 Originaldateien liegen in `docs/design/references/` und wurden gesichtet. Die Analyse
 in Master Prompt §5.1 stimmt mit den Bildern überein. Es fehlt nichts.
@@ -34,7 +34,7 @@ in Master Prompt §5.1 stimmt mit den Bildern überein. Es fehlt nichts.
 - **Keine Nutzerinterviews.** Personas sind Hypothesen.
 - **Marktrecherche** stützt sich teils auf Drittquellen; DE-Store-Preise in € nicht verifiziert; Store-Reviews nicht systematisch ausgewertet.
 - **Konzept-Mockups** gibt es noch nicht (laut Roadmap Phase 1, Ablage `docs/design/concept/`, gekennzeichnet als Mockup).
-- **Logo, App-Icon, Maskottchen** nur als Beschreibung.
+- **Logo und App-Icon** nur als Beschreibung (kein Maskottchen, PO-Entscheidung).
 - **Rechtstexte** (Datenschutzerklärung, AGB, Impressum) nicht erstellt. Nur das technische Datenschutzkonzept existiert.
 - **Markenprüfung** der Namen nicht durchgeführt (Sache des PO).
 - Versionen (Expo SDK usw.) werden erst zu Beginn von Phase 1 fixiert.
@@ -67,15 +67,20 @@ in Master Prompt §5.1 stimmt mit den Bildern überein. Es fehlt nichts.
 ## 6. Offene Fragen an den PO (priorisiert, max. 10)
 
 1. ~~**Name**~~ → **entschieden 2026-11-09:** Arbeitsname **Nowish**, Alternative **Gleichda** ([ADR 0007](../../decisions/0007-working-name-nowish.md)). Offen bleibt nur die Markenprüfung beider Namen durch den PO.
-2. **Anti-Chaos-Basis vorziehen:** Einverstanden, Losgeh-Zeit mit manueller Wegzeit + Stufen + Bereit-Check schon in Phase 3 zu bauen (roadmap.md §3)?
-3. **Preise:** Family 7,99 €/64,99 € (Entwurf) oder 6,99 €/59,99 € (Empfehlung)? Trial 14 Tage ok? Zählen Kinderprofile zu den 6 Family-Personen?
-4. **Mindestalter 16+** ok? Rechtsprüfung beauftragen?
-5. **Karten/Routing:** Darf Google (Places/Routes) genutzt werden, oder sollen EU-Anbieter (HERE/TomTom) bevorzugt werden, auch wenn das mehr kostet?
-6. **KI-Assistent:** Bestätigung, dass er nicht in v1 kommt? Gibt es einen bevorzugten Anbieter mit EU-Verarbeitung?
-7. **Zahlungs-Deep-Links** (PayPal.me o. ä.) im Kosten-Modul: rechtlich prüfen lassen, oder vorerst weglassen?
-8. **Hosting Gast-Web/Admin:** Vercel (EU-Region) ok, oder EU-Anbieter/self-hosted?
-9. **Maskottchen „Tick“:** gewünscht? Wenn ja, Illustrator extern oder intern?
-10. **Launch-Markt & Konten:** Nur DACH zum Start? Liegen Apple-Developer- und Google-Play-Konten (Organisation, D-U-N-S) schon vor?
+2. ✅ **Anti-Chaos-Basis:** in Phase 3 ([roadmap.md §3](../../product/roadmap.md)).
+3. ✅ **Preise:** günstigere Variante, Family 6,99 € / 59,99 €. Trial 14 Tage beibehalten; Kinderprofile zählen nicht
+   zu den 6 Plätzen (begründet in [monetization.md §2](../../product/monetization.md)).
+4. ✅ **Mindestalter:** für den Prototyp nicht relevant; technisch als 16+-Bestätigung umgesetzt, Rechtsprüfung vor
+   Veröffentlichung ([ADR 0004](../../decisions/0004-minimum-age.md)).
+5. ✅ **Karten/Routing:** Google ([ADR 0005](../../decisions/0005-maps-routing-provider.md)).
+6. ✅ **KI-Assistent:** eingeplant, nicht entschieden ([roadmap.md §5](../../product/roadmap.md)).
+7. ✅ **Zahlungs-Links:** PayPal (`paypal.me`), Rechtsprüfung vor Veröffentlichung.
+8. ⏳ **Hosting Gast-Web/Admin:** offen – Erklärung an PO am 2026-11-09 gegeben, Entscheidung ausstehend
+   (für den Prototyp nicht blockierend).
+9. ✅ **Kein Maskottchen**, professionelle Bildmarke ([brand-foundation.md §6](../../brand/brand-foundation.md)).
+10. ✅ **Markt:** nur DACH. Store-Konten erst in Phase 10 nötig (Ausnahme: echtes iPhone zum Testen braucht ein Apple-Developer-Konto).
+
+**Grundsatzentscheidung:** Prototyp zuerst, Veröffentlichung erst ganz am Ende ([ADR 0008](../../decisions/0008-prototype-first.md)).
 
 ## 7. Nächster Schritt
 
