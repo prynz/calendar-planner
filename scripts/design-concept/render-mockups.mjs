@@ -77,14 +77,22 @@ const today = `<div class="phone dark">${MOCK}<div class="in">
     <div style="font:600 12px Text;margin-top:6px">noch 1 Std. 47 Min. bis Losgehen</div>
   </div>
   <div style="display:flex;gap:8px;margin:18px 0 12px">${['So 8', 'Mo 9', 'Di 10', 'Mi 11', 'Do 12']
-    .map((d, i) => `<div class="pill ${i === 1 ? 'lime' : ''}" style="flex:1;flex-direction:column;height:64px;${i === 1 ? '' : `background:${p.ink800};color:${p.textOnDark}`}">${d.split(' ')[1]}<small style="font:400 11px Text">${d.split(' ')[0]}</small></div>`)
+    .map(
+      (d, i) =>
+        `<div class="pill ${i === 1 ? 'lime' : ''}" style="flex:1;flex-direction:column;height:64px;${i === 1 ? '' : `background:${p.ink800};color:${p.textOnDark}`}">${d.split(' ')[1]}<small style="font:400 11px Text">${d.split(' ')[0]}</small></div>`,
+    )
     .join('')}</div>
   ${[
     ['in 30 Min.', 'Zahnarzt', '08:30 – 09:15', cat.health],
     ['in 4 Std.', 'Mittag mit Alex', '12:30 – 13:30', cat.social],
   ]
     .map(
-      ([s, t, time, c]) => `<div style="margin-bottom:10px"><span class="pill" style="background:${c};color:${p.ink900};border-radius:14px 14px 0 0;padding:6px 14px">${s}</span>
+      ([
+        s,
+        t,
+        time,
+        c,
+      ]) => `<div style="margin-bottom:10px"><span class="pill" style="background:${c};color:${p.ink900};border-radius:14px 14px 0 0;padding:6px 14px">${s}</span>
       <div class="card" style="background:${c};color:${p.ink900};border-top-left-radius:0;padding:14px 18px"><div style="font:600 18px Text">${t}</div><div style="font:600 13px Text;margin-top:4px">${time}</div></div></div>`,
     )
     .join('')}
