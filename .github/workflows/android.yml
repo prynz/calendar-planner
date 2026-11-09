@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       commit_screenshots:
-        description: 'Commit the captured screenshots to docs/previews/screenshots on this branch'
+        description: 'Commit the captured screenshots to docs/previews/screenshots (push: commit message contains [screenshots])'
         type: boolean
         default: false
       screenshot_prefix:
@@ -114,9 +114,10 @@ jobs:
           find . -path ./node_modules -prune -o -path ./screenshots -prune -o -name 'shot-*.png' -print | xargs -I{} cp {} screenshots/ || true
           ls -la screenshots
       - name: Commit screenshots to the branch (manual runs only)
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.commit_screenshots }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.commit_screenshots) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[screenshots]')) }}
         env:
-          PREFIX: ${{ inputs.screenshot_prefix }}
+          # Push runs use the current phase prefix; update it when a new phase starts.
+          PREFIX: ${{ inputs.screenshot_prefix || '2026-11-09-phase-01' }}
         run: |
           set -e
           mkdir -p docs/previews/screenshots

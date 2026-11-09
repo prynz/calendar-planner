@@ -2,12 +2,17 @@ name: iOS simulator build & screenshots
 
 # Compiles the iOS app on a macOS runner WITHOUT Apple credentials (simulator build, code signing
 # disabled) and captures real screenshots on the iOS simulator. No Apple developer account is needed
-# (ADR 0008). Manual trigger only: macOS minutes are expensive.
+# (ADR 0008). Runs manually, or on push when this workflow or the Maestro flow changes.
 on:
+  push:
+    branches: [main, 'claude/**']
+    paths:
+      - '.github/workflows/ios.yml'
+      - 'apps/mobile/.maestro/**'
   workflow_dispatch:
     inputs:
       commit_screenshots:
-        description: 'Commit the captured screenshots to docs/previews/screenshots on this branch'
+        description: 'Commit the captured screenshots to docs/previews/screenshots (push: commit message contains [screenshots])'
         type: boolean
         default: false
       screenshot_prefix:
@@ -81,9 +86,10 @@ jobs:
         if: failure()
         run: xcrun simctl io "$SIM_UDID" screenshot screenshots/shot-ios-fallback.png || true
       - name: Commit screenshots to the branch (manual runs only)
-        if: ${{ inputs.commit_screenshots }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.commit_screenshots) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[screenshots]')) }}
         env:
-          PREFIX: ${{ inputs.screenshot_prefix }}
+          # Push runs use the current phase prefix; update it when a new phase starts.
+          PREFIX: ${{ inputs.screenshot_prefix || '2026-11-09-phase-01' }}
         run: |
           set -e
           mkdir -p docs/previews/screenshots
