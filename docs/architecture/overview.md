@@ -138,8 +138,10 @@ in Phase 6 prüfen.
 - **Getrennte Deployments** (unterschiedliche Angriffsflächen). Gast-Web: öffentlich, minimal, SSR, kein
   Supabase-Key mit Rechten im Browser (Anfragen über eigene Server-Routen → Edge Functions).
   Admin: separate Domain, Login nur für `admin_users`, Pflicht-2FA (Passkey/TOTP), IP-Allowlist optional.
-- Hosting: EU-Region (Kandidaten: Vercel mit EU-Funktionsregion, Netlify EU, oder selbst gehostet bei einem
-  EU-Anbieter). Entscheidung in Phase 4 (offene Frage an PO).
+- Hosting im Prototyp (PO-Entscheidung 2026-11-09): **Vercel**, Funktionsregion Frankfurt (`fra1`), zwei getrennte
+  Projekte (Gast-Web, Admin), nur Demo-Daten. Hinweis: Die kostenlose Vercel-Stufe ist für nicht-kommerzielle
+  Nutzung gedacht – für den Test-Prototyp passend, für den Launch Wechsel auf einen bezahlten Plan oder einen
+  EU-Anbieter. Endgültige Entscheidung in Phase 10.
 
 ## 7. Kalender-Sync (Phase 7)
 
@@ -169,4 +171,4 @@ in Phase 6 prüfen.
 | Routing/Geocoding-Anbieter | 6 | [ADR 0005](../decisions/0005-maps-routing-provider.md) |
 | Bot-Schutz Gast-Web | 4 | Turnstile vs. Friendly Captcha vs. nur Rate-Limits |
 | Malware-Scan Uploads | 5 | ClamAV-Service (EU) vs. Typ-Allowlist ohne Scan |
-| Web-Hosting | 4 | siehe §6 |
+| Web-Hosting (Launch) | 10 | Prototyp: Vercel; Launch: Vercel Pro vs. EU-Anbieter |

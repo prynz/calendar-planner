@@ -60,6 +60,7 @@ Neue Abhängigkeiten mit Datenfluss nach außen werden hier eingetragen **bevor*
 | Google Maps Platform (Places, Routes) | Ortssuche, Wegzeit | Google (Drittland, DPA + SCC) | entschieden (ADR 0005); Aufruf nur über Edge Function, ohne Nutzer-ID, Koordinaten gerundet |
 | PayPal (nur Link) | `paypal.me`-Deep-Link im Kosten-Modul | – (wir übertragen nichts an PayPal) | entschieden; Nutzer öffnet PayPal selbst |
 | Bot-Schutz Gast-Web | Spam-Schutz | abhängig vom Anbieter | offen (Phase 4) |
+| Vercel | Hosting Gast-Web + Admin | Funktionen in Frankfurt (`fra1`), US-Unternehmen | Prototyp (nur Demo-Daten); Launch-Entscheidung Phase 10 |
 | Wetter-API | Plan B | – | Phase 9 |
 | KI-Anbieter | Assistent | EU-Verarbeitung erforderlich | eingeplant, nicht entschieden; nur opt-in |
 

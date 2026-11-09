@@ -20,9 +20,10 @@ bewerten. Eine Veröffentlichung (App Store, Play Store, öffentliches Gast-Web)
    Phase 10. Die Server-Logik für Entitlements ist trotzdem echt.
 4. **Verteilung des Prototyps** (keine Veröffentlichung):
    - Android: installierbare Test-App (APK über EAS Build, internal distribution).
-   - iOS: Simulator-Builds und Screenshots aus CI; auf einem echten iPhone nur mit Apple-Developer-Konto
-     (Ad-hoc/TestFlight intern). Das ist **keine** Veröffentlichung.
-   - Gast-Web und Admin laufen lokal bzw. als nicht öffentliche Vorschau (siehe Milestone-Report Frage 8).
+   - iOS: **kein Apple-Developer-Konto vorhanden (Stand 2026-11-09)** → Simulator-Builds, Screenshots und
+     Bildschirmvideos aus CI (macOS-Runner). Auf einem echten iPhone erst, wenn ein Konto angelegt ist
+     (Ad-hoc/TestFlight intern – auch das ist **keine** Veröffentlichung).
+   - Gast-Web und Admin: **Vercel** (Region Frankfurt), nur Demo-Daten, URLs nicht beworben, `noindex`.
 5. **Backend:** lokal mit Supabase CLI; für Tests auf Geräten ein **Supabase-Entwicklungsprojekt in Frankfurt**
    (Free Tier) **nur mit Demo-Daten**. Keine echten Personendaten im Prototyp.
 6. **Erst in Phase 10 (Launch-Readiness):** Store-Konten, echte Abos, Google-OAuth-Verifizierung für Kalender-Sync,

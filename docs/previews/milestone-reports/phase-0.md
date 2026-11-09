@@ -1,6 +1,6 @@
 # Milestone-Report Phase 0 – Discovery & Fundament
 
-> **Status:** 2026-11-09 · Phase 0 abgeschlossen · Review: Fragen 1–7, 9, 10 entschieden, Frage 8 offen.
+> **Status:** 2026-11-09 · Phase 0 abgeschlossen · Review: **alle 10 Fragen entschieden**. Wartet auf Start-Freigabe für Phase 1.
 
 ## 1. Ergebnis in einem Satz
 
@@ -75,10 +75,11 @@ in Master Prompt §5.1 stimmt mit den Bildern überein. Es fehlt nichts.
 5. ✅ **Karten/Routing:** Google ([ADR 0005](../../decisions/0005-maps-routing-provider.md)).
 6. ✅ **KI-Assistent:** eingeplant, nicht entschieden ([roadmap.md §5](../../product/roadmap.md)).
 7. ✅ **Zahlungs-Links:** PayPal (`paypal.me`), Rechtsprüfung vor Veröffentlichung.
-8. ⏳ **Hosting Gast-Web/Admin:** offen – Erklärung an PO am 2026-11-09 gegeben, Entscheidung ausstehend
-   (für den Prototyp nicht blockierend).
+8. ✅ **Hosting Gast-Web/Admin:** Vercel zum Testen (EU-Funktionsregion Frankfurt, nur Demo-Daten, nicht öffentlich
+   beworben). Endgültige Wahl in Phase 10.
 9. ✅ **Kein Maskottchen**, professionelle Bildmarke ([brand-foundation.md §6](../../brand/brand-foundation.md)).
-10. ✅ **Markt:** nur DACH. Store-Konten erst in Phase 10 nötig (Ausnahme: echtes iPhone zum Testen braucht ein Apple-Developer-Konto).
+10. ✅ **Markt:** nur DACH. Store-Konten erst in Phase 10. **Kein Apple-Developer-Konto vorhanden** → iOS wird im
+    Prototyp über Simulator-Builds, Screenshots und Videos aus CI gezeigt; Android als installierbare Test-App.
 
 **Grundsatzentscheidung:** Prototyp zuerst, Veröffentlichung erst ganz am Ende ([ADR 0008](../../decisions/0008-prototype-first.md)).
 

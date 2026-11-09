@@ -1,6 +1,7 @@
 # CLAUDE.md – Arbeitsregeln für Nowish
 
-> **Status:** 2026-11-09 · Phase 0 abgeschlossen, PO-Entscheidungen eingearbeitet (Fragen 1–7, 9, 10; Frage 8 offen).
+> **Status:** 2026-11-09 · Phase 0 abgeschlossen, alle PO-Fragen entschieden (u. a. Prototyp zuerst, Vercel zum Testen,
+> kein Apple-Developer-Konto → iOS nur Simulator).
 > Es existiert noch **kein App-Code**. Phase 1 startet erst nach Freigabe.
 
 Social-Planner-App (iOS + Android) für alle, die sonst planlos sind: Kalender, Terminplaner und
