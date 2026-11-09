@@ -33,7 +33,7 @@ wollen · kompromittiertes Gerät · böswillige Insider/Admin · Supply-Chain (
 | I | Lokale SQLite enthält private Daten | Daten im App-Sandbox; optional SQLCipher (Phase 3 entscheiden); Logout löscht lokale DB; keine Inhalte in Logs |
 | I | Push-Inhalte auf Sperrbildschirm | Option „Inhalte ausblenden“; sensible Pushes (Familie) standardmäßig neutral |
 | D | Benachrichtigungsflut | Server-Rate-Limits, Bündelung |
-| E | Deep-Link-Missbrauch (`planlos://admin…`) | Deep-Links nur auf erlaubte Routen, Parameter per zod validiert |
+| E | Deep-Link-Missbrauch (`nowish://admin…`) | Deep-Links nur auf erlaubte Routen, Parameter per zod validiert |
 
 ### 3.2 Gast-Web & Event-Links
 
@@ -82,7 +82,7 @@ wollen · kompromittiertes Gerät · böswillige Insider/Admin · Supply-Chain (
 | | Bedrohung | Maßnahme |
 | --- | --- | --- |
 | I | Token-Diebstahl aus DB | Supabase Vault, minimale Scopes, Widerruf bei Trennen |
-| T | Sync löscht/überschreibt externe Termine falsch | Schreiben nur in eigenem PLANLOS-Kalender beim Anbieter (Standard); Löschungen mit Bestätigung |
+| T | Sync löscht/überschreibt externe Termine falsch | Schreiben nur in eigenem Nowish-Kalender beim Anbieter (Standard); Löschungen mit Bestätigung |
 | S | Gefälschte Webhooks (Google/Graph) | Kanal-Token/Client-State prüfen, danach immer aktiv nachladen statt Payload zu vertrauen |
 
 ### 3.7 Abos & Billing

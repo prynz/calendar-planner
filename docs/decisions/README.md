@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-> **Status:** 2026-11-03 · 6 ADRs (Phase 0).
+> **Status:** 2026-11-09 · 7 ADRs (Phase 0).
 
 Format: Kontext → Entscheidung → Alternativen → Konsequenzen. Status: `vorgeschlagen` (wartet auf PO),
 `akzeptiert`, `ersetzt durch NNNN`. Angewandte ADRs werden nicht umgeschrieben, sondern ersetzt.
@@ -13,3 +13,4 @@ Format: Kontext → Entscheidung → Alternativen → Konsequenzen. Status: `vor
 | [0004](0004-minimum-age.md) | Mindestalter 16+, Kinderprofile ohne Account | vorgeschlagen (rechtliche Prüfung offen) |
 | [0005](0005-maps-routing-provider.md) | Karten-, Geocoding- und Routing-Anbieter | vorgeschlagen (Entscheidung Phase 6) |
 | [0006](0006-unified-events-and-guest-access.md) | Ein Event-Modell für Termine und Events; Gastzugriff nur über Edge Functions | vorgeschlagen |
+| [0007](0007-working-name-nowish.md) | Arbeitsname „Nowish“, Alternative „Gleichda“ | akzeptiert (Markenprüfung offen) |

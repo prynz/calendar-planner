@@ -71,11 +71,11 @@ unter“ ist der Kern unseres Event-Hubs.
 | Splitwise Pro | ~3,99–4,99 $ | ~40–50 $ | nur Kosten |
 | Tiimo | ~6,99 $ | ~79,99 $ (Familie ~119,99 $) | Neurodivergenz |
 | Doodle Private | – | ~39 $ (unbestätigt) | nur Umfragen |
-| **PLANLOS Plus (Entwurf)** | 2,99 € | 24,99 € | Power-User |
-| **PLANLOS Family (Entwurf)** | 7,99 € | 64,99 € | bis 6 Personen |
+| **Nowish Plus (Entwurf)** | 2,99 € | 24,99 € | Power-User |
+| **Nowish Family (Entwurf)** | 7,99 € | 64,99 € | bis 6 Personen |
 
 **Schlussfolgerung:** Einzel-Tools im Familien-/Organisationssegment liegen bei **~40–45 $/Jahr**.
-PLANLOS **Plus** liegt mit 24,99 €/Jahr bewusst darunter (Einstiegshürde senken, Wechsel aus Free).
+Nowish **Plus** liegt mit 24,99 €/Jahr bewusst darunter (Einstiegshürde senken, Wechsel aus Free).
 **Family** bei 64,99 € ist nur vertretbar, wenn mehrere Tools ersetzt werden (Familienkalender +
 Kosten + Fokus). Empfehlung und Alternativen: [monetization.md §2](monetization.md).
 
@@ -94,7 +94,7 @@ Kosten + Fokus). Empfehlung und Alternativen: [monetization.md §2](monetization
 ```
                 Struktur / Logistik hoch
                         │
-       Spond · Cozi     │      ★ PLANLOS
+       Spond · Cozi     │      ★ Nowish
        FamilyWall       │   (sozial + logistisch + Anti-Chaos)
                         │
  Einzelperson ──────────┼────────────── Gruppe / sozial

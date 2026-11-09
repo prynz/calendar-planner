@@ -1,4 +1,4 @@
-# PROJECT BRIEF – PLANLOS (Arbeitstitel)
+# PROJECT BRIEF – Nowish (Arbeitsname)
 
 > **Status:** v0.1 · 2026-11-03 · Ergebnis von Phase 0, **Entwurf zur Freigabe durch den PO**.
 > Quelle: [MASTER_PROMPT.md](MASTER_PROMPT.md). Offene Punkte: [Milestone-Report Phase 0](docs/previews/milestone-reports/phase-0.md).
@@ -25,7 +25,7 @@ mitnehmen sollst und wer noch nicht zugesagt hat. Belege: [market-research.md](d
 
 Details mit Jobs-to-be-done: [personas.md](docs/product/personas.md).
 
-| Persona          | Kernproblem                                              | Was PLANLOS für sie tut                            |
+| Persona          | Kernproblem                                              | Was Nowish für sie tut                            |
 | ---------------- | -------------------------------------------------------- | -------------------------------------------------- |
 | Chaos-Chris      | Vergisst Termine, unterschätzt Wegzeiten                 | Losgeh-Zeit, gestufte Erinnerungen, Bereit-Check   |
 | Orga-Olivia      | Läuft Zusagen, Geld, Mitbringseln hinterher              | RSVP mit Frist, Mitbringliste, Kosten, Deadlines   |

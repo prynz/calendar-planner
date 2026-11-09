@@ -1,11 +1,11 @@
-# CLAUDE.md – Arbeitsregeln für PLANLOS
+# CLAUDE.md – Arbeitsregeln für Nowish
 
-> **Status:** 2026-11-03 · Phase 0 (Discovery & Fundament) abgeschlossen, **wartet auf Review durch den PO**.
+> **Status:** 2026-11-09 · Phase 0 (Discovery & Fundament) abgeschlossen, **Review läuft** (Name entschieden: Nowish).
 > Es existiert noch **kein App-Code**. Phase 1 startet erst nach Freigabe.
 
 Social-Planner-App (iOS + Android) für alle, die sonst planlos sind: Kalender, Terminplaner und
 Event-Organisator in einem, mit der **Anti-Chaos-Engine** (Losgeh-Zeit, eskalierende Erinnerungen,
-Bereit-Check, „Ich verspäte mich“) als USP. Arbeitstitel „PLANLOS“ – Name zentral in `packages/brand`.
+Bereit-Check, „Ich verspäte mich“) als USP. Arbeitsname „Nowish“ (Alternative „Gleichda“, Markenprüfung offen) – Name zentral in `packages/brand`.
 
 Produkt: [PROJECT_BRIEF.md](PROJECT_BRIEF.md) · Ursprung: [MASTER_PROMPT.md](MASTER_PROMPT.md) ·
 Architektur: [docs/architecture/overview.md](docs/architecture/overview.md) ·

@@ -1,37 +1,51 @@
 # Brand Foundation
 
-> **Status:** v0.1 · 2026-11-03 · Entwurf Phase 0. Name, Logo und Maskottchen sind **nicht final**.
+> **Status:** v0.2 · 2026-11-09 · Entwurf Phase 0. Arbeitsname **Nowish** (PO-Entscheidung), Logo und Maskottchen **nicht final**.
 > Marken- und Domainprüfung erfolgt durch den PO. Umsetzung zentral in `packages/brand` (ab Phase 1).
 
 ## 1. Name
 
-### Arbeitstitel: **PLANLOS**
+> **PO-Entscheidung 2026-11-09:** Arbeitsname **Nowish**. Alternative **Gleichda** bleibt im Blick.
+> „PLANLOS“ ist damit nur noch Ursprungsname im [MASTER_PROMPT](../../MASTER_PROMPT.md).
+> Begründung und Konsequenzen: [ADR 0007](../decisions/0007-working-name-nowish.md).
 
-Selbstironisch und sofort verständlich im DACH-Raum („Du bist planlos? Perfekt.“). Schwächen: Für
-nicht deutschsprachige Nutzer bedeutungslos, auf Englisch schwer auszusprechen; „planlos“ ist ein
-gängiges deutsches Wort, die Eintragung als Wortmarke ist daher **fraglich** (beschreibend/Freihaltebedürfnis).
+### Arbeitsname: **Nowish**
 
-### 5 weitere Vorschläge
+„now-ish“ heißt „so ungefähr jetzt“. Das ist die Zeitrechnung chaotischer Menschen, und Nowish macht daraus
+ein echtes „jetzt“. Selbstironisch wie PLANLOS, aber international verständlich und aussprechbar
+(DE/EN „NAU-isch“).
 
-**Wichtig:** Keiner der Namen wurde auf Markenrechte (DPMA, EUIPO, USPTO, WIPO), App-Store-Namen oder Domains
-geprüft. Das muss der PO (idealerweise mit Markenanwalt) erledigen. Bekannte Kollisionsrisiken sind vermerkt,
-die Liste ist aber nicht vollständig.
+- **Stärken:** Humor statt Belehrung; Zeit-Bezug passt zum USP (Losgeh-Zeit); kurz; funktioniert in DE und EN.
+- **Risiken:** Bei einer kurzen Websuche (2026-11-09) tauchte eine kleine To-do-App „Nowish“ auf
+  ([mergeek.com](https://mergeek.com/latest/jv07EWYDNzPAkPRl), kein offizielles Store-Listing gefunden).
+  „nowish“ ist ein englisches Umgangswort → Unterscheidungskraft als Wortmarke prüfen; eine Bild-/Wortmarke
+  stärkt sie. Domains (`nowish.app`, `.de`, `.com`) und Store-Namen ungeprüft.
 
-| # | Name | Idee | Aussprache DE/EN | Stärken | Risiken (unvollständig) |
-| --- | --- | --- | --- | --- | --- |
-| 1 | **Leavo** | von „leave“ – die Losgeh-Zeit als Kern | „Lie-wo“ / „LEE-vo“ | USP im Namen, kurz, `.app` plausibel | Ähnlichkeit zu Urlaubs-/HR-Tools („leave management“) |
-| 2 | **Nowly** | „now“ – „JETZT los“ | „Nau-li“ / „NOW-lee“ | freundlich, international | generisch klingend; ähnliche App-Namen wahrscheinlich |
-| 3 | **Huddl** | „huddle“ – zusammenkommen | „Haddl“ / „HUD-l“ | sozial, merkfähig | „Huddle“ ist eine Slack-Funktion und Name mehrerer Firmen → hohes Risiko |
-| 4 | **Timbo** | freundlicher Charakter-Name, auch für das Maskottchen | „Tim-bo“ | Marke + Buddy in einem, kindgerecht für Familien | Personenname; Verwechslung mit bestehenden Marken möglich |
-| 5 | **Rendezvoo** | Wortspiel aus „rendezvous“ | „Ron-de-wu“ | international verstanden, verspielt, Domain eher frei | lang, Schreibweise fehleranfällig |
+### Alternative im Blick: **Gleichda**
 
-**Empfehlung:** Für den DACH-Launch **PLANLOS** als Marke mit internationalem Zusatz prüfen lassen
-(z. B. Bild-/Wortmarke „planlos.“ mit Punkt, was die Unterscheidungskraft erhöht). Als internationaler Name hat
-**Leavo** die stärkste Verbindung zum USP. Entscheidung durch PO nach Prüfung.
+Von „Bin gleich da!“, der Lieblingsausrede aller Zuspätkommer; die App macht aus der Ausrede ein Versprechen.
+Stark für DACH, international nicht verständlich. Kurze Websuche (2026-11-09): keine gleichnamige App gefunden.
+Mögliche Nutzung: Name für den DACH-Markt **oder** Kampagnen-/Claim-Begriff („Mit Nowish bist du wirklich gleich da.“).
 
-Rename-Fähigkeit: Name, Claims, Store-Texte, Bundle-IDs (nur einmalig vor Erst-Release änderbar!) und Assets
-liegen in `packages/brand`. **Die Bundle-/Package-ID muss vor dem ersten Store-Upload final sein** → neutrale ID
-vorschlagen (z. B. `app.planlos.mobile` erst nach Namensentscheid; bis dahin nur Dev-Builds).
+### Verworfene bzw. zurückgestellte Vorschläge
+
+| Name | Grund |
+| --- | --- |
+| PLANLOS | Alltagswort, als Marke kaum schützbar, international unverständlich |
+| Leavo | keine Kollision gefunden, aber abstrakt; Reserve |
+| Allda | DE-only; Reserve |
+| Doorly | bereits von zwei Apps belegt |
+| Huddl | Kollision mit Slack „Huddles“ |
+| Nowly, Timbo, Rendezvoo, Hopphopp, Fastda, OMW, Tick | schwächer im Konzeptbezug oder generisch |
+
+**Wichtig:** Keine Markenprüfung (DPMA, EUIPO, USPTO, WIPO), keine Domain- und Store-Namensprüfung erfolgt.
+Das erledigt der PO, idealerweise mit Markenanwalt, für **Nowish und Gleichda parallel**.
+
+### Rename-Fähigkeit
+
+Name, Claims, Store-Texte, Deep-Link-Schema und Assets liegen in `packages/brand`. **Bundle-/Package-ID und
+Deep-Link-Schema müssen vor dem ersten Store-Upload final sein.** Bis zur Markenfreigabe verwenden Dev-Builds eine
+neutrale ID (z. B. `dev.calendarplanner.app`); `app.nowish.mobile` / `nowish://` erst nach Freigabe.
 
 ## 2. Markenkern
 
@@ -63,7 +77,8 @@ mehr Zeit miteinander verbringen.
 - Erinnerungs-Ton ist nutzerseitig einstellbar (sanft · locker · nachdrücklich). Nachdrücklich heißt deutlicher,
   **nie** beleidigend.
 
-**Claims (Entwurf):** „Du chillst. Wir planen.“ · „Endlich pünktlich. Ohne Stress.“ · EN „You show up. We handle the rest.“
+**Claims (Entwurf):** „Du chillst. Wir planen.“ · „Endlich pünktlich. Ohne Stress.“ · „Aus ‚gleich‘ wird jetzt.“ ·
+EN „You show up. We handle the rest.“ · „From now-ish to right on time.“
 
 ## 4. Visuelle Richtung (Kurzfassung – Details in [design-system.md](../design/design-system.md))
 
@@ -77,7 +92,7 @@ mehr Zeit miteinander verbringen.
 
 - **Bildmarke:** ein Kreis (Ziffernblatt), in dem der Zeiger zu einem Pfeil nach rechts wird, wie ein Schritt
   aus der Tür. Sinnbild für „Losgeh-Zeit“. Lime-Kreis, Tinte-Pfeil. Funktioniert als App-Icon in 1 Farbe.
-- **Wortmarke:** „planlos.“ kleingeschrieben in Bricolage Grotesque Bold, der Punkt in Lime („alles ist geplant“).
+- **Wortmarke:** „nowish.“ kleingeschrieben in Bricolage Grotesque Bold, der Punkt in Lime („-ish“ wird zum Punkt: jetzt, genau).
 - **Varianten:** Icon allein (App-Icon, Favicon), horizontal, gestapelt; jeweils Hell/Dunkel; Monochrom.
 - Schutzraum = Höhe des Punkts × 2; Mindestgröße Icon 24 px.
 - Erste Skizzen folgen als **Mockup** in Phase 1 unter `docs/design/concept/`.

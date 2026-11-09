@@ -1,4 +1,4 @@
-# PLANLOS (Arbeitstitel)
+# Nowish (Arbeitsname)
 
 > **Status:** 2026-11-03 · Phase 0 (Dokumentation) – noch kein App-Code.
 

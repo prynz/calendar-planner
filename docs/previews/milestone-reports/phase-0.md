@@ -1,6 +1,6 @@
 # Milestone-Report Phase 0 – Discovery & Fundament
 
-> **Status:** 2026-11-03 · Phase 0 abgeschlossen · **Stopp – wartet auf Review und Freigabe durch den PO.**
+> **Status:** 2026-11-09 · Phase 0 abgeschlossen · **Review läuft** (Frage 1 entschieden, Fragen 2–10 offen).
 
 ## 1. Ergebnis in einem Satz
 
@@ -24,7 +24,7 @@ Datenschutz, ADRs). **Es wurde bewusst kein App-Code geschrieben.**
 | Datenmodell | [data-model.md](../../architecture/data-model.md) | ERD, ~50 Tabellen, RLS-Hilfsfunktionen, Policy-Matrix, Aufbewahrung |
 | Threat Model | [threat-model.md](../../security/threat-model.md) | STRIDE für 10 Komponenten, Top-5-Risiken |
 | Datenschutz | [privacy.md](../../security/privacy.md) | Datenarten, Rechtsgrundlagen (Entwurf), Fristen, SDK-Liste |
-| ADRs | [decisions/](../../decisions/README.md) | 0001–0006 |
+| ADRs | [decisions/](../../decisions/README.md) | 0001–0007 |
 
 **Design-Referenzen:** Alle 5 Originaldateien liegen in `docs/design/references/` und wurden gesichtet. Die Analyse
 in Master Prompt §5.1 stimmt mit den Bildern überein. Es fehlt nichts.
@@ -62,11 +62,11 @@ in Master Prompt §5.1 stimmt mit den Bildern überein. Es fehlt nichts.
 | Routing-Kosten | Marge | Kontingente, Caching, manuelle Wegzeit |
 | iOS-Limit 64 lokale Notifications / Android Exact Alarms | unzuverlässige Erinnerungen | Scheduler mit Nachplanung, Silent Push, ehrliche UI |
 | US-Anbieter (Supabase/AWS, RevenueCat) | DSGVO-Bewertung | Rechtsprüfung, Migrationspfad |
-| Name nicht schützbar („planlos“ beschreibend) | Rebranding | frühe Markenprüfung, Name zentral in `packages/brand` |
+| Name „Nowish“ nicht schützbar oder belegt | Rebranding | Markenprüfung Nowish + Gleichda parallel, Name zentral in `packages/brand`, neutrale Bundle-ID bis zur Freigabe |
 
 ## 6. Offene Fragen an den PO (priorisiert, max. 10)
 
-1. **Name:** Bleibt es für den DACH-Launch bei „PLANLOS“, oder soll einer der 5 Vorschläge (Empfehlung international: *Leavo*) in die Markenprüfung? Davon hängt die Bundle-ID ab, die vor dem ersten Store-Upload final sein muss.
+1. ~~**Name**~~ → **entschieden 2026-11-09:** Arbeitsname **Nowish**, Alternative **Gleichda** ([ADR 0007](../../decisions/0007-working-name-nowish.md)). Offen bleibt nur die Markenprüfung beider Namen durch den PO.
 2. **Anti-Chaos-Basis vorziehen:** Einverstanden, Losgeh-Zeit mit manueller Wegzeit + Stufen + Bereit-Check schon in Phase 3 zu bauen (roadmap.md §3)?
 3. **Preise:** Family 7,99 €/64,99 € (Entwurf) oder 6,99 €/59,99 € (Empfehlung)? Trial 14 Tage ok? Zählen Kinderprofile zu den 6 Family-Personen?
 4. **Mindestalter 16+** ok? Rechtsprüfung beauftragen?

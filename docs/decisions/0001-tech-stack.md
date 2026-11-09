@@ -4,7 +4,7 @@
 
 ## Kontext
 
-PLANLOS muss auf iOS und Android gleichwertig laufen, hochwertig animiert sein, offline funktionieren und von
+Nowish muss auf iOS und Android gleichwertig laufen, hochwertig animiert sein, offline funktionieren und von
 einem kleinen Team über Jahre gepflegt werden. Es gibt drei Oberflächen (App, Gast-Web, Admin) mit gemeinsamer
 Domänenlogik. Der PO hat einen Stack vorgeschlagen (Master Prompt §10). Der PO betreibt bereits zwei Repos mit
 Expo + pnpm + Supabase (Erfahrung vorhanden, Muster wiederverwendbar).
