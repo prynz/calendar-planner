@@ -1,0 +1,12 @@
+pnpm-lock.yaml
+**/dist
+**/.expo
+**/android
+**/ios
+supabase/.temp
+supabase/.branches
+docs/**/*.md
+MASTER_PROMPT.md
+PROJECT_BRIEF.md
+CLAUDE.md
+README.md

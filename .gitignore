@@ -3,10 +3,17 @@
 .env.*
 !.env.example
 
-# Dependencies & builds (from Phase 1)
+# Dependencies & builds
 node_modules/
 .expo/
 dist/
 .next/
+apps/mobile/android/
+apps/mobile/ios/
 *.log
 .DS_Store
+coverage/
+
+# Supabase CLI local state
+supabase/.temp/
+supabase/.branches/

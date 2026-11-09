@@ -1,0 +1,39 @@
+{
+  "name": "nowish",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Nowish (working name) – social planner app for iOS and Android. Prototype, not published.",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "pnpm -r --if-present test",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test",
+    "mobile": "pnpm --filter @nowish/mobile start",
+    "brand:assets": "node scripts/brand/render-brand-assets.mjs",
+    "design:mockups": "node scripts/design-concept/render-mockups.mjs",
+    "db:start": "supabase start",
+    "db:reset": "supabase db reset",
+    "db:test": "scripts/db-test.sh"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.5",
+    "eslint-config-expo": "~58.0.4",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.10",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.7",
+    "vitest": "^5.0.5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [],
+    "ignoredBuiltDependencies": [
+      "@parcel/watcher"
+    ]
+  }
+}
