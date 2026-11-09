@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-> **Status:** 2026-11-09 · 8 ADRs (Phase 0).
+> **Status:** 2026-11-09 · 9 ADRs (Phase 0–1).
 
 Format: Kontext → Entscheidung → Alternativen → Konsequenzen. Status: `vorgeschlagen` (wartet auf PO),
 `akzeptiert`, `ersetzt durch NNNN`. Angewandte ADRs werden nicht umgeschrieben, sondern ersetzt.
@@ -15,3 +15,4 @@ Format: Kontext → Entscheidung → Alternativen → Konsequenzen. Status: `vor
 | [0006](0006-unified-events-and-guest-access.md) | Ein Event-Modell für Termine und Events; Gastzugriff nur über Edge Functions | vorgeschlagen |
 | [0007](0007-working-name-nowish.md) | Arbeitsname „Nowish“, Alternative „Gleichda“ | akzeptiert (Markenprüfung offen) |
 | [0008](0008-prototype-first.md) | Prototyp zuerst, Veröffentlichung erst ganz am Ende | akzeptiert |
+| [0009](0009-phase-1-tooling.md) | Werkzeugentscheidungen aus Phase 1 (i18n, Icons, Speicher, Builds) | akzeptiert |

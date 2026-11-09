@@ -1,6 +1,6 @@
 # Roadmap & Priorisierung
 
-> **Status:** v0.2 · 2026-11-09 · Phase 0 abgeschlossen, PO-Entscheidungen eingearbeitet. **Prototyp zuerst**:
+> **Status:** v0.3 · 2026-11-09 · Phase 1 umgesetzt, wartet auf Review. **Prototyp zuerst**:
 > Phasen 1–9 bauen einen nicht veröffentlichten Prototyp mit Beispieldaten, Veröffentlichung erst nach
 > Phase 10 ([ADR 0008](../decisions/0008-prototype-first.md)). Phase 1 startet nach Freigabe durch den PO.
 
@@ -11,8 +11,8 @@ Jede Phase endet mit typecheck → lint → format → Tests → Build-Prüfung 
 
 | Phase | Inhalt | Ergebnis | Status |
 | --- | --- | --- | --- |
-| **0** – Discovery & Fundament | Recherche, Personas, MoSCoW, Abo-Matrix, Namen, Referenz-Analyse, Brand, Architektur, ERD, Threat Model, Datenschutz, ADRs | Doku, **kein App-Code** | ✅ fertig, Review offen |
-| **1** – Projekt-Setup | Monorepo, Tooling, CI (iOS+Android), Env-Validierung, Supabase lokal, i18n-Gerüst, Tokens, Logo-Entwürfe, Konzept-Mockups, **Demo-Modus-Gerüst** (Seed-Beispielwelt) | Lauffähige leere App mit Theme, Sprache, Navigation | ⏳ wartet |
+| **0** – Discovery & Fundament | Recherche, Personas, MoSCoW, Abo-Matrix, Namen, Referenz-Analyse, Brand, Architektur, ERD, Threat Model, Datenschutz, ADRs | Doku, **kein App-Code** | ✅ freigegeben |
+| **1** – Projekt-Setup | Monorepo, Tooling, CI (iOS+Android), Env-Validierung, Supabase lokal, i18n-Gerüst, Tokens, Logo-Entwürfe, Konzept-Mockups, **Demo-Modus-Gerüst** (Seed-Beispielwelt) | Lauffähige App mit Theme, Sprache, Navigation, Beispielwelt | ✅ umgesetzt, Review offen |
 | **2** – Accounts & Sicherheit | Auth (Apple, Google, Microsoft, E-Mail, Passkey), Profil, Konten verknüpfen, Löschung/Export, RLS-Basis, Rate-Limits | Sichere Anmeldung Ende-zu-Ende | ⏳ |
 | **3** – Kalender-Kern | Ansichten, Termine, RRULE, Zeitzonen, lokale Erinnerungen, ICS; **+ Anti-Chaos-Basis** (PO-Entscheidung, §3) | Vollwertiger persönlicher Kalender + erlebbarer USP | ⏳ |
 | **4** – Events & Einladungen | Events, Rollen, RSVP mit Frist, Gast-Web-Link, Basis-Vorlagen | Erste soziale Events | ⏳ |

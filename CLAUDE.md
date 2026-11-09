@@ -1,8 +1,8 @@
 # CLAUDE.md – Arbeitsregeln für Nowish
 
-> **Status:** 2026-11-09 · Phase 0 abgeschlossen, alle PO-Fragen entschieden (u. a. Prototyp zuerst, Vercel zum Testen,
-> kein Apple-Developer-Konto → iOS nur Simulator).
-> Es existiert noch **kein App-Code**. Phase 1 startet erst nach Freigabe.
+> **Status:** 2026-11-09 · **Phase 1 (Projekt-Setup) umgesetzt, wartet auf Review** ([Report](docs/previews/milestone-reports/phase-1.md)).
+> Prototyp zuerst (ADR 0008), Vercel zum Testen, kein Apple-Developer-Konto → iOS nur Simulator.
+> Phase 2 startet erst nach Freigabe.
 
 Social-Planner-App (iOS + Android) für alle, die sonst planlos sind: Kalender, Terminplaner und
 Event-Organisator in einem, mit der **Anti-Chaos-Engine** (Losgeh-Zeit, eskalierende Erinnerungen,
@@ -15,19 +15,20 @@ Roadmap: [docs/product/roadmap.md](docs/product/roadmap.md) · Doku-Index: [docs
 
 Sprache: Doku und Kommunikation mit dem PO **Deutsch**; Code, Commits, Identifier **Englisch**.
 
-## Monorepo-Karte (geplant ab Phase 1, pnpm Workspaces)
+## Monorepo-Karte (pnpm Workspaces)
 
 | Pfad                    | Inhalt                                                                         |
 | ----------------------- | ------------------------------------------------------------------------------ |
 | `apps/mobile`           | Expo + Expo Router (iOS/Android). Routen dünn, Screens in `features/*`         |
-| `apps/web`              | Gast-Web-Ansicht für Event-Links (Next.js, öffentlich, ohne Admin-Code)        |
-| `apps/admin`            | Admin-Dashboard (Next.js + Tailwind), eigenes Deployment, nur Admin-Rollen     |
+| `apps/web`              | Gast-Web-Ansicht für Event-Links (Next.js) – **ab Phase 4**                    |
+| `apps/admin`            | Admin-Dashboard (Next.js + Tailwind) – **ab Phase 8**                          |
 | `packages/ui`           | Designsystem: Tokens, Komponenten, Motion, Haptik                              |
 | `packages/brand`        | Name, Claims, Logo, Icon (kein Maskottchen) – zentral & austauschbar          |
 | `packages/i18n`         | Übersetzungen de/en (ICU), Formatierung, Schlüssel-Prüfung                     |
-| `packages/domain`       | Reine Logik: Termine, RRULE, Anti-Chaos-Engine, Kosten-Split, Votes            |
-| `packages/validation`   | zod-Verträge Client ↔ Server                                                   |
-| `packages/entitlements` | Abo-Stufen, Limits, Feature-Gates (einzige Quelle der Wahrheit)                |
+| `packages/domain`       | Reine Logik: Zeit/Tage (jetzt), später RRULE, Anti-Chaos-Engine, Votes, Kosten |
+| `packages/demo`         | Beispielwelt für den Prototyp (ADR 0008), relativ zu „heute“                   |
+| `packages/validation`   | zod-Verträge Client ↔ Server – **ab Phase 2**                                  |
+| `packages/entitlements` | Abo-Stufen, Limits, Feature-Gates – **ab Phase 4**                             |
 | `packages/config`       | Env-Validierung, verbietet privilegierte Keys im Client                        |
 | `supabase/`             | Migrationen, pgTAP-Tests, Seed (nur lokal), Edge Functions                     |
 | `docs/`                 | Produkt, Design, Brand, Architektur, Security, ADRs, Previews                  |
@@ -90,13 +91,19 @@ Abhängigkeitsrichtung: `apps/* → packages/*`; reine Pakete (`domain`, `entitl
 
 ## Befehle
 
-Noch keine – es gibt in Phase 0 keinen Code. Geplante Befehle (werden in Phase 1 angelegt und hier
-erst eingetragen, wenn sie funktionieren):
+Details und pnpm-Besonderheiten: [docs/development/setup.md](docs/development/setup.md).
 
 ```bash
-pnpm install
-pnpm check   # typecheck + lint + format:check + test (geplant)
+pnpm install                 # nach jeder package.json-Änderung, Lockfile mitcommitten
+pnpm check                   # typecheck + lint + format:check + Unit-Tests (muss grün sein)
+pnpm mobile                  # Expo Dev-Server
+pnpm db:start && pnpm db:reset && pnpm db:test   # lokale Supabase + pgTAP
+pnpm --filter @nowish/mobile export:native       # Metro-Bundle Android + iOS
+pnpm brand:assets            # App-Icons/Logo aus packages/brand
+pnpm design:mockups          # Konzept-Mockups (docs/design/concept/)
 ```
+
+`.npmrc` setzt `auto-install-peers=false` – sonst entsteht eine zweite React-Kopie (setup.md).
 
 ## Definition of Done
 

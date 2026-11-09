@@ -19,7 +19,7 @@ Wir übernehmen den vorgeschlagenen Stack mit folgenden Präzisierungen:
 | Mobile | Expo + Expo Router, New Architecture, Hermes | eine Codebasis, EAS Build für beide Plattformen, Config Plugins für native Teile (Widgets) |
 | Animation | Reanimated, Gesture Handler, Skia (lazy), Lottie, expo-haptics | Skia nur dort, wo nötig (Startzeit) |
 | State | TanStack Query + Zustand + SQLite (`expo-sqlite`) | Query = Server-Cache, SQLite = Offline-Kopie + Outbox |
-| i18n | **i18next + react-i18next + ICU-Plugin** (`i18next-icu`) | ICU-Plural/Select, läuft in RN, Next.js und Deno; Alternative FormatJS ähnlich gut, i18next hat das breitere RN-Ökosystem |
+| i18n | ~~i18next + react-i18next + ICU-Plugin~~ → **ersetzt durch ADR 0009**: `intl-messageformat` direkt | ICU-Plural/Select, läuft in RN, Next.js und Deno; Alternative FormatJS ähnlich gut, i18next hat das breitere RN-Ökosystem |
 | Backend | Supabase EU (siehe ADR 0002) | |
 | Web | Next.js (App Router) für `apps/web` und `apps/admin`, **getrennt** | unterschiedliche Angriffsflächen und Deployments |
 | Validierung | zod | gemeinsame Verträge Client/Server/Deno |

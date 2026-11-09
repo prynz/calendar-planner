@@ -1,7 +1,7 @@
 # Design System
 
-> **Status:** v0.1 · 2026-11-03 · **Token-Entwurf Phase 0** (Werte sind Vorschläge, noch nicht implementiert).
-> Umsetzung in `packages/ui` in Phase 1. Kontrastwerte unten wurden mit der WCAG-2.x-Formel berechnet.
+> **Status:** v0.2 · 2026-11-09 · **Tokens implementiert** in `packages/ui/src/tokens.ts`; alle Theme-Farbpaare werden
+> in `packages/ui/test/contrast.test.ts` gegen WCAG AA geprüft. Komponenten: siehe §7 (Phase-1-Stand markiert).
 
 ## 1. Herleitung aus den Referenzen
 
@@ -33,6 +33,7 @@ Uhr-/Pfeil-Bildmarke, „Losgeh-Zeit“ als zentrale große Zahl, Status-Reiter 
 | `ink.300` | `#8A90A0` | Platzhalter, deaktiviert |
 | `cream.50` | `#F7F3EA` | Hintergrund hell |
 | `cream.100` | `#EFE9DC` | Fläche hell |
+| `cream.200` | `#DDD5C4` | Trennlinien hell (nur dekorativ) |
 | `lime.400` | `#C8F031` | **Markenfarbe** (Signal) |
 | `lime.ink` | `#4A5E00` | Lime-Ton für Text/Icons auf hellem Grund |
 | `violet.500` | `#7C5CFF` | Sekundär – **nur Fläche/Deko oder großer Text** |
@@ -143,24 +144,25 @@ Ziel: 60 fps (120 fps auf ProMotion), Animationen nur auf UI-Thread (Reanimated 
 
 ## 6. Iconografie & Illustration
 
-- Ein einheitliches Icon-Set mit abgerundeten Strichen (2 px bei 24 px). Kandidaten mit offener Lizenz:
-  Lucide (ISC), Phosphor (MIT). Entscheidung Phase 1. Keine Mischung mehrerer Sets.
+- Ein einheitliches Icon-Set mit abgerundeten Strichen: **Lucide** (ISC, ADR 0009). Keine Mischung mehrerer Sets.
 - Illustrationen: flächig, organische Blob-Formen (R1), Pastelle + Lime, ohne Verläufe, abstrakt (kein Maskottchen, PO-Entscheidung).
 
 ## 7. Komponenteninventar (`packages/ui`)
 
+Phase-1-Stand: ✅ = in `packages/ui` umgesetzt.
+
 | Komponente | Varianten | Notizen |
 | --- | --- | --- |
-| `Button` | primary (Lime), secondary (outline), tertiary (text), danger; sm/md/lg; Icon links/rechts | Loading-State eingebaut |
+| ✅ `Button` | primary (Lime), secondary (outline), tertiary (text), danger; sm/md/lg; Icon links/rechts | Loading-State eingebaut |
 | `IconButton` | filled, tonal, ghost | Kreis 48 dp, Pflicht-`accessibilityLabel` |
 | `Chip` / `FilterChip` | default, selected, mit Zähler | |
-| `PillTabs` | 2–4 Segmente | R1/R5 |
-| `FloatingTabBar` | 3–5 Ziele + zentrale „+“-Aktion | R3, Glas |
-| `DateStrip` | Tag-Pills, horizontal, Spring-Snap | R2 |
+| ✅ `PillTabs` (als `SegmentedControl`) | 2–4 Segmente | R1/R5 |
+| ✅ `FloatingTabBar` | 3–5 Ziele + zentrale „+“-Aktion | R3, Glas |
+| ✅ `DateStrip` | Tag-Pills, horizontal, Spring-Snap | R2 |
 | `TimelineDay` | Zeitspalte + Event-Karten | R2 |
-| `EventCard` | Kategorie-Farbe, Status-Reiter, Avatar-Stapel, Fortschritt | Shared-Element-Quelle |
+| ✅ `EventCard` | Kategorie-Farbe, Status-Reiter, Avatar-Stapel, Fortschritt | Shared-Element-Quelle |
 | `BentoGrid` / `BentoTile` | 1×1, 2×1, 2×2 | Event-Detail |
-| `AvatarStack` | max. N + „+X“ | |
+| ✅ `AvatarStack` | max. N + „+X“ | |
 | `ProgressRing` / `ProgressBar` | solid, striped | R1/R3 |
 | `HeatmapCalendar` | Intensität 0–4 | R4, mit Text-Alternative |
 | `SwipeDeck` | Karte, Ja/Nein/Vielleicht-Buttons | R5, Button-Alternative Pflicht |
@@ -168,9 +170,9 @@ Ziel: 60 fps (120 fps auf ProMotion), Animationen nur auf UI-Thread (Reanimated 
 | `Sheet` / `Modal` / `Dialog` | | Fokus-Falle, Escape/Back |
 | `TextField`, `TextArea`, `DateTimePicker`, `Select`, `Switch`, `Checkbox`, `Stepper` | | Fehlertext unter Feld |
 | `Toast` / `Banner` | info, success, warning, error, offline | |
-| `EmptyState` | Illustration + Titel + Text + 1 Aktion | |
-| `Skeleton` | Zeile, Karte, Raster | |
-| `ErrorState` | mit Retry | |
+| ✅ `EmptyState` | Illustration + Titel + Text + 1 Aktion | |
+| ✅ `Skeleton` | Zeile, Karte, Raster | |
+| ✅ `ErrorState` | mit Retry | |
 | `HouseAdSlot` | Karte, Banner, Interstitial | prüft Tabu-Zonen zur Laufzeit + Test |
 | `PaywallTable` | Vergleichstabelle | Preise aus Store |
 

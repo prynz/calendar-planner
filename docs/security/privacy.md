@@ -64,6 +64,10 @@ Neue Abhängigkeiten mit Datenfluss nach außen werden hier eingetragen **bevor*
 | Wetter-API | Plan B | – | Phase 9 |
 | KI-Anbieter | Assistent | EU-Verarbeitung erforderlich | eingeplant, nicht entschieden; nur opt-in |
 
+Phase 1 (2026-11-09): Die App enthält **keine** Netzwerk-SDKs. Neu sind nur lokale Bibliotheken ohne Datenfluss
+nach außen: Expo-Module (SQLite, Haptik, Lokalisierung, Schriften), Lucide-Icons, gebündelte Schriften (keine
+Laufzeit-Downloads). Gespeichert werden nur Sprache und Darstellung auf dem Gerät.
+
 **Ausgeschlossen:** Werbe-SDKs, Attribution-SDKs, Analytics mit Geräte-IDs, Session-Replay, Facebook-SDK
 (auch nicht für späteren Facebook-Login ohne erneute Prüfung).
 
