@@ -34,12 +34,28 @@ Datenbank mit Sicherheitstests und eine CI, die beide Plattformen ohne Store-Kon
 | Metro-Bundle Android + iOS (Hermes) | ✅ lokal und in CI |
 | Expo-Doctor | ✅ in CI; lokal 18/20 (die 2 übrigen Prüfungen brauchen die Expo-API, die in dieser Umgebung nicht erreichbar ist) |
 | CI `ci.yml` | ✅ grün |
-| Android-Build + Emulator | siehe §4 |
-| iOS-Simulator-Build | siehe §4 |
+| Android-Build + Emulator | ✅ Preview-APK gebaut (Artefakt `nowish-preview-apk`), Berechtigungsprüfung grün, 7 Screenshots |
+| iOS-Simulator-Build | ✅ ohne Apple-Konto gebaut, 7 Screenshots |
 
 ## 4. Screenshots (echt, aus CI)
 
-⏳ Die Android- und iOS-Läufe für diesen Stand laufen noch (Commit `0f60922`). Die Screenshots werden automatisch nach `docs/previews/screenshots/2026-11-09-phase-01-*` committet und hier verlinkt, sobald die Läufe fertig sind.
+Aufgenommen von Maestro am 2026-11-09 auf dem **Android-Emulator** (API 34, Pixel 6, Lauf 42639318493) und dem
+**iOS-Simulator** (Lauf 42639318539), jeweils mit dem Preview-Build. Das Gerät startet auf Englisch und dunkel; die App
+folgt dem System, bis man selbst wählt. Keine Mockups.
+
+| Ablauf | Android | iOS |
+| --- | --- | --- |
+| Heute · Systemsprache Englisch · dunkel | [Android](../screenshots/2026-11-09-phase-01-android-01-today-system-en-dark.png) | [iOS](../screenshots/2026-11-09-phase-01-ios-01-today-system-en-dark.png) |
+| Events · Englisch · dunkel | [Android](../screenshots/2026-11-09-phase-01-android-02-events-en-dark.png) | [iOS](../screenshots/2026-11-09-phase-01-ios-02-events-en-dark.png) |
+| Einstellungen · auf Deutsch umgestellt | [Android](../screenshots/2026-11-09-phase-01-android-03-settings-de-dark.png) | [iOS](../screenshots/2026-11-09-phase-01-ios-03-settings-de-dark.png) |
+| Einstellungen · Hell gewählt | [Android](../screenshots/2026-11-09-phase-01-android-04-settings-de-light.png) | [iOS](../screenshots/2026-11-09-phase-01-ios-04-settings-de-light.png) |
+| Heute · Deutsch · hell | [Android](../screenshots/2026-11-09-phase-01-android-05-today-de-light.png) | [iOS](../screenshots/2026-11-09-phase-01-ios-05-today-de-light.png) |
+| Events · Deutsch · hell | [Android](../screenshots/2026-11-09-phase-01-android-06-events-de-light.png) | [iOS](../screenshots/2026-11-09-phase-01-ios-06-events-de-light.png) |
+| Nach Neustart: Sprache + Theme bleiben | [Android](../screenshots/2026-11-09-phase-01-android-07-after-relaunch-settings-kept.png) | [iOS](../screenshots/2026-11-09-phase-01-ios-07-after-relaunch-settings-kept.png) |
+
+Ergebnis: Beide Plattformen zeigen denselben Stand. Sprache und Darstellung wechseln sofort und bleiben nach
+einem Neustart erhalten. Die Beispielwelt ist überall als „Demo“ gekennzeichnet, und die Status-Reiter
+(„vorbei“, „in 2 Std.“) richten sich nach der echten Uhrzeit.
 
 ## 5. Was nicht fertig ist / bewusst offen (ehrlich)
 
@@ -53,6 +69,8 @@ Datenbank mit Sicherheitstests und eine CI, die beide Plattformen ohne Store-Kon
   Phase 3/4. Reduced Motion ist bei den bisherigen Animationen (Skeleton) berücksichtigt.
 - **Barrierefreiheit:** Labels, Rollen und Touch-Ziele sind umgesetzt und teilweise getestet; ein manueller Test mit
   VoiceOver/TalkBack und 200 % Schrift auf echten Geräten steht noch aus.
+- **Bekannter Fehler (iOS, hell):** Die Statusleiste (Uhrzeit) bleibt weiß und ist auf Creme schlecht lesbar
+  (Screenshot ios-05). Wird zu Beginn von Phase 2 behoben.
 - **Logo** ist Entwurf v1 (Feinschliff und Mindestgrößen-Test offen).
 - **Kein Test auf echten Geräten**, nur Emulator/Simulator. Auf dem iPhone geht das erst mit Apple-Developer-Konto.
 
