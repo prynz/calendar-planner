@@ -1,0 +1,61 @@
+# Real screenshots of the running preview build (Android emulator / iOS simulator).
+# File names: shot-<PLATFORM>-NN-<screen>.png → docs/previews/screenshots/<prefix>-<PLATFORM>-NN-<screen>.png
+# The device runs in English + dark mode: the app follows the system until the user picks a language/theme.
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-today'
+    timeout: 90000
+- assertVisible:
+    id: 'demo-badge'
+- assertVisible: 'Your day'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-01-today-system-en-dark
+- tapOn:
+    id: 'tab-events'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-events'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-02-events-en-dark
+- tapOn:
+    id: 'tab-settings'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-settings'
+    timeout: 10000
+- tapOn:
+    id: 'language-de'
+- extendedWaitUntil:
+    visible: 'Einstellungen'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-03-settings-de-dark
+- tapOn:
+    id: 'theme-light'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-04-settings-de-light
+- tapOn:
+    id: 'tab-index'
+- extendedWaitUntil:
+    visible: 'Dein Tag'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-05-today-de-light
+- tapOn:
+    id: 'tab-events'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-06-events-de-light
+# Persistence: relaunch WITHOUT clearing state → German + light theme are kept.
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible: 'Dein Tag'
+    timeout: 60000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-07-after-relaunch-settings-kept

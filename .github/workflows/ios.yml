@@ -1,0 +1,107 @@
+name: iOS simulator build & screenshots
+
+# Compiles the iOS app on a macOS runner WITHOUT Apple credentials (simulator build, code signing
+# disabled) and captures real screenshots on the iOS simulator. No Apple developer account is needed
+# (ADR 0008). Manual trigger only: macOS minutes are expensive.
+on:
+  workflow_dispatch:
+    inputs:
+      commit_screenshots:
+        description: 'Commit the captured screenshots to docs/previews/screenshots on this branch'
+        type: boolean
+        default: false
+      screenshot_prefix:
+        description: 'File name prefix, e.g. 2026-11-09-phase-01'
+        type: string
+        default: '2026-11-09-phase-01'
+
+permissions:
+  contents: read
+
+jobs:
+  ios:
+    name: Simulator build + Maestro screenshots
+    runs-on: macos-latest
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    env:
+      APP_VARIANT: preview
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - run: pnpm install --frozen-lockfile
+      - name: Expo prebuild (ios, includes pod install)
+        working-directory: apps/mobile
+        run: pnpm exec expo prebuild --platform ios --clean
+      - name: xcodebuild (Release, iphonesimulator, unsigned)
+        working-directory: apps/mobile/ios
+        run: |
+          WS=$(ls -d *.xcworkspace | head -1); SCHEME="${WS%.xcworkspace}"
+          echo "Workspace: $WS  Scheme: $SCHEME"
+          xcodebuild -workspace "$WS" -scheme "$SCHEME" -configuration Release -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO | tail -n 40
+          ls build/Build/Products/Release-iphonesimulator/
+      - name: Boot simulator (dark mode) and install
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k,v in sorted(d.items(), reverse=True) if 'iOS' in k for x in v if x['name'].startswith('iPhone')))")
+          echo "SIM_UDID=$UDID" >> "$GITHUB_ENV"
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl ui "$UDID" appearance dark
+          xcrun simctl install "$UDID" "$(ls -d apps/mobile/ios/build/Build/Products/Release-iphonesimulator/*.app | head -1)"
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+      - name: Run Maestro flow
+        env:
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: '300000'
+        run: |
+          for attempt in 1 2; do
+            maestro --device "$SIM_UDID" test -e PLATFORM=ios -e APP_ID=dev.calendarplanner.app.preview apps/mobile/.maestro/screenshots.yaml --test-output-dir=maestro-output && exit 0
+            echo "Maestro attempt $attempt failed – retrying once"
+          done
+          exit 1
+      - name: Collect screenshots
+        if: always()
+        run: |
+          mkdir -p screenshots
+          find . -path ./node_modules -prune -o -path ./screenshots -prune -o -name 'shot-*.png' -print | xargs -I{} cp {} screenshots/ || true
+          ls -la screenshots
+      - name: Fallback screenshot
+        if: failure()
+        run: xcrun simctl io "$SIM_UDID" screenshot screenshots/shot-ios-fallback.png || true
+      - name: Commit screenshots to the branch (manual runs only)
+        if: ${{ inputs.commit_screenshots }}
+        env:
+          PREFIX: ${{ inputs.screenshot_prefix }}
+        run: |
+          set -e
+          mkdir -p docs/previews/screenshots
+          for f in screenshots/shot-*.png; do
+            base=$(basename "$f" .png); base=${base#shot-}
+            cp "$f" "docs/previews/screenshots/${PREFIX}-${base}.png"
+          done
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/previews/screenshots
+          if git diff --cached --quiet; then echo "No screenshots to commit"; exit 0; fi
+          git commit -m "docs: add iOS simulator screenshots from CI run ${GITHUB_RUN_ID}"
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep 5; done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-simulator-screenshots
+          path: |
+            screenshots
+            maestro-output
+          retention-days: 14
