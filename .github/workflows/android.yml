@@ -106,6 +106,7 @@ jobs:
             adb install -r "$(find apk -name '*.apk' | head -1)"
             adb shell cmd uimode night yes
             sleep 20
+            adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS || true
             maestro test -e PLATFORM=android -e APP_ID=dev.calendarplanner.app.preview apps/mobile/.maestro/screenshots.yaml --test-output-dir=maestro-output || (echo 'Retrying Maestro once'; sleep 10; maestro test -e PLATFORM=android -e APP_ID=dev.calendarplanner.app.preview apps/mobile/.maestro/screenshots.yaml --test-output-dir=maestro-output-retry) || (echo '=== logcat (ReactNativeJS) ==='; adb logcat -d -s ReactNativeJS:V ReactNative:V | tail -n 80; echo '=== ui texts ==='; maestro hierarchy > hierarchy.json; grep -oE '"(text|accessibilityText|resource-id)" : "[^"]+"' hierarchy.json | head -n 80; exit 1)
       - name: Collect screenshots
         if: always()

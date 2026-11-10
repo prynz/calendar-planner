@@ -6,6 +6,7 @@ appId: ${APP_ID}
 ---
 - launchApp:
     clearState: true
+- runFlow: dismiss-system-dialogs.yaml
 - extendedWaitUntil:
     visible:
       id: 'screen-today'
@@ -76,7 +77,7 @@ appId: ${APP_ID}
     timeout: 10000
 # Smaller screens (iPhone) show the new plan below the fold.
 - scrollUntilVisible:
-    element: 'Physio'
+    element: '.*Physio.*'
     direction: DOWN
     timeout: 15000
 - waitForAnimationToEnd
@@ -105,11 +106,12 @@ appId: ${APP_ID}
 - stopApp
 - launchApp:
     clearState: false
+- runFlow: dismiss-system-dialogs.yaml
 - extendedWaitUntil:
     visible: 'Dein Tag'
     timeout: 60000
 - scrollUntilVisible:
-    element: 'Physio'
+    element: '.*Physio.*'
     direction: DOWN
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-10-after-relaunch-plan-kept

@@ -1,0 +1,8 @@
+# Emulator housekeeping: close "… isn't responding" system dialogs (not app related, seen on CI emulators).
+appId: ${APP_ID}
+---
+- runFlow:
+    when:
+      visible: ".*isn't responding"
+    commands:
+      - tapOn: 'Wait'
