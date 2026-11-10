@@ -2,51 +2,30 @@ import {
   addDays,
   compareAgenda,
   dayKeyOf,
-  occursOnDay,
+  expandOccurrences,
   startOfDay,
   zonedWallTimeToInstant,
+  type CalendarEvent,
   type DayKey,
-  type TimedItem,
+  type EventCategory,
+  type LocalizedText,
+  type Recurrence,
+  type TravelMode,
 } from '@nowish/domain';
 
 /**
- * Demo world (ADR 0008). Every person and plan is fictional and marked "Demo" in the UI.
- * Dates are generated relative to "today" so the prototype always looks alive.
+ * Demo world (ADR 0008, ADR 0010). Every person and plan is fictional and marked "Demo" in the UI.
+ * Dates are generated relative to "today" so the prototype always looks alive. The app seeds its local
+ * database from this once and on "reset example world".
  */
 
 export const DEMO_TIME_ZONE = 'Europe/Berlin';
-
-export type LocalizedText = { de: string; en: string };
-
-/** Same values as the design token categories (`@nowish/ui` tokens); checked in a test. */
-export const DEMO_CATEGORIES = ['social', 'family', 'health', 'work', 'sport', 'celebration'] as const;
-export type DemoCategory = (typeof DEMO_CATEGORIES)[number];
 
 export interface DemoPerson {
   id: string;
   name: string;
   /** `child` = child profile without account (docs/product/features/family.md). */
   kind: 'viewer' | 'friend' | 'family' | 'child' | 'guest';
-}
-
-export interface DemoEvent extends TimedItem {
-  id: string;
-  kind: 'appointment' | 'social';
-  title: LocalizedText;
-  location?: LocalizedText;
-  category: DemoCategory;
-  hostId?: string;
-  participantIds: readonly string[];
-  /** Social events only: answers of invited people (viewer included). */
-  rsvp?: { yes: number; maybe: number; open: number };
-}
-
-export interface DemoWorld {
-  timeZone: string;
-  today: DayKey;
-  viewer: DemoPerson;
-  people: readonly DemoPerson[];
-  events: readonly DemoEvent[];
 }
 
 export const DEMO_PEOPLE: readonly DemoPerson[] = [
@@ -62,20 +41,26 @@ export const DEMO_PEOPLE: readonly DemoPerson[] = [
   { id: 'gabi', name: 'Gabi', kind: 'guest' },
 ];
 
+export const DEMO_VIEWER_ID = 'chris';
+
 interface Template {
   id: string;
   dayOffset: number;
   /** [hour, minute] in the demo zone; omitted → all day. */
   from?: [number, number];
-  /** Duration in minutes, or for all-day items the number of days (default 1). */
+  /** Minutes, or for all-day items the number of days (default 1). */
   length?: number;
-  kind: DemoEvent['kind'];
+  kind: CalendarEvent['kind'];
   title: LocalizedText;
   location?: LocalizedText;
-  category: DemoCategory;
+  category: EventCategory;
   hostId?: string;
   participantIds: string[];
-  rsvp?: DemoEvent['rsvp'];
+  rsvp?: CalendarEvent['rsvp'];
+  travel?: { mode: TravelMode; minutes: number };
+  prep?: number;
+  arrival?: number;
+  recurrence?: Omit<Recurrence, 'until'> & { untilOffset?: number };
 }
 
 const TEMPLATES: readonly Template[] = [
@@ -91,6 +76,8 @@ const TEMPLATES: readonly Template[] = [
     hostId: 'mia',
     participantIds: ['chris', 'mia'],
     rsvp: { yes: 2, maybe: 0, open: 0 },
+    travel: { mode: 'transit', minutes: 18 },
+    prep: 15,
   },
   {
     id: 'dentist',
@@ -102,6 +89,9 @@ const TEMPLATES: readonly Template[] = [
     title: { de: 'Zahnarzt', en: 'Dentist' },
     location: { de: 'Praxis Dr. Sommer', en: 'Dr Sommer’s practice' },
     participantIds: ['chris'],
+    travel: { mode: 'transit', minutes: 15 },
+    prep: 15,
+    arrival: 10,
   },
   {
     id: 'lunch',
@@ -115,6 +105,8 @@ const TEMPLATES: readonly Template[] = [
     hostId: 'alex',
     participantIds: ['chris', 'alex'],
     rsvp: { yes: 2, maybe: 0, open: 0 },
+    travel: { mode: 'walk', minutes: 12 },
+    prep: 5,
   },
   {
     id: 'games',
@@ -128,6 +120,8 @@ const TEMPLATES: readonly Template[] = [
     hostId: 'olivia',
     participantIds: ['chris', 'olivia', 'tom', 'mia', 'jonas'],
     rsvp: { yes: 4, maybe: 1, open: 0 },
+    travel: { mode: 'bike', minutes: 22 },
+    prep: 30,
   },
   {
     id: 'football',
@@ -139,6 +133,10 @@ const TEMPLATES: readonly Template[] = [
     title: { de: 'Fußballtraining', en: 'Football practice' },
     location: { de: 'Sportplatz Nord', en: 'North sports ground' },
     participantIds: ['chris', 'jonas'],
+    travel: { mode: 'bike', minutes: 10 },
+    prep: 10,
+    arrival: 5,
+    recurrence: { freq: 'weekly', interval: 1 },
   },
   {
     id: 'flat',
@@ -150,6 +148,9 @@ const TEMPLATES: readonly Template[] = [
     title: { de: 'Wohnungsbesichtigung', en: 'Flat viewing' },
     location: { de: 'Gartenstraße 12', en: '12 Garden Street' },
     participantIds: ['chris'],
+    travel: { mode: 'transit', minutes: 25 },
+    prep: 20,
+    arrival: 5,
   },
   {
     id: 'tom-bday',
@@ -158,6 +159,7 @@ const TEMPLATES: readonly Template[] = [
     category: 'celebration',
     title: { de: 'Toms Geburtstag 🎂', en: 'Tom’s birthday 🎂' },
     participantIds: ['chris'],
+    recurrence: { freq: 'yearly', interval: 1 },
   },
   {
     id: 'tom-party',
@@ -171,6 +173,8 @@ const TEMPLATES: readonly Template[] = [
     hostId: 'tom',
     participantIds: ['chris', 'tom', 'olivia', 'mia', 'jonas', 'alex', 'gabi'],
     rsvp: { yes: 4, maybe: 1, open: 2 },
+    travel: { mode: 'transit', minutes: 20 },
+    prep: 45,
   },
   {
     id: 'bbq',
@@ -184,6 +188,8 @@ const TEMPLATES: readonly Template[] = [
     hostId: 'olivia',
     participantIds: ['chris', 'olivia', 'tom', 'mia', 'gabi'],
     rsvp: { yes: 2, maybe: 1, open: 2 },
+    travel: { mode: 'bike', minutes: 30 },
+    prep: 30,
   },
   {
     id: 'brunch',
@@ -197,6 +203,8 @@ const TEMPLATES: readonly Template[] = [
     hostId: 'frank',
     participantIds: ['chris', 'frank', 'lena', 'paul'],
     rsvp: { yes: 4, maybe: 0, open: 0 },
+    travel: { mode: 'car', minutes: 35 },
+    prep: 20,
   },
   {
     id: 'concert',
@@ -210,6 +218,8 @@ const TEMPLATES: readonly Template[] = [
     hostId: 'jonas',
     participantIds: ['chris', 'jonas', 'mia'],
     rsvp: { yes: 2, maybe: 1, open: 0 },
+    travel: { mode: 'transit', minutes: 25 },
+    prep: 30,
   },
   {
     id: 'lisbon',
@@ -222,53 +232,103 @@ const TEMPLATES: readonly Template[] = [
   },
 ];
 
-/** Builds the demo world for `now`. Deterministic for a given `now` and zone. */
-export function buildDemoWorld(now: Date, timeZone: string = DEMO_TIME_ZONE): DemoWorld {
+/** Example events for `now`. Deterministic for a given `now` and zone. */
+export function buildDemoEvents(now: Date, timeZone: string = DEMO_TIME_ZONE): CalendarEvent[] {
   const today = dayKeyOf(now, timeZone);
-  const events = TEMPLATES.map((t): DemoEvent => {
+  return TEMPLATES.map((t): CalendarEvent => {
     const day = addDays(today, t.dayOffset);
-    const base = {
+    const { untilOffset, ...rec } = t.recurrence ?? { freq: 'daily' as const, interval: 1 };
+    const recurrence: Recurrence | undefined = t.recurrence
+      ? { ...rec, ...(untilOffset !== undefined ? { until: addDays(today, untilOffset) } : {}) }
+      : undefined;
+    const times = t.from
+      ? (() => {
+          const start = zonedWallTimeToInstant(day, t.from[0], t.from[1], timeZone);
+          return { allDay: false, start, end: new Date(start.getTime() + (t.length ?? 60) * 60_000) };
+        })()
+      : { allDay: true, start: startOfDay(day, timeZone), end: startOfDay(addDays(day, t.length ?? 1), timeZone) };
+    return {
       id: `demo-${t.id}`,
       kind: t.kind,
-      title: t.title,
+      title: t.title.de,
+      titleI18n: t.title,
+      location: t.location?.de ?? '',
+      ...(t.location ? { locationI18n: t.location } : {}),
       category: t.category,
+      ...times,
+      timeZone,
+      prepMinutes: t.prep ?? 0,
+      arrivalMarginMinutes: t.arrival ?? 0,
       participantIds: t.participantIds,
-      ...(t.location ? { location: t.location } : {}),
       ...(t.hostId ? { hostId: t.hostId } : {}),
       ...(t.rsvp ? { rsvp: t.rsvp } : {}),
+      ...(t.travel ? { travel: t.travel } : {}),
+      ...(recurrence ? { recurrence } : {}),
+      isDemo: true,
+      createdAt: now,
+      updatedAt: now,
     };
-    if (!t.from) {
-      const days = t.length ?? 1;
-      const last = addDays(day, days - 1);
-      return {
-        ...base,
-        allDay: true,
-        start: startOfDay(day, timeZone),
-        end: startOfDay(addDays(last, 1), timeZone),
-        allDayRange: { first: day, last },
-      };
-    }
-    const start = zonedWallTimeToInstant(day, t.from[0], t.from[1], timeZone);
-    return { ...base, allDay: false, start, end: new Date(start.getTime() + (t.length ?? 60) * 60_000) };
-  }).sort(compareAgenda);
-
-  const viewer = DEMO_PEOPLE.find((p) => p.kind === 'viewer');
-  if (!viewer) throw new Error('Demo world needs a viewer');
-  return { timeZone, today, viewer, people: DEMO_PEOPLE, events };
+  });
 }
 
-/** Agenda of one day, sorted (all-day first). */
-export function agendaForDay(world: DemoWorld, day: DayKey): DemoEvent[] {
-  return world.events.filter((e) => occursOnDay(e, day, world.timeZone)).sort(compareAgenda);
+/** One concrete appearance of an event in the calendar (recurring events appear many times). */
+export interface AgendaItem {
+  event: CalendarEvent;
+  /** Day key of the occurrence start – identifies the occurrence for "delete only this one". */
+  occurrenceKey: DayKey;
+  start: Date;
+  end: Date;
+  allDay: boolean;
 }
 
-/** Social events that have not ended yet, soonest first. */
-export function upcomingSocialEvents(world: DemoWorld, now: Date): DemoEvent[] {
-  return world.events.filter((e) => e.kind === 'social' && e.end.getTime() > now.getTime()).sort(compareAgenda);
+/** All occurrences overlapping the local days [from, toExclusive), sorted (all-day first). */
+export function agendaBetween(
+  events: readonly CalendarEvent[],
+  from: DayKey,
+  toExclusive: DayKey,
+  timeZone: string,
+): AgendaItem[] {
+  const rangeStart = startOfDay(from, timeZone);
+  const rangeEnd = startOfDay(toExclusive, timeZone);
+  return events
+    .flatMap((event) =>
+      expandOccurrences(event, rangeStart, rangeEnd).map((o) => ({
+        event,
+        occurrenceKey: o.key,
+        start: o.start,
+        end: o.end,
+        allDay: event.allDay,
+      })),
+    )
+    .sort(compareAgenda);
 }
 
-export function personName(world: DemoWorld, id: string): string {
-  const p = world.people.find((x) => x.id === id);
+export const agendaForDay = (events: readonly CalendarEvent[], day: DayKey, timeZone: string) =>
+  agendaBetween(events, day, addDays(day, 1), timeZone);
+
+/** Social events that have not ended yet, soonest first (next occurrence for recurring ones). */
+export function upcomingSocial(
+  events: readonly CalendarEvent[],
+  now: Date,
+  timeZone: string,
+  horizonDays = 60,
+): AgendaItem[] {
+  const today = dayKeyOf(now, timeZone);
+  const seen = new Set<string>();
+  return agendaBetween(
+    events.filter((e) => e.kind === 'social'),
+    today,
+    addDays(today, horizonDays),
+    timeZone,
+  ).filter((i) => {
+    if (i.end.getTime() <= now.getTime() || seen.has(i.event.id)) return false;
+    seen.add(i.event.id);
+    return true;
+  });
+}
+
+export function personName(id: string): string {
+  const p = DEMO_PEOPLE.find((x) => x.id === id);
   if (!p) throw new Error(`Unknown demo person "${id}"`);
   return p.name;
 }

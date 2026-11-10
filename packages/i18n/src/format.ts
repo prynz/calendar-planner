@@ -30,3 +30,19 @@ export function formatDayNumber(date: Date, locale: Locale, timeZone?: string): 
     .format(date)
     .replace(/\.$/, '');
 }
+
+export function formatMonthYear(date: Date, locale: Locale, timeZone?: string): string {
+  return new Intl.DateTimeFormat(intlTag[locale], {
+    month: 'long',
+    year: 'numeric',
+    ...(timeZone ? { timeZone } : {}),
+  }).format(date);
+}
+
+export function formatShortDate(date: Date, locale: Locale, timeZone?: string): string {
+  return new Intl.DateTimeFormat(intlTag[locale], {
+    day: 'numeric',
+    month: 'short',
+    ...(timeZone ? { timeZone } : {}),
+  }).format(date);
+}
