@@ -1,6 +1,7 @@
 # Logo – Entwürfe
 
-> **Status:** 2026-11-09 · **Entwurf v1**, nicht final. Arbeitsname Nowish (ADR 0007), Markenprüfung offen.
+> **Status:** 2026-11-10 · **Entwurf v1 – vom PO vorläufig angenommen**, wird bald durch ein finales Logo ersetzt.
+> Austausch = neue Geometrie in `packages/brand/src/logo.ts` + `pnpm brand:assets`. Arbeitsname Nowish (ADR 0007).
 
 **Idee:** Ein Ziffernblatt, das sich rechts öffnet – der Minutenzeiger wird zum Pfeil, der aus dem Kreis tritt:
 „Zeit zu gehen“, die Losgeh-Zeit als Bild. Einfarbig konstruiert, funktioniert daher auch als Android-Themed-Icon

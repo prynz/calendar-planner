@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-> **Status:** 2026-11-09 · 9 ADRs (Phase 0–1).
+> **Status:** 2026-11-09 · 10 ADRs (Phase 0–1).
 
 Format: Kontext → Entscheidung → Alternativen → Konsequenzen. Status: `vorgeschlagen` (wartet auf PO),
 `akzeptiert`, `ersetzt durch NNNN`. Angewandte ADRs werden nicht umgeschrieben, sondern ersetzt.
@@ -16,3 +16,4 @@ Format: Kontext → Entscheidung → Alternativen → Konsequenzen. Status: `vor
 | [0007](0007-working-name-nowish.md) | Arbeitsname „Nowish“, Alternative „Gleichda“ | akzeptiert (Markenprüfung offen) |
 | [0008](0008-prototype-first.md) | Prototyp zuerst, Veröffentlichung erst ganz am Ende | akzeptiert |
 | [0009](0009-phase-1-tooling.md) | Werkzeugentscheidungen aus Phase 1 (i18n, Icons, Speicher, Builds) | akzeptiert |
+| [0010](0010-local-first-prototype.md) | Prototyp lokal und simuliert: erst Erlebnis, dann Infrastruktur | akzeptiert |

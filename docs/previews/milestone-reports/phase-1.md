@@ -1,6 +1,6 @@
 # Milestone-Report Phase 1 – Projekt-Setup
 
-> **Status:** 2026-11-09 · Phase 1 umgesetzt · **Stopp – wartet auf Review und Freigabe durch den PO.**
+> **Status:** 2026-11-10 · Phase 1 **freigegeben** (Antworten des PO in §9).
 
 ## 1. Ergebnis in einem Satz
 
@@ -69,8 +69,9 @@ einem Neustart erhalten. Die Beispielwelt ist überall als „Demo“ gekennzeic
   Phase 3/4. Reduced Motion ist bei den bisherigen Animationen (Skeleton) berücksichtigt.
 - **Barrierefreiheit:** Labels, Rollen und Touch-Ziele sind umgesetzt und teilweise getestet; ein manueller Test mit
   VoiceOver/TalkBack und 200 % Schrift auf echten Geräten steht noch aus.
-- **Bekannter Fehler (iOS, hell):** Die Statusleiste (Uhrzeit) bleibt weiß und ist auf Creme schlecht lesbar
-  (Screenshot ios-05). Wird zu Beginn von Phase 2 behoben.
+- **Bekannter Fehler (iOS, hell):** Die Statusleiste (Uhrzeit) blieb weiß und war auf Creme schlecht lesbar
+  (Screenshot ios-05). Ursache: react-native-screens folgt dem System-Erscheinungsbild. **Behoben am 2026-11-10**
+  (Stil am Root-Stack gesetzt); die Bestätigung per Simulator-Screenshot folgt mit dem nächsten iOS-Lauf.
 - **Logo** ist Entwurf v1 (Feinschliff und Mindestgrößen-Test offen).
 - **Kein Test auf echten Geräten**, nur Emulator/Simulator. Auf dem iPhone geht das erst mit Apple-Developer-Konto.
 
@@ -98,3 +99,13 @@ einem Neustart erhalten. Die Beispielwelt ist überall als „Demo“ gekennzeic
 
 Nach Freigabe: **Phase 2 – Accounts & Sicherheit** (Anmeldung, Profil, Konten verknüpfen, Löschung/Export, RLS-Basis,
 Rate-Limits), weiter als Prototyp ohne Veröffentlichung.
+
+## 9. Antworten des PO (2026-11-10)
+
+1. **Logo:** wird vorerst genommen und bald ersetzt.
+2. **Losgeh-Zeit auf „Heute“:** selbst entscheiden → groß nur in den 3 Stunden vor dem Losgehen, sonst kompakt
+   ([design-system.md §12](../../design/design-system.md)).
+3. **Anmeldung:** Erst Optik, Haptik, Gefühl und Funktion ausbauen und testen, ohne Anmeldungen. Alles basiert auf
+   Simulation, Mockups und Test-App; der Rest wird schrittweise nachgebaut → [ADR 0010](../../decisions/0010-local-first-prototype.md),
+   Roadmap neu geschnitten (Block A Prototyp, Block B Ausbau).
+4. **Supabase-Konto:** vorerst nicht; Demo-Modus. Wird ein Konto nötig, wird der PO vorher gefragt.

@@ -1,8 +1,8 @@
 # CLAUDE.md – Arbeitsregeln für Nowish
 
-> **Status:** 2026-11-09 · **Phase 1 (Projekt-Setup) umgesetzt, wartet auf Review** ([Report](docs/previews/milestone-reports/phase-1.md)).
-> Prototyp zuerst (ADR 0008), Vercel zum Testen, kein Apple-Developer-Konto → iOS nur Simulator.
-> Phase 2 startet erst nach Freigabe.
+> **Status:** 2026-11-10 · Phase 1 freigegeben. **Nächste Phase: 2 – Kalender-Kern + Anti-Chaos-Basis** (Block A, startet nach „Go“).
+> Prototyp lokal und simuliert, **ohne Login, Konten und Server** (ADR 0008, ADR 0010). Wird ein Konto/Dienst nötig
+> (API-Schlüssel, Apple-Konto, Hosting), vorher den PO fragen. Kein Apple-Developer-Konto → iOS nur Simulator.
 
 Social-Planner-App (iOS + Android) für alle, die sonst planlos sind: Kalender, Terminplaner und
 Event-Organisator in einem, mit der **Anti-Chaos-Engine** (Losgeh-Zeit, eskalierende Erinnerungen,
@@ -51,7 +51,8 @@ Abhängigkeitsrichtung: `apps/* → packages/*`; reine Pakete (`domain`, `entitl
    [monetization.md §4](docs/product/monetization.md)). Gast-Funktionen sind immer kostenlos.
 7. **Keine Dark Patterns:** kein künstlicher Zeitdruck, kein vorausgewähltes teuerstes Paket, Kündigung
    in 2 Taps erklärt, Preise inkl. MwSt.
-8. **Prototyp zuerst** ([ADR 0008](docs/decisions/0008-prototype-first.md)): nichts wird veröffentlicht vor Phase 10.
+8. **Prototyp zuerst** ([ADR 0008](docs/decisions/0008-prototype-first.md), [ADR 0010](docs/decisions/0010-local-first-prototype.md)):
+   nichts wird veröffentlicht; Block A läuft lokal ohne Konten. Screens sprechen nur mit Repository-Schnittstellen.
    Beispieldaten und Simulationen (z. B. Demo-Kauf) sind in der UI als **„Demo“** gekennzeichnet; keine echten
    Personendaten im Prototyp. Sicherheit (RLS, Tests) trotzdem von Anfang an vollständig.
 9. **Technik ≠ Rechtsfreigabe.** Datenschutzerklärung, Impressum, AGB, Zahlungs-Links und Mindestalter

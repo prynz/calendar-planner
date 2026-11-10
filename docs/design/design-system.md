@@ -208,3 +208,11 @@ Ein Screen, ein Ziel: nur „Jetzt“ und „Als Nächstes“, `display.xl`-Zeit
 - [ ] Keine House Ads in Tabu-Zonen
 - [ ] iOS **und** Android, kleines (iPhone SE / 360 dp) und großes Gerät
 - [ ] Echte Screenshots unter `docs/previews/screenshots/` (keine Mockups als Screenshot)
+
+## 12. Entscheidung: Gewicht der Losgeh-Zeit auf „Heute“ (2026-11-10, vom PO delegiert)
+
+Die große Lime-Karte („19:32 los“) erscheint **nur, wenn sie hilft**: für den nächsten Termin mit Ort, sobald die
+Losgeh-Zeit innerhalb der nächsten **3 Stunden** liegt, oder sobald die Vorbereitungs-Erinnerung fällig ist. Sonst
+zeigt die Event-Karte die Losgeh-Zeit als kompakte Zeile („los um 19:32“). Begründung: Ein dauerhaft großer
+Block würde zur Tapete und verliert seine Signalwirkung. Lime bleibt das **eine** Signal pro Screen
+(Brand Do/Don’t). Im Fokus-Modus ist die Karte immer groß.

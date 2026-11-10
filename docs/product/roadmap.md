@@ -1,6 +1,6 @@
 # Roadmap & Priorisierung
 
-> **Status:** v0.3 · 2026-11-09 · Phase 1 umgesetzt, wartet auf Review. **Prototyp zuerst**:
+> **Status:** v0.4 · 2026-11-10 · Phase 1 freigegeben. Roadmap neu geschnitten: lokaler Prototyp (Block A) vor Infrastruktur (Block B), ADR 0010. **Prototyp zuerst**:
 > Phasen 1–9 bauen einen nicht veröffentlichten Prototyp mit Beispieldaten, Veröffentlichung erst nach
 > Phase 10 ([ADR 0008](../decisions/0008-prototype-first.md)). Phase 1 startet nach Freigabe durch den PO.
 
@@ -9,19 +9,32 @@
 Jede Phase endet mit typecheck → lint → format → Tests → Build-Prüfung → Doku → Milestone-Report →
 **Stopp und Freigabe durch den PO**.
 
+**Neu geschnitten am 2026-11-10** ([ADR 0010](../decisions/0010-local-first-prototype.md)): Zuerst entsteht ein
+**lokaler, simulierter Prototyp** (Block A), der Optik, Haptik und Funktion vollständig erlebbar macht, ohne
+Konten, Logins oder Server. Die Infrastruktur folgt danach schrittweise (Block B).
+
+### Block A – Prototyp (lokal, Beispielwelt, keine Konten)
+
 | Phase | Inhalt | Ergebnis | Status |
 | --- | --- | --- | --- |
-| **0** – Discovery & Fundament | Recherche, Personas, MoSCoW, Abo-Matrix, Namen, Referenz-Analyse, Brand, Architektur, ERD, Threat Model, Datenschutz, ADRs | Doku, **kein App-Code** | ✅ freigegeben |
-| **1** – Projekt-Setup | Monorepo, Tooling, CI (iOS+Android), Env-Validierung, Supabase lokal, i18n-Gerüst, Tokens, Logo-Entwürfe, Konzept-Mockups, **Demo-Modus-Gerüst** (Seed-Beispielwelt) | Lauffähige App mit Theme, Sprache, Navigation, Beispielwelt | ✅ umgesetzt, Review offen |
-| **2** – Accounts & Sicherheit | Auth (Apple, Google, Microsoft, E-Mail, Passkey), Profil, Konten verknüpfen, Löschung/Export, RLS-Basis, Rate-Limits | Sichere Anmeldung Ende-zu-Ende | ⏳ |
-| **3** – Kalender-Kern | Ansichten, Termine, RRULE, Zeitzonen, lokale Erinnerungen, ICS; **+ Anti-Chaos-Basis** (PO-Entscheidung, §3) | Vollwertiger persönlicher Kalender + erlebbarer USP | ⏳ |
-| **4** – Events & Einladungen | Events, Rollen, RSVP mit Frist, Gast-Web-Link, Basis-Vorlagen | Erste soziale Events | ⏳ |
-| **5** – Zusammenarbeit | Chat (Realtime), Umfragen mit Deadline, Aufgaben, Mitbringliste, Dateien | Komplette Event-Planung | ⏳ |
-| **6** – Anti-Chaos-Engine & Karte | Wegzeit (Routing-API), Puffer-Lernen, Eskalationsstufen voll, Bereit-Check, „Ich verspäte mich“, Live-ETA, Widgets (Basis) | USP live | ⏳ |
-| **7** – Familie & Gruppen | Familienbereich, Kinderprofile, Fahrdienste, Einkauf, Gruppen, Kalender-Sync Google/Outlook/iCloud | Familienplaner | ⏳ |
-| **8** – Monetarisierung & Admin | Entitlements, Paywall mit **Demo-Kauf**, Admin (RBAC, Comp-Abos, Audit-Log), House Ads | Bezahlmodell & Steuerung (ohne echte Store-Abos) | ⏳ |
-| **9** – Premium-Extras | Kosten-Split (PayPal-Links), Wetter/Plan B, Mitfahren, Erinnerungs-Album, Premium-Themes; KI-Assistent nur eingeplant (siehe §5) | Premium-Mehrwert, **Prototyp komplett** | ⏳ |
-| **10** – Launch-Readiness (erst wenn der Prototyp überzeugt) | Markenprüfung, Rechtsprüfung (Mindestalter, Datenschutz, PayPal-Links, AGB), Store-Konten, echte Abos (RevenueCat), Google-OAuth-Verifizierung, Hosting-Entscheidung, Performance, A11y-Audit, Pen-Test, Store-Listings DE/EN, Beta | Release-Kandidat für **DACH** | ⏳ |
+| **0** – Discovery & Fundament | Recherche, Personas, MoSCoW, Abo-Matrix, Namen, Referenzen, Brand, Architektur, ERD, Threat Model, Datenschutz | Doku | ✅ freigegeben |
+| **1** – Projekt-Setup | Monorepo, Tooling, CI (iOS + Android), Tokens, Logo v1, Beispielwelt, Konzept-Mockups | Lauffähige App mit Theme, Sprache, Navigation | ✅ freigegeben (2026-11-10) |
+| **2** – Kalender-Kern + Anti-Chaos-Basis | Lokale Datenschicht (SQLite + Repositories), Termine anlegen/bearbeiten/löschen, Tag/Woche/Monat/Agenda, Wiederholungen, Zeitzonen, **Losgeh-Zeit** mit manueller Wegzeit, gestufte **lokale Erinnerungen**, Datumsleiste mit Spring-Snap, Haptik | Persönlicher Kalender mit erlebbarem USP | ⏳ nächste Phase |
+| **3** – Events & Zusammenarbeit (simuliert) | Event anlegen (auch aus Vorlagen), Demo-Personen einladen, **simulierte Zusagen** inkl. ablaufendem „Vielleicht“, Event-Detail als Bento, Umfragen mit **Swipe-Voting** und Deadline, Mitbringliste, Aufgaben, Chat (lokal simuliert), Shared-Element-Übergang | Kompletter Event-Lebenszyklus zum Durchspielen | ⏳ |
+| **4** – Anti-Chaos-Engine komplett | Bereit-Check, „Ich verspäte mich“, Eskalationsstufen + Ton, Trödel-Puffer-Lernen, Pünktlichkeits-Heatmap, **Fokus-Modus**, Karten-/Ortsanzeige (Wegzeit geschätzt, gekennzeichnet) | USP vollständig erlebbar | ⏳ |
+| **5** – Familie & Gruppen | Familienbereich, Kinderprofile, Fahrdienste, Einkaufsliste, Ämtchen, Gruppen mit wiederkehrenden Treffen, ICS-Import/Export | Familienplaner | ⏳ |
+| **6** – Profil, Premium & Feinschliff | Onboarding, Profil, Datenschutz-Center (UI), Paywall mit **Demo-Kauf**, House-Ad-Vorschau, Premium-Themes, Kosten-Split mit PayPal-Link, Wetter/Plan B (simuliert) | Alle Kernfunktionen als Prototyp | ⏳ |
+| **7** – Erlebnis-Politur & Test | Motion- und Haptik-Feinschliff, Barrierefreiheit (VoiceOver/TalkBack, 200 % Schrift), Performance, Usability-Test mit Testpersonen, finales Logo | Prototyp, der überzeugt | ⏳ |
+
+### Block B – Ausbau (erst wenn der Prototyp überzeugt, Schritt für Schritt)
+
+| Phase | Inhalt | Braucht vom PO |
+| --- | --- | --- |
+| **B1** – Backend & Konten | Supabase gehostet (Frankfurt), Anmeldung (E-Mail, Passkey, später Google/Apple/Microsoft), RLS für alle Tabellen, Repositories auf Server umstellen, Offline-Sync | Supabase-Konto; OAuth-Projekte |
+| **B2** – Echte Zusammenarbeit | Einladungen an echte Personen, Realtime-Chat, Push-Benachrichtigungen, **Gast-Web** auf Vercel | Vercel-Konto |
+| **B3** – Karten & Kalender-Sync | Google Places/Routes (echte Wegzeit), Live-ETA, Google-/Outlook-/iCloud-Sync | Google-Cloud-Projekt + API-Schlüssel |
+| **B4** – Monetarisierung & Admin | Echte Abos (RevenueCat), Admin-Dashboard (RBAC, Comp-Abos, Audit-Log), House-Ads-Steuerung | Store-Konten |
+| **B5** – Launch-Readiness | Markenprüfung, Rechtsprüfung, Security-Review, Pen-Test, Store-Listings DE/EN, Beta | Apple-Developer- und Google-Play-Konto, Fachanwalt |
 
 ## 2. MoSCoW-Priorisierung für v1 (öffentlicher Launch)
 
@@ -72,6 +85,9 @@ Vorteil: Der USP ist ab der ersten Beta erlebbar und kann früh mit echten Nutze
 Phase 6 ergänzt dann Google-Routing, Puffer-Lernen, Live-ETA und Widgets.
 
 ## 4. Abhängigkeiten & kritischer Pfad
+
+> Hinweis (2026-11-10): Das Diagramm nutzt noch die alte Phasennummerierung von vor ADR 0010. Fachlich gilt es
+> weiter für Block B (B1 = Konten, B2 = Zusammenarbeit/Gast-Web, B3 = Karten/Sync, B4 = Monetarisierung).
 
 ```
 Phase 1 ─► Phase 2 ─► Phase 3 ─► Phase 4 ─► Phase 5 ─► Phase 6
