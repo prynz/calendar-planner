@@ -34,7 +34,10 @@ export function templateText(
 export function noteText(note: SystemNote, c: EventCollab, t: Translate, locale: Locale, timeZone: string): string {
   switch (note.kind) {
     case 'rsvp':
-      return t(`chat.system.rsvp.${note.answer}`, { name: nameOf(note.personId, t) });
+      // German/English conjugate differently for "you" – own keys instead of "Du ist dabei".
+      return note.personId === VIEWER_ID
+        ? t(`chat.system.you.rsvp.${note.answer}`)
+        : t(`chat.system.rsvp.${note.answer}`, { name: nameOf(note.personId, t) });
     case 'invited':
       return t('chat.system.invited', { names: note.personIds.map((id) => nameOf(id, t)).join(', ') });
     case 'poll-created': {
@@ -48,10 +51,10 @@ export function noteText(note: SystemNote, c: EventCollab, t: Translate, locale:
     }
     case 'task-done': {
       const task = c.tasks.find((x) => x.id === note.taskId);
-      return t('chat.system.task-done', {
-        name: nameOf(note.personId, t),
-        task: task ? localized(task.title, task.titleI18n, locale) : '',
-      });
+      const title = task ? localized(task.title, task.titleI18n, locale) : '';
+      return note.personId === VIEWER_ID
+        ? t('chat.system.you.task-done', { task: title })
+        : t('chat.system.task-done', { name: nameOf(note.personId, t), task: title });
     }
   }
 }

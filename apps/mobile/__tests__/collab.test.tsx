@@ -161,6 +161,7 @@ describe('event detail (social)', () => {
         'yes',
       ),
     );
+    expect(within(screen.getByTestId('tile-chat')).getByText('Du bist dabei 🎉')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('tile-chat'));
     expect(router.push).toHaveBeenCalledWith({
       pathname: '/event/[id]/[section]',

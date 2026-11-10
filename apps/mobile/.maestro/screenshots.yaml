@@ -155,6 +155,11 @@ appId: ${APP_ID}
     centerElement: true
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-12-detail-rsvp-bento
+# The detail header scrolls with the content – bring the back button into view first.
+- scrollUntilVisible:
+    element:
+      id: 'detail-back'
+    direction: UP
 - tapOn:
     id: 'detail-back'
 # Swipe poll (buttons are the equal alternative to the gesture)
@@ -233,6 +238,11 @@ appId: ${APP_ID}
 - takeScreenshot: screenshots/shot-${PLATFORM}-16-chat-demo-reply
 - tapOn:
     id: 'collab-back'
+# The detail header scrolls with the content – bring the back button into view first.
+- scrollUntilVisible:
+    element:
+      id: 'detail-back'
+    direction: UP
 - tapOn:
     id: 'detail-back'
 # Templates → prefilled editor with invitees
