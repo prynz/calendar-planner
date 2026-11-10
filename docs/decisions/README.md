@@ -17,3 +17,4 @@ Format: Kontext → Entscheidung → Alternativen → Konsequenzen. Status: `vor
 | [0008](0008-prototype-first.md) | Prototyp zuerst, Veröffentlichung erst ganz am Ende | akzeptiert |
 | [0009](0009-phase-1-tooling.md) | Werkzeugentscheidungen aus Phase 1 (i18n, Icons, Speicher, Builds) | akzeptiert |
 | [0010](0010-local-first-prototype.md) | Prototyp lokal und simuliert: erst Erlebnis, dann Infrastruktur | akzeptiert |
+| [0011](0011-web-preview.md) | Web-Vorschau des Prototyps über GitHub Pages | akzeptiert |

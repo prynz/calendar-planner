@@ -12,7 +12,7 @@ const SCHEMA_VERSION = 1;
  * Local SQLite store (ADR 0010). Events are kept as validated JSON documents – flexible while the
  * prototype evolves; the server schema (data-model.md) arrives with block B.
  */
-export function createSqliteEventRepository(): EventRepository {
+export function createDeviceEventRepository(): EventRepository {
   let dbPromise: Promise<SQLite.SQLiteDatabase> | null = null;
   const db = () => {
     dbPromise ??= SQLite.openDatabaseAsync(DB_NAME).then(async (d) => {

@@ -135,6 +135,7 @@ export const en: Messages = {
   'settings.exampleWorld.hint': 'Restores all demo plans. Your own entries are deleted.',
   'settings.exampleWorld.confirmTitle': 'Reset the example world?',
   'settings.exampleWorld.confirmBody': 'Your own plans will be deleted.',
+  'web.previewBar': 'Web preview (demo) · reminders and haptics only in the app',
   'settings.exampleWorld.confirm': 'Reset',
   'settings.exampleWorld.failed': 'Resetting didn’t work. Please try again.',
 

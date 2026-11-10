@@ -1,0 +1,59 @@
+name: Web preview (GitHub Pages)
+
+# Publishes a browser PREVIEW of the prototype to https://<owner>.github.io/<repo>/ (ADR 0011).
+# Web keeps data in localStorage and has no reminders/haptics; iOS/Android remain the targets.
+# Requires once: Settings → Pages → Source = "GitHub Actions".
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, 'claude/**']
+    paths:
+      - 'apps/mobile/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/pages.yml'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Export web build under /<repo>/
+        working-directory: apps/mobile
+        env:
+          EXPO_BASE_URL: /${{ github.event.repository.name }}
+        run: pnpm export:web
+      - name: SPA fallback + disable Jekyll
+        working-directory: apps/mobile/dist
+        run: |
+          cp index.html 404.html
+          touch .nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/mobile/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

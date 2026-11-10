@@ -1,6 +1,6 @@
 import { Stack, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
@@ -44,6 +44,7 @@ import {
   withRepeat,
   withStart,
 } from './draft-helpers';
+import { confirm } from '@/services/confirm';
 import { haptic } from '@/services/haptics';
 
 const MINUTE_STEP = 5;
@@ -75,9 +76,8 @@ export function EditorScreen({ eventId, initialDay }: { eventId?: string; initia
 
   const close = () => {
     if (!dirty) return router.back();
-    Alert.alert(t('editor.discard.title'), t('editor.discard.body'), [
-      { text: t('editor.discard.keep'), style: 'cancel' },
-      { text: t('editor.discard.confirm'), style: 'destructive', onPress: () => router.back() },
+    confirm(t('editor.discard.title'), t('editor.discard.body'), t('editor.discard.keep'), [
+      { label: t('editor.discard.confirm'), destructive: true, onPress: () => router.back() },
     ]);
   };
 

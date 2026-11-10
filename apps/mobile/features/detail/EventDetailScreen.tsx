@@ -1,7 +1,7 @@
 import { Stack, useRouter } from 'expo-router';
 import { ChevronLeft } from 'lucide-react-native';
 import { useState } from 'react';
-import { Alert, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { agendaForDay, personName } from '@nowish/demo';
@@ -27,6 +27,7 @@ import {
 import { leavePlanFor, statusLabel, timeLabel, VIEWER_ID } from '../agenda/presenters';
 import { useAgendaContext } from '../agenda/use-agenda';
 import { useReminders } from '@/providers/reminders';
+import { confirm, type ConfirmChoice } from '@/services/confirm';
 import { haptic } from '@/services/haptics';
 
 export function EventDetailScreen({ eventId, occurrence }: { eventId: string; occurrence: string | undefined }) {
@@ -73,17 +74,13 @@ export function EventDetailScreen({ eventId, occurrence }: { eventId: string; oc
           setDeleteFailed(true);
         });
     };
-    const buttons = event.recurrence
+    const choices: ConfirmChoice[] = event.recurrence
       ? [
-          { text: t('common.cancel'), style: 'cancel' as const },
-          { text: t('detail.delete.one'), onPress: run(() => store.removeOccurrence(event.id, item.occurrenceKey)) },
-          { text: t('detail.delete.all'), style: 'destructive' as const, onPress: run(() => store.remove(event.id)) },
+          { label: t('detail.delete.one'), onPress: run(() => store.removeOccurrence(event.id, item.occurrenceKey)) },
+          { label: t('detail.delete.all'), destructive: true, onPress: run(() => store.remove(event.id)) },
         ]
-      : [
-          { text: t('common.cancel'), style: 'cancel' as const },
-          { text: t('common.delete'), style: 'destructive' as const, onPress: run(() => store.remove(event.id)) },
-        ];
-    Alert.alert(t('detail.delete.title'), t('detail.delete.body'), buttons);
+      : [{ label: t('common.delete'), destructive: true, onPress: run(() => store.remove(event.id)) }];
+    confirm(t('detail.delete.title'), t('detail.delete.body'), t('common.cancel'), choices);
   };
 
   const timeline: { key: string; label: string; at: Date; strong?: boolean }[] = plan

@@ -12,13 +12,14 @@ import { ErrorState, ThemeProvider, useTheme } from '@nowish/ui';
 import { createTranslator } from '@nowish/i18n';
 
 import { ClockProvider } from '@/providers/clock';
-import { createSqliteEventRepository } from '@/data/sqlite-event-repository';
+import { createDeviceEventRepository } from '@/data/device-event-repository';
 import { EventsProvider } from '@/providers/events';
 import { I18nProvider } from '@/providers/i18n';
 import { RemindersProvider } from '@/providers/reminders';
 import { SettingsProvider, useSettings } from '@/providers/settings';
 import { AppThemeProvider } from '@/providers/theme';
-import { createSqliteSettingsStore } from '@/storage/settings-store';
+import { PreviewFrame } from '@/features/shell/PreviewFrame';
+import { createDeviceSettingsStore } from '@/storage/settings-store';
 
 SplashScreen.preventAutoHideAsync().catch((error: unknown) => {
   console.warn('[splash] preventAutoHide failed', error instanceof Error ? error.name : 'unknown');
@@ -54,18 +55,20 @@ function Shell() {
   return (
     <>
       <StatusBar style={barStyle} />
-      <Stack screenOptions={{ headerShown: false, statusBarStyle: barStyle }}>
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="event/[id]" options={{ animation: 'slide_from_right' }} />
-        <Stack.Screen name="editor" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
-      </Stack>
+      <PreviewFrame>
+        <Stack screenOptions={{ headerShown: false, statusBarStyle: barStyle }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="event/[id]" options={{ animation: 'slide_from_right' }} />
+          <Stack.Screen name="editor" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+        </Stack>
+      </PreviewFrame>
     </>
   );
 }
 
 export default function RootLayout() {
-  const [store] = useState(createSqliteSettingsStore);
-  const [eventRepository] = useState(createSqliteEventRepository);
+  const [store] = useState(createDeviceSettingsStore);
+  const [eventRepository] = useState(createDeviceEventRepository);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>

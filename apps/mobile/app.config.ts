@@ -77,6 +77,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
   ],
-  experiments: { typedRoutes: true },
+  // Web is a browser PREVIEW of the prototype only (ADR 0011), published to GitHub Pages under a sub-path.
+  web: { output: 'single', favicon: './assets/brand/icon.png' },
+  experiments: {
+    typedRoutes: true,
+    ...(process.env.EXPO_BASE_URL ? { baseUrl: process.env.EXPO_BASE_URL } : {}),
+  },
   extra: { variant },
 });

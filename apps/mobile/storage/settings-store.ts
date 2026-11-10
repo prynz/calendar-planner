@@ -6,7 +6,7 @@ export interface SettingsStore {
   set(key: string, value: string): Promise<void>;
 }
 
-export function createSqliteSettingsStore(): SettingsStore {
+export function createDeviceSettingsStore(): SettingsStore {
   return {
     get: (key) => Storage.getItem(key),
     set: (key, value) => Storage.setItem(key, value),

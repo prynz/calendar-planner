@@ -138,6 +138,7 @@ export const de = {
   'settings.exampleWorld.hint': 'Stellt alle Demo-Termine wieder her. Deine eigenen Einträge werden dabei gelöscht.',
   'settings.exampleWorld.confirmTitle': 'Beispielwelt zurücksetzen?',
   'settings.exampleWorld.confirmBody': 'Deine eigenen Termine werden gelöscht.',
+  'web.previewBar': 'Web-Vorschau (Demo) · Erinnerungen und Haptik nur in der App',
   'settings.exampleWorld.confirm': 'Zurücksetzen',
   'settings.exampleWorld.failed': 'Zurücksetzen hat nicht geklappt. Versuch es bitte nochmal.',
 

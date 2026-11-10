@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Alert } from 'react-native';
 
 import { brand } from '@nowish/brand';
 import type { ReminderIntensity } from '@nowish/domain';
@@ -10,6 +9,7 @@ import type { ClientConfigResult } from '@/config/client-config';
 import { useEvents } from '@/providers/events';
 import { useI18n } from '@/providers/i18n';
 import { BUFFER_RANGE, useSettings, type ThemePreference } from '@/providers/settings';
+import { confirm } from '@/services/confirm';
 import { haptic } from '@/services/haptics';
 
 export function SettingsScreen({ clientConfig, appVersion }: { clientConfig: ClientConfigResult; appVersion: string }) {
@@ -24,11 +24,10 @@ export function SettingsScreen({ clientConfig, appVersion }: { clientConfig: Cli
   ] as const satisfies readonly { value: ReminderIntensity; label: string }[];
   const resetExampleWorld = () => {
     haptic('warning');
-    Alert.alert(t('settings.exampleWorld.confirmTitle'), t('settings.exampleWorld.confirmBody'), [
-      { text: t('common.cancel'), style: 'cancel' },
+    confirm(t('settings.exampleWorld.confirmTitle'), t('settings.exampleWorld.confirmBody'), t('common.cancel'), [
       {
-        text: t('settings.exampleWorld.confirm'),
-        style: 'destructive',
+        label: t('settings.exampleWorld.confirm'),
+        destructive: true,
         onPress: () => {
           events
             .resetExampleWorld()

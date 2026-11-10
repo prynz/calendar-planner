@@ -19,7 +19,13 @@ pnpm db:test                 # pgTAP-Tests gegen die lokale DB
 pnpm brand:assets            # App-Icons + Logo-Entwürfe aus packages/brand rendern (Playwright)
 pnpm design:mockups          # Konzept-Mockups rendern (Playwright)
 pnpm --filter @nowish/mobile export:native   # Metro-Bundle Android + iOS prüfen
+pnpm --filter @nowish/mobile web             # Web-Vorschau lokal im Browser
+pnpm --filter @nowish/mobile export:web      # Web-Vorschau bauen (dist/)
 ```
+
+**Web-Vorschau** ([ADR 0011](../decisions/0011-web-preview.md)): Workflow `pages.yml` veröffentlicht bei jedem Push
+nach https://prynz.github.io/calendar-planner/. Einmalig nötig: Repo → Settings → Pages → Source „GitHub Actions“.
+Im Web: Speicher `localStorage`, keine Erinnerungen, keine Haptik (Leiste oben weist darauf hin).
 
 ## pnpm-Besonderheiten (`.npmrc`)
 
