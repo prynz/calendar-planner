@@ -20,6 +20,7 @@ appId: ${APP_ID}
     element:
       id: 'event-demo-games'
     direction: DOWN
+    centerElement: true
 - tapOn:
     id: 'event-demo-games'
 - extendedWaitUntil:
@@ -62,6 +63,7 @@ appId: ${APP_ID}
     element:
       id: 'editor-travel-bike'
     direction: DOWN
+    centerElement: true
 - tapOn:
     id: 'editor-travel-bike'
 - tapOn:
@@ -127,18 +129,30 @@ appId: ${APP_ID}
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-11-events-invitations
 # Answer Tom's invitation, then the bento overview
+- scrollUntilVisible:
+    element:
+      id: 'event-demo-tom-party'
+    direction: DOWN
+    centerElement: true
 - tapOn:
     id: 'event-demo-tom-party'
 - extendedWaitUntil:
     visible:
-      id: 'rsvp-card'
+      id: 'detail-plan'
     timeout: 10000
+# The answer card sits below the leave plan.
+- scrollUntilVisible:
+    element:
+      id: 'rsvp-card'
+    direction: DOWN
+    centerElement: true
 - tapOn:
     id: 'rsvp-yes'
 - scrollUntilVisible:
     element:
       id: 'tile-chat'
     direction: DOWN
+    centerElement: true
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-12-detail-rsvp-bento
 - tapOn:
@@ -148,12 +162,14 @@ appId: ${APP_ID}
     element:
       id: 'event-demo-bbq'
     direction: DOWN
+    centerElement: true
 - tapOn:
     id: 'event-demo-bbq'
 - scrollUntilVisible:
     element:
       id: 'tile-poll'
     direction: DOWN
+    centerElement: true
 - tapOn:
     id: 'tile-poll'
 - extendedWaitUntil:
@@ -179,6 +195,7 @@ appId: ${APP_ID}
     element:
       id: 'tile-bring'
     direction: DOWN
+    centerElement: true
 - tapOn:
     id: 'tile-bring'
 - extendedWaitUntil:
@@ -196,6 +213,7 @@ appId: ${APP_ID}
     element:
       id: 'tile-chat'
     direction: DOWN
+    centerElement: true
 - tapOn:
     id: 'tile-chat'
 - extendedWaitUntil:
@@ -222,6 +240,7 @@ appId: ${APP_ID}
     element:
       id: 'events-templates'
     direction: UP
+    centerElement: true
 - tapOn:
     id: 'events-templates'
 - extendedWaitUntil:
@@ -241,6 +260,7 @@ appId: ${APP_ID}
     element:
       id: 'editor-invite-olivia'
     direction: DOWN
+    centerElement: true
 - tapOn:
     id: 'editor-invite-olivia'
 - tapOn:
@@ -249,6 +269,7 @@ appId: ${APP_ID}
     element:
       id: 'editor-tpl-task-grill'
     direction: DOWN
+    centerElement: true
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-18-editor-template-who
 - tapOn:
@@ -262,12 +283,14 @@ appId: ${APP_ID}
     element:
       id: 'event-demo-movie-night'
     direction: DOWN
+    centerElement: true
 - tapOn:
     id: 'event-demo-movie-night'
 - scrollUntilVisible:
     element:
       id: 'tile-guests'
     direction: DOWN
+    centerElement: true
 - tapOn:
     id: 'tile-guests'
 - extendedWaitUntil:
