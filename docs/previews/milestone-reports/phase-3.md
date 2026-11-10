@@ -33,12 +33,15 @@ auf dem Gerät, ohne Konto und Server ([ADR 0012](../../decisions/0012-simulated
 | `pnpm check` (typecheck · lint · format · Tests) | ✅ 578 Tests: i18n 374, domain 63, ui 57, App 56, demo 14, brand 8, config 6 |
 | Metro-Bundle Android + iOS, Web-Export | ✅ lokal |
 | Web-Vorschau im Browser (Events, Detail, Umfrage, Mitbringliste, Aufgaben, Gäste, Chat, Vorlagen, Editor) | ✅ lokal durchgeklickt, keine Fehler in der Konsole; Simulation sichtbar |
-| CI (Qualität, Datenbank, Secret-Scan), Android, iOS | siehe Abschnitt 4 |
+| CI (Qualität, Datenbank, Secret-Scan) | ✅ |
+| Android-Build + Emulator (Pixel 6, API 34) | ✅ 19 Screenshots |
+| iOS-Simulator-Build (iPhone 17 Pro, iOS 26.5) | ✅ 19 Screenshots, ohne Apple-Konto |
 
 ## 4. Screenshots (echt, aus CI)
 
 Die Bilder entstehen im CI-Lauf auf dem Android-Emulator und im iOS-Simulator (Präfix `2026-11-10-phase-03`).
-Die Bilder 01–10 zeigen weiterhin den Kalender-Kern aus Phase 2, 11–19 sind neu.
+Die Bilder 01–10 zeigen weiterhin den Kalender-Kern aus Phase 2 (gleicher Ablauf), 11–19 sind neu. Das Gerät
+startet auf Englisch und dunkel; ab Bild 08 ist die App auf Deutsch und hell gestellt.
 
 | Ablauf | Android | iOS |
 | --- | --- | --- |
@@ -78,6 +81,9 @@ Die Bilder 01–10 zeigen weiterhin den Kalender-Kern aus Phase 2, 11–19 sind 
 | Aufgaben-Zeile: Titel wurde neben dem Knopf zerquetscht („Popcor n“) | ✅ beim Durchklicken im Browser gefunden, Knopf unter den Text |
 | Geräte mit Phase-2-Daten hätten keine Zusammenarbeits-Daten | ✅ einmalige Nachlieferung (`collab_seeded`), getestet |
 | Simulation braucht einen Takt pro Sekunde | akzeptiert: schreibt nur, wenn etwas fällig ist |
+| Android: Die Tastatur verdeckte Chat-Eingabe und Senden-Knopf (seit SDK 58 ist Android „edge-to-edge“ und verkleinert das Fenster nicht mehr) | ✅ durch den Emulator-Ablauf gefunden, Ausweichen vor der Tastatur jetzt auf beiden Plattformen (auch im Editor) |
+| Chat-Hinweis über dich lautete „Du ist dabei 🎉“ | ✅ eigene Formulierungen („Du bist dabei“, „Du hast … erledigt“) |
+| Screenshot-Ablauf: Tipps landeten unter der schwebenden Tab-Leiste; iOS fasst Chat-Blasen zu einem Satz zusammen | ✅ Ablauf zentriert Ziele vor dem Tippen, Suche angepasst |
 | Neue Abhängigkeit: `zod` direkt in der App (war über `@nowish/config` schon im Bundle) | begründet im Commit; keine Netzwerk- oder Tracking-Funktion |
 
 ## 7. Offene Fragen an den PO
