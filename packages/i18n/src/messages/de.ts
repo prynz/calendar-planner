@@ -2,7 +2,10 @@
  * German (default) – source of truth for message keys. ICU MessageFormat syntax.
  * Tone: casual, warm, "du" (docs/brand/brand-foundation.md §3).
  */
+import { collabDe } from './collab.de';
+
 export const de = {
+  ...collabDe,
   'tabs.today': 'Heute',
   'tabs.events': 'Events',
   'tabs.settings': 'Ich',
@@ -184,10 +187,8 @@ export const de = {
   'events.title': 'Events',
   'events.eyebrow': 'Was ansteht',
   'events.rsvp': '{yes} dabei · {maybe} vielleicht · {open} offen',
-  'events.empty.title': 'Noch keine Pläne?',
-  'events.empty.body': 'Sobald du eingeladen wirst oder selbst etwas startest, erscheint es hier.',
-  'events.readOnlyHint':
-    'Events anlegen und Leute einladen kommt in Phase 3. Tippe ein Event an, um die Details zu sehen.',
+  'events.empty.title': 'Noch keine Pläne? Zeit, was zu starten 🎈',
+  'events.empty.body': 'Starte ein Event oder nimm eine Vorlage. Einladungen erscheinen auch hier.',
 
   'settings.title': 'Einstellungen',
   'settings.language': 'Sprache',
@@ -201,11 +202,11 @@ export const de = {
   'settings.saveError': 'Konnte nicht gespeichert werden. Die Einstellung gilt bis zum nächsten Start.',
   'settings.backend': 'Server',
   'settings.backend.demo': 'Nicht verbunden: Die App läuft im Demo-Modus mit Beispieldaten.',
-  'settings.backend.configured': 'Konfiguriert für {host}. Die Anmeldung folgt in Phase 2.',
+  'settings.backend.configured': 'Konfiguriert für {host}. Die Anmeldung folgt im Ausbau (Block B).',
   'settings.backend.invalid': 'Konfiguration ungültig: {reason}',
   'settings.about': 'Über diesen Prototyp',
   'settings.about.body':
-    '{name} ist ein Arbeitsname. Dieser Prototyp ist nicht veröffentlicht und speichert nur Einstellungen auf deinem Gerät.',
+    '{name} ist ein Arbeitsname. Dieser Prototyp ist nicht veröffentlicht und speichert alles nur auf deinem Gerät.',
   'settings.version': 'Version {version} · {variant}',
 } as const;
 

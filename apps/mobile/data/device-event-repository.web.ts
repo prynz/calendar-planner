@@ -1,55 +1,80 @@
-import type { CalendarEvent } from '@nowish/domain';
-
 import type { EventRepository } from './event-repository';
+import { deserializeCollab, serializeCollab } from './collab-serialization';
 import { deserializeEvent, serializeEvent } from './serialization';
 
 /**
  * Web preview only: browser localStorage instead of SQLite (SQLite on the web needs cross-origin isolation,
- * which GitHub Pages cannot provide). Same validated JSON documents as on devices.
+ * which GitHub Pages cannot provide). Same validated JSON documents as on devices (ADR 0011).
  */
-const KEY = 'nowish.events.v1';
+const EVENTS = 'nowish.events.v1';
+const COLLABS = 'nowish.collab.v1';
 const SEEDED = 'nowish.events.seeded';
+const COLLAB_SEEDED = 'nowish.collab.seeded';
 
 function storage(): Storage {
   if (typeof globalThis.localStorage === 'undefined') throw new Error('localStorage is not available');
   return globalThis.localStorage;
 }
 
-function readRows(): Record<string, string> {
-  const raw = storage().getItem(KEY);
+function readRows(key: string): Record<string, string> {
+  const raw = storage().getItem(key);
   if (!raw) return {};
   const parsed: unknown = JSON.parse(raw);
   if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed))
-    throw new Error('Stored events are corrupt');
-  return parsed as Record<string, string>; // validated per row by deserializeEvent below
+    throw new Error(`Stored ${key} is corrupt`);
+  return parsed as Record<string, string>; // validated per row by the deserializers below
 }
 
-const writeRows = (rows: Record<string, string>) => storage().setItem(KEY, JSON.stringify(rows));
+const writeRows = (key: string, rows: Record<string, string>) => storage().setItem(key, JSON.stringify(rows));
+
+function parseAll<T>(key: string, parse: (json: string) => T): T[] {
+  const out: T[] = [];
+  for (const [id, json] of Object.entries(readRows(key))) {
+    try {
+      out.push(parse(json));
+    } catch (error) {
+      console.warn(`[${key}] skipped corrupt row`, id, error instanceof Error ? error.message : 'unknown');
+    }
+  }
+  return out;
+}
 
 export function createDeviceEventRepository(): EventRepository {
   return {
     async load() {
-      const events: CalendarEvent[] = [];
-      for (const [id, json] of Object.entries(readRows())) {
-        try {
-          events.push(deserializeEvent(json));
-        } catch (error) {
-          console.warn('[events] skipped corrupt row', id, error instanceof Error ? error.message : 'unknown');
-        }
-      }
-      return { events, seeded: storage().getItem(SEEDED) === '1' };
+      return {
+        events: parseAll(EVENTS, deserializeEvent),
+        collabs: parseAll(COLLABS, deserializeCollab),
+        seeded: storage().getItem(SEEDED) === '1',
+        collabSeeded: storage().getItem(COLLAB_SEEDED) === '1',
+      };
     },
     async upsert(e) {
-      writeRows({ ...readRows(), [e.id]: serializeEvent(e) });
+      writeRows(EVENTS, { ...readRows(EVENTS), [e.id]: serializeEvent(e) });
     },
     async remove(id) {
-      const rows = readRows();
-      delete rows[id];
-      writeRows(rows);
+      const events = readRows(EVENTS);
+      const collabs = readRows(COLLABS);
+      delete events[id];
+      delete collabs[id];
+      writeRows(EVENTS, events);
+      writeRows(COLLABS, collabs);
     },
-    async replaceAll(events) {
-      writeRows(Object.fromEntries(events.map((e) => [e.id, serializeEvent(e)])));
+    async upsertCollab(c) {
+      writeRows(COLLABS, { ...readRows(COLLABS), [c.eventId]: serializeCollab(c) });
+    },
+    async seedCollabs(collabs) {
+      writeRows(COLLABS, {
+        ...Object.fromEntries(collabs.map((c) => [c.eventId, serializeCollab(c)])),
+        ...readRows(COLLABS),
+      });
+      storage().setItem(COLLAB_SEEDED, '1');
+    },
+    async replaceAll(events, collabs) {
+      writeRows(EVENTS, Object.fromEntries(events.map((e) => [e.id, serializeEvent(e)])));
+      writeRows(COLLABS, Object.fromEntries(collabs.map((c) => [c.eventId, serializeCollab(c)])));
       storage().setItem(SEEDED, '1');
+      storage().setItem(COLLAB_SEEDED, '1');
     },
   };
 }

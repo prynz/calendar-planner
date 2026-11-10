@@ -28,7 +28,6 @@ export interface CalendarEvent {
   arrivalMarginMinutes: number;
   hostId?: string;
   participantIds: readonly string[];
-  rsvp?: { yes: number; maybe: number; open: number };
   /** Part of the example world (shown with a "Demo" label). */
   isDemo: boolean;
   createdAt: Date;

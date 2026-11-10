@@ -1,5 +1,6 @@
 import {
   computeLeavePlan,
+  type EventTemplate,
   draftTimes,
   weekdayOf,
   type DayKey,
@@ -63,3 +64,16 @@ export function minuteToDate(day: DayKey, minute: number): Date {
 export const dateToMinute = (d: Date) => d.getHours() * 60 + d.getMinutes();
 export const dateToDay = (d: Date): DayKey =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+/** Applies a template's structure to a fresh draft (TPL-01); the title comes translated from the caller. */
+export function templateDraft(base: EventDraft, tpl: EventTemplate, title: string): EventDraft {
+  const startMinute = tpl.startMinute;
+  return {
+    ...base,
+    title,
+    category: tpl.category,
+    startMinute,
+    endMinute: Math.min(startMinute + tpl.durationMinutes, 24 * 60),
+    prepMinutes: tpl.prepMinutes,
+  };
+}

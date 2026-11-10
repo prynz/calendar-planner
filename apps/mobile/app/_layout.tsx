@@ -58,7 +58,9 @@ function Shell() {
       <PreviewFrame>
         <Stack screenOptions={{ headerShown: false, statusBarStyle: barStyle }}>
           <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="event/[id]" options={{ animation: 'slide_from_right' }} />
+          <Stack.Screen name="event/[id]/index" options={{ animation: 'slide_from_right' }} />
+          <Stack.Screen name="event/[id]/[section]" options={{ animation: 'slide_from_right' }} />
+          <Stack.Screen name="templates" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
           <Stack.Screen name="editor" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
         </Stack>
       </PreviewFrame>

@@ -3,7 +3,7 @@ module.exports = {
   preset: 'jest-expo',
   // Reanimated 4 / Worklets ship their own resolver for Jest.
   resolver: 'react-native-reanimated/jest/resolver',
-  setupFiles: ['react-native-gesture-handler/jestSetup.js'],
+  setupFiles: ['<rootDir>/jest.pre-setup.ts', 'react-native-gesture-handler/jestSetup.js'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testMatch: ['<rootDir>/__tests__/**/*.test.{ts,tsx}'],
   moduleNameMapper: {

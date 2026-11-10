@@ -46,8 +46,6 @@ describe('demo events', () => {
       expect(e.titleI18n?.en.length).toBeGreaterThan(0);
       for (const p of e.participantIds) expect(people.has(p), `${e.id}: ${p}`).toBe(true);
       if (e.hostId) expect(e.participantIds).toContain(e.hostId);
-      if (e.rsvp) expect(e.rsvp.yes + e.rsvp.maybe + e.rsvp.open).toBe(e.participantIds.length);
-      if (e.kind === 'social') expect(e.rsvp).toBeDefined();
     }
     expect(personName('olivia')).toBe('Olivia');
     expect(() => personName('nobody')).toThrow();

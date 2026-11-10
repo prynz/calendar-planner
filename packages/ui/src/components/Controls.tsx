@@ -12,18 +12,22 @@ export function IconButton({
   accessibilityLabel,
   testID,
   tone = 'tonal',
+  disabled = false,
 }: {
   icon: (color: string) => ReactNode;
   onPress: () => void;
   accessibilityLabel: string;
   testID?: string;
   tone?: 'tonal' | 'accent';
+  disabled?: boolean;
 }) {
   const { colors } = useTheme();
-  const accent = tone === 'accent';
+  const accent = tone === 'accent' && !disabled;
   return (
     <PressableScale
       onPress={onPress}
+      disabled={disabled}
+      accessibilityState={{ disabled }}
       accessibilityLabel={accessibilityLabel}
       {...(testID ? { testID } : {})}
       pressedScale={0.92}

@@ -4,8 +4,11 @@ import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
+  draftTimes,
   EVENT_CATEGORIES,
   eventToDraft,
+  resolveDue,
+  templateById,
   RECURRENCE_FREQUENCIES,
   TRAVEL_MODES,
   validateDraft,
@@ -33,6 +36,7 @@ import {
 
 import { weekdayLabels } from '../agenda/presenters';
 import { useAgendaContext } from '../agenda/use-agenda';
+import { templateText } from '../collab/text';
 import { DateTimeField } from './DateTimeField';
 import {
   clampMinutes,
@@ -41,33 +45,53 @@ import {
   minuteToDate,
   newDraft,
   previewLeaveAt,
+  templateDraft,
   withRepeat,
   withStart,
 } from './draft-helpers';
 import { confirm } from '@/services/confirm';
 import { haptic } from '@/services/haptics';
 
+import { initialSocialChoice, SocialSection, type SocialChoice } from './SocialSection';
+
 const MINUTE_STEP = 5;
 
-export function EditorScreen({ eventId, initialDay }: { eventId?: string; initialDay?: string }) {
+export function EditorScreen({
+  eventId,
+  initialDay,
+  social = false,
+  templateId,
+}: {
+  eventId?: string;
+  initialDay?: string;
+  /** New social event hosted by the viewer (EVT-01) instead of a personal appointment. */
+  social?: boolean;
+  templateId?: string;
+}) {
   const { store, now, locale, t, today, buffer } = useAgendaContext();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const tz = store.timeZone;
   const existing = eventId ? store.getEvent(eventId) : undefined;
+  const isNewSocial = social && !existing;
+  const template = isNewSocial ? templateById(templateId ?? '') : undefined;
   const initial = useMemo<EventDraft>(() => {
     if (existing) return eventToDraft(existing, locale);
     const w = wallParts(now, tz);
-    return newDraft(initialDay ?? today, today, w.hour * 60 + w.minute);
+    const base = newDraft(initialDay ?? today, today, w.hour * 60 + w.minute);
+    return template ? templateDraft(base, template, templateText(t, template.id, 'title')) : base;
     // Initial draft is computed once when the editor opens.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [draft, setDraft] = useState<EventDraft>(initial);
+  const [socialChoice, setSocialChoice] = useState<SocialChoice>(() => initialSocialChoice(template));
   const [showErrors, setShowErrors] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveFailed, setSaveFailed] = useState(false);
-  const dirty = JSON.stringify(draft) !== JSON.stringify(initial);
+  const dirty =
+    JSON.stringify(draft) !== JSON.stringify(initial) ||
+    JSON.stringify(socialChoice) !== JSON.stringify(initialSocialChoice(template));
   const errors = validateDraft(draft);
   const err = (f: DraftField) => (showErrors && errors[f] ? t(`editor.error.${errors[f]}`) : undefined);
   const set = (patch: Partial<EventDraft>) => setDraft((d) => ({ ...d, ...patch }));
@@ -91,7 +115,27 @@ export function EditorScreen({ eventId, initialDay }: { eventId?: string; initia
     setSaveFailed(false);
     try {
       if (existing) await store.update(existing.id, draft);
-      else await store.create(draft);
+      else if (isNewSocial) {
+        const { start } = draftTimes(draft, tz);
+        const tpl = template;
+        await store.createSocial(draft, {
+          inviteeIds: socialChoice.inviteeIds,
+          tasks: tpl
+            ? tpl.tasks
+                .filter((x) => socialChoice.taskKeys.includes(x.key))
+                .map((x) => ({
+                  title: templateText(t, tpl.id, `task.${x.key}`),
+                  dueAt: resolveDue(start, x.offsetDays, tz),
+                }))
+            : [],
+          bring: tpl
+            ? tpl.bring
+                .filter((x) => socialChoice.bringKeys.includes(x.key))
+                .map((x) => ({ title: templateText(t, tpl.id, `bring.${x.key}`), quantity: x.quantity }))
+            : [],
+          ...(tpl ? { template: { id: tpl.id, version: tpl.version } } : {}),
+        });
+      } else await store.create(draft);
       haptic('success');
       router.back();
     } catch (error) {
@@ -142,7 +186,7 @@ export function EditorScreen({ eventId, initialDay }: { eventId?: string; initia
       >
         <Button label={t('common.cancel')} variant="tertiary" onPress={close} testID="editor-cancel" />
         <Text variant="titleM" accessibilityRole="header">
-          {existing ? t('editor.editTitle') : t('editor.newTitle')}
+          {existing ? t('editor.editTitle') : isNewSocial ? t('editor.newEventTitle') : t('editor.newTitle')}
         </Text>
         <Button label={t('common.save')} onPress={save} loading={saving} testID="editor-save" />
       </View>
@@ -287,6 +331,10 @@ export function EditorScreen({ eventId, initialDay }: { eventId?: string; initia
             error={err('location')}
           />
         </Gutter>
+
+        {isNewSocial ? (
+          <SocialSection value={socialChoice} onChange={setSocialChoice} template={template} t={t} />
+        ) : null}
 
         <Gutter gap={4}>
           <Text variant="titleM" accessibilityRole="header">

@@ -30,6 +30,8 @@ import { useReminders } from '@/providers/reminders';
 import { confirm, type ConfirmChoice } from '@/services/confirm';
 import { haptic } from '@/services/haptics';
 
+import { SocialPanel } from './SocialPanel';
+
 export function EventDetailScreen({ eventId, occurrence }: { eventId: string; occurrence: string | undefined }) {
   const { store, now, locale, t, today, buffer, settings } = useAgendaContext();
   const reminders = useReminders();
@@ -249,7 +251,9 @@ export function EventDetailScreen({ eventId, occurrence }: { eventId: string; oc
             </FadeIn>
           ) : null}
 
-          {others.length > 0 ? (
+          {store.getCollab(event.id) ? (
+            <SocialPanel eventId={event.id} />
+          ) : others.length > 0 ? (
             <FadeIn delay={120}>
               <Card>
                 <SectionTitle>{t('detail.people')}</SectionTitle>
@@ -263,11 +267,6 @@ export function EventDetailScreen({ eventId, occurrence }: { eventId: string; oc
                     {others.join(', ')}
                   </Text>
                 </View>
-                {event.rsvp ? (
-                  <Text variant="label" color="textSecondary">
-                    {t('events.rsvp', { yes: event.rsvp.yes, maybe: event.rsvp.maybe, open: event.rsvp.open })}
-                  </Text>
-                ) : null}
               </Card>
             </FadeIn>
           ) : null}

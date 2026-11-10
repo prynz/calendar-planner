@@ -136,7 +136,10 @@ describe('EventsScreen', () => {
   it('lists upcoming social events with RSVP summary, but not past ones', async () => {
     await renderApp(<EventsScreen />);
     expect(await screen.findByText('Grillabend am See')).toBeTruthy();
-    expect(screen.getByTestId('rsvp-demo-games')).toHaveTextContent('4 dabei · 1 vielleicht · 0 offen');
+    expect(screen.getByTestId('rsvp-demo-games')).toHaveTextContent('Zugesagt · 3 dabei · 1 vielleicht · 0 offen');
+    // Tom's party waits for an answer → listed under open invitations; the movie night is hosted by the viewer.
+    expect(within(screen.getByTestId('events-invitations')).getByText('Geburtstagsfeier von Tom')).toBeTruthy();
+    expect(screen.getByTestId('rsvp-demo-movie-night')).toHaveTextContent(/^Du lädst ein · /);
     expect(screen.queryByText('Kino mit Mia')).toBeNull();
     expect(screen.queryByText('Zahnarzt')).toBeNull();
   });

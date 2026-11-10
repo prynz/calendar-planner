@@ -56,7 +56,6 @@ interface Template {
   category: EventCategory;
   hostId?: string;
   participantIds: string[];
-  rsvp?: CalendarEvent['rsvp'];
   travel?: { mode: TravelMode; minutes: number };
   prep?: number;
   arrival?: number;
@@ -75,7 +74,6 @@ const TEMPLATES: readonly Template[] = [
     location: { de: 'Kino am Markt', en: 'Market cinema' },
     hostId: 'mia',
     participantIds: ['chris', 'mia'],
-    rsvp: { yes: 2, maybe: 0, open: 0 },
     travel: { mode: 'transit', minutes: 18 },
     prep: 15,
   },
@@ -104,7 +102,6 @@ const TEMPLATES: readonly Template[] = [
     location: { de: 'Café Lindner', en: 'Café Lindner' },
     hostId: 'alex',
     participantIds: ['chris', 'alex'],
-    rsvp: { yes: 2, maybe: 0, open: 0 },
     travel: { mode: 'walk', minutes: 12 },
     prep: 5,
   },
@@ -119,7 +116,6 @@ const TEMPLATES: readonly Template[] = [
     location: { de: 'Bei Olivia', en: 'Olivia’s place' },
     hostId: 'olivia',
     participantIds: ['chris', 'olivia', 'tom', 'mia', 'jonas'],
-    rsvp: { yes: 4, maybe: 1, open: 0 },
     travel: { mode: 'bike', minutes: 22 },
     prep: 30,
   },
@@ -172,7 +168,6 @@ const TEMPLATES: readonly Template[] = [
     location: { de: 'Bar Südlicht', en: 'Südlicht bar' },
     hostId: 'tom',
     participantIds: ['chris', 'tom', 'olivia', 'mia', 'jonas', 'alex', 'gabi'],
-    rsvp: { yes: 4, maybe: 1, open: 2 },
     travel: { mode: 'transit', minutes: 20 },
     prep: 45,
   },
@@ -187,7 +182,6 @@ const TEMPLATES: readonly Template[] = [
     location: { de: 'Badestelle Ost', en: 'East beach' },
     hostId: 'olivia',
     participantIds: ['chris', 'olivia', 'tom', 'mia', 'gabi'],
-    rsvp: { yes: 2, maybe: 1, open: 2 },
     travel: { mode: 'bike', minutes: 30 },
     prep: 30,
   },
@@ -202,9 +196,21 @@ const TEMPLATES: readonly Template[] = [
     location: { de: 'Bei Frank', en: 'Frank’s place' },
     hostId: 'frank',
     participantIds: ['chris', 'frank', 'lena', 'paul'],
-    rsvp: { yes: 4, maybe: 0, open: 0 },
     travel: { mode: 'car', minutes: 35 },
     prep: 20,
+  },
+  {
+    id: 'movie-night',
+    dayOffset: 8,
+    from: [19, 30],
+    length: 180,
+    kind: 'social',
+    category: 'social',
+    title: { de: 'Filmabend bei mir', en: 'Movie night at mine' },
+    location: { de: 'Bei mir', en: 'My place' },
+    hostId: 'chris',
+    participantIds: ['chris', 'olivia', 'tom', 'mia', 'alex'],
+    prep: 30,
   },
   {
     id: 'concert',
@@ -217,7 +223,6 @@ const TEMPLATES: readonly Template[] = [
     location: { de: 'Stadtpark', en: 'City park' },
     hostId: 'jonas',
     participantIds: ['chris', 'jonas', 'mia'],
-    rsvp: { yes: 2, maybe: 1, open: 0 },
     travel: { mode: 'transit', minutes: 25 },
     prep: 30,
   },
@@ -261,7 +266,6 @@ export function buildDemoEvents(now: Date, timeZone: string = DEMO_TIME_ZONE): C
       arrivalMarginMinutes: t.arrival ?? 0,
       participantIds: t.participantIds,
       ...(t.hostId ? { hostId: t.hostId } : {}),
-      ...(t.rsvp ? { rsvp: t.rsvp } : {}),
       ...(t.travel ? { travel: t.travel } : {}),
       ...(recurrence ? { recurrence } : {}),
       isDemo: true,
@@ -326,6 +330,8 @@ export function upcomingSocial(
     return true;
   });
 }
+
+export * from './collab';
 
 export function personName(id: string): string {
   const p = DEMO_PEOPLE.find((x) => x.id === id);

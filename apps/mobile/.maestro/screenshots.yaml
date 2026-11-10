@@ -117,3 +117,162 @@ appId: ${APP_ID}
     direction: DOWN
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-10-after-relaunch-plan-kept
+# ---------------------------------------------------------------- Phase 3: events & collaboration
+- tapOn:
+    id: 'tab-events'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-events'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-11-events-invitations
+# Answer Tom's invitation, then the bento overview
+- tapOn:
+    id: 'event-demo-tom-party'
+- extendedWaitUntil:
+    visible:
+      id: 'rsvp-card'
+    timeout: 10000
+- tapOn:
+    id: 'rsvp-yes'
+- scrollUntilVisible:
+    element:
+      id: 'tile-chat'
+    direction: DOWN
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-12-detail-rsvp-bento
+- tapOn:
+    id: 'detail-back'
+# Swipe poll (buttons are the equal alternative to the gesture)
+- scrollUntilVisible:
+    element:
+      id: 'event-demo-bbq'
+    direction: DOWN
+- tapOn:
+    id: 'event-demo-bbq'
+- scrollUntilVisible:
+    element:
+      id: 'tile-poll'
+    direction: DOWN
+- tapOn:
+    id: 'tile-poll'
+- extendedWaitUntil:
+    visible:
+      id: 'poll-deck'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-13-poll-swipe
+- tapOn:
+    id: 'poll-deck-yes'
+- tapOn:
+    id: 'poll-deck-if-needed'
+- extendedWaitUntil:
+    notVisible:
+      id: 'poll-deck'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-14-poll-results
+- tapOn:
+    id: 'collab-back'
+# Bring list
+- scrollUntilVisible:
+    element:
+      id: 'tile-bring'
+    direction: DOWN
+- tapOn:
+    id: 'tile-bring'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-bring'
+    timeout: 10000
+- tapOn:
+    id: 'bring-claim-bbq-b2-inc'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-15-bring-list
+- tapOn:
+    id: 'collab-back'
+# Chat: a simulated person answers after a few seconds
+- scrollUntilVisible:
+    element:
+      id: 'tile-chat'
+    direction: DOWN
+- tapOn:
+    id: 'tile-chat'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-chat'
+    timeout: 10000
+- tapOn:
+    id: 'chat-input'
+- inputText: 'Ich bring Brot mit'
+- tapOn:
+    id: 'chat-send'
+- hideKeyboard
+- extendedWaitUntil:
+    visible: '(Klingt gut|Bin dabei|Super, danke|Passt mir|Haha, perfekt).*'
+    timeout: 20000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-16-chat-demo-reply
+- tapOn:
+    id: 'collab-back'
+- tapOn:
+    id: 'detail-back'
+# Templates → prefilled editor with invitees
+- scrollUntilVisible:
+    element:
+      id: 'events-templates'
+    direction: UP
+- tapOn:
+    id: 'events-templates'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-templates'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-17-templates
+- tapOn:
+    id: 'template-bbq'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-editor'
+    timeout: 10000
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: 'editor-invite-olivia'
+    direction: DOWN
+- tapOn:
+    id: 'editor-invite-olivia'
+- tapOn:
+    id: 'editor-invite-tom'
+- scrollUntilVisible:
+    element:
+      id: 'editor-tpl-task-grill'
+    direction: DOWN
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-18-editor-template-who
+- tapOn:
+    id: 'editor-save'
+- extendedWaitUntil:
+    notVisible:
+      id: 'screen-editor'
+    timeout: 10000
+# Host view: guest list of the movie night (simulated answers arrived meanwhile)
+- scrollUntilVisible:
+    element:
+      id: 'event-demo-movie-night'
+    direction: DOWN
+- tapOn:
+    id: 'event-demo-movie-night'
+- scrollUntilVisible:
+    element:
+      id: 'tile-guests'
+    direction: DOWN
+- tapOn:
+    id: 'tile-guests'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-guests'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-19-guests-host

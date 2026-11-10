@@ -1,7 +1,9 @@
+import { collabEn } from './collab.en';
 import type { Messages } from './de';
 
 /** English – natural, not a literal translation (docs/brand/brand-foundation.md §3). */
 export const en: Messages = {
+  ...collabEn,
   'tabs.today': 'Today',
   'tabs.events': 'Events',
   'tabs.settings': 'Me',
@@ -180,9 +182,8 @@ export const en: Messages = {
   'events.title': 'Events',
   'events.eyebrow': 'Coming up',
   'events.rsvp': '{yes} going · {maybe} maybe · {open} pending',
-  'events.empty.title': 'No plans yet?',
-  'events.empty.body': "Once you're invited or start something yourself, it shows up here.",
-  'events.readOnlyHint': 'Creating events and inviting people arrives in phase 3. Tap an event to see its details.',
+  'events.empty.title': 'No plans yet? Time to start something 🎈',
+  'events.empty.body': 'Start an event or pick a template. Invitations show up here too.',
 
   'settings.title': 'Settings',
   'settings.language': 'Language',
@@ -196,10 +197,10 @@ export const en: Messages = {
   'settings.saveError': "Couldn't save. The setting applies until the app restarts.",
   'settings.backend': 'Server',
   'settings.backend.demo': 'Not connected: the app runs in demo mode with example data.',
-  'settings.backend.configured': 'Configured for {host}. Sign-in arrives in phase 2.',
+  'settings.backend.configured': 'Configured for {host}. Sign-in arrives with the build-out (block B).',
   'settings.backend.invalid': 'Invalid configuration: {reason}',
   'settings.about': 'About this prototype',
   'settings.about.body':
-    '{name} is a working name. This prototype is not published and only stores settings on your device.',
+    '{name} is a working name. This prototype is not published and keeps everything on your device only.',
   'settings.version': 'Version {version} · {variant}',
 };

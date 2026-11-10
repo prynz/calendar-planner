@@ -27,3 +27,6 @@ export {
 export { LeaveHero, type LeaveHeroProps } from './components/LeaveHero';
 export { MonthGrid, type MonthCell } from './components/MonthGrid';
 export { Fab } from './components/Fab';
+export { ProgressBar } from './components/ProgressBar';
+export { Tile, type TileProps } from './components/Tile';
+export { SwipeDeck, type SwipeChoice, type SwipeDeckProps } from './components/SwipeDeck';

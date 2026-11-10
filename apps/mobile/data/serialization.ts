@@ -78,7 +78,6 @@ export function deserializeEvent(json: string): CalendarEvent {
   const raw: unknown = JSON.parse(json);
   if (!isObj(raw)) throw new CorruptEventError('(root)');
   const travel = raw.travel;
-  const rsvp = raw.rsvp;
   const participantIds = raw.participantIds;
   if (!Array.isArray(participantIds) || !participantIds.every((p) => typeof p === 'string'))
     throw new CorruptEventError('participantIds');
@@ -108,6 +107,5 @@ export function deserializeEvent(json: string): CalendarEvent {
       ? { travel: { mode: oneOf(travel, 'mode', TRAVEL_MODES), minutes: num(travel, 'minutes') } }
       : {}),
     ...(typeof raw.hostId === 'string' ? { hostId: raw.hostId } : {}),
-    ...(isObj(rsvp) ? { rsvp: { yes: num(rsvp, 'yes'), maybe: num(rsvp, 'maybe'), open: num(rsvp, 'open') } } : {}),
   };
 }
