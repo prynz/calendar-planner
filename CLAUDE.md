@@ -14,6 +14,7 @@ Design: [docs/design/design-system.md](docs/design/design-system.md) ·
 Roadmap: [docs/product/roadmap.md](docs/product/roadmap.md) · Doku-Index: [docs/README.md](docs/README.md)
 
 Sprache: Doku und Kommunikation mit dem PO **Deutsch**; Code, Commits, Identifier **Englisch**.
+**Regel des PO (2026-11-10): Jede Antwort im Chat ist immer auf Deutsch – auch kurze Zwischenmeldungen und Statusupdates.**
 
 ## Monorepo-Karte (pnpm Workspaces)
 
