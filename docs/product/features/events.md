@@ -1,6 +1,10 @@
 # Modul 2 – Events (Herzstück)
 
-> **Status:** v0.1 · 2026-11-03 · Spezifikation (Entwurf). Umsetzung: Phase 4.
+> **Status:** v0.2 · 2026-11-10 · **Prototyp umgesetzt (Phase 3, lokal simuliert):** EVT-01 (Was · Wann · Wer, auch aus
+> Vorlagen), EVT-02 (Terminumfrage), EVT-03 (Demo-Kontakte), EVT-04 (ja/vielleicht/nein, +1), EVT-05 (Frist für
+> „Vielleicht“), EVT-08 (Bento-Übersicht). Offen: Co-Hosts (EVT-06), Kapazität/Warteliste (EVT-07), Änderungs-Diff
+> (EVT-09), Absagen mit Nachricht (EVT-10), EVT-11/12, Notiz zur Antwort, Shared-Element-Übergang, Erinnerung 24 h vor
+> der „Vielleicht“-Frist.
 
 **Ziel:** Ein Event ist der Ort, an dem **alles** zu einem Treffen lebt. Lebenszyklus:
 Idee → Terminfindung → Einladung → Planung → Durchführung → Nachbereitung.

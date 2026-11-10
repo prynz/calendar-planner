@@ -1,6 +1,9 @@
 # Modul 3 – Umfragen & Votes
 
-> **Status:** v0.1 · 2026-11-03 · Spezifikation (Entwurf). Umsetzung: Phase 5 (Terminumfrage-Basis ggf. Phase 4).
+> **Status:** v0.2 · 2026-11-10 · **Prototyp umgesetzt (Phase 3, lokal simuliert):** Typen `date` und Auswahl (`single`),
+> POL-01 (ohne Busy-Overlay), POL-02 Swipe-Stapel mit gleichwertigen Knöpfen, POL-03 Liste zum Ändern, POL-04 Frist,
+> POL-06 Mehrheit/Host, POL-08 Balken, POL-09 Gewinner-Termin übernehmen. Offen: POL-05 Erinnerung, POL-07 anonym,
+> Ortsumfrage, Mehrfachauswahl, Vorschläge sammeln.
 
 **Ziel:** Entscheidungen, die **enden**. Kein endloses „Wer kann wann?“.
 

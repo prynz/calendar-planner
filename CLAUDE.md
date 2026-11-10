@@ -1,8 +1,10 @@
 # CLAUDE.md – Arbeitsregeln für Nowish
 
-> **Status:** 2026-11-10 · **Phase 2 (Kalender-Kern + Anti-Chaos-Basis) umgesetzt, wartet auf Review** ([Report](docs/previews/milestone-reports/phase-2.md)).
+> **Status:** 2026-11-10 · **Phase 3 (Events & Zusammenarbeit, simuliert) umgesetzt, wartet auf Review** ([Report](docs/previews/milestone-reports/phase-3.md)).
+> Web-Vorschau: https://prynz.github.io/calendar-planner/ (ADR 0011).
 > Prototyp lokal und simuliert, **ohne Login, Konten und Server** (ADR 0008, ADR 0010). Wird ein Konto/Dienst nötig
-> (API-Schlüssel, Apple-Konto, Hosting), vorher den PO fragen. Kein Apple-Developer-Konto → iOS nur Simulator.
+> (API-Schlüssel, Apple-Konto, Hosting), vorher den PO fragen. Apple-Developer-Konto existiert seit 2026-11-10; TestFlight-Workflow folgt,
+> sobald der PO die GitHub-Secrets angelegt hat (Secrets nie in den Chat).
 
 Social-Planner-App (iOS + Android) für alle, die sonst planlos sind: Kalender, Terminplaner und
 Event-Organisator in einem, mit der **Anti-Chaos-Engine** (Losgeh-Zeit, eskalierende Erinnerungen,
@@ -21,15 +23,15 @@ Sprache: Doku und Kommunikation mit dem PO **Deutsch**; Code, Commits, Identifie
 | Pfad                    | Inhalt                                                                         |
 | ----------------------- | ------------------------------------------------------------------------------ |
 | `apps/mobile`           | Expo + Expo Router (iOS/Android). Routen dünn, Screens in `features/*`         |
-| `apps/web`              | Gast-Web-Ansicht für Event-Links (Next.js) – **ab Phase 4**                    |
-| `apps/admin`            | Admin-Dashboard (Next.js + Tailwind) – **ab Phase 8**                          |
+| `apps/web`              | Gast-Web-Ansicht für Event-Links (Next.js) – **ab Block B2**                   |
+| `apps/admin`            | Admin-Dashboard (Next.js + Tailwind) – **ab Block B4**                         |
 | `packages/ui`           | Designsystem: Tokens, Komponenten, Motion, Haptik                              |
 | `packages/brand`        | Name, Claims, Logo, Icon (kein Maskottchen) – zentral & austauschbar          |
 | `packages/i18n`         | Übersetzungen de/en (ICU), Formatierung, Schlüssel-Prüfung                     |
-| `packages/domain`       | Reine Logik: Zeit/Tage (jetzt), später RRULE, Anti-Chaos-Engine, Votes, Kosten |
-| `packages/demo`         | Beispielwelt für den Prototyp (ADR 0008), relativ zu „heute“                   |
-| `packages/validation`   | zod-Verträge Client ↔ Server – **ab Phase 2**                                  |
-| `packages/entitlements` | Abo-Stufen, Limits, Feature-Gates – **ab Phase 4**                             |
+| `packages/domain`       | Reine Logik: Zeit, Wiederholungen, Losgeh-Zeit, Zusammenarbeit (Zusagen, Umfragen, Mitbringliste, Aufgaben, Chat, Vorlagen) |
+| `packages/demo`         | Beispielwelt + Regeln der simulierten Personen (ADR 0008, 0012), relativ zu „heute“ |
+| `packages/validation`   | zod-Verträge Client ↔ Server – **ab Block B1**                                 |
+| `packages/entitlements` | Abo-Stufen, Limits, Feature-Gates – **ab Phase 6** (Demo-Kauf)                 |
 | `packages/config`       | Env-Validierung, verbietet privilegierte Keys im Client                        |
 | `supabase/`             | Migrationen, pgTAP-Tests, Seed (nur lokal), Edge Functions                     |
 | `docs/`                 | Produkt, Design, Brand, Architektur, Security, ADRs, Previews                  |

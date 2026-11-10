@@ -1,6 +1,9 @@
 # Modul 6 – Aufgaben
 
-> **Status:** v0.1 · 2026-11-03 · Spezifikation (Entwurf). Umsetzung: Phase 5.
+> **Status:** v0.2 · 2026-11-10 · **Prototyp umgesetzt (Phase 3, lokal simuliert):** TSK-01 (Fälligkeit aus Vorlagen),
+> TSK-02 (nur Host, über Vorlagen/Demo), TSK-03 „Ich übernehme das“ mit „schon übernommen von …“, TSK-04 Abhaken
+> mit Haptik, TSK-06 Fortschritt. Offen: TSK-05 Erinnerung, TSK-07 Anti-Chaos-Plan (Phase 4), Fälligkeit beim
+> manuellen Anlegen, Fortschrittsring statt Balken.
 
 **Ziel:** Event- und gruppenbezogene To-dos ohne zusätzliche App.
 

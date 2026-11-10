@@ -1,6 +1,9 @@
 # Modul 13 – Vorlagen
 
-> **Status:** v0.1 · 2026-11-03 · Spezifikation (Entwurf). Umsetzung: Phase 4 (kuratiert), eigene Vorlagen Phase 9.
+> **Status:** v0.2 · 2026-11-10 · **Prototyp umgesetzt (Phase 3):** TPL-01 mit 6 kuratierten Vorlagen (Geburtstag,
+> Grillen, Spieleabend, Kindergeburtstag, Umzug, Festival), TPL-02 Inhalte abwählen, Versionierung, relative
+> Fälligkeiten. Offen: weitere Vorlagen (JGA, Urlaub, Weihnachten, Arzttermin, Behördengang), Bereit-Check-Items
+> (Phase 4), Umfrage-Vorschlag, eigene Vorlagen.
 
 ## Kuratierte Vorlagen (v1)
 

@@ -1,6 +1,8 @@
 # Modul 4 – Chat
 
-> **Status:** v0.1 · 2026-11-03 · Spezifikation (Entwurf). Umsetzung: Phase 5.
+> **Status:** v0.2 · 2026-11-10 · **Prototyp umgesetzt (Phase 3, lokal simuliert):** CHT-01 lokal, CHT-08
+> Systemnachrichten (Zusage, Einladung, Umfrage, erledigte Aufgabe); Demo-Personen antworten nach festen Regeln.
+> Offen: CHT-02…07, CHT-09 (Melden/Blockieren ist vor jeder Veröffentlichung Pflicht), Bearbeiten/Löschen, Bilder.
 
 **Ziel:** Abstimmung im Kontext des Events, sodass wichtige Infos **nicht untergehen**.
 

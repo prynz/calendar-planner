@@ -1,6 +1,7 @@
 # Architektur-Überblick
 
-> **Status:** v0.1 · 2026-11-03 · Zielarchitektur aus Phase 0, **noch nicht implementiert**.
+> **Status:** v0.2 · 2026-11-10 · Zielarchitektur aus Phase 0. Umgesetzt ist bisher der lokale Prototyp (§4.4);
+> Backend, Sync und Push folgen in Block B.
 > Begründungen: [ADR 0001](../decisions/0001-tech-stack.md), [ADR 0002](../decisions/0002-backend-supabase-eu.md).
 
 ## 1. Systembild
@@ -118,12 +119,16 @@ Phase 6 (Basis-Widget „Nächster Termin / Losgehen in …“). Erfordert nativ
 App Widgets) über Expo Config Plugins. Live Activities/Live Updates: v2 – Machbarkeit mit dem dann aktuellen Expo SDK
 in Phase 6 prüfen.
 
-## 4.4 Prototyp-Datenschicht (Phase 2, ADR 0010)
+## 4.4 Prototyp-Datenschicht (Phase 2–3, ADR 0010, ADR 0012)
 
 ```
-Screens ─► useEvents() (EventsProvider: In-Memory-Liste, optimistische Writes mit Rollback)
-                └─► EventRepository ──► SQLite (expo-sqlite, Tabelle `event` mit validierten JSON-Dokumenten, `meta.seeded`)
-                                    └─► (Block B1: Supabase-Implementierung derselben Schnittstelle)
+Screens ─► useEvents() (EventsProvider: Termine + Zusammenarbeits-Dokumente im Speicher, optimistische Writes mit Rollback)
+   │            ├─► updateCollab(id, reine Domänen-Operation) ─► Mitglieder ⇄ Teilnehmende des Termins synchron
+   │            ├─► useSimulation(): jede Sekunde fällige Demo-Aktionen abspielen (applyDueActions)
+   │            └─► EventRepository ──► SQLite (Tabellen `event`, `collab`, `meta`; Schema v2, additive Migrationen)
+   │                                ├─► Web-Vorschau: localStorage (ADR 0011)
+   │                                └─► (Block B1: Supabase-Implementierung derselben Schnittstelle)
+   └─► Unterseiten /event/[id]/{guests,poll,bring,tasks,chat} über useCollab(): Fehlercodes → sichtbare Texte
 RemindersProvider ─► planReminders() (rein, getestet) ─► expo-notifications (lokal, max. 48, Kanal „leave-reminders“)
 ```
 
@@ -131,6 +136,8 @@ RemindersProvider ─► planReminders() (rein, getestet) ─► expo-notificati
   Zeile wird übersprungen und gemeldet, statt die App zu blockieren.
 - Wiederholungen werden beim Anzeigen expandiert (`expandOccurrences`), nicht als Einzeltermine gespeichert.
 - Erinnerungen werden bei jeder Änderung an Terminen/Einstellungen und alle 5 Minuten idempotent neu geplant.
+- Zusammenarbeit (Phase 3): ein Dokument pro sozialem Event, beim Lesen per zod geprüft
+  (`data/collab-serialization.ts`). Simulierte Personen handeln nur über geplante, regelbasierte Aktionen.
 
 ## 5. Backend (Supabase)
 

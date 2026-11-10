@@ -1,6 +1,8 @@
 # Modul 7 – Mitbringliste
 
-> **Status:** v0.1 · 2026-11-03 · Spezifikation (Entwurf). Umsetzung: Phase 5.
+> **Status:** v0.2 · 2026-11-10 · **Prototyp umgesetzt (Phase 3, lokal simuliert):** BRG-01 (ohne Kategorie), BRG-02
+> Teilmengen, BRG-04 Duplikat-Hinweis, BRG-06 Fortschritt. Offen: BRG-03 Freigabe von Vorschlägen (jetzt darf jedes
+> Mitglied direkt hinzufügen), BRG-05 Bereit-Check (Phase 4).
 
 **Ziel:** Keine fünf Kartoffelsalate. Jeder weiß, was er mitbringt.
 
