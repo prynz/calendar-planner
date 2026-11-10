@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { ChevronLeft } from 'lucide-react-native';
 import type { ReactNode } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { displayTitle } from '@nowish/domain';
@@ -68,7 +68,9 @@ export function CollabShell({
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: colors.canvas }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      // Android is edge-to-edge (SDK 58): the window no longer resizes for the keyboard, so pad on both platforms
+      // – otherwise the chat input sits behind the keyboard.
+      behavior="padding"
     >
       {header}
       <ScrollView

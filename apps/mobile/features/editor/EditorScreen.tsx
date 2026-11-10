@@ -171,7 +171,8 @@ export function EditorScreen({
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: colors.canvas }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      // Edge-to-edge Android does not resize for the keyboard either (see CollabShell).
+      behavior="padding"
     >
       <Stack.Screen options={{ gestureEnabled: !dirty }} />
       <View
