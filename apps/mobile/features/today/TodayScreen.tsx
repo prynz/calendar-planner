@@ -2,24 +2,34 @@ import { useState } from 'react';
 import { View } from 'react-native';
 
 import { agendaForDay } from '@nowish/demo';
-import { Badge, Button, Card, DateStrip, EmptyState, EventCard, Gutter, Screen, ScreenHeader, Text } from '@nowish/ui';
+import {
+  Badge,
+  Button,
+  Card,
+  DateStrip,
+  EmptyState,
+  EventCard,
+  FadeIn,
+  Gutter,
+  LeaveHero,
+  Screen,
+  ScreenHeader,
+  space,
+  Text,
+} from '@nowish/ui';
 
-import { useNow } from '@/providers/clock';
-import { useDemoWorld } from '@/providers/demo-world';
-import { useI18n } from '@/providers/i18n';
+import { dateStripDays, dayHeading, eventCardProps, leaveHero } from '../agenda/presenters';
+import { StoreGate } from '../agenda/StoreGate';
+import { useAgendaContext } from '../agenda/use-agenda';
 import { haptic } from '@/services/haptics';
 
-import { dateStripDays, dayHeading, eventCardProps } from '../agenda/presenters';
-
 export function TodayScreen() {
-  const world = useDemoWorld();
-  const now = useNow();
-  const { locale, t } = useI18n();
-  const [selected, setSelected] = useState(world.today);
-
-  const day = selected;
-  const events = agendaForDay(world, day);
-  const heading = dayHeading(world, day, locale, t);
+  const { store, now, locale, t, today, openEvent, createEvent, buffer } = useAgendaContext();
+  const [selected, setSelected] = useState(today);
+  const tz = store.timeZone;
+  const items = agendaForDay(store.events, selected, tz);
+  const heading = dayHeading(selected, today, tz, locale, t);
+  const hero = selected === today ? leaveHero(store.events, now, locale, t, buffer, tz) : null;
 
   const select = (key: string) => {
     haptic('selection');
@@ -33,34 +43,63 @@ export function TodayScreen() {
         title={heading.title}
         trailing={<Badge label={t('demo.badge')} tone="demo" testID="demo-badge" />}
       />
-      <Gutter>
-        <Card testID="demo-banner">
-          <Text variant="bodyM" color="textSecondary">
-            {t('demo.banner')}
-          </Text>
-        </Card>
-      </Gutter>
-      <DateStrip days={dateStripDays(world, locale, t)} selectedKey={day} onSelect={select} />
-      <Gutter gap={4}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Text variant="label" color="textSecondary" testID="today-count">
-            {t('today.count', { count: events.length })}
-          </Text>
-          {day !== world.today ? (
-            <Button
-              label={t('today.backToToday')}
-              variant="tertiary"
-              onPress={() => select(world.today)}
-              testID="back-to-today"
-            />
-          ) : null}
-        </View>
-        {events.length === 0 ? (
-          <EmptyState title={t('today.empty.title')} body={t('today.empty.body')} testID="today-empty" />
+      <StoreGate>
+        {hero ? (
+          <Gutter>
+            <FadeIn>
+              <LeaveHero {...hero} openHint={t('event.openHint')} onPress={() => openEvent(hero.eventId, today)} />
+            </FadeIn>
+          </Gutter>
         ) : (
-          events.map((e) => <EventCard key={e.id} {...eventCardProps(e, world, now, locale, t)} />)
+          <Gutter>
+            <Card testID="demo-banner">
+              <Text variant="bodyM" color="textSecondary">
+                {t('demo.banner')}
+              </Text>
+            </Card>
+          </Gutter>
         )}
-      </Gutter>
+        <DateStrip days={dateStripDays(store.events, today, tz, locale, t)} selectedKey={selected} onSelect={select} />
+        <Gutter gap={4}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              minHeight: space[12],
+            }}
+          >
+            <Text variant="label" color="textSecondary" testID="today-count">
+              {t('today.count', { count: items.length })}
+            </Text>
+            {selected !== today ? (
+              <Button
+                label={t('today.backToToday')}
+                variant="tertiary"
+                onPress={() => select(today)}
+                testID="back-to-today"
+              />
+            ) : null}
+          </View>
+          {items.length === 0 ? (
+            <EmptyState
+              title={t('today.empty.title')}
+              body={t('today.empty.body')}
+              action={{ label: t('today.addEvent'), onPress: () => createEvent(selected), testID: 'today-add' }}
+              testID="today-empty"
+            />
+          ) : (
+            items.map((item, i) => (
+              <FadeIn key={`${item.event.id}-${item.occurrenceKey}`} delay={i * 40}>
+                <EventCard
+                  {...eventCardProps(item, now, locale, t, buffer)}
+                  onPress={() => openEvent(item.event.id, item.occurrenceKey)}
+                />
+              </FadeIn>
+            ))
+          )}
+        </Gutter>
+      </StoreGate>
     </Screen>
   );
 }

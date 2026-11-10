@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
+import { REMINDER_INTENSITIES, type ReminderIntensity } from '@nowish/domain';
 import { LANGUAGE_PREFERENCES, type LanguagePreference } from '@nowish/i18n';
 
 import type { SettingsStore } from '@/storage/settings-store';
@@ -10,24 +11,48 @@ export type ThemePreference = (typeof THEME_PREFERENCES)[number];
 export interface Settings {
   language: LanguagePreference;
   theme: ThemePreference;
+  reminderIntensity: ReminderIntensity;
+  /** Fixed dawdle buffer in minutes (0–30); learning arrives in phase 4. */
+  dawdleBuffer: number;
 }
 
-export const DEFAULT_SETTINGS: Settings = { language: 'system', theme: 'system' };
+export const DEFAULT_SETTINGS: Settings = {
+  language: 'system',
+  theme: 'system',
+  reminderIntensity: 'normal',
+  dawdleBuffer: 5,
+};
+export const BUFFER_RANGE = { min: 0, max: 30, step: 5 } as const;
 
-const KEYS = { language: 'settings.language', theme: 'settings.theme' } as const;
+const KEYS: Record<keyof Settings, string> = {
+  language: 'settings.language',
+  theme: 'settings.theme',
+  reminderIntensity: 'settings.reminderIntensity',
+  dawdleBuffer: 'settings.dawdleBuffer',
+};
 
 const oneOf =
   <T extends string>(values: readonly T[]) =>
-  (v: string | null): v is T =>
-    v !== null && (values as readonly string[]).includes(v);
+  (v: string | null | undefined): v is T =>
+    v != null && (values as readonly string[]).includes(v);
 const isLanguage = oneOf(LANGUAGE_PREFERENCES);
 const isTheme = oneOf(THEME_PREFERENCES);
+const isIntensity = oneOf(REMINDER_INTENSITIES);
+
+function parseBuffer(v: string | null | undefined): number {
+  const n = Number(v);
+  return v != null && Number.isInteger(n) && n >= BUFFER_RANGE.min && n <= BUFFER_RANGE.max
+    ? n
+    : DEFAULT_SETTINGS.dawdleBuffer;
+}
 
 /** Unknown or corrupt stored values fall back to defaults. */
-export function parseSettings(raw: { language: string | null; theme: string | null }): Settings {
+export function parseSettings(raw: Partial<Record<keyof Settings, string | null>>): Settings {
   return {
     language: isLanguage(raw.language) ? raw.language : DEFAULT_SETTINGS.language,
     theme: isTheme(raw.theme) ? raw.theme : DEFAULT_SETTINGS.theme,
+    reminderIntensity: isIntensity(raw.reminderIntensity) ? raw.reminderIntensity : DEFAULT_SETTINGS.reminderIntensity,
+    dawdleBuffer: parseBuffer(raw.dawdleBuffer),
   };
 }
 
@@ -38,6 +63,7 @@ interface SettingsContextValue {
   settings: Settings;
   /** Set when the last save failed; the change still applies for this session. */
   saveFailed: boolean;
+  set: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
   setLanguage: (v: LanguagePreference) => void;
   setTheme: (v: ThemePreference) => void;
 }
@@ -51,10 +77,11 @@ export function SettingsProvider({ store, children }: { store: SettingsStore; ch
 
   useEffect(() => {
     let alive = true;
-    Promise.all([store.get(KEYS.language), store.get(KEYS.theme)])
-      .then(([language, theme]) => {
+    const keys = Object.keys(KEYS) as (keyof Settings)[];
+    Promise.all(keys.map((k) => store.get(KEYS[k])))
+      .then((values) => {
         if (!alive) return;
-        setSettings(parseSettings({ language, theme }));
+        setSettings(parseSettings(Object.fromEntries(keys.map((k, i) => [k, values[i] ?? null]))));
         setState('ready');
       })
       .catch((error: unknown) => {
@@ -68,10 +95,11 @@ export function SettingsProvider({ store, children }: { store: SettingsStore; ch
     };
   }, [store]);
 
-  const persist = useCallback(
-    (key: string, value: string) => {
+  const set = useCallback(
+    <K extends keyof Settings>(key: K, value: Settings[K]) => {
+      setSettings((s) => ({ ...s, [key]: value }));
       store
-        .set(key, value)
+        .set(KEYS[key], String(value))
         .then(() => setSaveFailed(false))
         .catch((error: unknown) => {
           console.warn('[settings] save failed', error instanceof Error ? error.name : 'unknown');
@@ -81,24 +109,16 @@ export function SettingsProvider({ store, children }: { store: SettingsStore; ch
     [store],
   );
 
-  const setLanguage = useCallback(
-    (language: LanguagePreference) => {
-      setSettings((s) => ({ ...s, language }));
-      persist(KEYS.language, language);
-    },
-    [persist],
-  );
-  const setTheme = useCallback(
-    (theme: ThemePreference) => {
-      setSettings((s) => ({ ...s, theme }));
-      persist(KEYS.theme, theme);
-    },
-    [persist],
-  );
-
-  const value = useMemo(
-    () => ({ state, settings, saveFailed, setLanguage, setTheme }),
-    [state, settings, saveFailed, setLanguage, setTheme],
+  const value = useMemo<SettingsContextValue>(
+    () => ({
+      state,
+      settings,
+      saveFailed,
+      set,
+      setLanguage: (v) => set('language', v),
+      setTheme: (v) => set('theme', v),
+    }),
+    [state, settings, saveFailed, set],
   );
   return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;
 }

@@ -1,20 +1,22 @@
-import { Tabs } from 'expo-router';
-import { PartyPopper, Settings, Sun } from 'lucide-react-native';
+import { Tabs, useRouter } from 'expo-router';
+import { CalendarDays, PartyPopper, Plus, Settings, Sun } from 'lucide-react-native';
 
-import { FloatingTabBar, useTheme } from '@nowish/ui';
+import { Fab, FloatingTabBar, useTheme } from '@nowish/ui';
 
 import { useI18n } from '@/providers/i18n';
 import { haptic } from '@/services/haptics';
 
-const ICONS = { index: Sun, events: PartyPopper, settings: Settings } as const;
+const ICONS = { index: Sun, calendar: CalendarDays, events: PartyPopper, settings: Settings } as const;
 type TabRoute = keyof typeof ICONS;
 const isTabRoute = (name: string): name is TabRoute => name in ICONS;
 
 export default function TabsLayout() {
   const { t } = useI18n();
   const { colors } = useTheme();
+  const router = useRouter();
   const labels: Record<TabRoute, string> = {
     index: t('tabs.today'),
+    calendar: t('tabs.calendar'),
     events: t('tabs.events'),
     settings: t('tabs.settings'),
   };
@@ -24,6 +26,17 @@ export default function TabsLayout() {
       screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: colors.canvas } }}
       tabBar={({ state, navigateToTab }) => (
         <FloatingTabBar
+          trailing={
+            <Fab
+              icon={(c) => <Plus color={c} size={26} strokeWidth={2.5} />}
+              onPress={() => {
+                haptic('light');
+                router.push('/editor');
+              }}
+              accessibilityLabel={t('fab.add')}
+              testID="fab-add"
+            />
+          }
           tabs={state.routes
             .filter((r) => isTabRoute(r.name))
             .map((route) => {
@@ -47,6 +60,7 @@ export default function TabsLayout() {
       )}
     >
       <Tabs.Screen name="index" />
+      <Tabs.Screen name="calendar" />
       <Tabs.Screen name="events" />
       <Tabs.Screen name="settings" />
     </Tabs>

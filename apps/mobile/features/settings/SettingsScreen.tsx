@@ -1,15 +1,49 @@
+import { useState } from 'react';
+import { Alert } from 'react-native';
+
 import { brand } from '@nowish/brand';
+import type { ReminderIntensity } from '@nowish/domain';
 import type { LanguagePreference } from '@nowish/i18n';
-import { Card, Gutter, Screen, ScreenHeader, SectionTitle, SegmentedControl, Text } from '@nowish/ui';
+import { Button, Card, Gutter, Screen, ScreenHeader, SectionTitle, SegmentedControl, Stepper, Text } from '@nowish/ui';
 
 import type { ClientConfigResult } from '@/config/client-config';
+import { useEvents } from '@/providers/events';
 import { useI18n } from '@/providers/i18n';
-import { useSettings, type ThemePreference } from '@/providers/settings';
+import { BUFFER_RANGE, useSettings, type ThemePreference } from '@/providers/settings';
 import { haptic } from '@/services/haptics';
 
 export function SettingsScreen({ clientConfig, appVersion }: { clientConfig: ClientConfigResult; appVersion: string }) {
   const { t } = useI18n();
-  const { settings, setLanguage, setTheme, saveFailed, state } = useSettings();
+  const { settings, setLanguage, setTheme, set, saveFailed, state } = useSettings();
+  const events = useEvents();
+  const [resetFailed, setResetFailed] = useState(false);
+  const intensityOptions = [
+    { value: 'gentle', label: t('settings.intensity.gentle') },
+    { value: 'normal', label: t('settings.intensity.normal') },
+    { value: 'firm', label: t('settings.intensity.firm') },
+  ] as const satisfies readonly { value: ReminderIntensity; label: string }[];
+  const resetExampleWorld = () => {
+    haptic('warning');
+    Alert.alert(t('settings.exampleWorld.confirmTitle'), t('settings.exampleWorld.confirmBody'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      {
+        text: t('settings.exampleWorld.confirm'),
+        style: 'destructive',
+        onPress: () => {
+          events
+            .resetExampleWorld()
+            .then(() => {
+              setResetFailed(false);
+              haptic('success');
+            })
+            .catch((error: unknown) => {
+              console.warn('[settings] reset failed', error instanceof Error ? error.message : 'unknown');
+              setResetFailed(true);
+            });
+        },
+      },
+    ]);
+  };
 
   const languageOptions = [
     { value: 'system', label: t('settings.language.system') },
@@ -62,6 +96,59 @@ export function SettingsScreen({ clientConfig, appVersion }: { clientConfig: Cli
         ) : null}
       </Gutter>
       <Gutter gap={4}>
+        <SectionTitle>{t('settings.reminders')}</SectionTitle>
+        <SegmentedControl
+          options={intensityOptions}
+          value={settings.reminderIntensity}
+          onChange={(v) => {
+            haptic('selection');
+            set('reminderIntensity', v);
+          }}
+          accessibilityLabel={t('settings.reminders')}
+          testIDPrefix="intensity"
+        />
+        <Text variant="bodyM" color="textSecondary" testID="intensity-hint">
+          {t(`settings.intensity.hint.${settings.reminderIntensity}`)}
+        </Text>
+        <Stepper
+          label={t('settings.buffer')}
+          valueText={t('editor.minutesValue', { n: settings.dawdleBuffer })}
+          onDecrease={() => {
+            haptic('selection');
+            set('dawdleBuffer', Math.max(BUFFER_RANGE.min, settings.dawdleBuffer - BUFFER_RANGE.step));
+          }}
+          onIncrease={() => {
+            haptic('selection');
+            set('dawdleBuffer', Math.min(BUFFER_RANGE.max, settings.dawdleBuffer + BUFFER_RANGE.step));
+          }}
+          decreaseLabel={t('editor.stepper.decrease', { label: t('settings.buffer') })}
+          increaseLabel={t('editor.stepper.increase', { label: t('settings.buffer') })}
+          canDecrease={settings.dawdleBuffer > BUFFER_RANGE.min}
+          canIncrease={settings.dawdleBuffer < BUFFER_RANGE.max}
+          testIDPrefix="buffer"
+        />
+        <Text variant="label" color="textSecondary">
+          {t('settings.buffer.hint')}
+        </Text>
+      </Gutter>
+      <Gutter gap={4}>
+        <Card testID="example-world">
+          <SectionTitle>{t('settings.exampleWorld')}</SectionTitle>
+          <Text variant="bodyM" color="textSecondary">
+            {t('settings.exampleWorld.hint')}
+          </Text>
+          {resetFailed ? (
+            <Text variant="bodyM" color="dangerText" accessibilityRole="alert">
+              {t('settings.exampleWorld.failed')}
+            </Text>
+          ) : null}
+          <Button
+            label={t('settings.exampleWorld.reset')}
+            variant="secondary"
+            onPress={resetExampleWorld}
+            testID="reset-example-world"
+          />
+        </Card>
         <Card testID="backend-status">
           <SectionTitle>{t('settings.backend')}</SectionTitle>
           <Text variant="bodyM" color={clientConfig.ok ? 'textPrimary' : 'dangerText'}>

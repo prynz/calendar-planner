@@ -8,6 +8,8 @@ module.exports = {
   testMatch: ['<rootDir>/__tests__/**/*.test.{ts,tsx}'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
+    // The "react-native" export condition points to an .mjs build Jest cannot require; use the CJS build.
+    '^lucide-react-native$': '<rootDir>/../../node_modules/lucide-react-native/dist/cjs/lucide-react-native.js',
   },
   // Workspace packages are TypeScript source and must be transformed too.
   transformIgnorePatterns: [

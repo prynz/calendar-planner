@@ -12,8 +12,19 @@ const demoConfig = { ok: true as const, config: { variant: 'preview' as const, b
 
 describe('settings model', () => {
   it('falls back to defaults for unknown values', () => {
-    expect(parseSettings({ language: 'fr', theme: null })).toEqual({ language: 'system', theme: 'system' });
-    expect(parseSettings({ language: 'en', theme: 'light' })).toEqual({ language: 'en', theme: 'light' });
+    expect(parseSettings({ language: 'fr', theme: null })).toEqual({
+      language: 'system',
+      theme: 'system',
+      reminderIntensity: 'normal',
+      dawdleBuffer: 5,
+    });
+    expect(parseSettings({ language: 'en', theme: 'light', reminderIntensity: 'firm', dawdleBuffer: '15' })).toEqual({
+      language: 'en',
+      theme: 'light',
+      reminderIntensity: 'firm',
+      dawdleBuffer: 15,
+    });
+    expect(parseSettings({ dawdleBuffer: '999' }).dawdleBuffer).toBe(5);
   });
 
   it('dark is the default for the system theme unless the OS is light', () => {

@@ -66,6 +66,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-sqlite',
     'expo-localization',
     'expo-font',
+    ['expo-notifications', { color: palette.lime400 }],
     [
       'expo-splash-screen',
       {

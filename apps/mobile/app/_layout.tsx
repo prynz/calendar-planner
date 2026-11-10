@@ -12,8 +12,10 @@ import { ErrorState, ThemeProvider, useTheme } from '@nowish/ui';
 import { createTranslator } from '@nowish/i18n';
 
 import { ClockProvider } from '@/providers/clock';
-import { DemoWorldProvider } from '@/providers/demo-world';
+import { createSqliteEventRepository } from '@/data/sqlite-event-repository';
+import { EventsProvider } from '@/providers/events';
 import { I18nProvider } from '@/providers/i18n';
+import { RemindersProvider } from '@/providers/reminders';
 import { SettingsProvider, useSettings } from '@/providers/settings';
 import { AppThemeProvider } from '@/providers/theme';
 import { createSqliteSettingsStore } from '@/storage/settings-store';
@@ -52,13 +54,18 @@ function Shell() {
   return (
     <>
       <StatusBar style={barStyle} />
-      <Stack screenOptions={{ headerShown: false, statusBarStyle: barStyle }} />
+      <Stack screenOptions={{ headerShown: false, statusBarStyle: barStyle }}>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="event/[id]" options={{ animation: 'slide_from_right' }} />
+        <Stack.Screen name="editor" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+      </Stack>
     </>
   );
 }
 
 export default function RootLayout() {
   const [store] = useState(createSqliteSettingsStore);
+  const [eventRepository] = useState(createSqliteEventRepository);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
@@ -66,9 +73,11 @@ export default function RootLayout() {
           <I18nProvider>
             <AppThemeProvider>
               <ClockProvider>
-                <DemoWorldProvider>
-                  <Shell />
-                </DemoWorldProvider>
+                <EventsProvider repository={eventRepository}>
+                  <RemindersProvider>
+                    <Shell />
+                  </RemindersProvider>
+                </EventsProvider>
               </ClockProvider>
             </AppThemeProvider>
           </I18nProvider>
