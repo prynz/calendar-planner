@@ -1,7 +1,8 @@
 import { View } from 'react-native';
 
-import { categoryColors, radii, space, type EventCategory } from '../tokens';
+import { categoryColors, palette, radii, space, withAlpha, type EventCategory } from '../tokens';
 import { AvatarStack } from './AvatarStack';
+import { PressableScale } from './PressableScale';
 import { Text } from './Text';
 
 export interface EventCardProps {
@@ -9,24 +10,33 @@ export interface EventCardProps {
   subtitle?: string;
   timeLabel: string;
   category: EventCategory;
-  /** Text in the tab above the card, e.g. "in 2 Std." or "läuft". Never color-only. */
+  /** Text in the tab above the card, e.g. "in 2 Std." or "läuft". Never colour-only. */
   statusLabel: string;
+  /** Compact anti-chaos line, e.g. "los um 18:30" (design-system.md §12). */
+  leaveLabel?: string;
   people?: { names: readonly string[]; accessibilityLabel: string };
+  onPress?: () => void;
+  openHint?: string;
   testID?: string;
 }
 
-/**
- * Pastel event card with a status tab (design-system.md §7, derived from reference R2).
- * Not pressable in Phase 1 – event details arrive in Phase 4.
- */
-export function EventCard({ title, subtitle, timeLabel, category, statusLabel, people, testID }: EventCardProps) {
+/** Pastel event card with a status tab (design-system.md §7, derived from reference R2). */
+export function EventCard({
+  title,
+  subtitle,
+  timeLabel,
+  category,
+  statusLabel,
+  leaveLabel,
+  people,
+  onPress,
+  openHint,
+  testID,
+}: EventCardProps) {
   const fill = categoryColors[category];
-  return (
-    <View
-      testID={testID}
-      accessible
-      accessibilityLabel={[statusLabel, title, timeLabel, subtitle].filter(Boolean).join(', ')}
-    >
+  const label = [statusLabel, title, timeLabel, leaveLabel, subtitle].filter(Boolean).join(', ');
+  const body = (
+    <>
       <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
         <View
           style={{
@@ -65,10 +75,44 @@ export function EventCard({ title, subtitle, timeLabel, category, statusLabel, p
             {subtitle}
           </Text>
         ) : null}
-        <Text variant="label" color="onCategoryFill" tabular>
-          {timeLabel}
-        </Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space[3] }}>
+          <Text variant="label" color="onCategoryFill" tabular>
+            {timeLabel}
+          </Text>
+          {leaveLabel ? (
+            <View
+              style={{
+                backgroundColor: withAlpha(palette.ink900, 0.1),
+                borderRadius: radii.pill,
+                paddingHorizontal: space[2],
+                paddingVertical: space[0.5],
+              }}
+            >
+              <Text variant="label" color="onCategoryFill" tabular>
+                {`→ ${leaveLabel}`}
+              </Text>
+            </View>
+          ) : null}
+        </View>
       </View>
-    </View>
+    </>
+  );
+  if (!onPress) {
+    return (
+      <View testID={testID} accessible accessibilityLabel={label}>
+        {body}
+      </View>
+    );
+  }
+  return (
+    <PressableScale
+      onPress={onPress}
+      accessibilityLabel={label}
+      {...(openHint ? { accessibilityHint: openHint } : {})}
+      {...(testID ? { testID } : {})}
+      pressedScale={0.98}
+    >
+      {body}
+    </PressableScale>
   );
 }

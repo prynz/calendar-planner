@@ -12,3 +12,18 @@ export { EventCard, type EventCardProps } from './components/EventCard';
 export { DateStrip, type DateStripDay, type DateStripProps } from './components/DateStrip';
 export { FloatingTabBar, FLOATING_TAB_BAR_CLEARANCE, type FloatingTab } from './components/FloatingTabBar';
 export { Screen, Gutter, ScreenHeader, SectionTitle } from './components/Layout';
+export { PressableScale, type PressableScaleProps } from './components/PressableScale';
+export { FadeIn, useSpringTo } from './components/FadeIn';
+export {
+  ChipGroup,
+  FieldLabel,
+  IconButton,
+  Stepper,
+  SwitchRow,
+  TextField,
+  ValueRow,
+  type ChipOption,
+} from './components/Controls';
+export { LeaveHero, type LeaveHeroProps } from './components/LeaveHero';
+export { MonthGrid, type MonthCell } from './components/MonthGrid';
+export { Fab } from './components/Fab';
