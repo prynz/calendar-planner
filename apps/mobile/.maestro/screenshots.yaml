@@ -70,8 +70,14 @@ appId: ${APP_ID}
 - tapOn:
     id: 'editor-save'
 - extendedWaitUntil:
-    visible: 'Physio'
+    visible:
+      id: 'screen-calendar'
     timeout: 10000
+# Smaller screens (iPhone) show the new plan below the fold.
+- scrollUntilVisible:
+    element: 'Physio'
+    direction: DOWN
+    timeout: 15000
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-07-list-after-save
 # German + light theme + reminder settings

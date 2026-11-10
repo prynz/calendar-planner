@@ -4,7 +4,7 @@ import type { Messages } from './de';
 export const en: Messages = {
   'tabs.today': 'Today',
   'tabs.events': 'Events',
-  'tabs.settings': 'Settings',
+  'tabs.settings': 'Me',
 
   'tabs.calendar': 'Calendar',
   'fab.add': 'New plan',

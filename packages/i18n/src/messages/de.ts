@@ -5,7 +5,7 @@
 export const de = {
   'tabs.today': 'Heute',
   'tabs.events': 'Events',
-  'tabs.settings': 'Einstellungen',
+  'tabs.settings': 'Ich',
 
   'tabs.calendar': 'Kalender',
   'fab.add': 'Neuer Termin',
