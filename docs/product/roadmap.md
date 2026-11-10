@@ -1,6 +1,6 @@
 # Roadmap & Priorisierung
 
-> **Status:** v0.4 · 2026-11-10 · Phase 1 freigegeben. Roadmap neu geschnitten: lokaler Prototyp (Block A) vor Infrastruktur (Block B), ADR 0010. **Prototyp zuerst**:
+> **Status:** v0.5 · 2026-11-10 · Phase 2 umgesetzt, wartet auf Review. Phase 1 freigegeben. Roadmap neu geschnitten: lokaler Prototyp (Block A) vor Infrastruktur (Block B), ADR 0010. **Prototyp zuerst**:
 > Phasen 1–9 bauen einen nicht veröffentlichten Prototyp mit Beispieldaten, Veröffentlichung erst nach
 > Phase 10 ([ADR 0008](../decisions/0008-prototype-first.md)). Phase 1 startet nach Freigabe durch den PO.
 
@@ -19,7 +19,7 @@ Konten, Logins oder Server. Die Infrastruktur folgt danach schrittweise (Block B
 | --- | --- | --- | --- |
 | **0** – Discovery & Fundament | Recherche, Personas, MoSCoW, Abo-Matrix, Namen, Referenzen, Brand, Architektur, ERD, Threat Model, Datenschutz | Doku | ✅ freigegeben |
 | **1** – Projekt-Setup | Monorepo, Tooling, CI (iOS + Android), Tokens, Logo v1, Beispielwelt, Konzept-Mockups | Lauffähige App mit Theme, Sprache, Navigation | ✅ freigegeben (2026-11-10) |
-| **2** – Kalender-Kern + Anti-Chaos-Basis | Lokale Datenschicht (SQLite + Repositories), Termine anlegen/bearbeiten/löschen, Tag/Woche/Monat/Agenda, Wiederholungen, Zeitzonen, **Losgeh-Zeit** mit manueller Wegzeit, gestufte **lokale Erinnerungen**, Datumsleiste mit Spring-Snap, Haptik | Persönlicher Kalender mit erlebbarem USP | ⏳ nächste Phase |
+| **2** – Kalender-Kern + Anti-Chaos-Basis | Lokale Datenschicht (SQLite + Repositories), Termine anlegen/bearbeiten/löschen, Tag/Woche/Monat/Agenda, Wiederholungen, Zeitzonen, **Losgeh-Zeit** mit manueller Wegzeit, gestufte **lokale Erinnerungen**, Datumsleiste mit Snap, Haptik | Persönlicher Kalender mit erlebbarem USP | ✅ umgesetzt, Review offen |
 | **3** – Events & Zusammenarbeit (simuliert) | Event anlegen (auch aus Vorlagen), Demo-Personen einladen, **simulierte Zusagen** inkl. ablaufendem „Vielleicht“, Event-Detail als Bento, Umfragen mit **Swipe-Voting** und Deadline, Mitbringliste, Aufgaben, Chat (lokal simuliert), Shared-Element-Übergang | Kompletter Event-Lebenszyklus zum Durchspielen | ⏳ |
 | **4** – Anti-Chaos-Engine komplett | Bereit-Check, „Ich verspäte mich“, Eskalationsstufen + Ton, Trödel-Puffer-Lernen, Pünktlichkeits-Heatmap, **Fokus-Modus**, Karten-/Ortsanzeige (Wegzeit geschätzt, gekennzeichnet) | USP vollständig erlebbar | ⏳ |
 | **5** – Familie & Gruppen | Familienbereich, Kinderprofile, Fahrdienste, Einkaufsliste, Ämtchen, Gruppen mit wiederkehrenden Treffen, ICS-Import/Export | Familienplaner | ⏳ |

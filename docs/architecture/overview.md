@@ -118,6 +118,20 @@ Phase 6 (Basis-Widget „Nächster Termin / Losgehen in …“). Erfordert nativ
 App Widgets) über Expo Config Plugins. Live Activities/Live Updates: v2 – Machbarkeit mit dem dann aktuellen Expo SDK
 in Phase 6 prüfen.
 
+## 4.4 Prototyp-Datenschicht (Phase 2, ADR 0010)
+
+```
+Screens ─► useEvents() (EventsProvider: In-Memory-Liste, optimistische Writes mit Rollback)
+                └─► EventRepository ──► SQLite (expo-sqlite, Tabelle `event` mit validierten JSON-Dokumenten, `meta.seeded`)
+                                    └─► (Block B1: Supabase-Implementierung derselben Schnittstelle)
+RemindersProvider ─► planReminders() (rein, getestet) ─► expo-notifications (lokal, max. 48, Kanal „leave-reminders“)
+```
+
+- Termine werden als JSON-Dokumente mit Schema-Prüfung beim Lesen gespeichert (`data/serialization.ts`); eine kaputte
+  Zeile wird übersprungen und gemeldet, statt die App zu blockieren.
+- Wiederholungen werden beim Anzeigen expandiert (`expandOccurrences`), nicht als Einzeltermine gespeichert.
+- Erinnerungen werden bei jeder Änderung an Terminen/Einstellungen und alle 5 Minuten idempotent neu geplant.
+
 ## 5. Backend (Supabase)
 
 - **Postgres** mit RLS auf jeder Tabelle; Geschäftsregeln mit Mehrbenutzer-Konfliktpotenzial (Claims,

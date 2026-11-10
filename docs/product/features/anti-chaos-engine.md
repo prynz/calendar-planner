@@ -1,7 +1,9 @@
 # Modul 10 – Erinnerungen & Anti-Chaos-Engine (USP)
 
-> **Status:** v0.2 · 2026-11-09 · Spezifikation (Entwurf). Basis (manuelle Wegzeit, Stufen lokal,
-> Bereit-Check): **Phase 3 (PO-Entscheidung)** · Voll (Google-Routing, Puffer-Lernen, Live-ETA, Widgets): Phase 6.
+> **Status:** v0.3 · 2026-11-10 · **Basis im Prototyp umgesetzt (Phase 2):** Rechenmodell §1 (ohne Puffer-Lernen, fester
+> Puffer einstellbar), Stufen §2 als echte lokale Benachrichtigungen (sanft/normal/nachdrücklich, max. 48 geplant),
+> Losgeh-Karte („19:32 los“) und kompakte Losgeh-Zeile. Offen (Phase 4): Bereit-Check, „Ich verspäte mich“,
+> Puffer-Lernen, Pünktlichkeits-Bilanz, Fokus-Modus; Vortags-Erinnerung (Stufe 0) mit der Mitbringliste (Phase 3).
 
 **Ziel:** Die App plant **rückwärts** vom Termin. Nicht „Party um 20:00“, sondern „**Losgehen um 19:32**“.
 

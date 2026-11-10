@@ -1,6 +1,6 @@
 # CLAUDE.md – Arbeitsregeln für Nowish
 
-> **Status:** 2026-11-10 · Phase 1 freigegeben. **Nächste Phase: 2 – Kalender-Kern + Anti-Chaos-Basis** (Block A, startet nach „Go“).
+> **Status:** 2026-11-10 · **Phase 2 (Kalender-Kern + Anti-Chaos-Basis) umgesetzt, wartet auf Review** ([Report](docs/previews/milestone-reports/phase-2.md)).
 > Prototyp lokal und simuliert, **ohne Login, Konten und Server** (ADR 0008, ADR 0010). Wird ein Konto/Dienst nötig
 > (API-Schlüssel, Apple-Konto, Hosting), vorher den PO fragen. Kein Apple-Developer-Konto → iOS nur Simulator.
 
