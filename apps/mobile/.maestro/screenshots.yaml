@@ -230,9 +230,9 @@ appId: ${APP_ID}
 - inputText: 'Ich bring Brot mit'
 - tapOn:
     id: 'chat-send'
-- hideKeyboard
+# iOS merges name, time and text of a bubble into one label ("Olivia, 20:03: Klingt gut! 👍").
 - extendedWaitUntil:
-    visible: '(Klingt gut|Bin dabei|Super, danke|Passt mir|Haha, perfekt).*'
+    visible: '.*(Klingt gut|Bin dabei|Super, danke|Passt mir|Haha, perfekt).*'
     timeout: 20000
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-16-chat-demo-reply
