@@ -85,6 +85,13 @@ jobs:
       - name: Fallback screenshot
         if: failure()
         run: xcrun simctl io "$SIM_UDID" screenshot screenshots/shot-ios-fallback.png || true
+      - name: Diagnostics (visible screen texts)
+        if: failure()
+        run: |
+          maestro --device "$SIM_UDID" hierarchy > hierarchy.json 2>/dev/null || true
+          grep -oE '"(text|accessibilityText|resource-id)" : "[^"]+"' hierarchy.json | head -n 120 || true
+          echo '=== app log (warnings) ==='
+          xcrun simctl spawn "$SIM_UDID" log show --last 10m --style compact --predicate 'eventMessage CONTAINS "[editor]" OR eventMessage CONTAINS "[events]"' | tail -n 30 || true
       - name: Commit screenshots to the branch (manual runs only)
         if: ${{ (github.event_name == 'workflow_dispatch' && inputs.commit_screenshots) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[screenshots]')) }}
         env:

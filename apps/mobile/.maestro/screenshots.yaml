@@ -69,9 +69,10 @@ appId: ${APP_ID}
 - takeScreenshot: screenshots/shot-${PLATFORM}-06-editor-leave-preview
 - tapOn:
     id: 'editor-save'
+# The editor must close after a successful save (fails here if validation or saving went wrong).
 - extendedWaitUntil:
-    visible:
-      id: 'screen-calendar'
+    notVisible:
+      id: 'screen-editor'
     timeout: 10000
 # Smaller screens (iPhone) show the new plan below the fold.
 - scrollUntilVisible:
