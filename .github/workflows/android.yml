@@ -12,7 +12,7 @@ on:
       screenshot_prefix:
         description: 'File name prefix, e.g. 2026-11-09-phase-01'
         type: string
-        default: '2026-11-09-phase-01'
+        default: '2026-11-10-phase-02'
   push:
     branches: [main, 'claude/**']
     paths:
@@ -117,7 +117,7 @@ jobs:
         if: ${{ (github.event_name == 'workflow_dispatch' && inputs.commit_screenshots) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[screenshots]')) }}
         env:
           # Push runs use the current phase prefix; update it when a new phase starts.
-          PREFIX: ${{ inputs.screenshot_prefix || '2026-11-09-phase-01' }}
+          PREFIX: ${{ inputs.screenshot_prefix || '2026-11-10-phase-02' }}
         run: |
           set -e
           mkdir -p docs/previews/screenshots

@@ -1,6 +1,7 @@
 # Real screenshots of the running preview build (Android emulator / iOS simulator).
 # File names: shot-<PLATFORM>-NN-<screen>.png → docs/previews/screenshots/<prefix>-<PLATFORM>-NN-<screen>.png
-# The device runs in English + dark mode: the app follows the system until the user picks a language/theme.
+# The device starts in English + dark mode: the app follows the system until the user picks a language/theme.
+# Demo data is generated relative to "today", so the leave-time card appears only when CI runs inside its window.
 appId: ${APP_ID}
 ---
 - launchApp:
@@ -11,17 +12,69 @@ appId: ${APP_ID}
     timeout: 90000
 - assertVisible:
     id: 'demo-badge'
-- assertVisible: 'Your day'
 - waitForAnimationToEnd
-- takeScreenshot: screenshots/shot-${PLATFORM}-01-today-system-en-dark
+- takeScreenshot: screenshots/shot-${PLATFORM}-01-today-en-dark
+# Detail with the backwards leave plan
+- scrollUntilVisible:
+    element:
+      id: 'event-demo-games'
+    direction: DOWN
 - tapOn:
-    id: 'tab-events'
+    id: 'event-demo-games'
 - extendedWaitUntil:
     visible:
-      id: 'screen-events'
+      id: 'detail-plan'
     timeout: 10000
 - waitForAnimationToEnd
-- takeScreenshot: screenshots/shot-${PLATFORM}-02-events-en-dark
+- takeScreenshot: screenshots/shot-${PLATFORM}-02-detail-leave-plan
+- tapOn:
+    id: 'detail-back'
+# Calendar: month, week, list
+- tapOn:
+    id: 'tab-calendar'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-calendar'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-03-calendar-month
+- tapOn:
+    id: 'cal-view-week'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-04-calendar-week
+- tapOn:
+    id: 'cal-view-list'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-05-calendar-list
+# Create a plan with a leave time
+- tapOn:
+    id: 'fab-add'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-editor'
+    timeout: 10000
+- tapOn:
+    id: 'editor-title'
+- inputText: 'Physio'
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: 'editor-travel-bike'
+    direction: DOWN
+- tapOn:
+    id: 'editor-travel-bike'
+- tapOn:
+    id: 'editor-travel-min-inc'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-06-editor-leave-preview
+- tapOn:
+    id: 'editor-save'
+- extendedWaitUntil:
+    visible: 'Physio'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-07-list-after-save
+# German + light theme + reminder settings
 - tapOn:
     id: 'tab-settings'
 - extendedWaitUntil:
@@ -30,32 +83,26 @@ appId: ${APP_ID}
     timeout: 10000
 - tapOn:
     id: 'language-de'
-- extendedWaitUntil:
-    visible: 'Einstellungen'
-    timeout: 10000
-- waitForAnimationToEnd
-- takeScreenshot: screenshots/shot-${PLATFORM}-03-settings-de-dark
 - tapOn:
     id: 'theme-light'
 - waitForAnimationToEnd
-- takeScreenshot: screenshots/shot-${PLATFORM}-04-settings-de-light
+- takeScreenshot: screenshots/shot-${PLATFORM}-08-settings-de-light
 - tapOn:
     id: 'tab-index'
 - extendedWaitUntil:
     visible: 'Dein Tag'
     timeout: 10000
 - waitForAnimationToEnd
-- takeScreenshot: screenshots/shot-${PLATFORM}-05-today-de-light
-- tapOn:
-    id: 'tab-events'
-- waitForAnimationToEnd
-- takeScreenshot: screenshots/shot-${PLATFORM}-06-events-de-light
-# Persistence: relaunch WITHOUT clearing state → German + light theme are kept.
+- takeScreenshot: screenshots/shot-${PLATFORM}-09-today-de-light
+# Persistence: relaunch WITHOUT clearing state → language, theme and the new plan are kept.
 - stopApp
 - launchApp:
     clearState: false
 - extendedWaitUntil:
     visible: 'Dein Tag'
     timeout: 60000
+- scrollUntilVisible:
+    element: 'Physio'
+    direction: DOWN
 - waitForAnimationToEnd
-- takeScreenshot: screenshots/shot-${PLATFORM}-07-after-relaunch-settings-kept
+- takeScreenshot: screenshots/shot-${PLATFORM}-10-after-relaunch-plan-kept
