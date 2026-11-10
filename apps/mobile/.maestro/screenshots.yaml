@@ -97,9 +97,11 @@ appId: ${APP_ID}
 - takeScreenshot: screenshots/shot-${PLATFORM}-08-settings-de-light
 - tapOn:
     id: 'tab-index'
-- extendedWaitUntil:
-    visible: 'Dein Tag'
-    timeout: 10000
+# The Today list is still scrolled down from the detail step at the start.
+- scrollUntilVisible:
+    element: 'Dein Tag'
+    direction: UP
+    timeout: 15000
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-09-today-de-light
 # Persistence: relaunch WITHOUT clearing state → language, theme and the new plan are kept.
