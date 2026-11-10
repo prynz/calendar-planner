@@ -100,7 +100,8 @@ export function EventDetailScreen({ eventId, occurrence }: { eventId: string; oc
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.canvas }}>
-      <Stack.Screen options={{ headerShown: false }} />
+      {/* Pastel header is always light → dark status bar text in both themes. */}
+      <Stack.Screen options={{ headerShown: false, statusBarStyle: 'dark' }} />
       <ScrollView
         contentContainerStyle={{ paddingBottom: insets.bottom + space[10], gap: space[5] }}
         testID="screen-detail"

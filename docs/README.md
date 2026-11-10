@@ -20,4 +20,4 @@
 |              | [security/privacy.md](security/privacy.md)                                     | Datenschutzkonzept, Datenarten, Löschfristen, SDKs    |
 | Entscheidungen | [decisions/](decisions/README.md)                                            | ADRs                                                  |
 | Entwicklung  | [development/setup.md](development/setup.md)                                   | Befehle, pnpm-Besonderheiten, Builds ohne Store-Konten |
-| Previews     | [previews/milestone-reports/](previews/milestone-reports/phase-1.md)          | Milestone-Reports Phase 0 und 1                       |
+| Previews     | [previews/milestone-reports/](previews/milestone-reports/phase-2.md)          | Milestone-Reports Phase 0–2                       |
