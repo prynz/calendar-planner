@@ -45,10 +45,14 @@ function Shell() {
   }, [ready]);
 
   if (!ready) return null;
+  // On iOS react-native-screens owns the status bar per screen and otherwise follows the *system*
+  // appearance (white text on our cream light theme). Setting it on the root stack keeps it in sync
+  // with the app theme; expo-status-bar covers the time before the first screen mounts.
+  const barStyle = name === 'dark' ? 'light' : 'dark';
   return (
     <>
-      <StatusBar style={name === 'dark' ? 'light' : 'dark'} />
-      <Stack screenOptions={{ headerShown: false }} />
+      <StatusBar style={barStyle} />
+      <Stack screenOptions={{ headerShown: false, statusBarStyle: barStyle }} />
     </>
   );
 }
