@@ -670,7 +670,8 @@ appId: ${APP_ID}
     element:
       id: 'subscription-compare'
     direction: DOWN
-    centerElement: true
+    # No centring: after scrolling up to the plan card the button sits above the middle, and scrolling
+    # down only moves it further up, so centring never succeeds.
 - waitForAnimationToEnd
 - tapOn:
     id: 'subscription-compare'
