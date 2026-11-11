@@ -1,6 +1,6 @@
 # CLAUDE.md – Arbeitsregeln für Nowish
 
-> **Status:** 2026-11-11 · **Phase 4 (Anti-Chaos-Engine komplett) umgesetzt, wartet auf Review** ([Report](docs/previews/milestone-reports/phase-4.md)).
+> **Status:** 2026-11-11 · **Phase 5 (Familie & Gruppen) umgesetzt, wartet auf Review** ([Report](docs/previews/milestone-reports/phase-5.md)). Phasen 1–4 freigegeben.
 > Web-Vorschau: https://prynz.github.io/calendar-planner/ (ADR 0011).
 > Prototyp lokal und simuliert, **ohne Login, Konten und Server** (ADR 0008, ADR 0010). Wird ein Konto/Dienst nötig
 > (API-Schlüssel, Apple-Konto, Hosting), vorher den PO fragen. Apple-Developer-Konto existiert seit 2026-11-10; TestFlight-Workflow folgt,
@@ -17,8 +17,9 @@ Roadmap: [docs/product/roadmap.md](docs/product/roadmap.md) · Doku-Index: [docs
 
 Sprache: Doku und Kommunikation mit dem PO **Deutsch**; Code, Commits, Identifier **Englisch**.
 **Regel des PO (2026-11-10): Jede Antwort im Chat ist immer auf Deutsch – auch kurze Zwischenmeldungen und Statusupdates.**
-**Wunsch des PO (2026-11-11):** Änderungswünsche sammelt der PO und gibt sie **nach** einer Phase gesammelt; während
-einer Phase nur bei echten Blockern nachfragen. Wegzeit soll später per Google Maps aus der Adresse kommen (ADR 0013).
+**Wunsch des PO (2026-11-11):** Änderungswünsche sammelt der PO und gibt sie **erst am Ende aller Phasen** gesammelt
+(präzisiert nach Phase 4); während einer Phase nur bei echten Blockern nachfragen. Wegzeit soll später per Google Maps
+aus der Adresse kommen (ADR 0013).
 
 ## Monorepo-Karte (pnpm Workspaces)
 
@@ -30,7 +31,7 @@ einer Phase nur bei echten Blockern nachfragen. Wegzeit soll später per Google 
 | `packages/ui`           | Designsystem: Tokens, Komponenten, Motion, Haptik                              |
 | `packages/brand`        | Name, Claims, Logo, Icon (kein Maskottchen) – zentral & austauschbar          |
 | `packages/i18n`         | Übersetzungen de/en (ICU), Formatierung, Schlüssel-Prüfung                     |
-| `packages/domain`       | Reine Logik: Zeit, Wiederholungen, Losgeh-Zeit, Zusammenarbeit (Zusagen, Umfragen, Mitbringliste, Aufgaben, Chat, Vorlagen) |
+| `packages/domain`       | Reine Logik: Zeit, Wiederholungen, Losgeh-Zeit, Zusammenarbeit (Zusagen, Umfragen, Mitbringliste, Aufgaben, Chat, Vorlagen), Familie, Gruppen, ICS |
 | `packages/demo`         | Beispielwelt + Regeln der simulierten Personen (ADR 0008, 0012), relativ zu „heute“ |
 | `packages/validation`   | zod-Verträge Client ↔ Server – **ab Block B1**                                 |
 | `packages/entitlements` | Abo-Stufen, Limits, Feature-Gates – **ab Phase 6** (Demo-Kauf)                 |

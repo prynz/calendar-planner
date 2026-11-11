@@ -1,6 +1,8 @@
 # Modul 12 – Gruppen
 
-> **Status:** v0.1 · 2026-11-03 · Spezifikation (Entwurf). Umsetzung: Phase 7.
+> **Status:** v0.2 · 2026-11-11 · **Prototyp umgesetzt (Phase 5, lokal + simuliert, [ADR 0014](../../decisions/0014-family-groups-local.md)):**
+> GRP-01 (ohne Link, Demo-Personen), GRP-02 (nächste Treffen), GRP-03, GRP-04 (inkl. „jeden 1. Freitag“, Antwort pro Vorkommen),
+> GRP-05, GRP-06 (Admins, Entfernen, Austritt). Offen: Einladungslink und Beitrittsanfragen (Block B2).
 
 ## User Stories
 

@@ -20,3 +20,4 @@ Format: Kontext → Entscheidung → Alternativen → Konsequenzen. Status: `vor
 | [0011](0011-web-preview.md) | Web-Vorschau des Prototyps über GitHub Pages | akzeptiert |
 | [0012](0012-simulated-collaboration.md) | Zusammenarbeit im Prototyp: ein Dokument pro Event, simulierte Personen | akzeptiert |
 | [0013](0013-travel-time-google-later.md) | Wegzeit per Google über Adresseingabe – angeschlossen, sobald das Konto steht | akzeptiert |
+| [0014](0014-family-groups-local.md) | Familie, Gruppen und Kalender-Dateien im lokalen Prototyp | akzeptiert |

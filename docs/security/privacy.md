@@ -68,6 +68,12 @@ Phase 1 (2026-11-09): Die App enthält **keine** Netzwerk-SDKs. Neu sind nur lok
 nach außen: Expo-Module (SQLite, Haptik, Lokalisierung, Schriften), Lucide-Icons, gebündelte Schriften (keine
 Laufzeit-Downloads). Gespeichert werden nur Sprache und Darstellung auf dem Gerät.
 
+Phase 5 (2026-11-11): Familienbereich, Kinderprofile, Einkaufsliste, Ämtchen und Gruppen liegen ebenfalls nur auf dem
+Gerät. **Kinderprofile speichern nur Name, Farbe und ein Symbol** – kein Geburtsdatum, kein Foto, keine Kontaktdaten.
+Neue lokale Expo-Module ohne Netzwerk: `expo-document-picker` (System-Dateiauswahl für den ICS-Import, keine
+Speicher-Berechtigung), `expo-file-system` (Export-Datei im App-Cache), `expo-sharing` (Teilen-Menü). Kalender-Dateien
+verlassen das Gerät nur, wenn der Nutzer sie selbst teilt; Dateiinhalte und -namen werden nie geloggt.
+
 Phase 2–4 (2026-11-11): Termine, Zusammenarbeit (Demo) und der **private Losgeh-Verlauf** (geplante und
 tatsächliche Losgeh-Zeit, angekündigte Verspätung, Bereit-Check-Haken) liegen nur auf dem Gerät (SQLite, in der
 Web-Vorschau `localStorage`). Puffer-Lernen und Pünktlichkeits-Bilanz sind abschaltbar; „Verlauf löschen“ entfernt

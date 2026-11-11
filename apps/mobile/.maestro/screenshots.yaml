@@ -444,3 +444,158 @@ appId: ${APP_ID}
     centerElement: true
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-24-punctuality
+# ---------------------------------------------------------------- Phase 5: family, groups, calendar files
+- scrollUntilVisible:
+    element:
+      id: 'calendar-file'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-25-calendar-file
+- tapOn:
+    id: 'tab-events'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-events'
+    timeout: 10000
+- waitForAnimationToEnd
+- tapOn:
+    id: 'together-family'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'family-members'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-26-family
+# Rides: the viewer is at the flat viewing during Paul's appointment → warning, ask Sam
+- scrollUntilVisible:
+    element:
+      id: 'family-rides'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- tapOn:
+    id: 'family-rides'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-rides'
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: 'ride-conflict-demo-paul-doctor-drop-off'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-27-rides-conflict
+- tapOn:
+    id: 'ride-ask-demo-paul-doctor-drop-off'
+- extendedWaitUntil:
+    visible:
+      text: '.*(Sam fährt|Sam drives).*'
+    timeout: 20000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-28-rides-sam
+- tapOn:
+    id: 'family-back'
+    retryTapIfNoChange: true
+# Shopping list
+- scrollUntilVisible:
+    element:
+      id: 'family-shopping'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- tapOn:
+    id: 'family-shopping'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-shopping'
+    timeout: 10000
+- tapOn:
+    id: 'shopping-title'
+- inputText: 'Eier'
+- hideKeyboard
+- tapOn:
+    id: 'shopping-add'
+- extendedWaitUntil:
+    visible:
+      text: '.*Eier.*'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-29-shopping
+- tapOn:
+    id: 'family-back'
+    retryTapIfNoChange: true
+# Chores with rotation
+- scrollUntilVisible:
+    element:
+      id: 'family-chores-all'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- tapOn:
+    id: 'family-chores-all'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-chores'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-30-chores
+- tapOn:
+    id: 'family-back'
+    retryTapIfNoChange: true
+# Groups: list, per-occurrence answer, group chat
+- scrollUntilVisible:
+    element:
+      id: 'together-groups'
+    direction: UP
+- waitForAnimationToEnd
+- tapOn:
+    id: 'together-groups'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'group-demo-group-regulars'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-31-groups
+- tapOn:
+    id: 'group-demo-group-regulars'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-group'
+    timeout: 10000
+- tapOn:
+    id: 'meeting-yes-demo-stammtisch'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-32-group-meeting
+- scrollUntilVisible:
+    element:
+      id: 'group-chat-open'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- tapOn:
+    id: 'group-chat-open'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-group-chat'
+    timeout: 10000
+- tapOn:
+    id: 'group-chat-input'
+- inputText: 'Bin dabei, bis Freitag!'
+- tapOn:
+    id: 'group-chat-send'
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      text: '.*(Bin dabei! 🙌|Klingt gut, bis dann!|Ich bring gute Laune mit|Passt mir, danke fürs Organisieren!).*'
+    timeout: 20000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-33-group-chat

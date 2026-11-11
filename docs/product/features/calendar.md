@@ -1,8 +1,9 @@
 # Modul 1 – Kalender
 
-> **Status:** v0.2 · 2026-11-10 · **Prototyp umgesetzt (Phase 2):** CAL-01 (Tag/Woche/Monat/Liste), CAL-02, CAL-03, CAL-04,
-> CAL-05 teilweise (Löschen „nur dieser/ganze Serie“; Bearbeiten wirkt auf die ganze Serie), CAL-06 als Kategorien.
-> Offen: Zeitzonen-Auswahl im Editor (CAL-07), Konfliktanzeige (CAL-08), ICS (CAL-09, Phase 5), Sync (Block B3), Heatmap (Phase 4).
+> **Status:** v0.3 · 2026-11-11 · **Prototyp umgesetzt (Phase 2 + 5):** CAL-01 (Tag/Woche/Monat/Liste), CAL-02, CAL-03, CAL-04
+> (Phase 5: auch „jeden n-ten Wochentag“), CAL-05 teilweise (Löschen „nur dieser/ganze Serie“; Bearbeiten wirkt auf die ganze
+> Serie), CAL-06 als Kategorien, **CAL-09 ICS-Import/-Export** (Phase 5, [ADR 0014](../../decisions/0014-family-groups-local.md)).
+> Offen: Zeitzonen-Auswahl im Editor (CAL-07), Konfliktanzeige (CAL-08), Sync (Block B3).
 
 **Ziel:** Ein vollwertiger persönlicher Kalender, der allein schon nützlich ist und Events, Familie und
 externe Kalender auf einer Zeitachse zusammenführt.
