@@ -17,7 +17,7 @@ Demo.
 | --- | --- |
 | Tab „Gemeinsam“ | Segmente Events · Gruppen · Familie; die Tab-Leiste bleibt bei vier Einträgen ([ADR 0014](../../decisions/0014-family-groups-local.md)) |
 | Familienbereich | Mitglieder (Du, Sam, Lena 🦊, Paul 🐢), „Verwalten“, **Familienwoche** (ein Punkt pro Termin in der Farbe der Person, volle Tage in Lime, Zahl immer dabei und vorgelesen) |
-| Kinderprofile | Nur Name, Farbe, Symbol – **kein Geburtstag, kein Foto, kein Konto**. Anlegen, bearbeiten, löschen (mit Nachfrage; Zuordnungen und Ämtchen gehen mit). Bis 6 Personen inkl. Kindern |
+| Kinderprofile | Nur Name, Farbe, Symbol – **kein Geburtstag, kein Foto, kein Konto**. Anlegen, bearbeiten, löschen (mit Nachfrage; Zuordnungen und Ämtchen gehen mit). *Nachtrag Phase 6: Kinderprofile zählen nicht zu den Erwachsenen (monetization.md §2)* |
 | Erwachsene einladen | Demo: die eingeladene Person nimmt nach ein paar Sekunden an (klar so beschriftet) |
 | Für wen? | Im Editor jedem Termin Familienmitglieder zuordnen; im Termin-Detail steht „Für Lena“ mit dem Fahrdienst-Stand |
 | Fahrdienste | Für Kindertermine mit Ort (ohne begleitenden Erwachsenen): **Hinbringen / Abholen** mit „Ich fahre“, „Sam fragen“, „Abgeben“. **Warnung**, wenn der Fahrer da einen eigenen Termin hat („Achtung: Du hast da „Wohnungsbesichtigung“ (10:00).“). Sam sagt zu, wenn er frei ist (Demo-Regel) |
@@ -66,8 +66,7 @@ Präfix `2026-11-11-phase-05`. Bilder 01–24 wie in Phase 4, neu sind 25–33.
 - **Echtzeit** der Einkaufsliste zwischen Geräten: kommt mit dem Server (Block B1/B2); im Prototyp simuliert.
 - **ICS-Export** schreibt Zeitzonen als IANA-Namen ohne VTIMEZONE-Blöcke (große Kalender lesen das); die vollständige
   Ausgabe folgt mit dem Kalender-Sync (Block B3). Im Termin selbst gibt es noch keinen einzelnen Export.
-- **Free-Limits** (2 Erwachsene, 2 Kinder, 1 Gruppe) greifen erst mit den Entitlements in Phase 6; im Prototyp gilt
-  das Family-Limit (6 Personen).
+- **Free-Limits** (2 Erwachsene, 2 Kinder, 1 Gruppe) greifen erst mit den Entitlements in Phase 6 (*Nachtrag: umgesetzt*).
 - Austritt eines Erwachsenen aus dem Familienbereich und Admin-Wechsel in der Familie sind noch nicht in der App.
 
 ## 6. Funde & Risiken
@@ -82,9 +81,9 @@ Präfix `2026-11-11-phase-05`. Bilder 01–24 wie in Phase 4, neu sind 25–33.
 
 ## 7. Offene Fragen an den PO
 
-1. **Kinderprofile und das 6-Personen-Limit:** Ich habe vorläufig festgelegt, dass Kinderprofile mitzählen. Passt das?
-   (Kann bis zum Ende aller Phasen offen bleiben.)
-2. **Nächste Phase:** Weiter mit **Phase 6 – Profil, Premium & Feinschliff** (Onboarding, Profil, Datenschutz-Center,
+1. ~~Kinderprofile und das 6-Personen-Limit~~ – *Nachtrag Phase 6:* war schon entschieden (monetization.md §2:
+   Kinderprofile zählen nicht); in Phase 6 korrigiert.
+2. **Nächste Phase:** (*freigegeben am 2026-11-11*) Weiter mit **Phase 6 – Profil, Premium & Feinschliff** (Onboarding, Profil, Datenschutz-Center,
    Paywall mit **Demo-Kauf**, House-Ad-Vorschau, Premium-Themes, Kosten-Split mit PayPal-Link, Wetter/Plan B simuliert)?
 
 ## 8. Nächster Schritt

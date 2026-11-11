@@ -35,9 +35,10 @@ Treffen und ICS-Import/-Export ([family.md](../product/features/family.md), [gro
    Ausnahme der Serie plus eigenem Termin.
 9. **Neue Abhängigkeiten:** `expo-document-picker`, `expo-file-system`, `expo-sharing` (Expo SDK 58, lokale Module ohne
    Netzwerk). Begründung: Import/Export von Kalender-Dateien.
-10. **Limits im Prototyp:** bis 6 Personen pro Familienbereich **inklusive** Kinderprofilen (offene PO-Frage aus
-    family.md, vorsichtig entschieden). Free-Limits (2 Erwachsene, 2 Kinder, 1 Gruppe) greifen erst mit den
-    Entitlements in Phase 6.
+10. **Limits:** ~~bis 6 Personen inklusive Kinderprofilen~~ – **korrigiert in Phase 6:** Die Frage war schon in
+    [monetization.md §2](../product/monetization.md) entschieden: **Kinderprofile zählen nicht** zu den 6 Erwachsenen.
+    Die Tarif-Grenzen (Free/Plus/Pro: 2 Erwachsene + 2 Kinderprofile, Family: 6 Erwachsene + bis 10 Kinderprofile,
+    Gruppen 1/5/∞) kommen aus `@nowish/entitlements` ([ADR 0015](0015-premium-demo-entitlements.md)).
 
 ## Konsequenzen
 

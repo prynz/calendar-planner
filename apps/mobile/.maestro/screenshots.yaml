@@ -7,10 +7,29 @@ appId: ${APP_ID}
 - launchApp:
     clearState: true
 - runFlow: dismiss-system-dialogs.yaml
+# Phase 6: first start shows the onboarding (age confirmation, Plus trial as Demo).
+- extendedWaitUntil:
+    visible:
+      id: 'screen-onboarding'
+    timeout: 90000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-34-onboarding
+- tapOn:
+    id: 'onb-next'
+- tapOn:
+    id: 'onb-age'
+- tapOn:
+    id: 'onb-next'
+- tapOn:
+    id: 'onb-next'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-35-onboarding-trial
+- tapOn:
+    id: 'onb-finish'
 - extendedWaitUntil:
     visible:
       id: 'screen-today'
-    timeout: 90000
+    timeout: 30000
 - assertVisible:
     id: 'demo-badge'
 - waitForAnimationToEnd
@@ -603,3 +622,138 @@ appId: ${APP_ID}
     timeout: 20000
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-33-group-chat
+- waitForAnimationToEnd
+# ---------------------------------------------------------------- Phase 6: plan, paywall, privacy, costs, plan B, covers
+- tapOn:
+    id: 'group-chat-back'
+    retryTapIfNoChange: true
+- waitForAnimationToEnd
+- tapOn:
+    id: 'group-back'
+    retryTapIfNoChange: true
+- tapOn:
+    id: 'tab-settings'
+- scrollUntilVisible:
+    element:
+      id: 'subscription'
+    direction: UP
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-36-account-plan
+- scrollUntilVisible:
+    element:
+      id: 'subscription-compare'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- tapOn:
+    id: 'subscription-compare'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-paywall'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-37-paywall
+- scrollUntilVisible:
+    element:
+      id: 'paywall-compare'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-38-paywall-compare
+- scrollUntilVisible:
+    element:
+      id: 'paywall-close'
+    direction: UP
+- tapOn:
+    id: 'paywall-close'
+    retryTapIfNoChange: true
+- scrollUntilVisible:
+    element:
+      id: 'account-privacy'
+    direction: UP
+    centerElement: true
+- waitForAnimationToEnd
+- tapOn:
+    id: 'account-privacy'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-privacy'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-39-privacy
+- tapOn:
+    id: 'privacy-back'
+    retryTapIfNoChange: true
+# Costs and plan B at the lakeside barbecue
+- tapOn:
+    id: 'tab-events'
+- scrollUntilVisible:
+    element:
+      id: 'together-events'
+    direction: UP
+- tapOn:
+    id: 'together-events'
+- scrollUntilVisible:
+    element:
+      id: 'events-templates'
+    direction: UP
+- scrollUntilVisible:
+    element:
+      id: 'event-demo-bbq'
+    direction: DOWN
+- waitForAnimationToEnd
+- tapOn:
+    id: 'event-demo-bbq'
+    retryTapIfNoChange: true
+- scrollUntilVisible:
+    element:
+      id: 'tile-costs'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- tapOn:
+    id: 'tile-costs'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-costs'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-40-costs
+- tapOn:
+    id: 'collab-back'
+    retryTapIfNoChange: true
+- scrollUntilVisible:
+    element:
+      id: 'plan-b'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-41-weather-plan-b
+- scrollUntilVisible:
+    element:
+      id: 'detail-back'
+    direction: UP
+- waitForAnimationToEnd
+- tapOn:
+    id: 'detail-back'
+    retryTapIfNoChange: true
+# Cover themes in the editor
+- tapOn:
+    id: 'fab-add'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-editor'
+    timeout: 10000
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: 'editor-cover-confetti'
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: 'editor-cover-confetti'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-42-covers

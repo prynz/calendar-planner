@@ -21,3 +21,4 @@ Format: Kontext → Entscheidung → Alternativen → Konsequenzen. Status: `vor
 | [0012](0012-simulated-collaboration.md) | Zusammenarbeit im Prototyp: ein Dokument pro Event, simulierte Personen | akzeptiert |
 | [0013](0013-travel-time-google-later.md) | Wegzeit per Google über Adresseingabe – angeschlossen, sobald das Konto steht | akzeptiert |
 | [0014](0014-family-groups-local.md) | Familie, Gruppen und Kalender-Dateien im lokalen Prototyp | akzeptiert |
+| [0015](0015-premium-demo-entitlements.md) | Premium im Prototyp: Entitlements als Daten, Demo-Kauf, lokales Konto | akzeptiert |

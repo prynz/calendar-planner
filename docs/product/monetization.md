@@ -1,7 +1,8 @@
 # Monetarisierung: Abos, Paywall, House Ads, Admin-Steuerung
 
-> **Status:** v0.2 · 2026-11-09 · Preise vom PO entschieden (günstigere Family-Variante). Umsetzung der Logik in
-> Phase 8 mit **Demo-Käufen** ([ADR 0008](../decisions/0008-prototype-first.md)); echte Store-Abos erst in Phase 10. Technik: [ADR 0003](../decisions/0003-subscriptions-revenuecat.md).
+> **Status:** v0.3 · 2026-11-11 · **Prototyp umgesetzt (Phase 6, [ADR 0015](../decisions/0015-premium-demo-entitlements.md)):** Matrix als Daten in
+> `packages/entitlements`, 14-Tage-Testphase, Paywall mit **Demo-Kauf**, Grenzen mit Erklärung, House-Ad-Vorschau (2 Slots),
+> Tabuzonen per Test. Echte Store-Abos, Comp-Abos und Admin-Steuerung: Block B4.
 
 ## 1. Grundsätze (verbindlich)
 

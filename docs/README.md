@@ -1,6 +1,6 @@
 # Dokumentations-Index
 
-> **Status:** 2026-11-11 · Phase 5. Dokumente sind Entwürfe zur Freigabe durch den PO.
+> **Status:** 2026-11-11 · Phase 6. Dokumente sind Entwürfe zur Freigabe durch den PO.
 
 | Bereich      | Dokument                                                                       | Inhalt                                                |
 | ------------ | ------------------------------------------------------------------------------ | ----------------------------------------------------- |

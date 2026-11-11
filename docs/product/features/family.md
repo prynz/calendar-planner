@@ -3,7 +3,7 @@
 > **Status:** v0.2 · 2026-11-11 · **Prototyp umgesetzt (Phase 5, lokal + simuliert, [ADR 0014](../../decisions/0014-family-groups-local.md)):**
 > FAM-01 (Einladen als Demo), FAM-02, FAM-03, FAM-04 (inkl. Konfliktwarnung), FAM-05, FAM-06 (lokal, „Echtzeit“ simuliert),
 > FAM-07, FAM-09. Offen: FAM-08 Ferien/Feiertage (Datenquelle + Lizenz), Hinweis 24 h vorher bei offener Fahrt (Push, Block B2),
-> Austritt/Rollenwechsel. Entscheidung zur offenen Frage: Kinderprofile zählen zu den 6 Personen (vorläufig, ADR 0014).
+> Austritt/Rollenwechsel. Kinderprofile zählen nicht zu den 6 Erwachsenen (monetization.md §2; Grenzen aus `@nowish/entitlements`, Phase 6).
 
 ## User Stories
 

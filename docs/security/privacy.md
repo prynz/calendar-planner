@@ -68,6 +68,12 @@ Phase 1 (2026-11-09): Die App enthält **keine** Netzwerk-SDKs. Neu sind nur lok
 nach außen: Expo-Module (SQLite, Haptik, Lokalisierung, Schriften), Lucide-Icons, gebündelte Schriften (keine
 Laufzeit-Downloads). Gespeichert werden nur Sprache und Darstellung auf dem Gerät.
 
+Phase 6 (2026-11-11): Ein **lokales Profil** (Anzeigename, optional Status-Emoji und PayPal.me-Name, Tarif als Demo, Zähler für
+Hinweise und hauseigene Anzeigen) liegt nur auf dem Gerät. Beim ersten Start wird nur bestätigt, dass man **mindestens 16** ist –
+**kein Geburtsdatum**. Anzeigen sind ausschließlich eigene Inhalte ohne Tracking; Zähler bleiben auf dem Gerät. Das
+**Datenschutz-Center** zeigt alles Gespeicherte, exportiert es als JSON und löscht es auf Wunsch vollständig. Wetter ist eine
+erfundene Demo-Vorhersage (kein Wetterdienst); PayPal wird nur als Link geöffnet bzw. geteilt, es fließen keine Daten zu PayPal.
+
 Phase 5 (2026-11-11): Familienbereich, Kinderprofile, Einkaufsliste, Ämtchen und Gruppen liegen ebenfalls nur auf dem
 Gerät. **Kinderprofile speichern nur Name, Farbe und ein Symbol** – kein Geburtsdatum, kein Foto, keine Kontaktdaten.
 Neue lokale Expo-Module ohne Netzwerk: `expo-document-picker` (System-Dateiauswahl für den ICS-Import, keine

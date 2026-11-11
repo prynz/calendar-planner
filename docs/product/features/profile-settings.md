@@ -1,6 +1,8 @@
 # Modul 15 – Profil, Accounts & Einstellungen
 
-> **Status:** v0.1 · 2026-11-03 · Spezifikation (Entwurf). Accounts: Phase 2; Einstellungen wachsen mit jeder Phase.
+> **Status:** v0.2 · 2026-11-11 · **Prototyp (Phase 6, ADR 0015):** Onboarding mit Alters-Bestätigung (ACC-08), Profil (Name,
+> Status-Emoji, PayPal.me), Datenschutz-Center mit Export (ACC-07, JSON) und „Alle Daten löschen“ (lokal), Abo-Bereich (Demo).
+> Echte Konten, Anmeldung, 2FA, Sitzungen und Account-Löschung auf dem Server: Block B1.
 
 ## Accounts & Anmeldung
 

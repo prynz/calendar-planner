@@ -1,6 +1,7 @@
 # Modul 8 – Kosten
 
-> **Status:** v0.1 · 2026-11-03 · Spezifikation (Entwurf). Umsetzung: Phase 9 (Could für v1).
+> **Status:** v0.2 · 2026-11-11 · **Prototyp umgesetzt (Phase 6, ADR 0015):** CST-01 (ohne Belegfoto), CST-02, CST-03, CST-04,
+> CST-05 (Gegenseite bestätigt simuliert), CST-06 (PayPal.me-Name im Profil, Link teilen). Offen: Belege, CSV-Export.
 > **Nur Tracking, keine Zahlungsabwicklung.**
 
 ## User Stories

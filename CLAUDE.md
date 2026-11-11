@@ -1,6 +1,6 @@
 # CLAUDE.md – Arbeitsregeln für Nowish
 
-> **Status:** 2026-11-11 · **Phase 5 (Familie & Gruppen) umgesetzt, wartet auf Review** ([Report](docs/previews/milestone-reports/phase-5.md)). Phasen 1–4 freigegeben.
+> **Status:** 2026-11-11 · **Phase 6 (Profil, Premium & Feinschliff) umgesetzt, wartet auf Review** ([Report](docs/previews/milestone-reports/phase-6.md)). Phasen 1–5 freigegeben.
 > Web-Vorschau: https://prynz.github.io/calendar-planner/ (ADR 0011).
 > Prototyp lokal und simuliert, **ohne Login, Konten und Server** (ADR 0008, ADR 0010). Wird ein Konto/Dienst nötig
 > (API-Schlüssel, Apple-Konto, Hosting), vorher den PO fragen. Apple-Developer-Konto existiert seit 2026-11-10; TestFlight-Workflow folgt,
@@ -34,7 +34,7 @@ aus der Adresse kommen (ADR 0013).
 | `packages/domain`       | Reine Logik: Zeit, Wiederholungen, Losgeh-Zeit, Zusammenarbeit (Zusagen, Umfragen, Mitbringliste, Aufgaben, Chat, Vorlagen), Familie, Gruppen, ICS |
 | `packages/demo`         | Beispielwelt + Regeln der simulierten Personen (ADR 0008, 0012), relativ zu „heute“ |
 | `packages/validation`   | zod-Verträge Client ↔ Server – **ab Block B1**                                 |
-| `packages/entitlements` | Abo-Stufen, Limits, Feature-Gates – **ab Phase 6** (Demo-Kauf)                 |
+| `packages/entitlements` | Abo-Stufen, Preise, Limits, Testphase, House-Ad-Regeln (Phase 6, Demo-Kauf, ADR 0015) |
 | `packages/config`       | Env-Validierung, verbietet privilegierte Keys im Client                        |
 | `supabase/`             | Migrationen, pgTAP-Tests, Seed (nur lokal), Edge Functions                     |
 | `docs/`                 | Produkt, Design, Brand, Architektur, Security, ADRs, Previews                  |
