@@ -356,7 +356,12 @@ appId: ${APP_ID}
 - tapOn:
     id: 'detail-back'
     retryTapIfNoChange: true
-# Ready check of the lakeside barbecue (always upcoming in the example world)
+# Ready check of the lakeside barbecue (always upcoming in the example world).
+# Back to the top first: otherwise the card can sit half under the header and the tap misses.
+- scrollUntilVisible:
+    element:
+      id: 'events-templates'
+    direction: UP
 - scrollUntilVisible:
     element:
       id: 'event-demo-bbq'
