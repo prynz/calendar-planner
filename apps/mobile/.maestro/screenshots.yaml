@@ -160,8 +160,11 @@ appId: ${APP_ID}
     element:
       id: 'detail-back'
     direction: UP
+# Android: the first tap after a fling only stops the scroll – wait, and retry if nothing changed.
+- waitForAnimationToEnd
 - tapOn:
     id: 'detail-back'
+    retryTapIfNoChange: true
 # Swipe poll (buttons are the equal alternative to the gesture)
 - scrollUntilVisible:
     element:
@@ -243,8 +246,11 @@ appId: ${APP_ID}
     element:
       id: 'detail-back'
     direction: UP
+# Android: the first tap after a fling only stops the scroll – wait, and retry if nothing changed.
+- waitForAnimationToEnd
 - tapOn:
     id: 'detail-back'
+    retryTapIfNoChange: true
 # Templates → prefilled editor with invitees
 - scrollUntilVisible:
     element:
@@ -316,8 +322,11 @@ appId: ${APP_ID}
     element:
       id: 'detail-back'
     direction: UP
+# Android: the first tap after a fling only stops the scroll – wait, and retry if nothing changed.
+- waitForAnimationToEnd
 - tapOn:
     id: 'detail-back'
+    retryTapIfNoChange: true
 # Ready check of the lakeside barbecue (always upcoming in the example world)
 - scrollUntilVisible:
     element:
@@ -351,8 +360,11 @@ appId: ${APP_ID}
     element:
       id: 'detail-back'
     direction: UP
+# Android: the first tap after a fling only stops the scroll – wait, and retry if nothing changed.
+- waitForAnimationToEnd
 - tapOn:
     id: 'detail-back'
+    retryTapIfNoChange: true
 # Focus mode
 - tapOn:
     id: 'tab-index'
