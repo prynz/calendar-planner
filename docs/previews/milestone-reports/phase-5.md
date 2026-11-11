@@ -1,6 +1,6 @@
 # Milestone-Report Phase 5 – Familie & Gruppen
 
-> **Status:** 2026-11-11 · Phase 5 umgesetzt · **Stopp – wartet auf Review und Freigabe durch den PO.**
+> **Status:** 2026-11-11 · Phase 5 vom PO freigegeben; CI-Screenshots nachgetragen (gemeinsamer Lauf mit Phase 6).
 > Änderungswünsche zu allen Phasen nimmt der PO erst am Ende aller Phasen gesammelt auf (Wunsch vom 2026-11-11).
 
 ## 1. Ergebnis in einem Satz
@@ -38,23 +38,24 @@ Demo.
 | `pnpm check` (typecheck · lint · format · Tests) | ✅ 953 Tests: i18n 669, domain 102, App 90, ui 57, demo 21, brand 8, config 6 |
 | Metro-Bundle Android + iOS (`export:native`) | ✅ lokal |
 | Web-Vorschau im Browser (Familie, Fahrdienste inkl. Anfrage an Sam, Einkauf, Ämtchen, Mitglieder, Gruppen, Treffen, Gruppenchat, Editor mit „jeden n-ten Wochentag“, Detail mit Familienkarte, ICS-Karte) | ✅ lokal mit fester Uhrzeit durchgeklickt, keine Fehler in der Konsole |
-| CI (Qualität, Datenbank, Secret-Scan), Android, iOS | siehe Abschnitt 4 |
+| CI (Qualität, Datenbank, Secret-Scan), Android, iOS | ✅ grün auf `5e682a6`: CI 43099655603, Android 43099655596, iOS 43099655593 (je 42 Screenshots) |
 
 ## 4. Screenshots (echt, aus CI)
 
-Präfix `2026-11-11-phase-05`. Bilder 01–24 wie in Phase 4, neu sind 25–33.
+Präfix `2026-11-11-phase-06`: Einen eigenen Phase-5-Satz gibt es nicht, weil Phase 6 vor dem grünen CI-Lauf schon
+begonnen hatte. Die Bilder 25–33 stammen aus dem gemeinsamen Lauf. Bilder 01–24 wie in Phase 4, neu sind 25–33.
 
 | Ablauf | Android | iOS |
 | --- | --- | --- |
-| Kalender-Datei (ICS) unter „Ich“ | [Android](../screenshots/2026-11-11-phase-05-android-25-calendar-file.png) | [iOS](../screenshots/2026-11-11-phase-05-ios-25-calendar-file.png) |
-| Familie: Mitglieder und Familienwoche | [Android](../screenshots/2026-11-11-phase-05-android-26-family.png) | [iOS](../screenshots/2026-11-11-phase-05-ios-26-family.png) |
-| Fahrdienste mit Konfliktwarnung | [Android](../screenshots/2026-11-11-phase-05-android-27-rides-conflict.png) | [iOS](../screenshots/2026-11-11-phase-05-ios-27-rides-conflict.png) |
-| Sam übernimmt die Fahrt (Demo) | [Android](../screenshots/2026-11-11-phase-05-android-28-rides-sam.png) | [iOS](../screenshots/2026-11-11-phase-05-ios-28-rides-sam.png) |
-| Einkaufsliste | [Android](../screenshots/2026-11-11-phase-05-android-29-shopping.png) | [iOS](../screenshots/2026-11-11-phase-05-ios-29-shopping.png) |
-| Ämtchen mit Rotation | [Android](../screenshots/2026-11-11-phase-05-android-30-chores.png) | [iOS](../screenshots/2026-11-11-phase-05-ios-30-chores.png) |
-| Gruppen | [Android](../screenshots/2026-11-11-phase-05-android-31-groups.png) | [iOS](../screenshots/2026-11-11-phase-05-ios-31-groups.png) |
-| Treffen „Bin dabei“ | [Android](../screenshots/2026-11-11-phase-05-android-32-group-meeting.png) | [iOS](../screenshots/2026-11-11-phase-05-ios-32-group-meeting.png) |
-| Gruppenchat mit Demo-Antwort | [Android](../screenshots/2026-11-11-phase-05-android-33-group-chat.png) | [iOS](../screenshots/2026-11-11-phase-05-ios-33-group-chat.png) |
+| Kalender-Datei (ICS) unter „Ich“ | [Android](../screenshots/2026-11-11-phase-06-android-25-calendar-file.png) | [iOS](../screenshots/2026-11-11-phase-06-ios-25-calendar-file.png) |
+| Familie: Mitglieder und Familienwoche | [Android](../screenshots/2026-11-11-phase-06-android-26-family.png) | [iOS](../screenshots/2026-11-11-phase-06-ios-26-family.png) |
+| Fahrdienste mit Konfliktwarnung | [Android](../screenshots/2026-11-11-phase-06-android-27-rides-conflict.png) | [iOS](../screenshots/2026-11-11-phase-06-ios-27-rides-conflict.png) |
+| Sam übernimmt die Fahrt (Demo) | [Android](../screenshots/2026-11-11-phase-06-android-28-rides-sam.png) | [iOS](../screenshots/2026-11-11-phase-06-ios-28-rides-sam.png) |
+| Einkaufsliste | [Android](../screenshots/2026-11-11-phase-06-android-29-shopping.png) | [iOS](../screenshots/2026-11-11-phase-06-ios-29-shopping.png) |
+| Ämtchen mit Rotation | [Android](../screenshots/2026-11-11-phase-06-android-30-chores.png) | [iOS](../screenshots/2026-11-11-phase-06-ios-30-chores.png) |
+| Gruppen | [Android](../screenshots/2026-11-11-phase-06-android-31-groups.png) | [iOS](../screenshots/2026-11-11-phase-06-ios-31-groups.png) |
+| Treffen „Bin dabei“ | [Android](../screenshots/2026-11-11-phase-06-android-32-group-meeting.png) | [iOS](../screenshots/2026-11-11-phase-06-ios-32-group-meeting.png) |
+| Gruppenchat mit Demo-Antwort | [Android](../screenshots/2026-11-11-phase-06-android-33-group-chat.png) | [iOS](../screenshots/2026-11-11-phase-06-ios-33-group-chat.png) |
 
 ## 5. Was nicht fertig ist / bewusst offen (ehrlich)
 
@@ -78,6 +79,7 @@ Präfix `2026-11-11-phase-05`. Bilder 01–24 wie in Phase 4, neu sind 25–33.
 | Alte Chat-Nachrichten zeigten nur die Uhrzeit | ✅ Datum ergänzt, wenn nicht von heute |
 | Die Konfliktwarnung kennt nur Termine, die im eigenen Kalender stehen | Bewusst: Sams Kalender ist im Prototyp unbekannt; mit echten Konten (B1) prüft der Server |
 | Dateiauswahl je nach Gerät/Datei-App unterschiedlich (MIME-Typen von .ics) | Risiko, auf echten Geräten prüfen; unlesbare Dateien bekommen eine klare Meldung |
+| iOS: Wechsel Familie → Gruppen zeigte leere Fläche, weil iOS die alte Scroll-Position behielt | ✅ jeder Bereich unter „Gemeinsam“ startet oben (im iOS-Lauf bestätigt) |
 
 ## 7. Offene Fragen an den PO
 
