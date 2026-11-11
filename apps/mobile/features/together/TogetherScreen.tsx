@@ -27,7 +27,9 @@ export function TogetherScreen() {
     family: t('family.title'),
   };
   return (
-    <Screen testID={`screen-${section}`}>
+    // Keyed by section: each section starts at the top. iOS keeps the old scroll offset when the content
+    // gets shorter, so switching from a scrolled Family list showed an empty area instead of the groups.
+    <Screen key={section} testID={`screen-${section}`}>
       <ScreenHeader
         eyebrow={t('together.eyebrow')}
         title={titles[section]}
