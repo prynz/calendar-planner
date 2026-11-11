@@ -21,16 +21,20 @@ appId: ${APP_ID}
       id: 'event-demo-games'
     direction: DOWN
     centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'event-demo-games'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'detail-plan'
     timeout: 10000
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-02-detail-leave-plan
+- waitForAnimationToEnd
 - tapOn:
     id: 'detail-back'
+    retryTapIfNoChange: true
 # Calendar: month, week, list
 - tapOn:
     id: 'tab-calendar'
@@ -120,6 +124,8 @@ appId: ${APP_ID}
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-10-after-relaunch-plan-kept
 # ---------------------------------------------------------------- Phase 3: events & collaboration
+# Navigation taps wait for running transitions and retry once nothing changed: a tap during a screen
+# transition or right after a fling is otherwise swallowed (seen on both platforms).
 - tapOn:
     id: 'tab-events'
 - extendedWaitUntil:
@@ -134,8 +140,10 @@ appId: ${APP_ID}
       id: 'event-demo-tom-party'
     direction: DOWN
     centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'event-demo-tom-party'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'detail-plan'
@@ -160,7 +168,6 @@ appId: ${APP_ID}
     element:
       id: 'detail-back'
     direction: UP
-# Android: the first tap after a fling only stops the scroll – wait, and retry if nothing changed.
 - waitForAnimationToEnd
 - tapOn:
     id: 'detail-back'
@@ -171,15 +178,19 @@ appId: ${APP_ID}
       id: 'event-demo-bbq'
     direction: DOWN
     centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'event-demo-bbq'
+    retryTapIfNoChange: true
 - scrollUntilVisible:
     element:
       id: 'tile-poll'
     direction: DOWN
     centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'tile-poll'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'poll-deck'
@@ -196,16 +207,20 @@ appId: ${APP_ID}
     timeout: 10000
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-14-poll-results
+- waitForAnimationToEnd
 - tapOn:
     id: 'collab-back'
+    retryTapIfNoChange: true
 # Bring list
 - scrollUntilVisible:
     element:
       id: 'tile-bring'
     direction: DOWN
     centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'tile-bring'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'screen-bring'
@@ -214,16 +229,20 @@ appId: ${APP_ID}
     id: 'bring-claim-bbq-b2-inc'
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-15-bring-list
+- waitForAnimationToEnd
 - tapOn:
     id: 'collab-back'
+    retryTapIfNoChange: true
 # Chat: a simulated person answers after a few seconds
 - scrollUntilVisible:
     element:
       id: 'tile-chat'
     direction: DOWN
     centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'tile-chat'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'screen-chat'
@@ -239,14 +258,15 @@ appId: ${APP_ID}
     timeout: 20000
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-16-chat-demo-reply
+- waitForAnimationToEnd
 - tapOn:
     id: 'collab-back'
+    retryTapIfNoChange: true
 # The detail header scrolls with the content – bring the back button into view first.
 - scrollUntilVisible:
     element:
       id: 'detail-back'
     direction: UP
-# Android: the first tap after a fling only stops the scroll – wait, and retry if nothing changed.
 - waitForAnimationToEnd
 - tapOn:
     id: 'detail-back'
@@ -257,16 +277,20 @@ appId: ${APP_ID}
       id: 'events-templates'
     direction: UP
     centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'events-templates'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'screen-templates'
     timeout: 10000
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-17-templates
+- waitForAnimationToEnd
 - tapOn:
     id: 'template-bbq'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'screen-editor'
@@ -300,15 +324,19 @@ appId: ${APP_ID}
       id: 'event-demo-movie-night'
     direction: DOWN
     centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'event-demo-movie-night'
+    retryTapIfNoChange: true
 - scrollUntilVisible:
     element:
       id: 'tile-guests'
     direction: DOWN
     centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'tile-guests'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'screen-guests'
@@ -316,13 +344,14 @@ appId: ${APP_ID}
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-19-guests-host
 # ---------------------------------------------------------------- Phase 4: anti-chaos engine
+- waitForAnimationToEnd
 - tapOn:
     id: 'collab-back'
+    retryTapIfNoChange: true
 - scrollUntilVisible:
     element:
       id: 'detail-back'
     direction: UP
-# Android: the first tap after a fling only stops the scroll – wait, and retry if nothing changed.
 - waitForAnimationToEnd
 - tapOn:
     id: 'detail-back'
@@ -333,15 +362,19 @@ appId: ${APP_ID}
       id: 'event-demo-bbq'
     direction: DOWN
     centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'event-demo-bbq'
+    retryTapIfNoChange: true
 - scrollUntilVisible:
     element:
       id: 'leave-ready-check'
     direction: DOWN
     centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'leave-ready-check'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'screen-ready'
@@ -354,13 +387,14 @@ appId: ${APP_ID}
     id: 'ready-mode-steps'
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-21-ready-steps
+- waitForAnimationToEnd
 - tapOn:
     id: 'ready-close'
+    retryTapIfNoChange: true
 - scrollUntilVisible:
     element:
       id: 'detail-back'
     direction: UP
-# Android: the first tap after a fling only stops the scroll – wait, and retry if nothing changed.
 - waitForAnimationToEnd
 - tapOn:
     id: 'detail-back'
@@ -372,8 +406,10 @@ appId: ${APP_ID}
     element:
       id: 'open-focus'
     direction: UP
+- waitForAnimationToEnd
 - tapOn:
     id: 'open-focus'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'screen-focus'
@@ -382,8 +418,10 @@ appId: ${APP_ID}
     id: 'focus-body-double-toggle'
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-22-focus
+- waitForAnimationToEnd
 - tapOn:
     id: 'focus-close'
+    retryTapIfNoChange: true
 # Tone, buffer learning and the private punctuality summary
 - tapOn:
     id: 'tab-settings'
