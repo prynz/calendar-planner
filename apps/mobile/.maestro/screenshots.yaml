@@ -308,7 +308,6 @@ appId: ${APP_ID}
     element:
       id: 'events-templates'
     direction: UP
-    centerElement: true
 - waitForAnimationToEnd
 - tapOn:
     id: 'events-templates'
@@ -542,6 +541,8 @@ appId: ${APP_ID}
     element:
       id: 'family-shopping'
     direction: DOWN
+    # Centred, otherwise the card ends up under the floating tab bar and the tap hits the bar.
+    centerElement: true
 - waitForAnimationToEnd
 - tapOn:
     id: 'family-shopping'
@@ -766,7 +767,7 @@ appId: ${APP_ID}
 - tapOn:
     id: 'detail-back'
     retryTapIfNoChange: true
-# Cover themes in the editor
+# Cover themes in the editor (a horizontal strip: Sunset is the first premium cover fully on screen)
 - tapOn:
     id: 'fab-add'
 - extendedWaitUntil:
@@ -776,10 +777,10 @@ appId: ${APP_ID}
 - hideKeyboard
 - scrollUntilVisible:
     element:
-      id: 'editor-cover-confetti'
+      id: 'editor-cover-sunset'
     direction: DOWN
     centerElement: true
 - tapOn:
-    id: 'editor-cover-confetti'
+    id: 'editor-cover-sunset'
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-42-covers
