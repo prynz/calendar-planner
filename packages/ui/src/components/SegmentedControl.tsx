@@ -59,7 +59,14 @@ export function SegmentedControl<T extends string>({
               backgroundColor: selected ? colors.accentFill : 'transparent',
             }}
           >
-            <Text variant="label" color={selected ? 'onAccentFill' : 'textSecondary'}>
+            {/* One line that shrinks instead of breaking a word ("Gruppe-n") at 200 % text size. */}
+            <Text
+              variant="label"
+              color={selected ? 'onAccentFill' : 'textSecondary'}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.6}
+            >
               {o.label}
             </Text>
           </Pressable>

@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 
 import { useTheme } from '../theme/ThemeProvider';
-import { categoryColors, radii, space, type EventCategory } from '../tokens';
+import { categoryColors, radii, space, type EventCategory, FIXED_SIZE_TEXT_SCALE } from '../tokens';
 import { initialsOf } from './AvatarStack';
 import { Text } from './Text';
 
@@ -43,6 +43,7 @@ export function MemberAvatar({
       <Text
         variant={size === 'lg' ? 'titleL' : size === 'md' ? 'titleM' : 'label'}
         color={color ? 'onCategoryFill' : 'textPrimary'}
+        maxFontSizeMultiplier={FIXED_SIZE_TEXT_SCALE}
       >
         {emoji ?? initialsOf(name)}
       </Text>

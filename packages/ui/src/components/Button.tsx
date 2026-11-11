@@ -41,6 +41,8 @@ export function Button({
       style={({ pressed }) => ({
         minHeight: size === 'lg' ? touch.cta : touch.min,
         paddingHorizontal: space[6],
+        // Room above/below when large text wraps the label onto two lines.
+        paddingVertical: space[2],
         borderRadius: radii.pill,
         backgroundColor: fill,
         borderWidth: variant === 'secondary' ? 1.5 : 0,

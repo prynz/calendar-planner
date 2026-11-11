@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { FlatList, View } from 'react-native';
 
 import { useTheme } from '../theme/ThemeProvider';
-import { radii, space, touch } from '../tokens';
+import { radii, space, touch, FIXED_SIZE_TEXT_SCALE } from '../tokens';
 import { PressableScale } from './PressableScale';
 import { Text } from './Text';
 
@@ -71,10 +71,19 @@ export function DateStrip({ days, selectedKey, onSelect }: DateStripProps) {
               backgroundColor: selected ? colors.accentFill : colors.surface,
             }}
           >
-            <Text variant="titleM" color={selected ? 'onAccentFill' : 'textPrimary'} tabular>
+            <Text
+              variant="titleM"
+              color={selected ? 'onAccentFill' : 'textPrimary'}
+              tabular
+              maxFontSizeMultiplier={FIXED_SIZE_TEXT_SCALE}
+            >
               {d.dayNumber}
             </Text>
-            <Text variant="label" color={selected ? 'onAccentFill' : 'textSecondary'}>
+            <Text
+              variant="label"
+              color={selected ? 'onAccentFill' : 'textSecondary'}
+              maxFontSizeMultiplier={FIXED_SIZE_TEXT_SCALE}
+            >
               {d.weekday}
             </Text>
             <View

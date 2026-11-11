@@ -171,6 +171,12 @@ export const typography = {
 export type TypographyVariant = keyof typeof typography;
 
 /** Motion tokens (ms / spring configs for Reanimated `withSpring`). */
+/**
+ * Text scale cap inside fixed-size shapes (avatars, date pills). They also carry a full spoken label, so the
+ * text may stay smaller there instead of spilling out of the shape at 200 % (Phase 7 CI screenshots 43–46).
+ */
+export const FIXED_SIZE_TEXT_SCALE = 1.3;
+
 export const motion = {
   duration: { instant: 100, fast: 180, base: 260, slow: 420 },
   easing: {
