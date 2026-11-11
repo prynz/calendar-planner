@@ -196,6 +196,9 @@ export const de = {
   'settings.theme.system': 'System',
   'settings.theme.dark': 'Dunkel',
   'settings.theme.light': 'Hell',
+  'settings.haptics': 'Vibration bei Aktionen',
+  'settings.haptics.hint':
+    'Kurzes Feedback beim Tippen, Wischen und Speichern. Erinnerungen vibrieren unabhängig davon.',
   'settings.saveError': 'Konnte nicht gespeichert werden. Die Einstellung gilt bis zum nächsten Start.',
   'settings.backend': 'Server',
   'settings.backend.demo': 'Nicht verbunden: Die App läuft im Demo-Modus mit Beispieldaten.',

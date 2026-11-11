@@ -2,8 +2,16 @@ import * as Haptics from 'expo-haptics';
 
 import type { HapticIntent } from '@nowish/ui';
 
+let enabled = true;
+
+/** Mirrors the "Vibrate on actions" setting (set by SettingsProvider). */
+export function setHapticsEnabled(value: boolean): void {
+  enabled = value;
+}
+
 /** Maps design-system haptic intents to expo-haptics. Failures (e.g. no haptic engine) are non-fatal. */
 export function haptic(intent: HapticIntent): void {
+  if (!enabled) return;
   const run = (): Promise<void> => {
     switch (intent) {
       case 'selection':

@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { REMINDER_INTENSITIES, REMINDER_TONES, type ReminderIntensity, type ReminderTone } from '@nowish/domain';
 import { LANGUAGE_PREFERENCES, type LanguagePreference } from '@nowish/i18n';
 
+import { setHapticsEnabled } from '@/services/haptics';
 import type { SettingsStore } from '@/storage/settings-store';
 
 export const THEME_PREFERENCES = ['system', 'dark', 'light'] as const;
@@ -19,6 +20,8 @@ export interface Settings {
   bufferLearning: boolean;
   /** Show the private punctuality summary (anti-chaos-engine.md §5). */
   punctualityStats: boolean;
+  /** Haptic feedback on taps, swipes and saves (Phase 7: switchable for people who find it irritating). */
+  haptics: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -29,6 +32,7 @@ export const DEFAULT_SETTINGS: Settings = {
   dawdleBuffer: 5,
   bufferLearning: true,
   punctualityStats: true,
+  haptics: true,
 };
 export const BUFFER_RANGE = { min: 0, max: 30, step: 5 } as const;
 
@@ -40,6 +44,7 @@ const KEYS: Record<keyof Settings, string> = {
   dawdleBuffer: 'settings.dawdleBuffer',
   bufferLearning: 'settings.bufferLearning',
   punctualityStats: 'settings.punctualityStats',
+  haptics: 'settings.haptics',
 };
 
 const oneOf =
@@ -70,6 +75,7 @@ export function parseSettings(raw: Partial<Record<keyof Settings, string | null>
     dawdleBuffer: parseBuffer(raw.dawdleBuffer),
     bufferLearning: parseBool(raw.bufferLearning, DEFAULT_SETTINGS.bufferLearning),
     punctualityStats: parseBool(raw.punctualityStats, DEFAULT_SETTINGS.punctualityStats),
+    haptics: parseBool(raw.haptics, DEFAULT_SETTINGS.haptics),
   };
 }
 
@@ -111,6 +117,11 @@ export function SettingsProvider({ store, children }: { store: SettingsStore; ch
       alive = false;
     };
   }, [store]);
+
+  // haptic() is called from event handlers all over the app; a module flag keeps those call sites simple.
+  useEffect(() => {
+    setHapticsEnabled(settings.haptics);
+  }, [settings.haptics]);
 
   const set = useCallback(
     <K extends keyof Settings>(key: K, value: Settings[K]) => {

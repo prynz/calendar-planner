@@ -18,7 +18,7 @@ on:
       screenshot_prefix:
         description: 'File name prefix, e.g. 2026-11-09-phase-01'
         type: string
-        default: '2026-11-11-phase-06'
+        default: '2026-11-11-phase-07'
 
 permissions:
   contents: read
@@ -76,6 +76,17 @@ jobs:
             echo "Maestro attempt $attempt failed – retrying once"
           done
           exit 1
+      - name: Run Maestro flow with 200 % text size
+        env:
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: '300000'
+        run: |
+          # AX2 ("accessibility-large") is about 200 % of the default body size.
+          xcrun simctl ui "$SIM_UDID" content_size accessibility-large
+          for attempt in 1 2; do
+            maestro --device "$SIM_UDID" test -e PLATFORM=ios -e APP_ID=dev.calendarplanner.app.preview apps/mobile/.maestro/large-text.yaml --test-output-dir=maestro-output && exit 0
+            echo "Large-text attempt $attempt failed – retrying once"
+          done
+          exit 1
       - name: Collect screenshots
         if: always()
         run: |
@@ -96,7 +107,7 @@ jobs:
         if: ${{ (github.event_name == 'workflow_dispatch' && inputs.commit_screenshots) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[screenshots]')) }}
         env:
           # Push runs use the current phase prefix; update it when a new phase starts.
-          PREFIX: ${{ inputs.screenshot_prefix || '2026-11-11-phase-06' }}
+          PREFIX: ${{ inputs.screenshot_prefix || '2026-11-11-phase-07' }}
         run: |
           set -e
           mkdir -p docs/previews/screenshots

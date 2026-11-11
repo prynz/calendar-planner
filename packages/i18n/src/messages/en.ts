@@ -192,6 +192,8 @@ export const en: Messages = {
   'settings.theme.system': 'System',
   'settings.theme.dark': 'Dark',
   'settings.theme.light': 'Light',
+  'settings.haptics': 'Vibrate on actions',
+  'settings.haptics.hint': 'A short buzz when you tap, swipe or save. Reminders vibrate regardless.',
   'settings.saveError': "Couldn't save. The setting applies until the app restarts.",
   'settings.backend': 'Server',
   'settings.backend.demo': 'Not connected: the app runs in demo mode with example data.',

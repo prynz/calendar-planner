@@ -3,14 +3,25 @@ import { useState } from 'react';
 import { brand } from '@nowish/brand';
 import type { ReminderIntensity } from '@nowish/domain';
 import type { LanguagePreference } from '@nowish/i18n';
-import { Button, Card, Gutter, Screen, ScreenHeader, SectionTitle, SegmentedControl, Stepper, Text } from '@nowish/ui';
+import {
+  Button,
+  Card,
+  Gutter,
+  Screen,
+  ScreenHeader,
+  SectionTitle,
+  SegmentedControl,
+  Stepper,
+  SwitchRow,
+  Text,
+} from '@nowish/ui';
 
 import type { ClientConfigResult } from '@/config/client-config';
 import { useEvents } from '@/providers/events';
 import { useI18n } from '@/providers/i18n';
 import { BUFFER_RANGE, useSettings, type ThemePreference } from '@/providers/settings';
 import { confirm } from '@/services/confirm';
-import { haptic } from '@/services/haptics';
+import { haptic, setHapticsEnabled } from '@/services/haptics';
 
 import { AccountSettings } from './AccountSettings';
 import { AntiChaosSettings } from './AntiChaosSettings';
@@ -95,6 +106,20 @@ export function SettingsScreen({ clientConfig, appVersion }: { clientConfig: Cli
           accessibilityLabel={t('settings.theme')}
           testIDPrefix="theme"
         />
+        <SwitchRow
+          label={t('settings.haptics')}
+          value={settings.haptics}
+          onChange={(v) => {
+            // Applied right away (the provider syncs on the next render), so switching on confirms itself.
+            setHapticsEnabled(v);
+            set('haptics', v);
+            if (v) haptic('light');
+          }}
+          testID="haptics-toggle"
+        />
+        <Text variant="label" color="textSecondary">
+          {t('settings.haptics.hint')}
+        </Text>
         {saveFailed || state === 'load-failed' ? (
           <Text variant="bodyM" color="dangerText" accessibilityRole="alert" testID="settings-save-error">
             {t('settings.saveError')}

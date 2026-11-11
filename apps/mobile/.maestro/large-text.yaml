@@ -1,0 +1,50 @@
+# Phase 7: the same app with 200 % text size (Android font_scale 2.0, iOS "Larger Text" AX2).
+# Runs after screenshots.yaml, so onboarding is done and the app is German + light. The workflow sets the system text
+# size before this flow and resets it afterwards. Text variants cap their own scale (tokens: maxScale), so headlines
+# grow less than body text – this flow shows that nothing is cut off or overlaps.
+appId: ${APP_ID}
+---
+- launchApp
+- runFlow: dismiss-system-dialogs.yaml
+- extendedWaitUntil:
+    visible:
+      id: 'screen-today'
+    timeout: 60000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-43-large-text-today
+- tapOn:
+    id: 'tab-events'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-events'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-44-large-text-events
+- tapOn:
+    id: 'tab-settings'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-settings'
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: 'subscription'
+    direction: DOWN
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-45-large-text-settings
+- scrollUntilVisible:
+    element:
+      id: 'subscription-compare'
+    direction: DOWN
+- waitForAnimationToEnd
+- tapOn:
+    id: 'subscription-compare'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-paywall'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-46-large-text-paywall

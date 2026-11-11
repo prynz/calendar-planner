@@ -1,4 +1,5 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react-native';
+import * as Haptics from 'expo-haptics';
 
 import { SettingsScreen } from '@/features/settings/SettingsScreen';
 import { parseSettings } from '@/providers/settings';
@@ -20,6 +21,7 @@ describe('settings model', () => {
       dawdleBuffer: 5,
       bufferLearning: true,
       punctualityStats: true,
+      haptics: true,
     });
     expect(
       parseSettings({
@@ -30,6 +32,7 @@ describe('settings model', () => {
         dawdleBuffer: '15',
         bufferLearning: 'false',
         punctualityStats: 'nonsense',
+        haptics: 'false',
       }),
     ).toEqual({
       language: 'en',
@@ -39,6 +42,7 @@ describe('settings model', () => {
       dawdleBuffer: 15,
       bufferLearning: false,
       punctualityStats: true,
+      haptics: false,
     });
     expect(parseSettings({ dawdleBuffer: '999' }).dawdleBuffer).toBe(5);
   });
@@ -51,6 +55,24 @@ describe('settings model', () => {
 });
 
 describe('SettingsScreen', () => {
+  it('turns haptic feedback off and on, and remembers it', async () => {
+    const store = createMemorySettingsStore();
+    await renderApp(<SettingsScreen clientConfig={demoConfig} appVersion="0.1.0" />, { store });
+    await fireEvent(await screen.findByTestId('haptics-toggle'), 'valueChange', false);
+    await waitFor(async () => expect(await store.get('settings.haptics')).toBe('false'));
+    const selection = jest.mocked(Haptics.selectionAsync);
+    selection.mockClear();
+    await fireEvent.press(screen.getByTestId('theme-light'));
+    expect(selection).not.toHaveBeenCalled();
+    const impact = jest.mocked(Haptics.impactAsync);
+    impact.mockClear();
+    await fireEvent(screen.getByTestId('haptics-toggle'), 'valueChange', true);
+    expect(impact).toHaveBeenCalledTimes(1);
+    await fireEvent.press(screen.getByTestId('theme-dark'));
+    expect(selection).toHaveBeenCalledTimes(1);
+    await waitFor(async () => expect(await store.get('settings.haptics')).toBe('true'));
+  });
+
   it('switches the language immediately and persists it', async () => {
     const store = createMemorySettingsStore();
     await renderApp(<SettingsScreen clientConfig={demoConfig} appVersion="0.1.0" />, { store });

@@ -12,7 +12,7 @@ on:
       screenshot_prefix:
         description: 'File name prefix, e.g. 2026-11-09-phase-01'
         type: string
-        default: '2026-11-11-phase-06'
+        default: '2026-11-11-phase-07'
   push:
     branches: [main, 'claude/**']
     paths:
@@ -108,6 +108,9 @@ jobs:
             sleep 20
             adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS || true
             maestro test -e PLATFORM=android -e APP_ID=dev.calendarplanner.app.preview apps/mobile/.maestro/screenshots.yaml --test-output-dir=maestro-output || (echo 'Retrying Maestro once'; sleep 10; maestro test -e PLATFORM=android -e APP_ID=dev.calendarplanner.app.preview apps/mobile/.maestro/screenshots.yaml --test-output-dir=maestro-output-retry) || (echo '=== logcat (ReactNativeJS) ==='; adb logcat -d -s ReactNativeJS:V ReactNative:V | tail -n 80; echo '=== ui texts ==='; maestro hierarchy > hierarchy.json; grep -oE '"(text|accessibilityText|resource-id)" : "[^"]+"' hierarchy.json | head -n 80; exit 1)
+            adb shell settings put system font_scale 2.0
+            maestro test -e PLATFORM=android -e APP_ID=dev.calendarplanner.app.preview apps/mobile/.maestro/large-text.yaml --test-output-dir=maestro-output-large || (echo 'Retrying large-text flow once'; sleep 10; maestro test -e PLATFORM=android -e APP_ID=dev.calendarplanner.app.preview apps/mobile/.maestro/large-text.yaml --test-output-dir=maestro-output-large-retry)
+            adb shell settings put system font_scale 1.0
       - name: Collect screenshots
         if: always()
         run: |
@@ -118,7 +121,7 @@ jobs:
         if: ${{ (github.event_name == 'workflow_dispatch' && inputs.commit_screenshots) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[screenshots]')) }}
         env:
           # Push runs use the current phase prefix; update it when a new phase starts.
-          PREFIX: ${{ inputs.screenshot_prefix || '2026-11-11-phase-06' }}
+          PREFIX: ${{ inputs.screenshot_prefix || '2026-11-11-phase-07' }}
         run: |
           set -e
           mkdir -p docs/previews/screenshots
