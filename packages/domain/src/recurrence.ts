@@ -1,7 +1,8 @@
 import { addDays, parseDayKey, wallParts, zonedWallTimeToInstant, dayKeyOf, type DayKey } from './time';
 
 /**
- * RFC 5545 subset (docs/product/features/calendar.md): FREQ, INTERVAL, BYDAY (weekly), COUNT, UNTIL, EXDATE.
+ * RFC 5545 subset (docs/product/features/calendar.md): FREQ, INTERVAL, BYDAY (weekly, and monthly with one
+ * ordinal such as `1FR` / `-1MO`), COUNT, UNTIL, EXDATE.
  * Occurrences keep the event's local wall-clock time in its zone, so a 19:00 weekly appointment stays at
  * 19:00 across daylight saving changes.
  */
@@ -12,12 +13,20 @@ export type RecurrenceFrequency = (typeof RECURRENCE_FREQUENCIES)[number];
 /** 0 = Monday … 6 = Sunday (ISO order, DACH week start). */
 export type Weekday = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
+export const NTH_WEEKS = [1, 2, 3, 4, -1] as const;
+export type NthWeek = (typeof NTH_WEEKS)[number];
+
 export interface Recurrence {
   freq: RecurrenceFrequency;
   /** Every n-th period, 1–99. */
   interval: number;
   /** Weekly only; empty/absent = the weekday of the first occurrence. */
   byWeekday?: readonly Weekday[];
+  /**
+   * Monthly only: the n-th weekday of the month (`nth` 1–4, or -1 = last), e.g. "every 1st Friday"
+   * (groups.md GRP-04). Absent = the day of month of the first occurrence.
+   */
+  byNthWeekday?: { weekday: Weekday; nth: NthWeek };
   /** Last day (inclusive) on which an occurrence may start. */
   until?: DayKey;
   /** Total number of occurrences including the first. */
@@ -57,6 +66,28 @@ function daysInMonth(year: number, month: number): number {
 const pad = (n: number) => String(n).padStart(2, '0');
 const dayKey = (y: number, m: number, d: number): DayKey => `${y}-${pad(m)}-${pad(d)}`;
 
+/** Day of the n-th (or last, -1) `weekday` in a month; null when the month has no such day (5th never asked). */
+export function nthWeekdayOfMonth(year: number, month: number, weekday: Weekday, nth: NthWeek): DayKey | null {
+  if (nth === -1) {
+    const last = dayKey(year, month, daysInMonth(year, month));
+    const back = (weekdayOf(last) - weekday + 7) % 7;
+    return addDays(last, -back);
+  }
+  const firstOfMonth = dayKey(year, month, 1);
+  const offset = (weekday - weekdayOf(firstOfMonth) + 7) % 7;
+  const d = 1 + offset + (nth - 1) * 7;
+  return d <= daysInMonth(year, month) ? dayKey(year, month, d) : null;
+}
+
+/** The ordinal of `day` within its month as used by "every n-th weekday" (5th weekday → last). */
+export function nthOfDay(day: DayKey): { weekday: Weekday; nth: NthWeek } {
+  const { dayOfMonth } = parseDayKey(day);
+  const n = Math.ceil(dayOfMonth / 7);
+  // A 5th weekday does not exist every month; "last" keeps the series monthly instead of skipping months.
+  const nth: NthWeek = n >= 5 ? -1 : (n as 1 | 2 | 3 | 4);
+  return { weekday: weekdayOf(day), nth };
+}
+
 /** Candidate start days in chronological order (before COUNT/UNTIL/EXDATE filtering). */
 function* candidateDays(first: DayKey, r: Recurrence): Generator<DayKey> {
   const { year, month, dayOfMonth } = parseDayKey(first);
@@ -79,6 +110,11 @@ function* candidateDays(first: DayKey, r: Recurrence): Generator<DayKey> {
         const total = month - 1 + i * r.interval;
         const y = year + Math.floor(total / 12);
         const m = (total % 12) + 1;
+        if (r.byNthWeekday) {
+          const d = nthWeekdayOfMonth(y, m, r.byNthWeekday.weekday, r.byNthWeekday.nth);
+          if (d !== null && d >= first) yield d;
+          continue;
+        }
         // RFC 5545: months without that day (31st, 30 Feb) are skipped, not clamped.
         if (dayOfMonth <= daysInMonth(y, m)) yield dayKey(y, m, dayOfMonth);
       }

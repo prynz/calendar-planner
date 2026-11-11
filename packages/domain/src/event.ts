@@ -1,5 +1,5 @@
 import type { TravelMode } from './anti-chaos';
-import type { Recurrence } from './recurrence';
+import { NTH_WEEKS, type Recurrence } from './recurrence';
 import { parseDayKey, type DayKey } from './time';
 
 /** Categories match the design-token pastel set (`@nowish/ui` tokens). */
@@ -60,6 +60,8 @@ export function validateDraft(d: EventDraft): Partial<Record<DraftField, DraftEr
       errors.recurrence = 'out-of-range';
     else if (r.freq === 'weekly' && r.byWeekday !== undefined && r.byWeekday.length === 0)
       errors.recurrence = 'weekday-required';
+    else if (r.byNthWeekday && (r.freq !== 'monthly' || !NTH_WEEKS.includes(r.byNthWeekday.nth)))
+      errors.recurrence = 'out-of-range';
     else if (r.until !== undefined && r.until < d.day) errors.recurrence = 'until-before-start';
   }
   return errors;

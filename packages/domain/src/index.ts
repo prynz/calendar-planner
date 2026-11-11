@@ -14,3 +14,6 @@ export * from './calendar-event';
 export * from './collab';
 export * from './journey';
 export * from './ready-check';
+export * from './family';
+export * from './groups';
+export * from './ics';

@@ -5,6 +5,8 @@ import {
   type CalendarEvent,
   type Recurrence,
   type Weekday,
+  NTH_WEEKS,
+  type NthWeek,
 } from '@nowish/domain';
 
 /** JSON shape on disk: dates as ISO strings. Version bump = migration in sqlite-event-repository.ts. */
@@ -56,6 +58,15 @@ const i18n = (o: Json, k: string) => {
   return { de: str(v, 'de'), en: str(v, 'en') };
 };
 
+function nthWeekday(v: Record<string, unknown>): { weekday: Weekday; nth: NthWeek } {
+  const weekday = num(v, 'weekday');
+  const nth = num(v, 'nth');
+  if (!Number.isInteger(weekday) || weekday < 0 || weekday > 6) throw new CorruptEventError('byNthWeekday');
+  const found = NTH_WEEKS.find((n) => n === nth);
+  if (found === undefined) throw new CorruptEventError('byNthWeekday');
+  return { weekday: weekday as Weekday, nth: found }; // range checked above
+}
+
 function recurrence(v: unknown): Recurrence | undefined {
   if (v === undefined) return undefined;
   if (!isObj(v)) throw new CorruptEventError('recurrence');
@@ -67,6 +78,7 @@ function recurrence(v: unknown): Recurrence | undefined {
     ...(Array.isArray(byWeekday)
       ? { byWeekday: byWeekday.filter((d): d is Weekday => Number.isInteger(d) && d >= 0 && d <= 6) }
       : {}),
+    ...(isObj(v.byNthWeekday) ? { byNthWeekday: nthWeekday(v.byNthWeekday) } : {}),
     ...(typeof v.until === 'string' ? { until: v.until } : {}),
     ...(typeof v.count === 'number' ? { count: v.count } : {}),
     ...(Array.isArray(exdates) ? { exdates: exdates.filter((d): d is string => typeof d === 'string') } : {}),

@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { expandOccurrences, weekdayOf, zonedWallTimeToInstant, type RecurringSource } from '../src';
+import {
+  expandOccurrences,
+  nthOfDay,
+  nthWeekdayOfMonth,
+  weekdayOf,
+  zonedWallTimeToInstant,
+  type RecurringSource,
+} from '../src';
 
 const TZ = 'Europe/Berlin';
 const at = (day: string, h: number, m = 0) => zonedWallTimeToInstant(day, h, m, TZ);
@@ -84,5 +91,32 @@ describe('expandOccurrences', () => {
 
   it('rejects invalid intervals', () => {
     expect(() => keys(evening('2026-11-09', { freq: 'daily', interval: 0 }), '2026-11-01', '2026-12-01')).toThrow();
+  });
+});
+
+describe('monthly n-th weekday', () => {
+  const TZ2 = 'Europe/Berlin';
+  it('expands "every 1st Friday" and "last Monday"', () => {
+    const start = zonedWallTimeToInstant('2026-11-06', 19, 0, TZ2);
+    const src = { start, end: new Date(start.getTime() + 3_600_000), timeZone: TZ2, allDay: false };
+    const first = expandOccurrences(
+      { ...src, recurrence: { freq: 'monthly', interval: 1, byNthWeekday: { weekday: 4, nth: 1 } } },
+      start,
+      zonedWallTimeToInstant('2027-03-01', 0, 0, TZ2),
+    ).map((o) => o.key);
+    expect(first).toEqual(['2026-11-06', '2026-12-04', '2027-01-01', '2027-02-05']);
+    const last = expandOccurrences(
+      { ...src, recurrence: { freq: 'monthly', interval: 1, byNthWeekday: { weekday: 0, nth: -1 }, count: 3 } },
+      start,
+      zonedWallTimeToInstant('2027-06-01', 0, 0, TZ2),
+    ).map((o) => o.key);
+    expect(last).toEqual(['2026-11-30', '2026-12-28', '2027-01-25']);
+  });
+
+  it('derives the ordinal of a day', () => {
+    expect(nthOfDay('2026-11-06')).toEqual({ weekday: 4, nth: 1 });
+    expect(nthOfDay('2026-11-27')).toEqual({ weekday: 4, nth: 4 });
+    expect(nthOfDay('2026-10-30')).toEqual({ weekday: 4, nth: -1 });
+    expect(nthWeekdayOfMonth(2026, 2, 0, 4)).toBe('2026-02-23');
   });
 });
