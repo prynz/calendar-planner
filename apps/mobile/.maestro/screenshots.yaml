@@ -15,12 +15,11 @@ appId: ${APP_ID}
     id: 'demo-badge'
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-01-today-en-dark
-# Detail with the backwards leave plan
+# Detail with the backwards leave plan (game night is the last card today – it cannot always be centred)
 - scrollUntilVisible:
     element:
       id: 'event-demo-games'
     direction: DOWN
-    centerElement: true
 - waitForAnimationToEnd
 - tapOn:
     id: 'event-demo-games'
@@ -458,6 +457,11 @@ appId: ${APP_ID}
     visible:
       id: 'screen-events'
     timeout: 10000
+# The events list keeps its earlier scroll position – back to the top for the section switch.
+- scrollUntilVisible:
+    element:
+      id: 'together-family'
+    direction: UP
 - waitForAnimationToEnd
 - tapOn:
     id: 'together-family'
