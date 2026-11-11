@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { RSVP_ANSWERS, VOTE_VALUES, type EventCollab } from '@nowish/domain';
+import { RSVP_ANSWERS, VOTE_VALUES, type EventCollab, type Journey } from '@nowish/domain';
 
 /** JSON shape on disk: dates as ISO strings. Bump + migrate in db.ts when the shape changes. */
 export const COLLAB_JSON_VERSION = 1;
@@ -16,6 +16,7 @@ const note = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('poll-created'), pollId: z.string() }),
   z.object({ kind: z.literal('poll-decided'), pollId: z.string() }),
   z.object({ kind: z.literal('task-done'), personId: z.string(), taskId: z.string() }),
+  z.object({ kind: z.literal('late'), personId: z.string(), minutes: z.number().int() }),
 ]);
 
 const action = z.discriminatedUnion('type', [
@@ -102,6 +103,24 @@ export function serializeCollab(c: EventCollab): string {
 export function deserializeCollab(json: string): EventCollab {
   const parsed = collabSchema.parse(JSON.parse(json));
   return stripUndefined(parsed) as EventCollab; // zod output only differs by `?: T | undefined`, removed here
+}
+
+const journeySchema = z.object({
+  id: z.string(),
+  eventId: z.string(),
+  occurrenceKey: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  plannedLeaveAt: date,
+  leftAt: date.optional(),
+  lateMinutes: z.number().int().optional(),
+  lateAnnouncedAt: date.optional(),
+  checked: z.array(z.string()),
+});
+
+export const serializeJourney = (j: Journey): string => JSON.stringify(j);
+
+/** Validated like collaboration documents; private to the device (anti-chaos-engine.md §1). */
+export function deserializeJourney(json: string): Journey {
+  return stripUndefined(journeySchema.parse(JSON.parse(json))) as Journey; // see deserializeCollab
 }
 
 function stripUndefined(v: unknown): unknown {

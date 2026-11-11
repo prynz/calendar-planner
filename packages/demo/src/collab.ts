@@ -94,6 +94,30 @@ export function simulateChatReply(c: EventCollab, now: Date): SimulatedAction[] 
   return [{ at: seconds(now, 4 + (h % 5)), personId, type: 'message', body }];
 }
 
+const LATE_REPLIES: readonly LocalizedText[] = [
+  { de: 'Kein Stress, bis gleich! 🙂', en: 'No stress, see you soon! 🙂' },
+  { de: 'Danke fürs Bescheid sagen 👍', en: 'Thanks for letting us know 👍' },
+  { de: 'Alles gut, wir fangen schon mal an.', en: 'All good, we’ll get started.' },
+];
+
+/** After "I'm running late", the host (or someone who is coming) answers kindly after 4–8 s. */
+export function simulateLateReply(c: EventCollab, now: Date): SimulatedAction[] {
+  const candidates = [c.hostId, ...c.invitations.filter((i) => i.answer === 'yes').map((i) => i.personId)].filter(
+    (p) => p !== VIEWER && !PASSIVE.has(p),
+  );
+  const personId = candidates[0];
+  if (!personId) return [];
+  const h = stableHash(`${c.eventId}:late:${c.messages.length}`);
+  return [
+    {
+      at: seconds(now, 4 + (h % 5)),
+      personId,
+      type: 'message',
+      body: LATE_REPLIES[h % LATE_REPLIES.length] as LocalizedText,
+    },
+  ];
+}
+
 // ---------------------------------------------------------------------------------------------- seed
 
 type Answers = Record<string, RsvpAnswer | null>;

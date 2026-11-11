@@ -10,7 +10,14 @@ import {
   type ReactNode,
 } from 'react';
 
-import { buildDemoCollabs, buildDemoEvents, DEMO_TIME_ZONE, DEMO_VIEWER_ID, simulateInviteReplies } from '@nowish/demo';
+import {
+  buildDemoCollabs,
+  buildDemoEvents,
+  buildDemoJourneys,
+  DEMO_TIME_ZONE,
+  DEMO_VIEWER_ID,
+  simulateInviteReplies,
+} from '@nowish/demo';
 import {
   applyDraft,
   emptyCollab,
@@ -21,6 +28,7 @@ import {
   type DayKey,
   type EventCollab,
   type EventDraft,
+  type Journey,
   type SimulatedAction,
 } from '@nowish/domain';
 
@@ -65,6 +73,11 @@ interface EventsContextValue {
   /** Recurring events: hide one occurrence (EXDATE) instead of deleting the series. */
   removeOccurrence: (id: string, occurrenceKey: DayKey) => Promise<void>;
   resetExampleWorld: () => Promise<void>;
+  /** The viewer's private departure history (Phase 4). */
+  journeys: readonly Journey[];
+  getJourney: (id: string) => Journey | undefined;
+  saveJourney: (journey: Journey) => Promise<void>;
+  clearJourneys: () => Promise<void>;
 }
 
 const EventsContext = createContext<EventsContextValue | null>(null);
@@ -76,7 +89,7 @@ export function newEventId(now: Date): string {
 
 function demoWorld(now: Date) {
   const events = buildDemoEvents(now, DEMO_TIME_ZONE);
-  return { events, collabs: buildDemoCollabs(events, now) };
+  return { events, collabs: buildDemoCollabs(events, now), journeys: buildDemoJourneys(now, DEMO_TIME_ZONE) };
 }
 
 const sameMembers = (e: CalendarEvent, c: EventCollab) => {
@@ -104,13 +117,16 @@ export function EventsProvider({
   const [state, setState] = useState<EventsState>('loading');
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [collabs, setCollabs] = useState<EventCollab[]>([]);
+  const [journeys, setJourneys] = useState<Journey[]>([]);
   const [attempt, setAttempt] = useState(0);
   const eventsRef = useRef(events);
   const collabsRef = useRef(collabs);
+  const journeysRef = useRef(journeys);
   const nowRef = useRef(now);
   useLayoutEffect(() => {
     eventsRef.current = events;
     collabsRef.current = collabs;
+    journeysRef.current = journeys;
     nowRef.current = now;
   });
 
@@ -120,8 +136,14 @@ export function EventsProvider({
       const loaded = await repository.load();
       if (!loaded.seeded) {
         const world = demoWorld(nowRef.current());
-        await repository.replaceAll(world.events, world.collabs);
+        await repository.replaceAll(world.events, world.collabs, world.journeys);
         return world;
+      }
+      if (!loaded.journeysSeeded) {
+        // Device that ran an older prototype: add the demo departure history once.
+        const extra = buildDemoJourneys(nowRef.current(), DEMO_TIME_ZONE);
+        await repository.seedJourneys(extra);
+        loaded.journeys = [...loaded.journeys, ...extra.filter((j) => !loaded.journeys.some((x) => x.id === j.id))];
       }
       if (!loaded.collabSeeded) {
         // Device that ran the Phase 2 prototype: add collaboration data for its demo events once.
@@ -130,7 +152,7 @@ export function EventsProvider({
           nowRef.current(),
         ).filter((c) => !loaded.collabs.some((x) => x.eventId === c.eventId));
         await repository.seedCollabs(extra);
-        return { events: loaded.events, collabs: [...loaded.collabs, ...extra] };
+        return { events: loaded.events, collabs: [...loaded.collabs, ...extra], journeys: loaded.journeys };
       }
       return loaded;
     })()
@@ -138,6 +160,7 @@ export function EventsProvider({
         if (!alive) return;
         setEvents(world.events);
         setCollabs(world.collabs);
+        setJourneys(world.journeys);
         setState('ready');
       })
       .catch((error: unknown) => {
@@ -300,10 +323,44 @@ export function EventsProvider({
       },
       async resetExampleWorld() {
         const world = demoWorld(nowRef.current());
-        await write(world, () => repository.replaceAll(world.events, world.collabs));
+        const previous = journeysRef.current;
+        setJourneys(world.journeys);
+        await write(world, () => repository.replaceAll(world.events, world.collabs, world.journeys)).catch(
+          (error: unknown) => {
+            setJourneys(previous);
+            throw error;
+          },
+        );
+      },
+      journeys,
+      getJourney: (id) => journeys.find((j) => j.id === id),
+      async saveJourney(journey) {
+        const previous = journeysRef.current;
+        const next = [...previous.filter((j) => j.id !== journey.id), journey];
+        journeysRef.current = next;
+        setJourneys(next);
+        try {
+          await repository.upsertJourney(journey);
+        } catch (error) {
+          journeysRef.current = previous;
+          setJourneys(previous);
+          throw error;
+        }
+      },
+      async clearJourneys() {
+        const previous = journeysRef.current;
+        journeysRef.current = [];
+        setJourneys([]);
+        try {
+          await repository.clearJourneys();
+        } catch (error) {
+          journeysRef.current = previous;
+          setJourneys(previous);
+          throw error;
+        }
       },
     };
-  }, [state, events, collabs, repository, write, saveCollabs]);
+  }, [state, events, collabs, journeys, repository, write, saveCollabs]);
 
   return <EventsContext.Provider value={value}>{children}</EventsContext.Provider>;
 }

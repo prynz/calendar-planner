@@ -141,6 +141,8 @@ export const collabDe = {
   'chat.system.you.rsvp.maybe': 'Du sagst vielleicht',
   'chat.system.you.rsvp.no': 'Du kannst leider nicht',
   'chat.system.you.task-done': 'Du hast „{task}“ erledigt ✅',
+  'chat.system.late': '{name} kommt ca. {minutes} Min. später – kein Stress 🙂',
+  'chat.system.you.late': 'Du kommst ca. {minutes} Min. später – alle wissen Bescheid 🙂',
   'chat.system.invited': 'Eingeladen: {names}',
   'chat.system.poll-created': 'Neue Umfrage: {question}',
   'chat.system.poll-decided': 'Umfrage entschieden: {option}',

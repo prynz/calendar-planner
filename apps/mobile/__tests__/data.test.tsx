@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react-native';
 import type { ReactNode } from 'react';
 
 import { buildDemoEvents } from '@nowish/demo';
-import type { EventDraft } from '@nowish/domain';
+import { announceLate, markLeft, newJourney, type EventDraft, type Journey } from '@nowish/domain';
 import { createTranslator } from '@nowish/i18n';
 
 import { createMemoryEventRepository } from '@/data/memory-event-repository';
@@ -117,9 +117,20 @@ describe('EventsProvider', () => {
 describe('planReminders', () => {
   const t = createTranslator('de');
   const events = buildDemoEvents(NOW);
+  const base = {
+    events,
+    journeys: [] as Journey[],
+    now: NOW,
+    timeZone: 'Europe/Berlin',
+    intensity: 'normal' as const,
+    tone: 'casual' as const,
+    bufferMinutes: 5,
+    locale: 'de' as const,
+    t,
+  };
 
   it('plans stages per intensity with readable texts', () => {
-    const plan = planReminders(events, NOW, 'Europe/Berlin', 'normal', 5, 'de', t);
+    const plan = planReminders(base);
     const games = plan.filter((r) => r.eventId === 'demo-games');
     expect(games.map((r) => r.stage)).toEqual(['get-ready', 'leave-soon', 'leave-now']);
     expect(games[2]).toMatchObject({
@@ -133,8 +144,27 @@ describe('planReminders', () => {
     const games = events.find((e) => e.id === 'demo-games');
     if (!games) throw new Error('demo game night missing');
     const many = Array.from({ length: 40 }, (_, i) => ({ ...games, id: `copy-${i}` }));
-    const plan = planReminders(many, NOW, 'Europe/Berlin', 'firm', 5, 'de', t);
+    const plan = planReminders({ ...base, events: many, intensity: 'firm' });
     expect(plan).toHaveLength(MAX_SCHEDULED);
     expect(plan.every((r) => r.at.getTime() > NOW.getTime())).toBe(true);
+  });
+
+  it('speaks in the chosen tone', () => {
+    const firm = planReminders({ ...base, tone: 'firm' }).filter((r) => r.eventId === 'demo-games');
+    expect(firm[2]?.title).toBe('JETZT los! 🏃');
+  });
+
+  it('stops after "on my way" and drops the check-in after a delay notice', () => {
+    const planned = planReminders({ ...base, intensity: 'firm' }).find((r) => r.eventId === 'demo-games');
+    if (!planned) throw new Error('no reminder');
+    const j = newJourney('demo-games', planned.occurrenceKey, planned.plannedLeaveAt);
+    const left = planReminders({ ...base, intensity: 'firm', journeys: [markLeft(j, NOW)] });
+    expect(left.some((r) => r.eventId === 'demo-games')).toBe(false);
+    const late = planReminders({ ...base, intensity: 'firm', journeys: [announceLate(j, 10, NOW)] });
+    expect(late.filter((r) => r.eventId === 'demo-games').map((r) => r.stage)).toEqual([
+      'get-ready',
+      'leave-soon',
+      'leave-now',
+    ]);
   });
 });

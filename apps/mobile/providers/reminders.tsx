@@ -10,6 +10,10 @@ import {
   type ReactNode,
 } from 'react';
 
+import { journeyId, markLeft, newJourney } from '@nowish/domain';
+import { useRouter } from 'expo-router';
+
+import { effectiveBuffer } from '@/features/leave/buffer';
 import { planReminders } from '@/features/reminders/plan';
 import { useNow } from '@/providers/clock';
 import { useEvents } from '@/providers/events';
@@ -17,10 +21,13 @@ import { useI18n } from '@/providers/i18n';
 import { useSettings } from '@/providers/settings';
 import {
   getPermission,
+  onReminderResponse,
   openSystemSettings,
   replaceScheduled,
   requestPermission,
+  setupActions,
   type PermissionState,
+  type ReminderResponse,
 } from '@/services/notifications';
 
 interface RemindersValue {
@@ -39,7 +46,9 @@ const RemindersContext = createContext<RemindersValue | null>(null);
  * stages drop out.
  */
 export function RemindersProvider({ children }: { children: ReactNode }) {
-  const { events, state, timeZone } = useEvents();
+  const store = useEvents();
+  const { events, state, timeZone, journeys } = store;
+  const router = useRouter();
   const { settings } = useSettings();
   const { locale, t } = useI18n();
   const now = useNow();
@@ -60,17 +69,53 @@ export function RemindersProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const buffer = effectiveBuffer(settings, journeys).minutes;
+
+  // Reminder actions: "on my way" records the departure, "running late" and plain taps open the event.
+  const storeRef = useRef(store);
+  useLayoutEffect(() => {
+    storeRef.current = store;
+  });
+  useEffect(() => {
+    if (state !== 'ready') return;
+    const handle = (r: ReminderResponse) => {
+      if (r.action === 'on-my-way') {
+        const id = journeyId(r.eventId, r.occurrenceKey);
+        const current = storeRef.current.getJourney(id) ?? newJourney(r.eventId, r.occurrenceKey, r.plannedLeaveAt);
+        storeRef.current.saveJourney(markLeft(current, new Date())).catch((error: unknown) => {
+          console.warn('[reminders] could not record departure', error instanceof Error ? error.message : 'unknown');
+        });
+        return;
+      }
+      router.push({
+        pathname: '/event/[id]',
+        params: { id: r.eventId, occurrence: r.occurrenceKey, ...(r.action === 'running-late' ? { late: '1' } : {}) },
+      });
+    };
+    return onReminderResponse(handle);
+  }, [state, router]);
+
+  useEffect(() => {
+    setupActions({ onMyWay: t('notify.action.onMyWay'), runningLate: t('notify.action.runningLate') }).catch(
+      (error: unknown) => {
+        console.warn('[reminders] actions not available', error instanceof Error ? error.message : 'unknown');
+      },
+    );
+  }, [t]);
+
   useEffect(() => {
     if (permission !== 'granted' || state !== 'ready') return;
-    const plan = planReminders(
+    const plan = planReminders({
       events,
-      nowRef.current,
+      journeys,
+      now: nowRef.current,
       timeZone,
-      settings.reminderIntensity,
-      settings.dawdleBuffer,
+      intensity: settings.reminderIntensity,
+      tone: settings.reminderTone,
+      bufferMinutes: buffer,
       locale,
       t,
-    );
+    });
     let alive = true;
     const timer = setTimeout(() => {
       replaceScheduled(plan, t('settings.reminders'))
@@ -83,7 +128,19 @@ export function RemindersProvider({ children }: { children: ReactNode }) {
       alive = false;
       clearTimeout(timer);
     };
-  }, [permission, state, events, timeZone, settings.reminderIntensity, settings.dawdleBuffer, locale, t, minuteBucket]);
+  }, [
+    permission,
+    state,
+    events,
+    journeys,
+    timeZone,
+    settings.reminderIntensity,
+    settings.reminderTone,
+    buffer,
+    locale,
+    t,
+    minuteBucket,
+  ]);
 
   const request = useCallback(async () => {
     try {

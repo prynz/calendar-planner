@@ -1,3 +1,5 @@
+import { useRouter } from 'expo-router';
+import { Target } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
 
@@ -11,6 +13,7 @@ import {
   EventCard,
   FadeIn,
   Gutter,
+  IconButton,
   LeaveHero,
   Screen,
   ScreenHeader,
@@ -18,7 +21,9 @@ import {
   Text,
 } from '@nowish/ui';
 
-import { dateStripDays, dayHeading, eventCardProps, leaveHero } from '../agenda/presenters';
+import { agendaBetweenFor } from '../leave/hero-item';
+import { LeavePanel } from '../leave/LeavePanel';
+import { dateStripDays, dayHeading, eventCardProps, leaveHero, leavePlanFor } from '../agenda/presenters';
 import { StoreGate } from '../agenda/StoreGate';
 import { useAgendaContext } from '../agenda/use-agenda';
 import { haptic } from '@/services/haptics';
@@ -29,7 +34,10 @@ export function TodayScreen() {
   const tz = store.timeZone;
   const items = agendaForDay(store.events, selected, tz);
   const heading = dayHeading(selected, today, tz, locale, t);
+  const router = useRouter();
   const hero = selected === today ? leaveHero(store.events, now, locale, t, buffer, tz) : null;
+  const heroItem = hero ? agendaBetweenFor(store.events, hero.eventId, hero.occurrenceKey, tz) : null;
+  const heroPlan = heroItem ? leavePlanFor(heroItem.event, heroItem.start, buffer) : null;
 
   const select = (key: string) => {
     haptic('selection');
@@ -41,7 +49,20 @@ export function TodayScreen() {
       <ScreenHeader
         eyebrow={heading.eyebrow}
         title={heading.title}
-        trailing={<Badge label={t('demo.badge')} tone="demo" testID="demo-badge" />}
+        trailing={
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: space[2] }}>
+            <IconButton
+              icon={(c) => <Target color={c} size={20} />}
+              onPress={() => {
+                haptic('light');
+                router.push('/focus');
+              }}
+              accessibilityLabel={t('today.focus')}
+              testID="open-focus"
+            />
+            <Badge label={t('demo.badge')} tone="demo" testID="demo-badge" />
+          </View>
+        }
       />
       <StoreGate>
         {hero ? (
@@ -49,6 +70,15 @@ export function TodayScreen() {
             <FadeIn>
               <LeaveHero {...hero} openHint={t('event.openHint')} onPress={() => openEvent(hero.eventId, today)} />
             </FadeIn>
+            {heroItem && heroPlan ? (
+              <LeavePanel
+                event={heroItem.event}
+                occurrenceKey={heroItem.occurrenceKey}
+                start={heroItem.start}
+                plan={heroPlan}
+                compact
+              />
+            ) : null}
           </Gutter>
         ) : (
           <Gutter>

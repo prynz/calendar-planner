@@ -140,6 +140,8 @@ export const collabEn: Record<keyof typeof collabDe, string> = {
   'chat.system.you.rsvp.maybe': 'You said maybe',
   'chat.system.you.rsvp.no': 'You can’t make it',
   'chat.system.you.task-done': 'You finished “{task}” ✅',
+  'chat.system.late': '{name} is running about {minutes} min late – no stress 🙂',
+  'chat.system.you.late': 'You’re running about {minutes} min late – everyone knows 🙂',
   'chat.system.invited': 'Invited: {names}',
   'chat.system.poll-created': 'New poll: {question}',
   'chat.system.poll-decided': 'Poll decided: {option}',

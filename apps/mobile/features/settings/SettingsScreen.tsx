@@ -12,6 +12,8 @@ import { BUFFER_RANGE, useSettings, type ThemePreference } from '@/providers/set
 import { confirm } from '@/services/confirm';
 import { haptic } from '@/services/haptics';
 
+import { AntiChaosSettings } from './AntiChaosSettings';
+
 export function SettingsScreen({ clientConfig, appVersion }: { clientConfig: ClientConfigResult; appVersion: string }) {
   const { t } = useI18n();
   const { settings, setLanguage, setTheme, set, saveFailed, state } = useSettings();
@@ -129,6 +131,7 @@ export function SettingsScreen({ clientConfig, appVersion }: { clientConfig: Cli
         <Text variant="label" color="textSecondary">
           {t('settings.buffer.hint')}
         </Text>
+        <AntiChaosSettings />
       </Gutter>
       <Gutter gap={4}>
         <Card testID="example-world">

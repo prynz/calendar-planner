@@ -10,6 +10,19 @@ export function postMessage(c: EventCollab, authorId: string, body: string, now:
   return { ...c, messages: [...c.messages, msg] };
 }
 
+/** "I'm running late" as a friendly system note to everyone in the event (anti-chaos-engine.md §4). */
+export function postLateNote(c: EventCollab, personId: string, minutes: number, now: Date): EventCollab {
+  if (!memberIds(c).includes(personId)) throw new CollabError('not-invited');
+  if (!Number.isInteger(minutes) || minutes < 1 || minutes > 120) throw new CollabError('invalid-input');
+  return {
+    ...c,
+    messages: [
+      ...c.messages,
+      { id: nextId('late', c.messages, now), at: now, type: 'system', note: { kind: 'late', personId, minutes } },
+    ],
+  };
+}
+
 export const lastMessage = (c: EventCollab): ChatMessage | undefined => c.messages[c.messages.length - 1];
 
 /** Messages in display order (by time, then insertion). */

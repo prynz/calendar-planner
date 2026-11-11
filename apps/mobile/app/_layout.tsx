@@ -61,6 +61,8 @@ function Shell() {
           <Stack.Screen name="event/[id]/index" options={{ animation: 'slide_from_right' }} />
           <Stack.Screen name="event/[id]/[section]" options={{ animation: 'slide_from_right' }} />
           <Stack.Screen name="templates" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+          <Stack.Screen name="ready" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+          <Stack.Screen name="focus" options={{ presentation: 'fullScreenModal', animation: 'fade' }} />
           <Stack.Screen name="editor" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
         </Stack>
       </PreviewFrame>

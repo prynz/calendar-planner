@@ -24,7 +24,8 @@ export const router = (
 
 export function seededRepo(now: Date = NOW) {
   const events = buildDemoEvents(now);
-  return createMemoryEventRepository(events, true, buildDemoCollabs(events, now));
+  // No departure history: plans use the fixed 5-minute buffer unless a test adds journeys.
+  return createMemoryEventRepository(events, true, buildDemoCollabs(events, now), [], true);
 }
 
 export async function renderApp(

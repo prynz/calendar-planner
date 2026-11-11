@@ -81,3 +81,13 @@ describe('simulation rules', () => {
     expect(simulateChatReply(schedule(games, first), NOW)).toHaveLength(0);
   });
 });
+
+describe('demo journeys', () => {
+  it('are in the past and give buffer learning enough samples', async () => {
+    const { buildDemoJourneys } = await import('../src');
+    const { learnBuffer } = await import('@nowish/domain');
+    const js = buildDemoJourneys(NOW, DEMO_TIME_ZONE);
+    expect(js.every((j) => j.plannedLeaveAt.getTime() < NOW.getTime())).toBe(true);
+    expect(learnBuffer(js, 5)?.samples).toBe(js.length);
+  });
+});

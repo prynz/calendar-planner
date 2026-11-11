@@ -56,6 +56,10 @@ export function noteText(note: SystemNote, c: EventCollab, t: Translate, locale:
         ? t('chat.system.you.task-done', { task: title })
         : t('chat.system.task-done', { name: nameOf(note.personId, t), task: title });
     }
+    case 'late':
+      return note.personId === VIEWER_ID
+        ? t('chat.system.you.late', { minutes: note.minutes })
+        : t('chat.system.late', { name: nameOf(note.personId, t), minutes: note.minutes });
   }
 }
 

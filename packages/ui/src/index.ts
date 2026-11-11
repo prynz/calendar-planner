@@ -30,3 +30,4 @@ export { Fab } from './components/Fab';
 export { ProgressBar } from './components/ProgressBar';
 export { Tile, type TileProps } from './components/Tile';
 export { SwipeDeck, type SwipeChoice, type SwipeDeckProps } from './components/SwipeDeck';
+export { Heatmap, type HeatmapCell } from './components/Heatmap';

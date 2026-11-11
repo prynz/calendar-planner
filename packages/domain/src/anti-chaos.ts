@@ -13,6 +13,10 @@ export type TravelMode = (typeof TRAVEL_MODES)[number];
 export const REMINDER_INTENSITIES = ['gentle', 'normal', 'firm'] as const;
 export type ReminderIntensity = (typeof REMINDER_INTENSITIES)[number];
 
+/** Wording of reminders (anti-chaos-engine.md §2) – independent of how many stages are sent. */
+export const REMINDER_TONES = ['soft', 'casual', 'firm'] as const;
+export type ReminderTone = (typeof REMINDER_TONES)[number];
+
 export interface LeavePlanInput {
   start: Date;
   travelMinutes: number;

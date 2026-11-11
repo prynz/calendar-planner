@@ -33,6 +33,10 @@ jest.mock('expo-notifications', () => {
       scheduled.push({ identifier: req.identifier, content: req.content });
       return Promise.resolve(req.identifier);
     }),
+    setNotificationCategoryAsync: jest.fn(() => Promise.resolve(null)),
+    addNotificationResponseReceivedListener: jest.fn(() => ({ remove: jest.fn() })),
+    getLastNotificationResponse: jest.fn(() => null),
+    clearLastNotificationResponse: jest.fn(),
     AndroidImportance: { HIGH: 4 },
     SchedulableTriggerInputTypes: { DATE: 'date' },
   };

@@ -9,6 +9,8 @@ import { useI18n } from '@/providers/i18n';
 import { useSettings } from '@/providers/settings';
 import { haptic } from '@/services/haptics';
 
+import { effectiveBuffer } from '../leave/buffer';
+
 /** Shared screen context: store, clock, language, settings and navigation helpers. */
 export function useAgendaContext() {
   const store = useEvents();
@@ -17,6 +19,7 @@ export function useAgendaContext() {
   const { settings } = useSettings();
   const router = useRouter();
   const today = dayKeyOf(now, store.timeZone);
+  const buffer = effectiveBuffer(settings, store.journeys);
 
   const openEvent = useCallback(
     (id: string, occurrenceKey: string) => {
@@ -33,5 +36,16 @@ export function useAgendaContext() {
     [router],
   );
 
-  return { store, now, locale, t, settings, today, openEvent, createEvent, buffer: settings.dawdleBuffer };
+  return {
+    store,
+    now,
+    locale,
+    t,
+    settings,
+    today,
+    openEvent,
+    createEvent,
+    buffer: buffer.minutes,
+    learnedBuffer: buffer.learned,
+  };
 }

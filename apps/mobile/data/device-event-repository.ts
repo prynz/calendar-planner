@@ -1,14 +1,14 @@
 import * as SQLite from 'expo-sqlite';
 
-import type { CalendarEvent, EventCollab } from '@nowish/domain';
+import type { CalendarEvent, EventCollab, Journey } from '@nowish/domain';
 
-import { deserializeCollab, serializeCollab } from './collab-serialization';
+import { deserializeCollab, deserializeJourney, serializeCollab, serializeJourney } from './collab-serialization';
 import type { EventRepository } from './event-repository';
 import { deserializeEvent, serializeEvent } from './serialization';
 
 const DB_NAME = 'nowish.db';
-/** v1: events (Phase 2) · v2: collaboration documents (Phase 3). */
-const SCHEMA_VERSION = 2;
+/** v1: events (Phase 2) · v2: collaboration documents (Phase 3) · v3: departure history (Phase 4). */
+const SCHEMA_VERSION = 3;
 
 /** Ordered, additive migrations – never edit an applied one. */
 const MIGRATIONS: Record<number, string> = {
@@ -17,6 +17,7 @@ const MIGRATIONS: Record<number, string> = {
     CREATE TABLE IF NOT EXISTS event (id TEXT PRIMARY KEY NOT NULL, json TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY NOT NULL, value TEXT NOT NULL);`,
   2: `CREATE TABLE IF NOT EXISTS collab (event_id TEXT PRIMARY KEY NOT NULL, json TEXT NOT NULL);`,
+  3: `CREATE TABLE IF NOT EXISTS journey (id TEXT PRIMARY KEY NOT NULL, json TEXT NOT NULL);`,
 };
 
 function parseRows<T>(rows: { id: string; json: string }[], parse: (json: string) => T, label: string): T[] {
@@ -67,7 +68,19 @@ export function createDeviceEventRepository(): EventRepository {
       );
       const meta = await d.getAllAsync<{ key: string; value: string }>('SELECT key, value FROM meta');
       const flag = (k: string) => meta.some((m) => m.key === k && m.value === '1');
-      return { events, collabs, seeded: flag('seeded'), collabSeeded: flag('collab_seeded') };
+      const journeys = parseRows(
+        await d.getAllAsync<{ id: string; json: string }>('SELECT id, json FROM journey'),
+        deserializeJourney,
+        'journey',
+      );
+      return {
+        events,
+        collabs,
+        journeys,
+        seeded: flag('seeded'),
+        collabSeeded: flag('collab_seeded'),
+        journeysSeeded: flag('journeys_seeded'),
+      };
     },
     async upsert(e) {
       const d = await db();
@@ -104,16 +117,44 @@ export function createDeviceEventRepository(): EventRepository {
         await setMeta(d, 'collab_seeded');
       });
     },
-    async replaceAll(events: readonly CalendarEvent[], collabs: readonly EventCollab[]) {
+    async upsertJourney(j) {
+      const d = await db();
+      await d.runAsync(
+        'INSERT INTO journey (id, json) VALUES (?, ?) ON CONFLICT(id) DO UPDATE SET json = excluded.json',
+        j.id,
+        serializeJourney(j),
+      );
+    },
+    async seedJourneys(journeys) {
+      const d = await db();
+      await d.withTransactionAsync(async () => {
+        for (const j of journeys)
+          await d.runAsync(
+            'INSERT INTO journey (id, json) VALUES (?, ?) ON CONFLICT(id) DO NOTHING',
+            j.id,
+            serializeJourney(j),
+          );
+        await setMeta(d, 'journeys_seeded');
+      });
+    },
+    async clearJourneys() {
+      const d = await db();
+      await d.runAsync('DELETE FROM journey');
+    },
+    async replaceAll(events: readonly CalendarEvent[], collabs: readonly EventCollab[], journeys: readonly Journey[]) {
       const d = await db();
       await d.withTransactionAsync(async () => {
         await d.runAsync('DELETE FROM event');
         await d.runAsync('DELETE FROM collab');
+        await d.runAsync('DELETE FROM journey');
+        for (const j of journeys)
+          await d.runAsync('INSERT INTO journey (id, json) VALUES (?, ?)', j.id, serializeJourney(j));
         for (const e of events) await d.runAsync('INSERT INTO event (id, json) VALUES (?, ?)', e.id, serializeEvent(e));
         for (const c of collabs)
           await d.runAsync('INSERT INTO collab (event_id, json) VALUES (?, ?)', c.eventId, serializeCollab(c));
         await setMeta(d, 'seeded');
         await setMeta(d, 'collab_seeded');
+        await setMeta(d, 'journeys_seeded');
       });
     },
   };

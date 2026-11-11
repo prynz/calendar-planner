@@ -1,5 +1,5 @@
 import type { EventRepository } from './event-repository';
-import { deserializeCollab, serializeCollab } from './collab-serialization';
+import { deserializeCollab, deserializeJourney, serializeCollab, serializeJourney } from './collab-serialization';
 import { deserializeEvent, serializeEvent } from './serialization';
 
 /**
@@ -10,6 +10,8 @@ const EVENTS = 'nowish.events.v1';
 const COLLABS = 'nowish.collab.v1';
 const SEEDED = 'nowish.events.seeded';
 const COLLAB_SEEDED = 'nowish.collab.seeded';
+const JOURNEYS = 'nowish.journeys.v1';
+const JOURNEYS_SEEDED = 'nowish.journeys.seeded';
 
 function storage(): Storage {
   if (typeof globalThis.localStorage === 'undefined') throw new Error('localStorage is not available');
@@ -47,6 +49,8 @@ export function createDeviceEventRepository(): EventRepository {
         collabs: parseAll(COLLABS, deserializeCollab),
         seeded: storage().getItem(SEEDED) === '1',
         collabSeeded: storage().getItem(COLLAB_SEEDED) === '1',
+        journeys: parseAll(JOURNEYS, deserializeJourney),
+        journeysSeeded: storage().getItem(JOURNEYS_SEEDED) === '1',
       };
     },
     async upsert(e) {
@@ -70,7 +74,22 @@ export function createDeviceEventRepository(): EventRepository {
       });
       storage().setItem(COLLAB_SEEDED, '1');
     },
-    async replaceAll(events, collabs) {
+    async upsertJourney(j) {
+      writeRows(JOURNEYS, { ...readRows(JOURNEYS), [j.id]: serializeJourney(j) });
+    },
+    async seedJourneys(journeys) {
+      writeRows(JOURNEYS, {
+        ...Object.fromEntries(journeys.map((j) => [j.id, serializeJourney(j)])),
+        ...readRows(JOURNEYS),
+      });
+      storage().setItem(JOURNEYS_SEEDED, '1');
+    },
+    async clearJourneys() {
+      writeRows(JOURNEYS, {});
+    },
+    async replaceAll(events, collabs, journeys) {
+      writeRows(JOURNEYS, Object.fromEntries(journeys.map((j) => [j.id, serializeJourney(j)])));
+      storage().setItem(JOURNEYS_SEEDED, '1');
       writeRows(EVENTS, Object.fromEntries(events.map((e) => [e.id, serializeEvent(e)])));
       writeRows(COLLABS, Object.fromEntries(collabs.map((c) => [c.eventId, serializeCollab(c)])));
       storage().setItem(SEEDED, '1');

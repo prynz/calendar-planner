@@ -309,3 +309,83 @@ appId: ${APP_ID}
     timeout: 10000
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-19-guests-host
+# ---------------------------------------------------------------- Phase 4: anti-chaos engine
+- tapOn:
+    id: 'collab-back'
+- scrollUntilVisible:
+    element:
+      id: 'detail-back'
+    direction: UP
+- tapOn:
+    id: 'detail-back'
+# Ready check of the lakeside barbecue (always upcoming in the example world)
+- scrollUntilVisible:
+    element:
+      id: 'event-demo-bbq'
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: 'event-demo-bbq'
+- scrollUntilVisible:
+    element:
+      id: 'leave-ready-check'
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: 'leave-ready-check'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-ready'
+    timeout: 10000
+- tapOn:
+    id: 'ready-std-keys'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-20-ready-check
+- tapOn:
+    id: 'ready-mode-steps'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-21-ready-steps
+- tapOn:
+    id: 'ready-close'
+- scrollUntilVisible:
+    element:
+      id: 'detail-back'
+    direction: UP
+- tapOn:
+    id: 'detail-back'
+# Focus mode
+- tapOn:
+    id: 'tab-index'
+- scrollUntilVisible:
+    element:
+      id: 'open-focus'
+    direction: UP
+- tapOn:
+    id: 'open-focus'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-focus'
+    timeout: 10000
+- tapOn:
+    id: 'focus-body-double-toggle'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-22-focus
+- tapOn:
+    id: 'focus-close'
+# Tone, buffer learning and the private punctuality summary
+- tapOn:
+    id: 'tab-settings'
+- scrollUntilVisible:
+    element:
+      id: 'buffer-learning'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-23-tone-learning
+- scrollUntilVisible:
+    element:
+      id: 'punctuality-heatmap'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-24-punctuality

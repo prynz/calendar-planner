@@ -1,9 +1,11 @@
+import { antiChaosEn } from './anti-chaos.en';
 import { collabEn } from './collab.en';
 import type { Messages } from './de';
 
 /** English – natural, not a literal translation (docs/brand/brand-foundation.md §3). */
 export const en: Messages = {
   ...collabEn,
+  ...antiChaosEn,
   'tabs.today': 'Today',
   'tabs.events': 'Events',
   'tabs.settings': 'Me',
@@ -140,15 +142,6 @@ export const en: Messages = {
   'web.previewBar': 'Web preview (demo) · reminders and haptics only in the app',
   'settings.exampleWorld.confirm': 'Reset',
   'settings.exampleWorld.failed': 'Resetting didn’t work. Please try again.',
-
-  'notify.get-ready.title': 'Time to get ready',
-  'notify.get-ready.body': '{title} at {start}. Leave at {leave}.',
-  'notify.leave-soon.title': 'Leave in 10 minutes',
-  'notify.leave-soon.body': '{title} at {start}.',
-  'notify.leave-now.title': 'Time to go 🏃',
-  'notify.leave-now.body': 'You’ll be at {title} by {arrive}.',
-  'notify.check-in.title': 'All good?',
-  'notify.check-in.body': 'You meant to leave at {leave}. No stress, you’ve got this.',
 
   'common.loading': 'Loading …',
   'common.retry': 'Try again',

@@ -70,7 +70,7 @@ describe('CalendarScreen', () => {
 describe('EditorScreen', () => {
   it('validates, previews the leave time and saves a new plan', async () => {
     const { repo } = await renderApp(<EditorScreen initialDay="2026-11-12" />, {
-      repo: createMemoryEventRepository([], true),
+      repo: createMemoryEventRepository([], true, [], [], true),
     });
     await fireEvent.press(await screen.findByTestId('editor-save'));
     expect(await screen.findByText('Bitte gib einen Titel ein.')).toBeTruthy();
@@ -93,7 +93,7 @@ describe('EditorScreen', () => {
 
   it('asks before discarding changes', async () => {
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
-    await renderApp(<EditorScreen />, { repo: createMemoryEventRepository([], true) });
+    await renderApp(<EditorScreen />, { repo: createMemoryEventRepository([], true, [], [], true) });
     await fireEvent.changeText(await screen.findByTestId('editor-title'), 'Etwas');
     await fireEvent.press(screen.getByTestId('editor-cancel'));
     expect(alert).toHaveBeenCalledWith('Änderungen verwerfen?', expect.any(String), expect.any(Array));

@@ -16,13 +16,29 @@ describe('settings model', () => {
       language: 'system',
       theme: 'system',
       reminderIntensity: 'normal',
+      reminderTone: 'casual',
       dawdleBuffer: 5,
+      bufferLearning: true,
+      punctualityStats: true,
     });
-    expect(parseSettings({ language: 'en', theme: 'light', reminderIntensity: 'firm', dawdleBuffer: '15' })).toEqual({
+    expect(
+      parseSettings({
+        language: 'en',
+        theme: 'light',
+        reminderIntensity: 'firm',
+        reminderTone: 'soft',
+        dawdleBuffer: '15',
+        bufferLearning: 'false',
+        punctualityStats: 'nonsense',
+      }),
+    ).toEqual({
       language: 'en',
       theme: 'light',
       reminderIntensity: 'firm',
+      reminderTone: 'soft',
       dawdleBuffer: 15,
+      bufferLearning: false,
+      punctualityStats: true,
     });
     expect(parseSettings({ dawdleBuffer: '999' }).dawdleBuffer).toBe(5);
   });

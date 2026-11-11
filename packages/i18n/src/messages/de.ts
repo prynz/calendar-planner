@@ -1,3 +1,4 @@
+import { antiChaosDe } from './anti-chaos.de';
 /**
  * German (default) – source of truth for message keys. ICU MessageFormat syntax.
  * Tone: casual, warm, "du" (docs/brand/brand-foundation.md §3).
@@ -6,6 +7,7 @@ import { collabDe } from './collab.de';
 
 export const de = {
   ...collabDe,
+  ...antiChaosDe,
   'tabs.today': 'Heute',
   'tabs.events': 'Events',
   'tabs.settings': 'Ich',
@@ -144,15 +146,6 @@ export const de = {
   'web.previewBar': 'Web-Vorschau (Demo) · Erinnerungen und Haptik nur in der App',
   'settings.exampleWorld.confirm': 'Zurücksetzen',
   'settings.exampleWorld.failed': 'Zurücksetzen hat nicht geklappt. Versuch es bitte nochmal.',
-
-  'notify.get-ready.title': 'Zeit, dich fertig zu machen',
-  'notify.get-ready.body': '{title} um {start}. Losgehen um {leave}.',
-  'notify.leave-soon.title': 'In 10 Minuten los',
-  'notify.leave-soon.body': '{title} um {start}.',
-  'notify.leave-now.title': 'Jetzt los 🏃',
-  'notify.leave-now.body': 'Dann bist du um {arrive} bei {title}.',
-  'notify.check-in.title': 'Alles okay?',
-  'notify.check-in.body': 'Du wolltest um {leave} los. Kein Stress, du schaffst das.',
 
   'common.loading': 'Lädt …',
   'common.retry': 'Nochmal versuchen',

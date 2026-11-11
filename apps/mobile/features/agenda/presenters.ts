@@ -107,6 +107,7 @@ export function eventCardProps(
 
 export interface HeroModel extends Omit<LeaveHeroProps, 'onPress' | 'openHint'> {
   eventId: string;
+  occurrenceKey: DayKey;
 }
 
 /** The next occurrence whose leave time is within the hero window (design-system.md §12), if any. */
@@ -137,6 +138,7 @@ export function leaveHero(
     const travel = e.travel;
     return {
       eventId: e.id,
+      occurrenceKey: item.occurrenceKey,
       headline: t('leave.hero.big', { time: formatTime(plan.leaveAt, locale, tz) }),
       label: t('leave.hero.label', { title: displayTitle(e, locale), start: formatTime(item.start, locale, tz) }),
       breakdown: travel

@@ -67,7 +67,8 @@ export type SystemNote =
   | { kind: 'invited'; personIds: string[] }
   | { kind: 'poll-created'; pollId: string }
   | { kind: 'poll-decided'; pollId: string }
-  | { kind: 'task-done'; personId: string; taskId: string };
+  | { kind: 'task-done'; personId: string; taskId: string }
+  | { kind: 'late'; personId: string; minutes: number };
 
 export type ChatMessage =
   | { id: string; at: Date; type: 'text'; authorId: string; body: string; bodyI18n?: LocalizedText }

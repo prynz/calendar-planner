@@ -1,4 +1,4 @@
-import type { CalendarEvent, EventCollab } from '@nowish/domain';
+import type { CalendarEvent, EventCollab, Journey } from '@nowish/domain';
 
 export interface StoredWorld {
   events: CalendarEvent[];
@@ -7,6 +7,9 @@ export interface StoredWorld {
   seeded: boolean;
   /** Collaboration data (Phase 3) was seeded – false on devices that ran an older prototype. */
   collabSeeded: boolean;
+  /** The viewer's private departure history (Phase 4). */
+  journeys: Journey[];
+  journeysSeeded: boolean;
 }
 
 /**
@@ -21,6 +24,15 @@ export interface EventRepository {
   upsertCollab(collab: EventCollab): Promise<void>;
   /** Adds collaboration documents for an existing world and marks it as collab-seeded. */
   seedCollabs(collabs: readonly EventCollab[]): Promise<void>;
+  upsertJourney(journey: Journey): Promise<void>;
+  /** Adds journeys for an existing world and marks journeys as seeded. */
+  seedJourneys(journeys: readonly Journey[]): Promise<void>;
+  /** "Delete my history" – the data stays deletable at any time (anti-chaos-engine.md §1). */
+  clearJourneys(): Promise<void>;
   /** Replaces everything (seeding / "reset example world") and marks the store as seeded. */
-  replaceAll(events: readonly CalendarEvent[], collabs: readonly EventCollab[]): Promise<void>;
+  replaceAll(
+    events: readonly CalendarEvent[],
+    collabs: readonly EventCollab[],
+    journeys: readonly Journey[],
+  ): Promise<void>;
 }

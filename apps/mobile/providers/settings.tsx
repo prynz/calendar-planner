@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
-import { REMINDER_INTENSITIES, type ReminderIntensity } from '@nowish/domain';
+import { REMINDER_INTENSITIES, REMINDER_TONES, type ReminderIntensity, type ReminderTone } from '@nowish/domain';
 import { LANGUAGE_PREFERENCES, type LanguagePreference } from '@nowish/i18n';
 
 import type { SettingsStore } from '@/storage/settings-store';
@@ -12,15 +12,23 @@ export interface Settings {
   language: LanguagePreference;
   theme: ThemePreference;
   reminderIntensity: ReminderIntensity;
-  /** Fixed dawdle buffer in minutes (0–30); learning arrives in phase 4. */
+  reminderTone: ReminderTone;
+  /** Fixed dawdle buffer in minutes (0–30); used until/unless buffer learning has enough data. */
   dawdleBuffer: number;
+  /** Learn the buffer from "on my way" taps (anti-chaos-engine.md §1) – switchable, private. */
+  bufferLearning: boolean;
+  /** Show the private punctuality summary (anti-chaos-engine.md §5). */
+  punctualityStats: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
   language: 'system',
   theme: 'system',
   reminderIntensity: 'normal',
+  reminderTone: 'casual',
   dawdleBuffer: 5,
+  bufferLearning: true,
+  punctualityStats: true,
 };
 export const BUFFER_RANGE = { min: 0, max: 30, step: 5 } as const;
 
@@ -28,7 +36,10 @@ const KEYS: Record<keyof Settings, string> = {
   language: 'settings.language',
   theme: 'settings.theme',
   reminderIntensity: 'settings.reminderIntensity',
+  reminderTone: 'settings.reminderTone',
   dawdleBuffer: 'settings.dawdleBuffer',
+  bufferLearning: 'settings.bufferLearning',
+  punctualityStats: 'settings.punctualityStats',
 };
 
 const oneOf =
@@ -38,6 +49,9 @@ const oneOf =
 const isLanguage = oneOf(LANGUAGE_PREFERENCES);
 const isTheme = oneOf(THEME_PREFERENCES);
 const isIntensity = oneOf(REMINDER_INTENSITIES);
+const isTone = oneOf(REMINDER_TONES);
+const parseBool = (v: string | null | undefined, fallback: boolean) =>
+  v === 'true' ? true : v === 'false' ? false : fallback;
 
 function parseBuffer(v: string | null | undefined): number {
   const n = Number(v);
@@ -52,7 +66,10 @@ export function parseSettings(raw: Partial<Record<keyof Settings, string | null>
     language: isLanguage(raw.language) ? raw.language : DEFAULT_SETTINGS.language,
     theme: isTheme(raw.theme) ? raw.theme : DEFAULT_SETTINGS.theme,
     reminderIntensity: isIntensity(raw.reminderIntensity) ? raw.reminderIntensity : DEFAULT_SETTINGS.reminderIntensity,
+    reminderTone: isTone(raw.reminderTone) ? raw.reminderTone : DEFAULT_SETTINGS.reminderTone,
     dawdleBuffer: parseBuffer(raw.dawdleBuffer),
+    bufferLearning: parseBool(raw.bufferLearning, DEFAULT_SETTINGS.bufferLearning),
+    punctualityStats: parseBool(raw.punctualityStats, DEFAULT_SETTINGS.punctualityStats),
   };
 }
 

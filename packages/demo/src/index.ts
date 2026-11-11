@@ -332,6 +332,7 @@ export function upcomingSocial(
 }
 
 export * from './collab';
+export * from './journeys';
 
 export function personName(id: string): string {
   const p = DEMO_PEOPLE.find((x) => x.id === id);

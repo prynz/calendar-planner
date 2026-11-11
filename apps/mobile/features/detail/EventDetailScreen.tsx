@@ -30,9 +30,19 @@ import { useReminders } from '@/providers/reminders';
 import { confirm, type ConfirmChoice } from '@/services/confirm';
 import { haptic } from '@/services/haptics';
 
+import { LeavePanel } from '../leave/LeavePanel';
 import { SocialPanel } from './SocialPanel';
 
-export function EventDetailScreen({ eventId, occurrence }: { eventId: string; occurrence: string | undefined }) {
+export function EventDetailScreen({
+  eventId,
+  occurrence,
+  openLate = false,
+}: {
+  eventId: string;
+  occurrence: string | undefined;
+  /** Opened from the reminder's "I'm running late" action. */
+  openLate?: boolean;
+}) {
   const { store, now, locale, t, today, buffer, settings } = useAgendaContext();
   const reminders = useReminders();
   const router = useRouter();
@@ -207,6 +217,18 @@ export function EventDetailScreen({ eventId, occurrence }: { eventId: string; oc
               )}
             </Card>
           </FadeIn>
+
+          {plan && now.getTime() < item.start.getTime() ? (
+            <FadeIn delay={30}>
+              <LeavePanel
+                event={event}
+                occurrenceKey={item.occurrenceKey}
+                start={item.start}
+                plan={plan}
+                openLate={openLate}
+              />
+            </FadeIn>
+          ) : null}
 
           {plan ? (
             <FadeIn delay={60}>
