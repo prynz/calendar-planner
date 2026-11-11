@@ -85,6 +85,7 @@ export const circlesDe = {
   'chores.every.weekly': 'Jeden {weekday}',
   'chores.every.weeklyShort': 'Wöchentlich',
   'chores.next': 'Als Nächstes: {name} am {day}',
+  'chores.nextYou': 'Als Nächstes bist du dran: {day}',
   'chores.empty.title': 'Noch keine Ämtchen',
   'chores.empty.body': 'Lege fest, wer was macht – die Reihenfolge wechselt automatisch und fair.',
   'chores.new': 'Neues Ämtchen',

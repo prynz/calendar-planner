@@ -3,8 +3,15 @@ import { useEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { simulateGroupReply } from '@nowish/demo';
-import { GROUP_LIMITS, localized, postGroupMessage, sortedGroupMessages, type GroupMessage } from '@nowish/domain';
-import { formatTime } from '@nowish/i18n';
+import {
+  dayKeyOf,
+  GROUP_LIMITS,
+  localized,
+  postGroupMessage,
+  sortedGroupMessages,
+  type GroupMessage,
+} from '@nowish/domain';
+import { formatShortDate, formatTime } from '@nowish/i18n';
 import { EmptyState, IconButton, radii, space, Text, TextField, useTheme } from '@nowish/ui';
 
 import { DetailShell } from '../shell/DetailShell';
@@ -82,8 +89,13 @@ export function GroupChatScreen({ groupId }: { groupId: string }) {
 
 function Bubble({ message: m, ctx }: { message: GroupMessage; ctx: GroupContext }) {
   const { colors } = useTheme();
-  const { store, t, locale, name, viewerId } = ctx;
-  const time = formatTime(m.at, locale, store.timeZone);
+  const { store, t, locale, name, viewerId, today } = ctx;
+  const tz = store.timeZone;
+  // Older messages carry their day too – "18:00" alone would suggest today.
+  const time =
+    dayKeyOf(m.at, tz) === today
+      ? formatTime(m.at, locale, tz)
+      : `${formatShortDate(m.at, locale, tz)} · ${formatTime(m.at, locale, tz)}`;
   if (m.type === 'system') {
     return (
       <Text variant="label" color="textSecondary" align="center">

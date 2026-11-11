@@ -83,6 +83,7 @@ export const circlesEn: Record<keyof typeof circlesDe, string> = {
   'chores.every.weekly': 'Every {weekday}',
   'chores.every.weeklyShort': 'Weekly',
   'chores.next': 'Next: {name} on {day}',
+  'chores.nextYou': 'Next up: you, on {day}',
   'chores.empty.title': 'No chores yet',
   'chores.empty.body': 'Decide who does what – the order rotates automatically and fairly.',
   'chores.new': 'New chore',

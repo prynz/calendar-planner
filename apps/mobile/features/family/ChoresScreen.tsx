@@ -105,10 +105,12 @@ function ChoreCard({ chore, ctx }: { chore: Chore; ctx: FamilyContext }) {
         {t('chores.rotation', { names: namesOf(household, chore.rotation, t) })}
       </Text>
       <Text variant="label" color="textSecondary">
-        {t('chores.next', {
-          name: memberName(household, choreTurn(chore, nextDay) ?? '', t),
-          day: formatShortDate(noonOf(nextDay, tz), locale, tz),
-        })}
+        {choreTurn(chore, nextDay) === viewerId
+          ? t('chores.nextYou', { day: formatShortDate(noonOf(nextDay, tz), locale, tz) })
+          : t('chores.next', {
+              name: memberName(household, choreTurn(chore, nextDay) ?? '', t),
+              day: formatShortDate(noonOf(nextDay, tz), locale, tz),
+            })}
       </Text>
     </Card>
   );
