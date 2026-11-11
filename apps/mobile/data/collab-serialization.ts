@@ -123,7 +123,7 @@ export function deserializeJourney(json: string): Journey {
   return stripUndefined(journeySchema.parse(JSON.parse(json))) as Journey; // see deserializeCollab
 }
 
-function stripUndefined(v: unknown): unknown {
+export function stripUndefined(v: unknown): unknown {
   if (Array.isArray(v)) return v.map(stripUndefined);
   if (v instanceof Date || typeof v !== 'object' || v === null) return v;
   return Object.fromEntries(

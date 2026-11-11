@@ -29,11 +29,13 @@ const rideOf = (h: Household, eventId: string, occurrenceKey: DayKey, leg: RideL
 
 /**
  * Children need a ride to timed appointments that are theirs and happen somewhere (a location is set).
- * All-day entries and appointments at home ("no location") need none.
+ * All-day entries, appointments at home ("no location") and family outings where an adult of the
+ * household is assigned too (they go together) need none.
  */
 export function rideSlots(h: Household, items: readonly FamilyOccurrence[]): RideSlot[] {
   return items
     .filter((i) => !i.event.allDay && i.event.location.trim().length > 0)
+    .filter((i) => !assignedTo(h, i.event.id).some((id) => isAdult(h, id)))
     .map((item) => ({ item, kidIds: assignedTo(h, item.event.id).filter((id) => !!kidById(h, id)) }))
     .filter((s) => s.kidIds.length > 0)
     .map((s) => ({

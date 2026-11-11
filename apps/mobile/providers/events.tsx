@@ -10,24 +10,28 @@ import {
   type ReactNode,
 } from 'react';
 
-import {
-  buildDemoCollabs,
-  buildDemoEvents,
-  buildDemoJourneys,
-  DEMO_TIME_ZONE,
-  DEMO_VIEWER_ID,
-  simulateInviteReplies,
-} from '@nowish/demo';
+import { DEMO_TIME_ZONE, DEMO_VIEWER_ID, simulateInviteReplies } from '@nowish/demo';
 import {
   applyDraft,
+  applyDueActions,
+  applyDueFamilyActions,
+  applyDueGroupActions,
   emptyCollab,
+  forgetEvent,
   invite,
   memberIds,
+  removeMeeting,
   schedule,
+  scheduleFamily,
+  scheduleGroup,
   type CalendarEvent,
   type DayKey,
   type EventCollab,
   type EventDraft,
+  type FamilyAction,
+  type Group,
+  type GroupAction,
+  type Household,
   type Journey,
   type SimulatedAction,
 } from '@nowish/domain';
@@ -35,6 +39,7 @@ import {
 import type { EventRepository } from '@/data/event-repository';
 
 import { useSimulation } from './simulation';
+import { demoWorld, loadWorld } from './world-load';
 
 export type EventsState = 'loading' | 'ready' | 'error';
 
@@ -50,6 +55,15 @@ export type CollabUpdate = (
   collab: EventCollab,
   now: Date,
 ) => EventCollab | { collab: EventCollab; simulate: SimulatedAction[] };
+
+/** Pure family operation (domain `family/*`), optionally queueing simulated reactions. */
+export type HouseholdUpdate = (
+  household: Household,
+  now: Date,
+) => Household | { household: Household; simulate: FamilyAction[] };
+
+/** Pure group operation (domain `groups/*`); null = the group is gone (last member left). */
+export type GroupUpdate = (group: Group, now: Date) => Group | null | { group: Group; simulate: GroupAction[] };
 
 interface EventsContextValue {
   state: EventsState;
@@ -78,6 +92,17 @@ interface EventsContextValue {
   getJourney: (id: string) => Journey | undefined;
   saveJourney: (journey: Journey) => Promise<void>;
   clearJourneys: () => Promise<void>;
+  /** Family space (Phase 5); null until one exists. */
+  household: Household | null;
+  saveHousehold: (household: Household) => Promise<void>;
+  updateHousehold: (fn: HouseholdUpdate) => Promise<void>;
+  groups: readonly Group[];
+  getGroup: (id: string) => Group | undefined;
+  /** Adds a new group (built by the domain's `createGroup`). */
+  addGroup: (group: Group) => Promise<void>;
+  updateGroup: (id: string, fn: GroupUpdate) => Promise<void>;
+  /** ICS import: new or replaced events in one go (CAL-09). */
+  importEvents: (events: readonly CalendarEvent[]) => Promise<void>;
 }
 
 const EventsContext = createContext<EventsContextValue | null>(null);
@@ -85,11 +110,6 @@ const EventsContext = createContext<EventsContextValue | null>(null);
 /** Local ids – unique per device, enough for the prototype (server ids replace them in block B). */
 export function newEventId(now: Date): string {
   return `evt-${now.getTime().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-}
-
-function demoWorld(now: Date) {
-  const events = buildDemoEvents(now, DEMO_TIME_ZONE);
-  return { events, collabs: buildDemoCollabs(events, now), journeys: buildDemoJourneys(now, DEMO_TIME_ZONE) };
 }
 
 const sameMembers = (e: CalendarEvent, c: EventCollab) => {
@@ -118,49 +138,34 @@ export function EventsProvider({
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [collabs, setCollabs] = useState<EventCollab[]>([]);
   const [journeys, setJourneys] = useState<Journey[]>([]);
+  const [household, setHousehold] = useState<Household | null>(null);
+  const [groups, setGroups] = useState<Group[]>([]);
   const [attempt, setAttempt] = useState(0);
   const eventsRef = useRef(events);
   const collabsRef = useRef(collabs);
   const journeysRef = useRef(journeys);
+  const householdRef = useRef(household);
+  const groupsRef = useRef(groups);
   const nowRef = useRef(now);
   useLayoutEffect(() => {
     eventsRef.current = events;
     collabsRef.current = collabs;
     journeysRef.current = journeys;
+    householdRef.current = household;
+    groupsRef.current = groups;
     nowRef.current = now;
   });
 
   useEffect(() => {
     let alive = true;
-    (async () => {
-      const loaded = await repository.load();
-      if (!loaded.seeded) {
-        const world = demoWorld(nowRef.current());
-        await repository.replaceAll(world.events, world.collabs, world.journeys);
-        return world;
-      }
-      if (!loaded.journeysSeeded) {
-        // Device that ran an older prototype: add the demo departure history once.
-        const extra = buildDemoJourneys(nowRef.current(), DEMO_TIME_ZONE);
-        await repository.seedJourneys(extra);
-        loaded.journeys = [...loaded.journeys, ...extra.filter((j) => !loaded.journeys.some((x) => x.id === j.id))];
-      }
-      if (!loaded.collabSeeded) {
-        // Device that ran the Phase 2 prototype: add collaboration data for its demo events once.
-        const extra = buildDemoCollabs(
-          loaded.events.filter((e) => e.isDemo),
-          nowRef.current(),
-        ).filter((c) => !loaded.collabs.some((x) => x.eventId === c.eventId));
-        await repository.seedCollabs(extra);
-        return { events: loaded.events, collabs: [...loaded.collabs, ...extra], journeys: loaded.journeys };
-      }
-      return loaded;
-    })()
+    loadWorld(repository, nowRef.current())
       .then((world) => {
         if (!alive) return;
         setEvents(world.events);
         setCollabs(world.collabs);
         setJourneys(world.journeys);
+        setHousehold(world.household);
+        setGroups(world.groups);
         setState('ready');
       })
       .catch((error: unknown) => {
@@ -172,6 +177,41 @@ export function EventsProvider({
       alive = false;
     };
   }, [repository, attempt]);
+
+  /** Optimistic local update with rollback for one of the single-document stores. */
+  const writeDoc = useCallback(
+    async <T,>(ref: { current: T }, set: (v: T) => void, next: T, persist: () => Promise<void>) => {
+      const previous = ref.current;
+      ref.current = next;
+      set(next);
+      try {
+        await persist();
+      } catch (error) {
+        ref.current = previous;
+        set(previous);
+        throw error;
+      }
+    },
+    [],
+  );
+
+  const saveHousehold = useCallback(
+    (h: Household) => writeDoc(householdRef, setHousehold, h, () => repository.upsertHousehold(h)),
+    [repository, writeDoc],
+  );
+
+  const saveGroup = useCallback(
+    (g: Group) =>
+      writeDoc(
+        groupsRef,
+        setGroups,
+        groupsRef.current.some((x) => x.id === g.id)
+          ? groupsRef.current.map((x) => (x.id === g.id ? g : x))
+          : [...groupsRef.current, g],
+        () => repository.upsertGroup(g),
+      ),
+    [repository, writeDoc],
+  );
 
   /** Optimistic write of both lists with rollback. */
   const write = useCallback(
@@ -226,7 +266,25 @@ export function EventsProvider({
     [repository, write],
   );
 
-  useSimulation({ enabled: simulate && state === 'ready', collabsRef, nowRef, save: saveCollabs });
+  /** One simulation tick: due actions of demo people in events, the family and groups. */
+  const step = useCallback(
+    (t: Date): Promise<void> | null => {
+      const due = (pending: readonly { at: Date }[]) => pending.some((a) => a.at.getTime() <= t.getTime());
+      const collabs = collabsRef.current.filter((c) => due(c.pending)).map((c) => applyDueActions(c, t).collab);
+      const h = householdRef.current;
+      const household = h && due(h.pending) ? applyDueFamilyActions(h, t).household : null;
+      const groups = groupsRef.current.filter((g) => due(g.pending)).map((g) => applyDueGroupActions(g, t).group);
+      if (collabs.length === 0 && !household && groups.length === 0) return null;
+      return (async () => {
+        if (collabs.length > 0) await saveCollabs(collabs);
+        if (household) await saveHousehold(household);
+        for (const g of groups) await saveGroup(g);
+      })();
+    },
+    [saveCollabs, saveHousehold, saveGroup],
+  );
+
+  useSimulation({ enabled: simulate && state === 'ready', nowRef, step });
 
   const value = useMemo<EventsContextValue>(() => {
     const find = (id: string) => eventsRef.current.find((e) => e.id === id);
@@ -308,6 +366,16 @@ export function EventsProvider({
           },
           () => repository.remove(id),
         );
+        // Assignments, rides and group links of the deleted event go with it.
+        const h = householdRef.current;
+        if (h) {
+          const next = forgetEvent(h, id);
+          if (next !== h) await saveHousehold(next);
+        }
+        for (const g of groupsRef.current) {
+          const next = removeMeeting(g, id);
+          if (next !== g) await saveGroup(next);
+        }
       },
       async removeOccurrence(id, key) {
         const current = find(id);
@@ -323,14 +391,20 @@ export function EventsProvider({
       },
       async resetExampleWorld() {
         const world = demoWorld(nowRef.current());
-        const previous = journeysRef.current;
-        setJourneys(world.journeys);
-        await write(world, () => repository.replaceAll(world.events, world.collabs, world.journeys)).catch(
-          (error: unknown) => {
-            setJourneys(previous);
-            throw error;
-          },
-        );
+        const previous = { journeys: journeysRef.current, household: householdRef.current, groups: groupsRef.current };
+        const apply = (v: typeof previous) => {
+          journeysRef.current = v.journeys;
+          householdRef.current = v.household;
+          groupsRef.current = v.groups;
+          setJourneys(v.journeys);
+          setHousehold(v.household);
+          setGroups(v.groups);
+        };
+        apply(world);
+        await write(world, () => repository.replaceAll(world)).catch((error: unknown) => {
+          apply(previous);
+          throw error;
+        });
       },
       journeys,
       getJourney: (id) => journeys.find((j) => j.id === id),
@@ -359,8 +433,59 @@ export function EventsProvider({
           throw error;
         }
       },
+      household,
+      saveHousehold,
+      async updateHousehold(fn) {
+        const current = householdRef.current;
+        if (!current) throw new Error('No household yet');
+        const result = fn(current, nowRef.current());
+        const next = 'household' in result ? scheduleFamily(result.household, result.simulate) : result;
+        if (next === current) return;
+        await saveHousehold(next);
+      },
+      groups,
+      getGroup: (id) => groups.find((g) => g.id === id),
+      addGroup: saveGroup,
+      async updateGroup(id, fn) {
+        const current = groupsRef.current.find((g) => g.id === id);
+        if (!current) throw new Error(`Group ${id} not found`);
+        const result = fn(current, nowRef.current());
+        if (result === null) {
+          await writeDoc(
+            groupsRef,
+            setGroups,
+            groupsRef.current.filter((g) => g.id !== id),
+            () => repository.removeGroup(id),
+          );
+          return;
+        }
+        const next = 'memberIds' in result ? result : scheduleGroup(result.group, result.simulate);
+        if (next === current) return;
+        await saveGroup(next);
+      },
+      async importEvents(imported) {
+        if (imported.length === 0) return;
+        const byId = new Map(imported.map((e) => [e.id, e]));
+        const next = [...eventsRef.current.filter((e) => !byId.has(e.id)), ...imported];
+        await write({ events: next }, async () => {
+          for (const e of imported) await repository.upsert(e);
+        });
+      },
     };
-  }, [state, events, collabs, journeys, repository, write, saveCollabs]);
+  }, [
+    state,
+    events,
+    collabs,
+    journeys,
+    household,
+    groups,
+    repository,
+    write,
+    writeDoc,
+    saveCollabs,
+    saveHousehold,
+    saveGroup,
+  ]);
 
   return <EventsContext.Provider value={value}>{children}</EventsContext.Provider>;
 }

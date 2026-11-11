@@ -83,6 +83,8 @@ export type FamilyAction =
 export interface Household {
   id: string;
   name: string;
+  /** Demo content carries both languages. */
+  nameI18n?: LocalizedText;
   adminId: string;
   /** Adults with an account (FAM-01). */
   adultIds: string[];

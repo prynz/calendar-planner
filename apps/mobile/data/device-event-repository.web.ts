@@ -1,4 +1,5 @@
 import type { EventRepository } from './event-repository';
+import { deserializeGroup, deserializeHousehold, serializeGroup, serializeHousehold } from './circles-serialization';
 import { deserializeCollab, deserializeJourney, serializeCollab, serializeJourney } from './collab-serialization';
 import { deserializeEvent, serializeEvent } from './serialization';
 
@@ -12,6 +13,9 @@ const SEEDED = 'nowish.events.seeded';
 const COLLAB_SEEDED = 'nowish.collab.seeded';
 const JOURNEYS = 'nowish.journeys.v1';
 const JOURNEYS_SEEDED = 'nowish.journeys.seeded';
+const HOUSEHOLD = 'nowish.household.v1';
+const GROUPS = 'nowish.groups.v1';
+const CIRCLES_SEEDED = 'nowish.circles.seeded';
 
 function storage(): Storage {
   if (typeof globalThis.localStorage === 'undefined') throw new Error('localStorage is not available');
@@ -51,6 +55,9 @@ export function createDeviceEventRepository(): EventRepository {
         collabSeeded: storage().getItem(COLLAB_SEEDED) === '1',
         journeys: parseAll(JOURNEYS, deserializeJourney),
         journeysSeeded: storage().getItem(JOURNEYS_SEEDED) === '1',
+        household: parseAll(HOUSEHOLD, deserializeHousehold)[0] ?? null,
+        groups: parseAll(GROUPS, deserializeGroup),
+        circlesSeeded: storage().getItem(CIRCLES_SEEDED) === '1',
       };
     },
     async upsert(e) {
@@ -87,13 +94,34 @@ export function createDeviceEventRepository(): EventRepository {
     async clearJourneys() {
       writeRows(JOURNEYS, {});
     },
-    async replaceAll(events, collabs, journeys) {
-      writeRows(JOURNEYS, Object.fromEntries(journeys.map((j) => [j.id, serializeJourney(j)])));
-      storage().setItem(JOURNEYS_SEEDED, '1');
-      writeRows(EVENTS, Object.fromEntries(events.map((e) => [e.id, serializeEvent(e)])));
-      writeRows(COLLABS, Object.fromEntries(collabs.map((c) => [c.eventId, serializeCollab(c)])));
-      storage().setItem(SEEDED, '1');
-      storage().setItem(COLLAB_SEEDED, '1');
+    async upsertHousehold(h) {
+      writeRows(HOUSEHOLD, { [h.id]: serializeHousehold(h) });
+    },
+    async upsertGroup(g) {
+      writeRows(GROUPS, { ...readRows(GROUPS), [g.id]: serializeGroup(g) });
+    },
+    async removeGroup(id) {
+      const groups = readRows(GROUPS);
+      delete groups[id];
+      writeRows(GROUPS, groups);
+    },
+    async seedCircles(extra) {
+      const keep = <T>(key: string, items: readonly T[], id: (x: T) => string, ser: (x: T) => string) =>
+        writeRows(key, { ...Object.fromEntries(items.map((x) => [id(x), ser(x)])), ...readRows(key) });
+      keep(EVENTS, extra.events, (e) => e.id, serializeEvent);
+      keep(COLLABS, extra.collabs, (c) => c.eventId, serializeCollab);
+      keep(GROUPS, extra.groups, (g) => g.id, serializeGroup);
+      if (extra.household && Object.keys(readRows(HOUSEHOLD)).length === 0)
+        writeRows(HOUSEHOLD, { [extra.household.id]: serializeHousehold(extra.household) });
+      storage().setItem(CIRCLES_SEEDED, '1');
+    },
+    async replaceAll(world) {
+      writeRows(JOURNEYS, Object.fromEntries(world.journeys.map((j) => [j.id, serializeJourney(j)])));
+      writeRows(EVENTS, Object.fromEntries(world.events.map((e) => [e.id, serializeEvent(e)])));
+      writeRows(COLLABS, Object.fromEntries(world.collabs.map((c) => [c.eventId, serializeCollab(c)])));
+      writeRows(HOUSEHOLD, world.household ? { [world.household.id]: serializeHousehold(world.household) } : {});
+      writeRows(GROUPS, Object.fromEntries(world.groups.map((g) => [g.id, serializeGroup(g)])));
+      for (const flag of [SEEDED, COLLAB_SEEDED, JOURNEYS_SEEDED, CIRCLES_SEEDED]) storage().setItem(flag, '1');
     },
   };
 }

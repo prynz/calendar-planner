@@ -109,7 +109,13 @@ describe('rides', () => {
   it('needs drop-off and pick-up for a child appointment with a location', () => {
     const { h: base, lena } = family();
     const h = assignMembers(base, 'chris', 'swim', [lena]);
-    const slots = rideSlots(h, [occ(event('swim')), occ(event('home', { location: '' })), occ(event('other'))]);
+    const together = assignMembers(h, 'chris', 'outing', [lena, 'sam']);
+    const slots = rideSlots(together, [
+      occ(event('swim')),
+      occ(event('home', { location: '' })),
+      occ(event('other')),
+      occ(event('outing')),
+    ]);
     expect(slots).toHaveLength(1);
     expect(openLegs(slots[0]!)).toEqual(['drop-off', 'pick-up']);
     expect(rideGapCount(slots)).toBe(2);

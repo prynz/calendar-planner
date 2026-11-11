@@ -296,6 +296,8 @@ export function buildDemoCollabs(events: readonly CalendarEvent[], now: Date): E
   });
 
   add('brunch', (_e, c) => ({ ...c, invitations: invitations({ chris: 'yes', lena: 'yes', paul: 'yes' }, now) }));
+  add('stammtisch', (_e, c) => ({ ...c, invitations: invitations({ chris: 'yes', jonas: 'yes', alex: 'yes' }, now) }));
+  add('run', (_e, c) => ({ ...c, invitations: invitations({ mia: 'yes', olivia: 'yes' }, now) }));
   add('concert', (_e, c) => ({ ...c, invitations: invitations({ chris: 'yes', mia: 'maybe' }, now) }));
 
   add('movie-night', (e, c) => {

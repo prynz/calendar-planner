@@ -1,4 +1,4 @@
-import type { CalendarEvent, EventCollab, Journey } from '@nowish/domain';
+import type { CalendarEvent, EventCollab, Group, Household, Journey } from '@nowish/domain';
 
 export interface StoredWorld {
   events: CalendarEvent[];
@@ -10,6 +10,19 @@ export interface StoredWorld {
   /** The viewer's private departure history (Phase 4). */
   journeys: Journey[];
   journeysSeeded: boolean;
+  /** Family space and groups (Phase 5); null = no household yet. */
+  household: Household | null;
+  groups: Group[];
+  circlesSeeded: boolean;
+}
+
+/** Everything the example world consists of (seeding and "reset example world"). */
+export interface SeedWorld {
+  events: readonly CalendarEvent[];
+  collabs: readonly EventCollab[];
+  journeys: readonly Journey[];
+  household: Household | null;
+  groups: readonly Group[];
 }
 
 /**
@@ -29,10 +42,14 @@ export interface EventRepository {
   seedJourneys(journeys: readonly Journey[]): Promise<void>;
   /** "Delete my history" – the data stays deletable at any time (anti-chaos-engine.md §1). */
   clearJourneys(): Promise<void>;
+  upsertHousehold(household: Household): Promise<void>;
+  upsertGroup(group: Group): Promise<void>;
+  removeGroup(id: string): Promise<void>;
+  /**
+   * Devices that ran an older prototype: adds the Phase 5 demo content (family and group events with their
+   * collaboration documents, household, groups) without touching existing rows, and marks circles as seeded.
+   */
+  seedCircles(extra: Omit<SeedWorld, 'journeys'>): Promise<void>;
   /** Replaces everything (seeding / "reset example world") and marks the store as seeded. */
-  replaceAll(
-    events: readonly CalendarEvent[],
-    collabs: readonly EventCollab[],
-    journeys: readonly Journey[],
-  ): Promise<void>;
+  replaceAll(world: SeedWorld): Promise<void>;
 }

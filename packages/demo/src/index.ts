@@ -11,6 +11,10 @@ import {
   type LocalizedText,
   type Recurrence,
   type TravelMode,
+  nthOfDay,
+  weekdayOf,
+  type NthWeek,
+  type Weekday,
 } from '@nowish/domain';
 
 /**
@@ -39,6 +43,7 @@ export const DEMO_PEOPLE: readonly DemoPerson[] = [
   { id: 'lena', name: 'Lena', kind: 'child' },
   { id: 'paul', name: 'Paul', kind: 'child' },
   { id: 'gabi', name: 'Gabi', kind: 'guest' },
+  { id: 'sam', name: 'Sam', kind: 'family' },
 ];
 
 export const DEMO_VIEWER_ID = 'chris';
@@ -46,6 +51,8 @@ export const DEMO_VIEWER_ID = 'chris';
 interface Template {
   id: string;
   dayOffset: number;
+  /** Instead of `dayOffset`: the first matching day after today (e.g. the next 1st Friday). */
+  on?: { weekday: Weekday; nth?: NthWeek };
   /** [hour, minute] in the demo zone; omitted → all day. */
   from?: [number, number];
   /** Minutes, or for all-day items the number of days (default 1). */
@@ -227,6 +234,66 @@ const TEMPLATES: readonly Template[] = [
     prep: 30,
   },
   {
+    id: 'swim',
+    dayOffset: 1,
+    from: [16, 0],
+    length: 60,
+    kind: 'appointment',
+    category: 'sport',
+    title: { de: 'Schwimmkurs Lena', en: 'Lena’s swimming class' },
+    location: { de: 'Hallenbad Mitte', en: 'Central pool' },
+    participantIds: ['chris', 'lena'],
+    travel: { mode: 'car', minutes: 12 },
+    prep: 15,
+    recurrence: { freq: 'weekly', interval: 1 },
+  },
+  {
+    id: 'paul-doctor',
+    dayOffset: 2,
+    from: [10, 30],
+    length: 45,
+    kind: 'appointment',
+    category: 'health',
+    title: { de: 'Kinderarzt mit Paul', en: 'Paediatrician with Paul' },
+    location: { de: 'Praxis Dr. Klein', en: 'Dr Klein’s practice' },
+    participantIds: ['chris', 'paul'],
+    travel: { mode: 'car', minutes: 15 },
+    prep: 15,
+    arrival: 10,
+  },
+  {
+    id: 'stammtisch',
+    dayOffset: 0,
+    on: { weekday: 4, nth: 1 },
+    from: [19, 30],
+    length: 180,
+    kind: 'social',
+    category: 'social',
+    title: { de: 'Stammtisch', en: 'Regulars’ night' },
+    location: { de: 'Gasthaus Löwen', en: 'Lion inn' },
+    hostId: 'tom',
+    participantIds: ['chris', 'tom', 'jonas', 'alex'],
+    travel: { mode: 'transit', minutes: 20 },
+    prep: 15,
+    recurrence: { freq: 'monthly', interval: 1, byNthWeekday: { weekday: 4, nth: 1 } },
+  },
+  {
+    id: 'run',
+    dayOffset: 0,
+    on: { weekday: 5 },
+    from: [9, 0],
+    length: 60,
+    kind: 'social',
+    category: 'sport',
+    title: { de: 'Lauftreff', en: 'Running club' },
+    location: { de: 'Am Flussufer', en: 'Riverside' },
+    hostId: 'chris',
+    participantIds: ['chris', 'mia', 'olivia'],
+    travel: { mode: 'bike', minutes: 8 },
+    prep: 10,
+    recurrence: { freq: 'weekly', interval: 1 },
+  },
+  {
     id: 'lisbon',
     dayOffset: 12,
     length: 4,
@@ -237,11 +304,21 @@ const TEMPLATES: readonly Template[] = [
   },
 ];
 
+/** First day after `today` on the weekday (and n-th of the month) – recurring group meetings. */
+function firstMatching(today: DayKey, on: { weekday: Weekday; nth?: NthWeek }): DayKey {
+  for (let i = 1; i <= 62; i++) {
+    const d = addDays(today, i);
+    if (weekdayOf(d) !== on.weekday) continue;
+    if (on.nth === undefined || nthOfDay(d).nth === on.nth) return d;
+  }
+  throw new Error('No matching day within two months'); // unreachable for nth 1–4
+}
+
 /** Example events for `now`. Deterministic for a given `now` and zone. */
 export function buildDemoEvents(now: Date, timeZone: string = DEMO_TIME_ZONE): CalendarEvent[] {
   const today = dayKeyOf(now, timeZone);
   return TEMPLATES.map((t): CalendarEvent => {
-    const day = addDays(today, t.dayOffset);
+    const day = t.on ? firstMatching(today, t.on) : addDays(today, t.dayOffset);
     const { untilOffset, ...rec } = t.recurrence ?? { freq: 'daily' as const, interval: 1 };
     const recurrence: Recurrence | undefined = t.recurrence
       ? { ...rec, ...(untilOffset !== undefined ? { until: addDays(today, untilOffset) } : {}) }
@@ -333,6 +410,7 @@ export function upcomingSocial(
 
 export * from './collab';
 export * from './journeys';
+export * from './family';
 
 export function personName(id: string): string {
   const p = DEMO_PEOPLE.find((x) => x.id === id);
