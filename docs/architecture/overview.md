@@ -136,6 +136,11 @@ RemindersProvider ─► planReminders() (rein, getestet) ─► expo-notificati
   Zeile wird übersprungen und gemeldet, statt die App zu blockieren.
 - Wiederholungen werden beim Anzeigen expandiert (`expandOccurrences`), nicht als Einzeltermine gespeichert.
 - Erinnerungen werden bei jeder Änderung an Terminen/Einstellungen und alle 5 Minuten idempotent neu geplant.
+- Privater Verlauf (Phase 4): pro Termin-Vorkommen ein `Journey`-Dokument (geplante/tatsächliche Losgeh-Zeit,
+  angekündigte Verspätung, abgehakte Bereit-Check-Punkte) in der Tabelle `journey` (Schema v3). Daraus rechnen reine
+  Funktionen das Puffer-Lernen und die Pünktlichkeits-Bilanz; „Verlauf löschen“ leert die Tabelle.
+- Benachrichtigungs-Aktionen „Bin unterwegs“ / „Ich verspäte mich“ (Kategorie `leave-actions`) landen über
+  `onReminderResponse` im RemindersProvider.
 - Zusammenarbeit (Phase 3): ein Dokument pro sozialem Event, beim Lesen per zod geprüft
   (`data/collab-serialization.ts`). Simulierte Personen handeln nur über geplante, regelbasierte Aktionen.
 

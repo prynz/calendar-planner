@@ -68,6 +68,11 @@ Phase 1 (2026-11-09): Die App enthält **keine** Netzwerk-SDKs. Neu sind nur lok
 nach außen: Expo-Module (SQLite, Haptik, Lokalisierung, Schriften), Lucide-Icons, gebündelte Schriften (keine
 Laufzeit-Downloads). Gespeichert werden nur Sprache und Darstellung auf dem Gerät.
 
+Phase 2–4 (2026-11-11): Termine, Zusammenarbeit (Demo) und der **private Losgeh-Verlauf** (geplante und
+tatsächliche Losgeh-Zeit, angekündigte Verspätung, Bereit-Check-Haken) liegen nur auf dem Gerät (SQLite, in der
+Web-Vorschau `localStorage`). Puffer-Lernen und Pünktlichkeits-Bilanz sind abschaltbar; „Verlauf löschen“ entfernt
+alle Einträge. Nichts davon wird übertragen oder geteilt; die Bilanz kennt keinen Vergleich mit anderen.
+
 **Ausgeschlossen:** Werbe-SDKs, Attribution-SDKs, Analytics mit Geräte-IDs, Session-Replay, Facebook-SDK
 (auch nicht für späteren Facebook-Login ohne erneute Prüfung).
 

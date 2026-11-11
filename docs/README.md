@@ -1,6 +1,6 @@
 # Dokumentations-Index
 
-> **Status:** 2026-11-10 · Phase 3. Dokumente sind Entwürfe zur Freigabe durch den PO.
+> **Status:** 2026-11-11 · Phase 4. Dokumente sind Entwürfe zur Freigabe durch den PO.
 
 | Bereich      | Dokument                                                                       | Inhalt                                                |
 | ------------ | ------------------------------------------------------------------------------ | ----------------------------------------------------- |
@@ -20,4 +20,4 @@
 |              | [security/privacy.md](security/privacy.md)                                     | Datenschutzkonzept, Datenarten, Löschfristen, SDKs    |
 | Entscheidungen | [decisions/](decisions/README.md)                                            | ADRs                                                  |
 | Entwicklung  | [development/setup.md](development/setup.md)                                   | Befehle, pnpm-Besonderheiten, Builds ohne Store-Konten |
-| Previews     | [previews/milestone-reports/](previews/milestone-reports/phase-3.md)          | Milestone-Reports Phase 0–3                       |
+| Previews     | [previews/milestone-reports/](previews/milestone-reports/phase-4.md)          | Milestone-Reports Phase 0–4                       |
