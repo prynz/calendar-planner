@@ -1,6 +1,6 @@
 # Milestone-Report Phase 6 – Profil, Premium & Feinschliff
 
-> **Status:** 2026-11-11 · Phase 6 umgesetzt · **Stopp – wartet auf Review und Freigabe durch den PO.**
+> **Status:** 2026-11-11 · Phase 6 vom PO freigegeben (mit dem Go für Phase 7).
 > Änderungswünsche zu allen Phasen nimmt der PO erst am Ende aller Phasen gesammelt auf.
 
 ## 1. Ergebnis in einem Satz

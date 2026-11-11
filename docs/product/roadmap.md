@@ -1,6 +1,6 @@
 # Roadmap & Priorisierung
 
-> **Status:** v0.9 · 2026-11-11 · Phase 6 umgesetzt, wartet auf Review. Phasen 1–5 freigegeben. Änderungswünsche sammelt der PO bis zum Ende aller Phasen. Roadmap neu geschnitten: lokaler Prototyp (Block A) vor Infrastruktur (Block B), ADR 0010. **Prototyp zuerst**:
+> **Status:** v1.0 · 2026-11-11 · Phase 7 in Arbeit. Phasen 1–6 freigegeben. Änderungswünsche sammelt der PO bis zum Ende aller Phasen. Roadmap neu geschnitten: lokaler Prototyp (Block A) vor Infrastruktur (Block B), ADR 0010. **Prototyp zuerst**:
 > Phasen 1–9 bauen einen nicht veröffentlichten Prototyp mit Beispieldaten, Veröffentlichung erst nach
 > Phase 10 ([ADR 0008](../decisions/0008-prototype-first.md)). Phase 1 startet nach Freigabe durch den PO.
 
@@ -23,8 +23,8 @@ Konten, Logins oder Server. Die Infrastruktur folgt danach schrittweise (Block B
 | **3** – Events & Zusammenarbeit (simuliert) | Event anlegen (auch aus Vorlagen), Demo-Personen einladen, **simulierte Zusagen** inkl. ablaufendem „Vielleicht“, Event-Detail als Bento, Umfragen mit **Swipe-Voting** und Deadline, Mitbringliste, Aufgaben, Chat (lokal simuliert), Shared-Element-Übergang | Kompletter Event-Lebenszyklus zum Durchspielen | ✅ freigegeben (2026-11-11) |
 | **4** – Anti-Chaos-Engine komplett | Bereit-Check, „Ich verspäte mich“, Eskalationsstufen + Ton, Trödel-Puffer-Lernen, Pünktlichkeits-Heatmap, **Fokus-Modus**, Karten-/Ortsanzeige (Wegzeit geschätzt, gekennzeichnet) | USP vollständig erlebbar | ✅ freigegeben (2026-11-11); Google-Wegzeit wartet auf das Konto (ADR 0013) |
 | **5** – Familie & Gruppen | Familienbereich, Kinderprofile, Fahrdienste, Einkaufsliste, Ämtchen, Gruppen mit wiederkehrenden Treffen, ICS-Import/Export | Familienplaner | ✅ freigegeben (2026-11-11) |
-| **6** – Profil, Premium & Feinschliff | Onboarding, Profil, Datenschutz-Center (UI), Paywall mit **Demo-Kauf**, House-Ad-Vorschau, Premium-Themes, Kosten-Split mit PayPal-Link, Wetter/Plan B (simuliert) | Alle Kernfunktionen als Prototyp | ✅ umgesetzt, Review offen ([Report](../previews/milestone-reports/phase-6.md), [ADR 0015](../decisions/0015-premium-demo-entitlements.md)) |
-| **7** – Erlebnis-Politur & Test | Motion- und Haptik-Feinschliff, Barrierefreiheit (VoiceOver/TalkBack, 200 % Schrift), Performance, Usability-Test mit Testpersonen, finales Logo | Prototyp, der überzeugt | ⏳ |
+| **6** – Profil, Premium & Feinschliff | Onboarding, Profil, Datenschutz-Center (UI), Paywall mit **Demo-Kauf**, House-Ad-Vorschau, Premium-Themes, Kosten-Split mit PayPal-Link, Wetter/Plan B (simuliert) | Alle Kernfunktionen als Prototyp | ✅ freigegeben (2026-11-11, [Report](../previews/milestone-reports/phase-6.md), [ADR 0015](../decisions/0015-premium-demo-entitlements.md)) |
+| **7** – Erlebnis-Politur & Test | Motion- und Haptik-Feinschliff, Barrierefreiheit (VoiceOver/TalkBack, 200 % Schrift), Performance, Usability-Test mit Testpersonen, finales Logo | Prototyp, der überzeugt | 🔧 in Arbeit ([Usability-Leitfaden](usability-test.md)) |
 
 ### Block B – Ausbau (erst wenn der Prototyp überzeugt, Schritt für Schritt)
 

@@ -1,6 +1,6 @@
 # CLAUDE.md – Arbeitsregeln für Nowish
 
-> **Status:** 2026-11-11 · **Phase 6 (Profil, Premium & Feinschliff) umgesetzt, wartet auf Review** ([Report](docs/previews/milestone-reports/phase-6.md)). Phasen 1–5 freigegeben.
+> **Status:** 2026-11-11 · **Phase 7 (Erlebnis-Politur & Test) in Arbeit** – letzte Phase von Block A. Phasen 1–6 freigegeben.
 > Web-Vorschau: https://prynz.github.io/calendar-planner/ (ADR 0011).
 > Prototyp lokal und simuliert, **ohne Login, Konten und Server** (ADR 0008, ADR 0010). Wird ein Konto/Dienst nötig
 > (API-Schlüssel, Apple-Konto, Hosting), vorher den PO fragen. Apple-Developer-Konto existiert seit 2026-11-10; TestFlight-Workflow folgt,

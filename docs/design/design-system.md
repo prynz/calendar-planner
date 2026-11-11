@@ -138,7 +138,8 @@ Konfetti **nur** bei echten Erfolgen (Event bestätigt, alle Aufgaben erledigt),
 
 **Reduced Motion:** Springs → `duration.fast` Crossfade, keine Parallaxe, kein Konfetti, kein Stagger.
 **Haptik-Tokens:** `selection` (Datumsleiste), `light` (Toggle), `success` (Zusage, Abhaken), `warning`
-(Konflikt), `heavy` (Swipe-Entscheidung). Global abschaltbar.
+(Konflikt), `heavy` (Swipe-Entscheidung). Global abschaltbar: Einstellungen → „Vibration bei Aktionen“ (seit
+Phase 7; Erinnerungen vibrieren unabhängig davon über das System).
 
 Ziel: 60 fps (120 fps auf ProMotion), Animationen nur auf UI-Thread (Reanimated Worklets).
 
@@ -194,6 +195,10 @@ Ein Screen, ein Ziel: nur „Jetzt“ und „Als Nächstes“, `display.xl`-Zeit
 (Pastelle 70 % Sättigung), keine Badges/Zähler, keine House Ads, Animationen auf Minimum.
 
 ## 11. Design-QA-Checkliste (jeder Screen vor „fertig“)
+
+Automatisch geprüft (Phase 7, `apps/mobile/__tests__/a11y-audit.test.tsx`): jedes tippbare Element auf allen 28 Screens
+hat Rolle und Vorlese-Namen; fest bemaßte Ziele sind ≥ 48 dp. 200 % Schrift: CI-Screenshots 43–46 (Android
+`font_scale 2.0`, iOS AX2). Händisch bleiben Reihenfolge und Verständlichkeit mit VoiceOver/TalkBack.
 
 - [ ] Nur Tokens und `packages/ui`-Komponenten, keine Roh-Werte (Lint grün)
 - [ ] Hell **und** Dunkel geprüft, Kontrast-Paare aus der Matrix
