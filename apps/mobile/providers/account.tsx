@@ -24,6 +24,7 @@ import {
   type TierLimits,
 } from '@nowish/entitlements';
 
+import { useNow } from '@/providers/clock';
 import type { SettingsStore } from '@/storage/settings-store';
 
 /**
@@ -137,17 +138,20 @@ const AccountContext = createContext<AccountContextValue | null>(null);
 export function AccountProvider({
   store,
   children,
-  now = () => new Date(),
+  now: fixedNow,
   timeZone,
   fallback = DEFAULT_ACCOUNT,
 }: {
   store: SettingsStore;
   children: ReactNode;
+  /** Defaults to the app clock, so plan dates and "13 days left" use the same time as every screen. */
   now?: () => Date;
   timeZone: string;
   /** Used when nothing is stored yet (tests start onboarded). */
   fallback?: Account;
 }) {
+  const clock = useNow();
+  const now = fixedNow ?? (() => clock);
   const [state, setState] = useState<'loading' | 'ready'>('loading');
   const [account, setAccount] = useState<Account>(fallback);
   const ref = useRef(account);

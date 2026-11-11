@@ -2,7 +2,7 @@ import { act, fireEvent, renderHook, screen, waitFor } from '@testing-library/re
 import type { ReactNode } from 'react';
 
 import { buildDemoEvents } from '@nowish/demo';
-import { demoPurchase, FREE } from '@nowish/entitlements';
+import { demoPurchase, FREE, trialDaysLeft } from '@nowish/entitlements';
 import { createTranslator } from '@nowish/i18n';
 
 import { EditorScreen } from '@/features/editor/EditorScreen';
@@ -17,6 +17,7 @@ import { ProfileScreen } from '@/features/profile/ProfileScreen';
 import { planReminders } from '@/features/reminders/plan';
 import { SettingsScreen } from '@/features/settings/SettingsScreen';
 import { AccountProvider, DEFAULT_ACCOUNT, onboardedAccount, useAccount, type Account } from '@/providers/account';
+import { ClockProvider } from '@/providers/clock';
 import { createMemorySettingsStore } from '@/storage/memory-settings-store';
 
 import { NOW, renderApp, routeParams, router } from './test-utils';
@@ -49,6 +50,21 @@ describe('account storage', () => {
     expect(stored).not.toHaveProperty('birthDate');
     const again = await setup(store);
     expect(again.result.current.account.subscription).toMatchObject({ source: 'trial', tier: 'plus' });
+  });
+
+  it('uses the app clock, so a fresh trial reads exactly 14 days', async () => {
+    const store = createMemorySettingsStore();
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <ClockProvider now={NOW}>
+        <AccountProvider store={store} timeZone={TZ}>
+          {children}
+        </AccountProvider>
+      </ClockProvider>
+    );
+    const { result } = await renderHook(() => useAccount(), { wrapper });
+    await waitFor(() => expect(result.current.state).toBe('ready'));
+    await act(() => result.current.completeOnboarding({ displayName: '' }));
+    expect(trialDaysLeft(result.current.account.subscription, NOW)).toBe(14);
   });
 
   it('falls back to a fresh start on corrupt data instead of crashing', async () => {

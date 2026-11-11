@@ -30,7 +30,7 @@ PayPal-Link** und eine **Demo-Wettervorhersage mit Plan B**. Alles lokal, nichts
 
 | Prüfung | Ergebnis |
 | --- | --- |
-| `pnpm check` (typecheck · lint · format · Tests) | ✅ 1209 Tests: i18n 888, domain 111, App 109, ui 57, demo 21, entitlements 9, brand 8, config 6 |
+| `pnpm check` (typecheck · lint · format · Tests) | ✅ 1210 Tests: i18n 888, domain 111, App 110, ui 57, demo 21, entitlements 9, brand 8, config 6 |
 | Web-Vorschau im Browser (Onboarding, Einstellungen, Paywall, Datenschutz-Center, Profil, Kosten, Plan B, Cover, Free mit Grenzen und Anzeige) | ✅ lokal durchgeklickt, keine Fehler in der Konsole |
 | CI (Qualität, Datenbank, Secret-Scan), Android, iOS | siehe Abschnitt 4 |
 
@@ -73,6 +73,8 @@ deshalb Plus in der Testphase; Free mit Grenzen und Anzeigen ist in den App-Test
 | Grenz-Texte sagten „in Free“, auch wenn man Plus hatte | ✅ neutral formuliert („passen in deinen Tarif“) |
 | Cover-Muster wurden auf breiten Bildschirmen verzerrt | ✅ Zeichenfläche wird jetzt beschnitten statt gestreckt |
 | Vergleichstabelle brach Wörter in schmalen Spalten um | ✅ kürzere Zeilen, „∞“ in der Tabelle (vorgelesen als „unbegrenzt“) |
+| „Testphase: noch 15 Tage“ direkt nach dem Start: Konto und Anzeige nutzten verschiedene Uhren | ✅ Konto nutzt jetzt die App-Uhr (getestet) |
+| Einstellungen sind durch die Tarif-Karte länger; der CI-Ablauf tippte daneben | ✅ Ablauf scrollt die Schalter erst in die Mitte |
 | Bestehende Installationen sehen das Onboarding beim nächsten Start einmal | Gewollt: Altersbestätigung und Testphase brauchen jeden einmal |
 
 ## 7. Offene Fragen an den PO

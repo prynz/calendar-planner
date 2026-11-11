@@ -113,8 +113,22 @@ appId: ${APP_ID}
     visible:
       id: 'screen-settings'
     timeout: 10000
+# Phase 6 put the plan card on top: scroll the switches into the middle before tapping, so the tap cannot
+# land on another control while the list still settles.
+- scrollUntilVisible:
+    element:
+      id: 'language-de'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'language-de'
+- scrollUntilVisible:
+    element:
+      id: 'theme-light'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'theme-light'
 - waitForAnimationToEnd
@@ -528,7 +542,6 @@ appId: ${APP_ID}
     element:
       id: 'family-shopping'
     direction: DOWN
-    centerElement: true
 - waitForAnimationToEnd
 - tapOn:
     id: 'family-shopping'
@@ -580,6 +593,20 @@ appId: ${APP_ID}
 - tapOn:
     id: 'together-groups'
     retryTapIfNoChange: true
+# A tap right after the fling can be swallowed (seen on iOS): tap the segment again if the list did not switch.
+- extendedWaitUntil:
+    visible:
+      id: 'group-demo-group-regulars'
+    timeout: 5000
+    optional: true
+- runFlow:
+    when:
+      notVisible:
+        id: 'group-demo-group-regulars'
+    commands:
+      - waitForAnimationToEnd
+      - tapOn:
+          id: 'together-groups'
 - extendedWaitUntil:
     visible:
       id: 'group-demo-group-regulars'
