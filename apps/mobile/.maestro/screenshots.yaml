@@ -540,7 +540,7 @@ appId: ${APP_ID}
 - tapOn:
     id: 'shopping-title'
 - inputText: 'Eier'
-- hideKeyboard
+# No hideKeyboard: iOS cannot dismiss this keyboard via Maestro; the add button sits above it anyway.
 - tapOn:
     id: 'shopping-add'
 - extendedWaitUntil:
@@ -615,7 +615,6 @@ appId: ${APP_ID}
 - inputText: 'Bin dabei, bis Freitag!'
 - tapOn:
     id: 'group-chat-send'
-- hideKeyboard
 - extendedWaitUntil:
     visible:
       text: '.*(Bin dabei! 🙌|Klingt gut, bis dann!|Ich bring gute Laune mit|Passt mir, danke fürs Organisieren!).*'
