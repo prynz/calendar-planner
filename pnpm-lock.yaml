@@ -53,6 +53,9 @@ importers:
       '@nowish/domain':
         specifier: workspace:*
         version: link:../../packages/domain
+      '@nowish/entitlements':
+        specifier: workspace:*
+        version: link:../../packages/entitlements
       '@nowish/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
@@ -191,6 +194,8 @@ importers:
         version: link:../ui
 
   packages/domain: {}
+
+  packages/entitlements: {}
 
   packages/i18n:
     dependencies:

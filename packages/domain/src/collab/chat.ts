@@ -1,6 +1,7 @@
 import { COLLAB_LIMITS, CollabError, nextId, type ChatMessage, type EventCollab, type SimulatedAction } from './model';
 import { respond, memberIds } from './rsvp';
 import { vote } from './poll';
+import { confirmSettlement } from './costs';
 
 export function postMessage(c: EventCollab, authorId: string, body: string, now: Date): EventCollab {
   if (!memberIds(c).includes(authorId)) throw new CollabError('not-invited');
@@ -51,6 +52,7 @@ export function applyDueActions(c: EventCollab, now: Date): { collab: EventColla
     try {
       if (a.type === 'rsvp') next = respond(next, a.personId, a.answer, a.at);
       else if (a.type === 'vote') next = vote(next, a.pollId, a.personId, a.votes, a.at);
+      else if (a.type === 'confirm-settlement') next = confirmSettlement(next, a.personId, a.settlementId, a.at);
       else {
         if (!memberIds(next).includes(a.personId)) continue;
         next = {

@@ -9,7 +9,12 @@ export interface EffectiveBuffer {
 }
 
 /** The buffer every leave plan uses: learned when switched on and there is enough history, else fixed. */
-export function effectiveBuffer(settings: Settings, journeys: readonly Journey[]): EffectiveBuffer {
-  const learned = settings.bufferLearning ? learnBuffer(journeys, settings.dawdleBuffer) : null;
+export function effectiveBuffer(
+  settings: Settings,
+  journeys: readonly Journey[],
+  /** Buffer learning is part of Plus (monetization.md §2); off = the fixed buffer applies. */
+  learningAllowed = true,
+): EffectiveBuffer {
+  const learned = settings.bufferLearning && learningAllowed ? learnBuffer(journeys, settings.dawdleBuffer) : null;
   return { minutes: learned?.minutes ?? settings.dawdleBuffer, learned };
 }

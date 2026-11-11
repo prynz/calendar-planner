@@ -101,10 +101,18 @@ export interface Household {
 }
 
 /**
- * Prototype limits follow the Family plan (up to 6 people incl. child profiles – open PO question in
- * family.md, decided conservatively in ADR 0014). Free limits arrive with entitlements in Phase 6.
+ * Hard caps of the data model. Plan limits (Free: 2 adults + 2 child profiles, Family: 6 adults) live in
+ * `@nowish/entitlements`; child profiles never count towards the adults (monetization.md §2).
  */
-export const FAMILY_LIMITS = { members: 6, name: 30, title: 120, note: 60, shopping: 200, chores: 30 } as const;
+export const FAMILY_LIMITS = {
+  adults: 6,
+  kids: 10,
+  name: 30,
+  title: 120,
+  note: 60,
+  shopping: 200,
+  chores: 30,
+} as const;
 
 /** Error codes are i18n key suffixes (`family.error.<code>`). */
 export type FamilyErrorCode = 'not-member' | 'not-admin' | 'limit' | 'invalid-input' | 'not-found' | 'not-adult';

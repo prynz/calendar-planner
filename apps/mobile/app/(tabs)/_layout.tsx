@@ -1,8 +1,9 @@
-import { Tabs, useRouter } from 'expo-router';
+import { Redirect, Tabs, useRouter } from 'expo-router';
 import { CalendarDays, Plus, Sun, UserRound, UsersRound } from 'lucide-react-native';
 
 import { Fab, FloatingTabBar, useTheme } from '@nowish/ui';
 
+import { useAccount } from '@/providers/account';
 import { useI18n } from '@/providers/i18n';
 import { haptic } from '@/services/haptics';
 
@@ -14,12 +15,17 @@ export default function TabsLayout() {
   const { t } = useI18n();
   const { colors } = useTheme();
   const router = useRouter();
+  const account = useAccount();
   const labels: Record<TabRoute, string> = {
     index: t('tabs.today'),
     calendar: t('tabs.calendar'),
     events: t('tabs.together'),
     settings: t('tabs.settings'),
   };
+
+  // First start: onboarding before anything else (no ads, no paywall in the first session).
+  if (account.state === 'loading') return null;
+  if (!account.account.onboarded) return <Redirect href="/onboarding" />;
 
   return (
     <Tabs

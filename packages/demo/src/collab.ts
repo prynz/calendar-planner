@@ -5,6 +5,7 @@ import {
   zonedWallTimeToInstant,
   type CalendarEvent,
   type EventCollab,
+  type Expense,
   type Invitation,
   type LocalizedText,
   type Poll,
@@ -134,6 +135,28 @@ const msg = (id: string, at: Date, authorId: string, body: LocalizedText) =>
   ({ id, at, type: 'text', authorId, body: body.de, bodyI18n: body }) as const;
 
 const hoursAgo = (now: Date, h: number) => new Date(now.getTime() - h * 3_600_000);
+
+const BBQ_PEOPLE = ['chris', 'olivia', 'tom', 'mia'];
+const expense = (id: string, de: string, en: string, amount: number, paidBy: string, createdAt: Date): Expense => ({
+  id,
+  title: de,
+  titleI18n: { de, en },
+  amount,
+  paidBy,
+  split: { mode: 'equal', among: BBQ_PEOPLE },
+  createdAt,
+});
+
+/** The other side confirms "paid" after 4–8 s (Demo; children never act). */
+export function simulateSettlementConfirm(c: EventCollab, settlementId: string, now: Date): SimulatedAction[] {
+  const s = c.settlements?.find((x) => x.id === settlementId);
+  if (!s) return [];
+  const other = [s.from, s.to].find((p) => !s.confirmedBy.includes(p));
+  if (!other || other === VIEWER || PASSIVE.has(other)) return [];
+  return [
+    { at: seconds(now, 4 + (stableHash(settlementId) % 5)), personId: other, type: 'confirm-settlement', settlementId },
+  ];
+}
 
 /** Collaboration documents for the demo events (`buildDemoEvents`), relative to `now`. */
 export function buildDemoCollabs(events: readonly CalendarEvent[], now: Date): EventCollab[] {
@@ -292,12 +315,27 @@ export function buildDemoCollabs(events: readonly CalendarEvent[], now: Date): E
           en: 'Please vote by the day after tomorrow 🙏',
         }),
       ],
+      // Phase 6: shared costs and a rain plan (both Demo).
+      currency: 'EUR',
+      expenses: [
+        expense('bbq-x1', 'Grillgut', 'Barbecue meat', 4800, 'olivia', hoursAgo(now, 30)),
+        expense('bbq-x2', 'Getränke', 'Drinks', 2350, 'tom', hoursAgo(now, 20)),
+        expense('bbq-x3', 'Holzkohle', 'Charcoal', 899, 'chris', hoursAgo(now, 10)),
+      ],
+      settlements: [],
+      outdoor: true,
+      planB: { location: 'Café Lindner', active: false },
     };
   });
 
   add('brunch', (_e, c) => ({ ...c, invitations: invitations({ chris: 'yes', lena: 'yes', paul: 'yes' }, now) }));
   add('stammtisch', (_e, c) => ({ ...c, invitations: invitations({ chris: 'yes', jonas: 'yes', alex: 'yes' }, now) }));
-  add('run', (_e, c) => ({ ...c, invitations: invitations({ mia: 'yes', olivia: 'yes' }, now) }));
+  add('run', (_e, c) => ({
+    ...c,
+    invitations: invitations({ mia: 'yes', olivia: 'yes' }, now),
+    outdoor: true,
+    planB: { location: 'Halle Nord', active: false },
+  }));
   add('concert', (_e, c) => ({ ...c, invitations: invitations({ chris: 'yes', mia: 'maybe' }, now) }));
 
   add('movie-night', (e, c) => {

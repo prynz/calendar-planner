@@ -22,6 +22,7 @@
     "@nowish/config": "workspace:*",
     "@nowish/demo": "workspace:*",
     "@nowish/domain": "workspace:*",
+    "@nowish/entitlements": "workspace:*",
     "@nowish/i18n": "workspace:*",
     "@nowish/ui": "workspace:*",
     "@react-native-community/datetimepicker": "9.2.1",

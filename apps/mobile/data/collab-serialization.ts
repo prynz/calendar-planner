@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { RSVP_ANSWERS, VOTE_VALUES, type EventCollab, type Journey } from '@nowish/domain';
+import { CURRENCIES, RSVP_ANSWERS, VOTE_VALUES, type EventCollab, type Journey } from '@nowish/domain';
 
 /** JSON shape on disk: dates as ISO strings. Bump + migrate in db.ts when the shape changes. */
 export const COLLAB_JSON_VERSION = 1;
@@ -17,6 +17,8 @@ const note = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('poll-decided'), pollId: z.string() }),
   z.object({ kind: z.literal('task-done'), personId: z.string(), taskId: z.string() }),
   z.object({ kind: z.literal('late'), personId: z.string(), minutes: z.number().int() }),
+  z.object({ kind: z.literal('plan-b'), personId: z.string(), location: z.string() }),
+  z.object({ kind: z.literal('settled'), from: z.string(), to: z.string(), amount: z.number().int() }),
 ]);
 
 const action = z.discriminatedUnion('type', [
@@ -29,6 +31,14 @@ const action = z.discriminatedUnion('type', [
     votes: z.record(z.string(), voteValue),
   }),
   z.object({ at: date, personId: z.string(), type: z.literal('message'), body: i18n }),
+  z.object({ at: date, personId: z.string(), type: z.literal('confirm-settlement'), settlementId: z.string() }),
+]);
+
+const cents = z.number().int().min(0);
+const split = z.discriminatedUnion('mode', [
+  z.object({ mode: z.literal('equal'), among: z.array(z.string()).min(1) }),
+  z.object({ mode: z.literal('shares'), shares: z.record(z.string(), z.number().int().min(1)) }),
+  z.object({ mode: z.literal('exact'), amounts: z.record(z.string(), cents) }),
 ]);
 
 const collabSchema = z.object({
@@ -89,6 +99,34 @@ const collabSchema = z.object({
   ),
   pending: z.array(action),
   template: z.object({ id: z.string(), version: z.number().int() }).optional(),
+  currency: z.enum(CURRENCIES).optional(),
+  expenses: z
+    .array(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        titleI18n: i18n.optional(),
+        amount: cents.min(1),
+        paidBy: z.string(),
+        split,
+        createdAt: date,
+      }),
+    )
+    .optional(),
+  settlements: z
+    .array(
+      z.object({
+        id: z.string(),
+        from: z.string(),
+        to: z.string(),
+        amount: cents.min(1),
+        confirmedBy: z.array(z.string()),
+        createdAt: date,
+      }),
+    )
+    .optional(),
+  outdoor: z.boolean().optional(),
+  planB: z.object({ location: z.string(), active: z.boolean() }).optional(),
 });
 
 export function serializeCollab(c: EventCollab): string {

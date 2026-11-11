@@ -33,6 +33,8 @@ import {
 import { leavePlanFor, VIEWER_ID } from '../agenda/presenters';
 import { StoreGate } from '../agenda/StoreGate';
 import { useAgendaContext } from '../agenda/use-agenda';
+import { LimitNotice } from '../premium/LimitNotice';
+import { useAccount } from '@/providers/account';
 import { haptic } from '@/services/haptics';
 
 type Mode = 'list' | 'steps';
@@ -44,6 +46,7 @@ export function ReadyCheckScreen({ eventId, occurrence }: { eventId: string; occ
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const [mode, setMode] = useState<Mode>('list');
+  const { limits } = useAccount();
   const [failed, setFailed] = useState(false);
   const event = store.getEvent(eventId);
   const day = occurrence ?? today;
@@ -58,6 +61,17 @@ export function ReadyCheckScreen({ eventId, occurrence }: { eventId: string; occ
       testID="ready-close"
     />
   );
+
+  if (!limits.readyCheck) {
+    return (
+      <View style={{ flex: 1, backgroundColor: colors.canvas, paddingTop: insets.top + space[4], gap: space[4] }}>
+        <View style={{ alignItems: 'flex-end', paddingHorizontal: space[4] }}>{close}</View>
+        <View style={{ paddingHorizontal: space[5] }}>
+          <LimitNotice text={t('limit.ready')} reason="ready-check" testID="limit-ready" />
+        </View>
+      </View>
+    );
+  }
 
   if (!event || !item || !plan) {
     return (

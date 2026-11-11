@@ -8,7 +8,7 @@ import {
   type PollOption,
   type SystemNote,
 } from '@nowish/domain';
-import { formatShortDate, formatTime, type Locale, type MessageKey, type Translate } from '@nowish/i18n';
+import { formatMoney, formatShortDate, formatTime, type Locale, type MessageKey, type Translate } from '@nowish/i18n';
 
 import { VIEWER_ID } from '../agenda/presenters';
 
@@ -60,6 +60,16 @@ export function noteText(note: SystemNote, c: EventCollab, t: Translate, locale:
       return note.personId === VIEWER_ID
         ? t('chat.system.you.late', { minutes: note.minutes })
         : t('chat.system.late', { name: nameOf(note.personId, t), minutes: note.minutes });
+    case 'plan-b':
+      return note.personId === VIEWER_ID
+        ? t('chat.system.you.plan-b', { location: note.location })
+        : t('chat.system.plan-b', { name: nameOf(note.personId, t), location: note.location });
+    case 'settled':
+      return t('chat.system.settled', {
+        from: nameOf(note.from, t),
+        to: nameOf(note.to, t),
+        amount: formatMoney(note.amount, c.currency ?? 'EUR', locale),
+      });
   }
 }
 

@@ -4,6 +4,7 @@ import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { simulateMeetingAnswers } from '@nowish/demo';
+import { canAddOne } from '@nowish/entitlements';
 import {
   addMeeting,
   assignMembers,
@@ -53,9 +54,13 @@ import {
   withRepeat,
   withStart,
 } from './draft-helpers';
+import { LimitNotice } from '../premium/LimitNotice';
+import { activeHostedEvents } from '../premium/usage';
+import { useAccount } from '@/providers/account';
 import { confirm } from '@/services/confirm';
 import { haptic } from '@/services/haptics';
 
+import { CoverPicker } from './CoverPicker';
 import { ForWhomSection } from './ForWhomSection';
 import { MonthlyChoice, withMonthlyRule } from './MonthlyChoice';
 import { initialSocialChoice, SocialSection, type SocialChoice } from './SocialSection';
@@ -79,6 +84,7 @@ export function EditorScreen({
   groupId?: string;
 }) {
   const { store, now, locale, t, today, buffer } = useAgendaContext();
+  const { limits } = useAccount();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
@@ -129,8 +135,14 @@ export function EditorScreen({
     ]);
   };
 
+  const hostedLimit = isNewSocial ? canAddOne(limits.activeHostedEvents, activeHostedEvents(store.events, now)) : null;
+
   const save = async () => {
     const current = draft;
+    if (hostedLimit && !hostedLimit.ok) {
+      haptic('warning');
+      return;
+    }
     if (Object.keys(errors).length > 0) {
       setShowErrors(true);
       haptic('warning');
@@ -236,6 +248,13 @@ export function EditorScreen({
         testID="screen-editor"
       >
         <Gutter gap={4}>
+          {hostedLimit && !hostedLimit.ok ? (
+            <LimitNotice
+              text={t('limit.hosted', { limit: hostedLimit.limit })}
+              reason="hosted-events"
+              testID="limit-hosted"
+            />
+          ) : null}
           {saveFailed ? (
             <Text variant="bodyM" color="dangerText" accessibilityRole="alert" testID="editor-save-failed">
               {t('editor.saveFailed')}
@@ -263,6 +282,12 @@ export function EditorScreen({
             testIDPrefix="editor-category"
           />
         </Gutter>
+        <CoverPicker
+          value={draft.cover ?? 'category'}
+          category={draft.category}
+          onChange={(cover) => set({ cover })}
+          t={t}
+        />
 
         <Gutter gap={3}>
           <DateTimeField

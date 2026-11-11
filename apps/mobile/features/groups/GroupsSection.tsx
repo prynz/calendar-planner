@@ -1,12 +1,16 @@
 import { useRouter } from 'expo-router';
 import { View } from 'react-native';
 
+import { canAddOne } from '@nowish/entitlements';
 import { attendanceSummary, displayTitle, type Group } from '@nowish/domain';
 import { formatShortDate, formatTime } from '@nowish/i18n';
 import { AvatarStack, Button, Card, EmptyState, FadeIn, Gutter, PressableScale, space, Text } from '@nowish/ui';
 
 import { useAgendaContext } from '../agenda/use-agenda';
 import { nameOf } from '../collab/text';
+import { LimitNotice } from '../premium/LimitNotice';
+import { myGroups } from '../premium/usage';
+import { useAccount } from '@/providers/account';
 import { haptic } from '@/services/haptics';
 
 import { groupName, nextMeetings } from './use-group';
@@ -14,6 +18,8 @@ import { groupName, nextMeetings } from './use-group';
 /** Groups in the "Together" tab (groups.md GRP-01/02): fixed circles with their next meeting. */
 export function GroupsSection() {
   const { store, t } = useAgendaContext();
+  const { limits } = useAccount();
+  const groupLimit = canAddOne(limits.groups, myGroups(store.groups));
   const router = useRouter();
   const create = () => {
     haptic('light');
@@ -21,7 +27,11 @@ export function GroupsSection() {
   };
   return (
     <Gutter gap={4}>
-      <Button label={t('groups.create')} onPress={create} testID="groups-create" />
+      {groupLimit.ok ? (
+        <Button label={t('groups.create')} onPress={create} testID="groups-create" />
+      ) : (
+        <LimitNotice text={t('limit.groups', { limit: groupLimit.limit })} reason="groups" testID="limit-groups" />
+      )}
       {store.groups.length === 0 ? (
         <EmptyState title={t('groups.empty.title')} body={t('groups.empty.body')} testID="groups-empty" />
       ) : (

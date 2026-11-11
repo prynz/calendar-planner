@@ -68,3 +68,36 @@ describe('draft ↔ event', () => {
     expect(plain.travel).toBeUndefined();
   });
 });
+
+describe('covers', () => {
+  it('keeps a chosen cover and drops the default', async () => {
+    const { applyDraft, eventToDraft, isPremiumCover } = await import('../src');
+    const base = {
+      id: 'c1',
+      kind: 'appointment' as const,
+      timeZone: 'Europe/Berlin',
+      participantIds: ['chris'],
+      isDemo: false,
+      createdAt: new Date('2026-11-01T00:00:00Z'),
+    };
+    const draft = {
+      title: 'Party',
+      category: 'celebration' as const,
+      day: '2026-11-20',
+      allDay: false,
+      startMinute: 1200,
+      endMinute: 1380,
+      days: 1,
+      location: '',
+      prepMinutes: 0,
+      arrivalMarginMinutes: 0,
+      cover: 'confetti' as const,
+    };
+    const e = applyDraft(base, draft, new Date('2026-11-11T00:00:00Z'));
+    expect(e.cover).toBe('confetti');
+    expect(eventToDraft(e, 'de').cover).toBe('confetti');
+    expect(applyDraft(e, { ...draft, cover: 'category' }, new Date()).cover).toBeUndefined();
+    expect(isPremiumCover('confetti')).toBe(true);
+    expect(isPremiumCover('stripes')).toBe(false);
+  });
+});

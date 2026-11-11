@@ -7,6 +7,15 @@ export const EVENT_CATEGORIES = ['social', 'family', 'health', 'work', 'sport', 
 export type EventCategory = (typeof EVENT_CATEGORIES)[number];
 
 /**
+ * Event covers (events.md: cover as colour or theme). `category` = the category pastel; the others are
+ * illustrated themes – `stripes` is basic, the rest premium (monetization.md: Themes/Cover).
+ */
+export const EVENT_COVERS = ['category', 'stripes', 'sunset', 'night', 'confetti', 'forest'] as const;
+export type EventCover = (typeof EVENT_COVERS)[number];
+export const BASIC_COVERS: readonly EventCover[] = ['category', 'stripes'];
+export const isPremiumCover = (c: EventCover) => !BASIC_COVERS.includes(c);
+
+/**
  * What the editor produces. Wall-clock based: the user picks a day and times in their zone.
  * Converted to instants by the repository (time.ts), so DST is handled in one place.
  */
@@ -25,6 +34,8 @@ export interface EventDraft {
   travel?: { mode: TravelMode; minutes: number };
   prepMinutes: number;
   arrivalMarginMinutes: number;
+  /** Absent = `category`. */
+  cover?: EventCover;
 }
 
 export type DraftField = 'title' | 'time' | 'days' | 'location' | 'travel' | 'prep' | 'arrival' | 'recurrence';

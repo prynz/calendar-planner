@@ -31,7 +31,8 @@ export const isAdult = (h: Household, id: string) => h.adultIds.includes(id);
 export const isMember = (h: Household, id: string) => householdMemberIds(h).includes(id);
 export const kidById = (h: Household, id: string): KidProfile | undefined => h.kids.find((k) => k.id === id);
 
-const memberCount = (h: Household) => h.adultIds.length + h.invitedIds.length + h.kids.length;
+/** Adults incl. pending invitations – what the adult limit counts. */
+export const adultCount = (h: Household) => h.adultIds.length + h.invitedIds.length;
 
 function requireAdmin(h: Household, by: string) {
   if (!isAdult(h, by)) throw new FamilyError('not-member');
@@ -46,7 +47,7 @@ export function requireAdult(h: Household, by: string) {
 export function inviteAdult(h: Household, by: string, personId: string): Household {
   requireAdmin(h, by);
   if (isMember(h, personId) || h.invitedIds.includes(personId)) throw new FamilyError('invalid-input');
-  if (memberCount(h) >= FAMILY_LIMITS.members) throw new FamilyError('limit');
+  if (adultCount(h) >= FAMILY_LIMITS.adults) throw new FamilyError('limit');
   return { ...h, invitedIds: [...h.invitedIds, personId] };
 }
 
@@ -71,7 +72,7 @@ function checkKid(input: KidInput): Omit<KidProfile, 'id'> {
 /** FAM-02: child profile without account. */
 export function addKid(h: Household, by: string, input: KidInput, now: Date): { household: Household; id: string } {
   requireAdmin(h, by);
-  if (memberCount(h) >= FAMILY_LIMITS.members) throw new FamilyError('limit');
+  if (h.kids.length >= FAMILY_LIMITS.kids) throw new FamilyError('limit');
   const id = nextId('kid', h.kids, now);
   return { household: { ...h, kids: [...h.kids, { id, ...checkKid(input) }] }, id };
 }

@@ -8,6 +8,7 @@ import { agendaForDay, personName } from '@nowish/demo';
 import { displayLocation, displayTitle, reminderStages, type ReminderStageKind } from '@nowish/domain';
 import { formatLongDate, formatTime } from '@nowish/i18n';
 import {
+  CoverBand,
   AvatarStack,
   Badge,
   Button,
@@ -32,6 +33,7 @@ import { haptic } from '@/services/haptics';
 
 import { LeavePanel } from '../leave/LeavePanel';
 import { FamilyPanel } from '../family/FamilyPanel';
+import { PlanBCard } from './PlanBCard';
 import { SocialPanel } from './SocialPanel';
 
 export function EventDetailScreen({
@@ -158,6 +160,7 @@ export function EventDetailScreen({
         </View>
 
         <Gutter gap={4}>
+          {event.cover ? <CoverBand cover={event.cover} category={event.category} testID="detail-cover" /> : null}
           {deleteFailed ? (
             <Text variant="bodyM" color="dangerText" accessibilityRole="alert">
               {t('detail.deleteFailed')}
@@ -277,7 +280,10 @@ export function EventDetailScreen({
           ) : null}
 
           {store.getCollab(event.id) ? (
-            <SocialPanel eventId={event.id} />
+            <>
+              <SocialPanel eventId={event.id} />
+              <PlanBCard eventId={event.id} day={item.occurrenceKey} />
+            </>
           ) : others.length > 0 ? (
             <FadeIn delay={120}>
               <Card>

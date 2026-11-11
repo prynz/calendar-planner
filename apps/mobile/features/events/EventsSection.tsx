@@ -9,6 +9,7 @@ import { Button, EmptyState, EventCard, FadeIn, Gutter, SectionTitle, space, Tex
 import { eventCardProps, VIEWER_ID } from '../agenda/presenters';
 import { StoreGate } from '../agenda/StoreGate';
 import { useAgendaContext } from '../agenda/use-agenda';
+import { HouseAd } from '../premium/HouseAd';
 import { haptic } from '@/services/haptics';
 
 type ViewerRole = RsvpState | 'host' | null;
@@ -76,6 +77,7 @@ export function EventsSection() {
               </View>
             </>
           )}
+          <HouseAd slot="events_overview_banner" surface="events" />
         </Gutter>
       </StoreGate>
     </>

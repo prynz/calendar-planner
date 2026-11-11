@@ -1,0 +1,13 @@
+{
+  "name": "@nowish/entitlements",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Subscription tiers, limits and feature gates as data; house-ad rules (docs/product/monetization.md).",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  }
+}

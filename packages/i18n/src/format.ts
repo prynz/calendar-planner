@@ -46,3 +46,8 @@ export function formatShortDate(date: Date, locale: Locale, timeZone?: string): 
     ...(timeZone ? { timeZone } : {}),
   }).format(date);
 }
+
+/** Integer minor units (cents) → "12,40 €" / "€12.40"; prices always incl. VAT (monetization.md §1.4). */
+export function formatMoney(cents: number, currency: string, locale: Locale): string {
+  return new Intl.NumberFormat(intlTag[locale], { style: 'currency', currency }).format(cents / 100);
+}

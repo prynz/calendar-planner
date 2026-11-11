@@ -65,6 +65,7 @@ export default defineConfig([
   {
     files: [
       'packages/domain/src/**/*.ts',
+      'packages/entitlements/src/**/*.ts',
       'packages/demo/src/**/*.ts',
       'packages/i18n/src/**/*.ts',
       'packages/config/src/**/*.ts',

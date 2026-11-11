@@ -1,8 +1,10 @@
 import { useRouter } from 'expo-router';
-import { CheckSquare, MessageCircle, ShoppingBasket, Users, Vote } from 'lucide-react-native';
+import { CheckSquare, MessageCircle, ShoppingBasket, Users, Vote, Wallet } from 'lucide-react-native';
 import { View } from 'react-native';
 
 import {
+  balances,
+  expensesOf,
   bringProgress,
   hasVoted,
   invitationOf,
@@ -15,7 +17,7 @@ import {
   RSVP_ANSWERS,
   type RsvpAnswer,
 } from '@nowish/domain';
-import { formatLongDate } from '@nowish/i18n';
+import { formatMoney, formatLongDate } from '@nowish/i18n';
 import {
   AvatarStack,
   Card,
@@ -56,6 +58,17 @@ export function SocialPanel({ eventId }: { eventId: string }) {
   const tasks = taskProgress(collab.tasks);
   const last = lastMessage(collab);
   const hint = (section: string) => t('tile.hint', { section });
+  const costTotal = expensesOf(collab).reduce((a, e) => a + e.amount, 0);
+  const myBalance = balances(collab)[viewerId] ?? 0;
+  const money = (v: number) => formatMoney(v, collab.currency ?? 'EUR', locale);
+  const costValue =
+    expensesOf(collab).length === 0
+      ? t('tile.empty')
+      : myBalance > 0
+        ? t('costs.tile.youGet', { amount: money(myBalance) })
+        : myBalance < 0
+          ? t('costs.tile.youOwe', { amount: money(-myBalance) })
+          : t('costs.tile.even');
 
   const pollValue = !poll
     ? t('tile.poll.none')
@@ -166,6 +179,17 @@ export function SocialPanel({ eventId }: { eventId: string }) {
             onPress={() => open('chat')}
             hint={hint(t('tile.chat'))}
             testID="tile-chat"
+          />
+          <Tile
+            title={t('costs.tile')}
+            value={costValue}
+            {...(expensesOf(collab).length > 0
+              ? { detail: t('costs.total', { amount: formatMoney(costTotal, collab.currency ?? 'EUR', locale) }) }
+              : {})}
+            icon={(c) => <Wallet color={c} size={16} />}
+            onPress={() => open('costs')}
+            hint={hint(t('costs.tile'))}
+            testID="tile-costs"
           />
         </View>
       </FadeIn>

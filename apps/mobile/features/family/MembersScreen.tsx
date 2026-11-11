@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { View } from 'react-native';
 
 import { DEMO_PEOPLE, simulateFamilyJoin } from '@nowish/demo';
+import { canAddOne } from '@nowish/entitlements';
 import {
   addKid,
+  adultCount,
   FAMILY_LIMITS,
   householdMemberIds,
   inviteAdult,
@@ -25,6 +27,8 @@ import {
   TextField,
 } from '@nowish/ui';
 
+import { LimitNotice } from '../premium/LimitNotice';
+import { useAccount } from '@/providers/account';
 import { confirm } from '@/services/confirm';
 
 import { FamilyShell } from './FamilyShell';
@@ -37,6 +41,7 @@ const KID_EMOJIS = ['🦊', '🐢', '🐻', '🐰', '🦄', '🐸', '🐼', '�
 export function MembersScreen() {
   const ctx = useFamily();
   const { household, t, run, viewerId } = ctx;
+  const { limits } = useAccount();
   const [editing, setEditing] = useState<string | 'new' | null>(null);
   if (!household)
     return (
@@ -44,7 +49,9 @@ export function MembersScreen() {
         {null}
       </FamilyShell>
     );
-  const count = householdMemberIds(household).length + household.invitedIds.length;
+  const adults = adultCount(household);
+  const canAddAdult = canAddOne(limits.familyAdults, adults);
+  const canAddKid = canAddOne(limits.familyKids, household.kids.length);
   const isAdmin = household.adminId === viewerId;
   const invitable = DEMO_PEOPLE.filter(
     (p) => (p.kind === 'family' || p.kind === 'friend') && !householdMemberIds(household).includes(p.id),
@@ -53,7 +60,7 @@ export function MembersScreen() {
   return (
     <FamilyShell ctx={ctx} title={t('members.title')} testID="screen-members">
       <Text variant="label" color="textSecondary" testID="members-count">
-        {t('members.limit', { count })}
+        {t('members.limit', { count: adults, max: limits.familyAdults })}
       </Text>
       <SectionTitle>{t('members.adults')}</SectionTitle>
       {[...household.adultIds, ...household.invitedIds].map((id) => (
@@ -100,15 +107,28 @@ export function MembersScreen() {
           </PressableScale>
         ),
       )}
-      {isAdmin && count < FAMILY_LIMITS.members ? (
+      {isAdmin && canAddKid.ok ? (
         editing === 'new' ? (
           <KidForm ctx={ctx} onDone={() => setEditing(null)} />
         ) : (
           <Button label={t('members.addKid')} variant="secondary" onPress={() => setEditing('new')} testID="kid-add" />
         )
+      ) : isAdmin && !canAddKid.ok ? (
+        <LimitNotice
+          text={t('limit.familyKids', { limit: canAddKid.limit })}
+          reason="family-size"
+          testID="limit-kids"
+        />
       ) : null}
 
-      {isAdmin && invitable.length > 0 && count < FAMILY_LIMITS.members ? (
+      {isAdmin && !canAddAdult.ok ? (
+        <LimitNotice
+          text={t('limit.familyAdults', { limit: canAddAdult.limit })}
+          reason="family-size"
+          testID="limit-adults"
+        />
+      ) : null}
+      {isAdmin && invitable.length > 0 && canAddAdult.ok ? (
         <Card testID="members-invite">
           <SectionTitle>{t('members.invite')}</SectionTitle>
           <Text variant="bodyM" color="textSecondary">

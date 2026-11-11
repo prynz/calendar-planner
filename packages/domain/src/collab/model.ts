@@ -68,7 +68,9 @@ export type SystemNote =
   | { kind: 'poll-created'; pollId: string }
   | { kind: 'poll-decided'; pollId: string }
   | { kind: 'task-done'; personId: string; taskId: string }
-  | { kind: 'late'; personId: string; minutes: number };
+  | { kind: 'late'; personId: string; minutes: number }
+  | { kind: 'plan-b'; personId: string; location: string }
+  | { kind: 'settled'; from: string; to: string; amount: number };
 
 export type ChatMessage =
   | { id: string; at: Date; type: 'text'; authorId: string; body: string; bodyI18n?: LocalizedText }
@@ -81,7 +83,8 @@ export type ChatMessage =
 export type SimulatedAction =
   | { at: Date; personId: string; type: 'rsvp'; answer: RsvpAnswer }
   | { at: Date; personId: string; type: 'vote'; pollId: string; votes: Record<string, VoteValue> }
-  | { at: Date; personId: string; type: 'message'; body: LocalizedText };
+  | { at: Date; personId: string; type: 'message'; body: LocalizedText }
+  | { at: Date; personId: string; type: 'confirm-settlement'; settlementId: string };
 
 export interface EventCollab {
   eventId: string;
@@ -96,9 +99,63 @@ export interface EventCollab {
   pending: SimulatedAction[];
   /** Template the event was created from (templates.md: versioned, no retroactive changes). */
   template?: { id: string; version: number };
+  /** Cost split (costs.md, Phase 6): one currency per event. */
+  currency?: Currency;
+  expenses?: Expense[];
+  settlements?: Settlement[];
+  /** Weather fallback (Phase 6): the host's alternative place for outdoor events. */
+  outdoor?: boolean;
+  planB?: PlanB;
 }
 
-export const COLLAB_LIMITS = { title: 120, message: 4000, quantity: 99, options: 8, question: 200 } as const;
+export const CURRENCIES = ['EUR', 'CHF'] as const;
+export type Currency = (typeof CURRENCIES)[number];
+
+export const SPLIT_MODES = ['equal', 'shares', 'exact'] as const;
+export type SplitMode = (typeof SPLIT_MODES)[number];
+
+/** How an expense is divided (CST-02). Amounts are integer minor units (cents). */
+export type ExpenseSplit =
+  | { mode: 'equal'; among: string[] }
+  | { mode: 'shares'; shares: Record<string, number> }
+  | { mode: 'exact'; amounts: Record<string, number> };
+
+export interface Expense {
+  id: string;
+  title: string;
+  titleI18n?: LocalizedText;
+  /** Cents, > 0. */
+  amount: number;
+  paidBy: string;
+  split: ExpenseSplit;
+  createdAt: Date;
+}
+
+/** A payment between two people, "done" once both sides confirmed (CST-05). */
+export interface Settlement {
+  id: string;
+  from: string;
+  to: string;
+  amount: number;
+  confirmedBy: string[];
+  createdAt: Date;
+}
+
+export interface PlanB {
+  location: string;
+  active: boolean;
+}
+
+export const COLLAB_LIMITS = {
+  title: 120,
+  message: 4000,
+  quantity: 99,
+  options: 8,
+  question: 200,
+  /** 100 000 € / CHF per expense. */
+  amount: 10_000_000,
+  location: 200,
+} as const;
 
 /** Error codes are i18n key suffixes (`collab.error.<code>`). */
 export type CollabErrorCode =

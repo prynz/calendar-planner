@@ -101,6 +101,8 @@ interface EventsContextValue {
   /** Adds a new group (built by the domain's `createGroup`). */
   addGroup: (group: Group) => Promise<void>;
   updateGroup: (id: string, fn: GroupUpdate) => Promise<void>;
+  /** Privacy centre "delete all data": an empty local store (the example world can be restored in settings). */
+  deleteAll: () => Promise<void>;
   /** ICS import: new or replaced events in one go (CAL-09). */
   importEvents: (events: readonly CalendarEvent[]) => Promise<void>;
 }
@@ -462,6 +464,20 @@ export function EventsProvider({
         const next = 'memberIds' in result ? result : scheduleGroup(result.group, result.simulate);
         if (next === current) return;
         await saveGroup(next);
+      },
+      async deleteAll() {
+        const empty = { events: [], collabs: [], journeys: [], household: null, groups: [] };
+        await repository.replaceAll(empty);
+        eventsRef.current = [];
+        collabsRef.current = [];
+        journeysRef.current = [];
+        householdRef.current = null;
+        groupsRef.current = [];
+        setEvents([]);
+        setCollabs([]);
+        setJourneys([]);
+        setHousehold(null);
+        setGroups([]);
       },
       async importEvents(imported) {
         if (imported.length === 0) return;

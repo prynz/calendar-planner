@@ -1,5 +1,6 @@
 import { antiChaosEn } from './anti-chaos.en';
 import { circlesEn } from './circles.en';
+import { premiumEn } from './premium.en';
 import { collabEn } from './collab.en';
 import type { Messages } from './de';
 
@@ -8,6 +9,7 @@ export const en: Messages = {
   ...collabEn,
   ...antiChaosEn,
   ...circlesEn,
+  ...premiumEn,
   'tabs.today': 'Today',
   'tabs.events': 'Events',
   'tabs.settings': 'Me',

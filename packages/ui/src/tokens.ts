@@ -47,6 +47,19 @@ export const categoryColors = {
 } as const;
 
 export type EventCategory = keyof typeof categoryColors;
+
+/**
+ * Event cover themes (Phase 6). Two colours each (gradient) and an optional pattern drawn on top. Text on a
+ * cover is never placed directly on it – covers are decorative bands. `category` uses the category pastel.
+ */
+export const coverThemes = {
+  stripes: { from: palette.cream100, to: palette.cream200, pattern: 'stripes' },
+  sunset: { from: palette.sun, to: palette.coral, pattern: 'none' },
+  night: { from: palette.violet700, to: palette.ink800, pattern: 'dots' },
+  confetti: { from: palette.lilac, to: palette.peach, pattern: 'confetti' },
+  forest: { from: palette.mint, to: palette.cyan, pattern: 'none' },
+} as const;
+export type CoverTheme = keyof typeof coverThemes;
 export const EVENT_CATEGORIES = Object.keys(categoryColors) as EventCategory[];
 
 export type ThemeName = 'dark' | 'light';

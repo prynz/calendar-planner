@@ -8,11 +8,13 @@ import { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { DEMO_TIME_ZONE } from '@nowish/demo';
 import { ErrorState, ThemeProvider, useTheme } from '@nowish/ui';
 import { createTranslator } from '@nowish/i18n';
 
 import { ClockProvider } from '@/providers/clock';
 import { createDeviceEventRepository } from '@/data/device-event-repository';
+import { AccountProvider } from '@/providers/account';
 import { EventsProvider } from '@/providers/events';
 import { I18nProvider } from '@/providers/i18n';
 import { RemindersProvider } from '@/providers/reminders';
@@ -69,6 +71,13 @@ function Shell() {
           <Stack.Screen name="group/[id]/chat" options={{ animation: 'slide_from_right' }} />
           <Stack.Screen name="group-new" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
           <Stack.Screen name="ics-import" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+          <Stack.Screen
+            name="onboarding"
+            options={{ presentation: 'fullScreenModal', animation: 'fade', gestureEnabled: false }}
+          />
+          <Stack.Screen name="paywall" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+          <Stack.Screen name="profile" options={{ animation: 'slide_from_right' }} />
+          <Stack.Screen name="privacy" options={{ animation: 'slide_from_right' }} />
         </Stack>
       </PreviewFrame>
     </>
@@ -85,11 +94,13 @@ export default function RootLayout() {
           <I18nProvider>
             <AppThemeProvider>
               <ClockProvider>
-                <EventsProvider repository={eventRepository}>
-                  <RemindersProvider>
-                    <Shell />
-                  </RemindersProvider>
-                </EventsProvider>
+                <AccountProvider store={store} timeZone={DEMO_TIME_ZONE}>
+                  <EventsProvider repository={eventRepository}>
+                    <RemindersProvider>
+                      <Shell />
+                    </RemindersProvider>
+                  </EventsProvider>
+                </AccountProvider>
               </ClockProvider>
             </AppThemeProvider>
           </I18nProvider>

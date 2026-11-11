@@ -16,6 +16,7 @@ import { useRouter } from 'expo-router';
 import { effectiveBuffer } from '@/features/leave/buffer';
 import { planReminders } from '@/features/reminders/plan';
 import { useNow } from '@/providers/clock';
+import { useAccount } from '@/providers/account';
 import { useEvents } from '@/providers/events';
 import { useI18n } from '@/providers/i18n';
 import { useSettings } from '@/providers/settings';
@@ -69,7 +70,8 @@ export function RemindersProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const buffer = effectiveBuffer(settings, journeys).minutes;
+  const { limits } = useAccount();
+  const buffer = effectiveBuffer(settings, journeys, limits.bufferLearning).minutes;
 
   // Reminder actions: "on my way" records the departure, "running late" and plain taps open the event.
   const storeRef = useRef(store);
@@ -111,7 +113,9 @@ export function RemindersProvider({ children }: { children: ReactNode }) {
       now: nowRef.current,
       timeZone,
       intensity: settings.reminderIntensity,
-      tone: settings.reminderTone,
+      // Free: one reminder in the casual tone (tone choice is part of Plus).
+      tone: limits.reminderStages === 'all' ? settings.reminderTone : 'casual',
+      stages: limits.reminderStages,
       bufferMinutes: buffer,
       locale,
       t,
@@ -136,6 +140,7 @@ export function RemindersProvider({ children }: { children: ReactNode }) {
     timeZone,
     settings.reminderIntensity,
     settings.reminderTone,
+    limits.reminderStages,
     buffer,
     locale,
     t,

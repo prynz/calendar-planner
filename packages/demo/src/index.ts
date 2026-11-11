@@ -8,6 +8,7 @@ import {
   type CalendarEvent,
   type DayKey,
   type EventCategory,
+  type EventCover,
   type LocalizedText,
   type Recurrence,
   type TravelMode,
@@ -67,6 +68,7 @@ interface Template {
   prep?: number;
   arrival?: number;
   recurrence?: Omit<Recurrence, 'until'> & { untilOffset?: number };
+  cover?: EventCover;
 }
 
 const TEMPLATES: readonly Template[] = [
@@ -177,6 +179,7 @@ const TEMPLATES: readonly Template[] = [
     participantIds: ['chris', 'tom', 'olivia', 'mia', 'jonas', 'alex', 'gabi'],
     travel: { mode: 'transit', minutes: 20 },
     prep: 45,
+    cover: 'confetti',
   },
   {
     id: 'bbq',
@@ -218,6 +221,7 @@ const TEMPLATES: readonly Template[] = [
     hostId: 'chris',
     participantIds: ['chris', 'olivia', 'tom', 'mia', 'alex'],
     prep: 30,
+    cover: 'night',
   },
   {
     id: 'concert',
@@ -345,6 +349,7 @@ export function buildDemoEvents(now: Date, timeZone: string = DEMO_TIME_ZONE): C
       ...(t.hostId ? { hostId: t.hostId } : {}),
       ...(t.travel ? { travel: t.travel } : {}),
       ...(recurrence ? { recurrence } : {}),
+      ...(t.cover ? { cover: t.cover } : {}),
       isDemo: true,
       createdAt: now,
       updatedAt: now,
@@ -417,3 +422,4 @@ export function personName(id: string): string {
   if (!p) throw new Error(`Unknown demo person "${id}"`);
   return p.name;
 }
+export * from './weather';

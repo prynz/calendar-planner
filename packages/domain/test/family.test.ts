@@ -78,9 +78,12 @@ describe('household', () => {
     expect(h.invitedIds).toEqual(['sam']);
     h = acceptInvite(h, 'sam');
     expect(h.adultIds).toEqual(['chris', 'sam']);
-    for (let i = 0; i < FAMILY_LIMITS.members - 2; i++)
+    for (let i = 0; i < FAMILY_LIMITS.kids; i++)
       h = addKid(h, 'chris', { name: `K${i}`, color: 'family' }, NOW).household;
     expect(() => addKid(h, 'chris', { name: 'Zu viel', color: 'family' }, NOW)).toThrow(new FamilyError('limit'));
+    // Child profiles never count towards the adults.
+    for (const p of ['a1', 'a2', 'a3', 'a4']) h = inviteAdult(h, 'chris', p);
+    expect(() => inviteAdult(h, 'chris', 'a5')).toThrow(new FamilyError('limit'));
   });
 
   it('stores child profiles without account data and only lets the admin manage them', () => {

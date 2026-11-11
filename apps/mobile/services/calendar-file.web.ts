@@ -14,8 +14,10 @@ export function pickCalendarText(): Promise<string | null> {
   });
 }
 
-export async function shareCalendarText(text: string, fileName: string): Promise<void> {
-  const url = URL.createObjectURL(new Blob([text], { type: 'text/calendar;charset=utf-8' }));
+export const shareCalendarText = (text: string, fileName: string) => shareTextFile(text, fileName, '', 'text/calendar');
+
+export async function shareTextFile(text: string, fileName: string, _title: string, mimeType: string): Promise<void> {
+  const url = URL.createObjectURL(new Blob([text], { type: `${mimeType};charset=utf-8` }));
   try {
     const a = document.createElement('a');
     a.href = url;

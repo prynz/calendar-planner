@@ -12,6 +12,7 @@ import { BUFFER_RANGE, useSettings, type ThemePreference } from '@/providers/set
 import { confirm } from '@/services/confirm';
 import { haptic } from '@/services/haptics';
 
+import { AccountSettings } from './AccountSettings';
 import { AntiChaosSettings } from './AntiChaosSettings';
 import { CalendarFileSettings } from './CalendarFileSettings';
 
@@ -68,6 +69,9 @@ export function SettingsScreen({ clientConfig, appVersion }: { clientConfig: Cli
   return (
     <Screen testID="screen-settings">
       <ScreenHeader title={t('settings.title')} />
+      <Gutter gap={4}>
+        <AccountSettings />
+      </Gutter>
       <Gutter gap={4}>
         <SectionTitle>{t('settings.language')}</SectionTitle>
         <SegmentedControl

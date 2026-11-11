@@ -33,3 +33,5 @@ export { SwipeDeck, type SwipeChoice, type SwipeDeckProps } from './components/S
 export { Heatmap, type HeatmapCell } from './components/Heatmap';
 export { MemberAvatar } from './components/MemberAvatar';
 export { WeekBars, type WeekBarDay } from './components/WeekBars';
+export { CheckRow } from './components/CheckRow';
+export { CoverBand } from './components/CoverBand';

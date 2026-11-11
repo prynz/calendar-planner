@@ -2,11 +2,12 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { BringScreen } from './BringScreen';
 import { ChatScreen } from './ChatScreen';
+import { CostsScreen } from './CostsScreen';
 import { GuestsScreen } from './GuestsScreen';
 import { PollScreen } from './PollScreen';
 import { TasksScreen } from './TasksScreen';
 
-export const COLLAB_SECTIONS = ['guests', 'poll', 'bring', 'tasks', 'chat'] as const;
+export const COLLAB_SECTIONS = ['guests', 'poll', 'bring', 'tasks', 'chat', 'costs'] as const;
 export type CollabSection = (typeof COLLAB_SECTIONS)[number];
 
 const SCREENS: Record<CollabSection, (p: { eventId: string }) => React.JSX.Element> = {
@@ -15,6 +16,7 @@ const SCREENS: Record<CollabSection, (p: { eventId: string }) => React.JSX.Eleme
   bring: BringScreen,
   tasks: TasksScreen,
   chat: ChatScreen,
+  costs: CostsScreen,
 };
 
 const isSection = (s: unknown): s is CollabSection =>

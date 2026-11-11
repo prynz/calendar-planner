@@ -19,9 +19,19 @@ export async function pickCalendarText(): Promise<string | null> {
   return new File(asset.uri).text();
 }
 
-export async function shareCalendarText(text: string, fileName: string, dialogTitle: string): Promise<void> {
+export const shareCalendarText = (text: string, fileName: string, dialogTitle: string) =>
+  shareTextFile(text, fileName, dialogTitle, 'text/calendar', 'com.apple.ical.ics');
+
+/** Any local text export (calendar file, data export) through the share sheet. */
+export async function shareTextFile(
+  text: string,
+  fileName: string,
+  dialogTitle: string,
+  mimeType: string,
+  UTI: string,
+): Promise<void> {
   const file = new File(Paths.cache, fileName);
   file.create({ overwrite: true });
   await file.write(text);
-  await Sharing.shareAsync(file.uri, { mimeType: 'text/calendar', UTI: 'com.apple.ical.ics', dialogTitle });
+  await Sharing.shareAsync(file.uri, { mimeType, UTI, dialogTitle });
 }

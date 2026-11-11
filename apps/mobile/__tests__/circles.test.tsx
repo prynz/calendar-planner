@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 
 import { buildDemoCollabs, buildDemoEvents, buildDemoGroups, buildDemoHousehold } from '@nowish/demo';
 import { assignedTo, exportIcs } from '@nowish/domain';
+import { demoPurchase } from '@nowish/entitlements';
 
 import {
   deserializeGroup,
@@ -20,6 +21,8 @@ import { CalendarFileSettings } from '@/features/settings/CalendarFileSettings';
 import { IcsImportScreen } from '@/features/settings/IcsImportScreen';
 import { TogetherScreen } from '@/features/together/TogetherScreen';
 import { EventsProvider, useEvents } from '@/providers/events';
+
+import { onboardedAccount } from '@/providers/account';
 
 import { NOW, renderApp, routeParams, router, seededRepo } from './test-utils';
 
@@ -147,16 +150,28 @@ describe('shopping and members', () => {
     await waitFor(() => expect(screen.getByTestId('shopping-buy-1')).toHaveTextContent(/besorgt von Du/));
   });
 
-  it('adds a child profile with name, colour and symbol only', async () => {
+  it('adds a child profile with name, colour and symbol only (Family plan)', async () => {
     routeParams.section = 'members';
-    await renderApp(<FamilyRoute />);
-    expect(await screen.findByTestId('members-count')).toHaveTextContent('4 von 6 Personen');
+    await renderApp(<FamilyRoute />, {
+      account: { ...onboardedAccount(NOW, 'Europe/Berlin'), subscription: demoPurchase('family', 'yearly', NOW) },
+    });
+    expect(await screen.findByTestId('members-count')).toHaveTextContent(
+      '2 von 6 Erwachsenen · Kinderprofile zählen nicht mit',
+    );
     await press('kid-add');
     await fireEvent.changeText(screen.getByTestId('kid-name'), 'Mila');
     await press('kid-emoji-🐻');
     await press('kid-save');
     expect(await screen.findByText('Mila')).toBeTruthy();
-    expect(screen.getByTestId('members-count')).toHaveTextContent('5 von 6 Personen');
+  });
+
+  it('explains the child-profile limit on Plus instead of adding', async () => {
+    routeParams.section = 'members';
+    await renderApp(<FamilyRoute />);
+    expect(await screen.findByTestId('limit-kids')).toHaveTextContent(
+      /2 Kinderprofile passen in deinen Tarif\. Mehr mit Family\./,
+    );
+    expect(screen.queryByTestId('kid-add')).toBeNull();
   });
 });
 

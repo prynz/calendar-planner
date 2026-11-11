@@ -6,6 +6,8 @@ import { Button, Card, Heatmap, SectionTitle, SegmentedControl, SwitchRow, Text,
 
 import { weekdayLabels } from '../agenda/presenters';
 import { useAgendaContext } from '../agenda/use-agenda';
+import { LimitNotice } from '../premium/LimitNotice';
+import { useAccount } from '@/providers/account';
 import { useSettings } from '@/providers/settings';
 import { confirm } from '@/services/confirm';
 import { haptic } from '@/services/haptics';
@@ -14,13 +16,16 @@ import { haptic } from '@/services/haptics';
 export function AntiChaosSettings() {
   const { store, t, learnedBuffer } = useAgendaContext();
   const { settings, set } = useSettings();
+  const { limits } = useAccount();
   const [deleteFailed, setDeleteFailed] = useState(false);
 
-  const learningText = !settings.bufferLearning
-    ? t('settings.learning.off')
-    : learnedBuffer
-      ? t('settings.learning.active', { minutes: learnedBuffer.minutes, samples: learnedBuffer.samples })
-      : t('settings.learning.waiting');
+  const learningText = !limits.bufferLearning
+    ? t('limit.buffer')
+    : !settings.bufferLearning
+      ? t('settings.learning.off')
+      : learnedBuffer
+        ? t('settings.learning.active', { minutes: learnedBuffer.minutes, samples: learnedBuffer.samples })
+        : t('settings.learning.waiting');
 
   const deleteHistory = () => {
     haptic('warning');
@@ -43,6 +48,9 @@ export function AntiChaosSettings() {
 
   return (
     <>
+      {limits.reminderStages === 'one' ? (
+        <LimitNotice text={t('limit.reminders')} reason="reminder-stages" testID="limit-reminders" />
+      ) : null}
       <SectionTitle>{t('settings.tone')}</SectionTitle>
       <SegmentedControl<ReminderTone>
         options={REMINDER_TONES.map((v) => ({ value: v, label: t(`settings.tone.${v}`) }))}

@@ -1,4 +1,5 @@
 import {
+  EVENT_COVERS,
   EVENT_CATEGORIES,
   RECURRENCE_FREQUENCIES,
   TRAVEL_MODES,
@@ -119,5 +120,9 @@ export function deserializeEvent(json: string): CalendarEvent {
       ? { travel: { mode: oneOf(travel, 'mode', TRAVEL_MODES), minutes: num(travel, 'minutes') } }
       : {}),
     ...(typeof raw.hostId === 'string' ? { hostId: raw.hostId } : {}),
+    // Unknown covers (newer app version) fall back to the category pastel instead of failing the row.
+    ...(typeof raw.cover === 'string' && (EVENT_COVERS as readonly string[]).includes(raw.cover)
+      ? { cover: raw.cover as (typeof EVENT_COVERS)[number] } // membership checked on this line
+      : {}),
   };
 }

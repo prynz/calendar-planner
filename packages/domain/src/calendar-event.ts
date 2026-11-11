@@ -1,5 +1,5 @@
 import type { TravelMode } from './anti-chaos';
-import type { EventCategory, EventDraft } from './event';
+import type { EventCategory, EventCover, EventDraft } from './event';
 import type { Recurrence } from './recurrence';
 import { addDays, dayKeyOf, wallParts, zonedWallTimeToInstant, type DayKey } from './time';
 
@@ -26,6 +26,8 @@ export interface CalendarEvent {
   travel?: { mode: TravelMode; minutes: number };
   prepMinutes: number;
   arrivalMarginMinutes: number;
+  /** Absent = category pastel. */
+  cover?: EventCover;
   hostId?: string;
   participantIds: readonly string[];
   /** Part of the example world (shown with a "Demo" label). */
@@ -69,6 +71,7 @@ export function eventToDraft(e: CalendarEvent, locale: 'de' | 'en'): EventDraft 
     arrivalMarginMinutes: e.arrivalMarginMinutes,
     ...(e.recurrence ? { recurrence: e.recurrence } : {}),
     ...(e.travel ? { travel: e.travel } : {}),
+    ...(e.cover ? { cover: e.cover } : {}),
   };
 }
 
@@ -93,7 +96,7 @@ export function applyDraft(
   now: Date,
 ): CalendarEvent {
   const { start, end } = draftTimes(d, base.timeZone);
-  const { titleI18n: _t, locationI18n: _l, recurrence: _r, travel: _tr, ...rest } = base;
+  const { titleI18n: _t, locationI18n: _l, recurrence: _r, travel: _tr, cover: _c, ...rest } = base;
   return {
     ...rest,
     title: d.title.trim(),
@@ -106,6 +109,7 @@ export function applyDraft(
     arrivalMarginMinutes: d.arrivalMarginMinutes,
     ...(d.recurrence ? { recurrence: d.recurrence } : {}),
     ...(d.travel ? { travel: d.travel } : {}),
+    ...(d.cover && d.cover !== 'category' ? { cover: d.cover } : {}),
     updatedAt: now,
   };
 }

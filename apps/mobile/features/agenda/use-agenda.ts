@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 
 import { dayKeyOf } from '@nowish/domain';
 
+import { useAccount } from '@/providers/account';
 import { useNow } from '@/providers/clock';
 import { useEvents } from '@/providers/events';
 import { useI18n } from '@/providers/i18n';
@@ -19,7 +20,8 @@ export function useAgendaContext() {
   const { settings } = useSettings();
   const router = useRouter();
   const today = dayKeyOf(now, store.timeZone);
-  const buffer = effectiveBuffer(settings, store.journeys);
+  const { limits } = useAccount();
+  const buffer = effectiveBuffer(settings, store.journeys, limits.bufferLearning);
 
   const openEvent = useCallback(
     (id: string, occurrenceKey: string) => {

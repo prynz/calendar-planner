@@ -24,6 +24,7 @@ import { Button, Card, ChipGroup, SectionTitle, space, Text } from '@nowish/ui';
 
 import { VIEWER_ID } from '../agenda/presenters';
 import { useAgendaContext } from '../agenda/use-agenda';
+import { useAccount } from '@/providers/account';
 import { haptic } from '@/services/haptics';
 
 /**
@@ -48,6 +49,7 @@ export function LeavePanel({
   compact?: boolean;
 }) {
   const { store, now, locale, t, learnedBuffer } = useAgendaContext();
+  const { limits } = useAccount();
   const router = useRouter();
   const [choosing, setChoosing] = useState(openLate);
   const [failed, setFailed] = useState(false);
@@ -144,11 +146,18 @@ export function LeavePanel({
       ) : null}
       {now.getTime() < start.getTime() ? (
         <Button
-          label={`${t('leave.readyCheck')} · ${t('leave.readyProgress', progress)}`}
+          label={
+            limits.readyCheck
+              ? `${t('leave.readyCheck')} · ${t('leave.readyProgress', progress)}`
+              : `${t('leave.readyCheck')} · Plus`
+          }
           variant={inWindow ? 'tertiary' : 'secondary'}
           onPress={() => {
             haptic('light');
-            router.push({ pathname: '/ready', params: { id: event.id, occurrence: occurrenceKey } });
+            // The ready check is part of Plus (monetization.md §2); on Free the button explains the plans.
+            if (limits.readyCheck)
+              router.push({ pathname: '/ready', params: { id: event.id, occurrence: occurrenceKey } });
+            else router.push({ pathname: '/paywall', params: { reason: 'ready-check' } });
           }}
           testID="leave-ready-check"
         />

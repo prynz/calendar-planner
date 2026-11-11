@@ -7,6 +7,7 @@ import { buildDemoCollabs, buildDemoEvents, buildDemoGroups, buildDemoHousehold 
 import { createMemoryEventRepository } from '@/data/memory-event-repository';
 import type { EventRepository } from '@/data/event-repository';
 import { ClockProvider } from '@/providers/clock';
+import { AccountProvider, onboardedAccount, type Account } from '@/providers/account';
 import { EventsProvider } from '@/providers/events';
 import { I18nProvider } from '@/providers/i18n';
 import { RemindersProvider } from '@/providers/reminders';
@@ -37,7 +38,13 @@ export function seededRepo(now: Date = NOW) {
 
 export async function renderApp(
   ui: ReactElement,
-  opts: { store?: SettingsStore; systemLanguageTags?: string[]; repo?: EventRepository; now?: Date } = {},
+  opts: {
+    store?: SettingsStore;
+    systemLanguageTags?: string[];
+    repo?: EventRepository;
+    now?: Date;
+    account?: Account;
+  } = {},
 ) {
   const store = opts.store ?? createMemorySettingsStore();
   const now = opts.now ?? NOW;
@@ -48,9 +55,16 @@ export async function renderApp(
         <I18nProvider systemLanguageTags={opts.systemLanguageTags ?? ['de-DE']}>
           <AppThemeProvider>
             <ClockProvider now={now}>
-              <EventsProvider repository={repo} now={() => now} simulate={false}>
-                <RemindersProvider>{node}</RemindersProvider>
-              </EventsProvider>
+              <AccountProvider
+                store={store}
+                now={() => now}
+                timeZone="Europe/Berlin"
+                fallback={opts.account ?? onboardedAccount(now, 'Europe/Berlin')}
+              >
+                <EventsProvider repository={repo} now={() => now} simulate={false}>
+                  <RemindersProvider>{node}</RemindersProvider>
+                </EventsProvider>
+              </AccountProvider>
             </ClockProvider>
           </AppThemeProvider>
         </I18nProvider>

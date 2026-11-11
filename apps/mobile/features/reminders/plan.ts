@@ -41,6 +41,8 @@ export interface ReminderPlanInput {
   intensity: ReminderIntensity;
   tone: ReminderTone;
   bufferMinutes: number;
+  /** Free: only the "leave now" reminder; paid plans: every stage of the intensity (monetization.md §2). */
+  stages?: 'one' | 'all';
   locale: Locale;
   t: Translate;
 }
@@ -66,8 +68,11 @@ export function planReminders(i: ReminderPlanInput): PlannedReminder[] {
       leave: fmt(plan.leaveAt),
       arrive: fmt(plan.arriveBy),
     };
-    for (const stage of reminderStages(plan, i.intensity, i.now, e.prepMinutes)) {
+    // Free keeps the "leave now" reminder even with the gentle intensity, so the stages of 'normal' are used.
+    const intensity = i.stages === 'one' ? 'normal' : i.intensity;
+    for (const stage of reminderStages(plan, intensity, i.now, e.prepMinutes)) {
       if (stage.kind === 'check-in' && journey?.lateMinutes !== undefined) continue;
+      if (i.stages === 'one' && stage.kind !== 'leave-now') continue;
       out.push({
         id: `${e.id}:${item.occurrenceKey}:${stage.kind}`,
         eventId: e.id,
