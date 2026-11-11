@@ -137,7 +137,7 @@ export const de = {
   'settings.intensity.hint.firm': '4 Erinnerungen, dazu eine Nachfrage 5 Minuten nach der Losgeh-Zeit.',
   'settings.buffer': 'Trödel-Puffer',
   'settings.buffer.hint':
-    'So viel Luft plant Nowish zusätzlich ein. Dass Nowish den Puffer aus deinem Verhalten lernt, kommt in Phase 4.',
+    'So viel Luft plant Nowish zusätzlich ein. Mit „Puffer lernen“ passt Nowish ihn an dein Losgehen an.',
   'settings.exampleWorld': 'Beispielwelt',
   'settings.exampleWorld.reset': 'Beispielwelt zurücksetzen',
   'settings.exampleWorld.hint': 'Stellt alle Demo-Termine wieder her. Deine eigenen Einträge werden dabei gelöscht.',

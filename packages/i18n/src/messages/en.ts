@@ -133,7 +133,8 @@ export const en: Messages = {
   'settings.intensity.hint.normal': '3 reminders: get ready, leave in 10 minutes, leave now.',
   'settings.intensity.hint.firm': '4 reminders, plus a check-in 5 minutes after your leave time.',
   'settings.buffer': 'Dawdle buffer',
-  'settings.buffer.hint': 'Extra breathing room Nowish plans in. Learning it from your habits arrives in phase 4.',
+  'settings.buffer.hint':
+    'Extra breathing room Nowish plans in. With “Learn my buffer” on, Nowish adapts it to when you actually leave.',
   'settings.exampleWorld': 'Example world',
   'settings.exampleWorld.reset': 'Reset example world',
   'settings.exampleWorld.hint': 'Restores all demo plans. Your own entries are deleted.',

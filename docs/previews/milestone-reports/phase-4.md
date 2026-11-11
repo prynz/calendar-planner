@@ -31,7 +31,9 @@ Begleit-Timer. Alles bleibt auf dem Gerät.
 | --- | --- |
 | `pnpm check` (typecheck · lint · format · Tests) | ✅ 695 Tests: i18n 466, domain 73, App 70, ui 57, demo 15, brand 8, config 6 |
 | Web-Vorschau im Browser (Heute, Fokus, Detail mit Verspätung, Bereit-Check, Einstellungen) | ✅ lokal mit fester Uhrzeit 17:00 durchgeklickt, keine Fehler in der Konsole |
-| CI (Qualität, Datenbank, Secret-Scan), Android, iOS | siehe Abschnitt 4 |
+| CI (Qualität, Datenbank, Secret-Scan), Web-Vorschau | ✅ grün (Lauf 43023945923) |
+| Android-Emulator (API 34, Pixel 6) mit Maestro | ✅ grün, 24 Screenshots (Lauf 43023945961) |
+| iOS-Simulator mit Maestro | ✅ grün, 24 Screenshots (Lauf 43023946165) |
 
 ## 4. Screenshots (echt, aus CI)
 
@@ -64,6 +66,8 @@ Präfix `2026-11-11-phase-04`. Bilder 01–19 wie in Phase 3, neu sind 20–24. 
 | --- | --- |
 | Geräte mit älterem Prototyp hätten keinen Verlauf → Bilanz leer | ✅ Demo-Verlauf wird einmalig nachgeliefert (getestet) |
 | Fokus-Modus zeigte bei „Als Nächstes“ keinen Tag, wenn der Termin morgen ist | ✅ beim Durchklicken im Browser gefunden, Datum ergänzt |
+| Hinweis unter „Trödel-Puffer“ sagte noch „Lernen kommt in Phase 4“ | ✅ auf den CI-Bildern gefunden, Text angepasst (Bilder zeigen noch den alten Text) |
+| Maestro-Ablauf verpasste auf Android Tipps nach Übergängen bzw. unter der Kopfzeile | ✅ Ablauf wartet und wiederholt Tipps, scrollt vor dem Öffnen nach oben |
 | Ältere Tests liefen mit gelerntem statt festem Puffer | ✅ Testdaten bilden jetzt bewusst „ohne Verlauf“ ab |
 | Benachrichtigungs-Aktionen hängen vom Betriebssystem ab (iOS weckt die App kurz, Android ebenso) | Risiko, auf echten Geräten prüfen |
 
