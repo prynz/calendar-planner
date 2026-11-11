@@ -43,10 +43,41 @@ jest.mock('expo-notifications', () => {
 });
 
 // Router: screens are tested in isolation; navigation calls are recorded.
-const mockRouter = { push: jest.fn(), back: jest.fn(), replace: jest.fn() };
+const mockRouter = { push: jest.fn(), back: jest.fn(), replace: jest.fn(), setParams: jest.fn() };
+/** Route params a test wants a screen to see (reset in afterEach below). */
+const mockParams: Record<string, string> = {};
 jest.mock('expo-router', () => ({
   useRouter: () => mockRouter,
-  useLocalSearchParams: () => ({}),
+  useLocalSearchParams: () => mockParams,
   Stack: { Screen: () => null },
   __router: mockRouter,
+  __params: mockParams,
 }));
+afterEach(() => {
+  for (const k of Object.keys(mockParams)) delete mockParams[k];
+});
+
+// Calendar files (CAL-09): picker, file system and share sheet are native; tests drive them through these mocks.
+jest.mock('expo-document-picker', () => ({
+  getDocumentAsync: jest.fn(async () => ({ canceled: true, assets: null })),
+}));
+jest.mock('expo-file-system', () => {
+  const files = new Map<string, string>();
+  class File {
+    uri: string;
+    constructor(...parts: (string | { uri: string })[]) {
+      this.uri = parts.map((p) => (typeof p === 'string' ? p : p.uri)).join('/');
+    }
+    create() {
+      files.set(this.uri, '');
+    }
+    async write(text: string) {
+      files.set(this.uri, text);
+    }
+    async text() {
+      return files.get(this.uri) ?? '';
+    }
+  }
+  return { File, Paths: { cache: { uri: 'file:///cache' } }, __files: files };
+});
+jest.mock('expo-sharing', () => ({ shareAsync: jest.fn(async () => undefined) }));

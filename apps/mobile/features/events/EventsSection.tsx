@@ -4,19 +4,7 @@ import { View } from 'react-native';
 import { upcomingSocial, type AgendaItem } from '@nowish/demo';
 import { dayKeyOf, invitationOf, noonOf, rsvpState, rsvpSummary, type RsvpState } from '@nowish/domain';
 import { formatLongDate } from '@nowish/i18n';
-import {
-  Badge,
-  Button,
-  EmptyState,
-  EventCard,
-  FadeIn,
-  Gutter,
-  Screen,
-  ScreenHeader,
-  SectionTitle,
-  space,
-  Text,
-} from '@nowish/ui';
+import { Button, EmptyState, EventCard, FadeIn, Gutter, SectionTitle, space, Text } from '@nowish/ui';
 
 import { eventCardProps, VIEWER_ID } from '../agenda/presenters';
 import { StoreGate } from '../agenda/StoreGate';
@@ -26,7 +14,7 @@ import { haptic } from '@/services/haptics';
 type ViewerRole = RsvpState | 'host' | null;
 
 /** Upcoming social events: open invitations first, then everything else (EVT-01, EVT-04). */
-export function EventsScreen() {
+export function EventsSection() {
   const ctx = useAgendaContext();
   const { store, now, t } = ctx;
   const router = useRouter();
@@ -50,12 +38,7 @@ export function EventsScreen() {
   };
 
   return (
-    <Screen testID="screen-events">
-      <ScreenHeader
-        eyebrow={t('events.eyebrow')}
-        title={t('events.title')}
-        trailing={<Badge label={t('demo.badge')} tone="demo" />}
-      />
+    <>
       <Gutter>
         <View style={{ flexDirection: 'row', gap: space[3] }}>
           <View style={{ flex: 1 }}>
@@ -95,7 +78,7 @@ export function EventsScreen() {
           )}
         </Gutter>
       </StoreGate>
-    </Screen>
+    </>
   );
 }
 

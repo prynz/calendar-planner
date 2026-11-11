@@ -3,7 +3,11 @@ import { useMemo, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { simulateMeetingAnswers } from '@nowish/demo';
 import {
+  addMeeting,
+  assignMembers,
+  assignedTo,
   draftTimes,
   EVENT_CATEGORIES,
   eventToDraft,
@@ -34,7 +38,7 @@ import {
   radii,
 } from '@nowish/ui';
 
-import { weekdayLabels } from '../agenda/presenters';
+import { VIEWER_ID, weekdayLabels } from '../agenda/presenters';
 import { useAgendaContext } from '../agenda/use-agenda';
 import { templateText } from '../collab/text';
 import { DateTimeField } from './DateTimeField';
@@ -52,7 +56,10 @@ import {
 import { confirm } from '@/services/confirm';
 import { haptic } from '@/services/haptics';
 
+import { ForWhomSection } from './ForWhomSection';
+import { MonthlyChoice, withMonthlyRule } from './MonthlyChoice';
 import { initialSocialChoice, SocialSection, type SocialChoice } from './SocialSection';
+import { groupName } from '../groups/use-group';
 
 const MINUTE_STEP = 5;
 
@@ -61,12 +68,15 @@ export function EditorScreen({
   initialDay,
   social = false,
   templateId,
+  groupId,
 }: {
   eventId?: string;
   initialDay?: string;
   /** New social event hosted by the viewer (EVT-01) instead of a personal appointment. */
   social?: boolean;
   templateId?: string;
+  /** New meeting of this group: all members are invited (GRP-03). */
+  groupId?: string;
 }) {
   const { store, now, locale, t, today, buffer } = useAgendaContext();
   const router = useRouter();
@@ -85,13 +95,27 @@ export function EditorScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [draft, setDraft] = useState<EventDraft>(initial);
-  const [socialChoice, setSocialChoice] = useState<SocialChoice>(() => initialSocialChoice(template));
+  const group = isNewSocial && groupId ? store.getGroup(groupId) : undefined;
+  const initialChoice = useMemo<SocialChoice>(
+    () => initialSocialChoice(template),
+    // Computed once when the editor opens, like the draft.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+  const [socialChoice, setSocialChoice] = useState<SocialChoice>(initialChoice);
+  const initialFor = useMemo(
+    () => (existing && store.household ? [...assignedTo(store.household, existing.id)] : []),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+  const [forIds, setForIds] = useState<string[]>(initialFor);
   const [showErrors, setShowErrors] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveFailed, setSaveFailed] = useState(false);
   const dirty =
     JSON.stringify(draft) !== JSON.stringify(initial) ||
-    JSON.stringify(socialChoice) !== JSON.stringify(initialSocialChoice(template));
+    JSON.stringify(socialChoice) !== JSON.stringify(initialChoice) ||
+    JSON.stringify(forIds) !== JSON.stringify(initialFor);
   const errors = validateDraft(draft);
   const err = (f: DraftField) => (showErrors && errors[f] ? t(`editor.error.${errors[f]}`) : undefined);
   const set = (patch: Partial<EventDraft>) => setDraft((d) => ({ ...d, ...patch }));
@@ -106,6 +130,7 @@ export function EditorScreen({
   };
 
   const save = async () => {
+    const current = draft;
     if (Object.keys(errors).length > 0) {
       setShowErrors(true);
       haptic('warning');
@@ -114,12 +139,19 @@ export function EditorScreen({
     setSaving(true);
     setSaveFailed(false);
     try {
-      if (existing) await store.update(existing.id, draft);
-      else if (isNewSocial) {
+      const draft = withMonthlyRule(current);
+      let id: string;
+      if (existing) {
+        await store.update(existing.id, draft);
+        id = existing.id;
+      } else if (isNewSocial) {
         const { start } = draftTimes(draft, tz);
         const tpl = template;
-        await store.createSocial(draft, {
-          inviteeIds: socialChoice.inviteeIds,
+        id = await store.createSocial(draft, {
+          // GRP-03: every group member is invited, plus anyone picked on top.
+          inviteeIds: [
+            ...new Set([...(group?.memberIds.filter((m) => m !== VIEWER_ID) ?? []), ...socialChoice.inviteeIds]),
+          ],
           tasks: tpl
             ? tpl.tasks
                 .filter((x) => socialChoice.taskKeys.includes(x.key))
@@ -135,7 +167,14 @@ export function EditorScreen({
             : [],
           ...(tpl ? { template: { id: tpl.id, version: tpl.version } } : {}),
         });
-      } else await store.create(draft);
+      } else id = await store.create(draft);
+      if (store.household && JSON.stringify(forIds) !== JSON.stringify(initialFor))
+        await store.updateHousehold((h) => assignMembers(h, VIEWER_ID, id, forIds));
+      if (group)
+        await store.updateGroup(group.id, (g, at) => {
+          const next = addMeeting(g, VIEWER_ID, id, at);
+          return { group: next, simulate: simulateMeetingAnswers(next, id, draft.day, at) };
+        });
       haptic('success');
       router.back();
     } catch (error) {
@@ -319,6 +358,7 @@ export function EditorScreen({
               />
             </>
           ) : null}
+          <MonthlyChoice draft={draft} onChange={setDraft} locale={locale} timeZone={tz} t={t} />
         </Gutter>
 
         <Gutter gap={4}>
@@ -333,9 +373,20 @@ export function EditorScreen({
           />
         </Gutter>
 
+        {group ? (
+          <Gutter gap={2}>
+            <Text variant="titleM" testID="editor-group">
+              {t('editor.group', { name: `${group.emoji} ${groupName(group, locale)}` })}
+            </Text>
+            <Text variant="label" color="textSecondary">
+              {t('editor.group.hint')}
+            </Text>
+          </Gutter>
+        ) : null}
         {isNewSocial ? (
           <SocialSection value={socialChoice} onChange={setSocialChoice} template={template} t={t} />
         ) : null}
+        {group ? null : <ForWhomSection value={forIds} onChange={setForIds} t={t} />}
 
         <Gutter gap={4}>
           <Text variant="titleM" accessibilityRole="header">

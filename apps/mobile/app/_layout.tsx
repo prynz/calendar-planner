@@ -64,6 +64,11 @@ function Shell() {
           <Stack.Screen name="ready" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
           <Stack.Screen name="focus" options={{ presentation: 'fullScreenModal', animation: 'fade' }} />
           <Stack.Screen name="editor" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+          <Stack.Screen name="family/[section]" options={{ animation: 'slide_from_right' }} />
+          <Stack.Screen name="group/[id]/index" options={{ animation: 'slide_from_right' }} />
+          <Stack.Screen name="group/[id]/chat" options={{ animation: 'slide_from_right' }} />
+          <Stack.Screen name="group-new" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+          <Stack.Screen name="ics-import" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
         </Stack>
       </PreviewFrame>
     </>

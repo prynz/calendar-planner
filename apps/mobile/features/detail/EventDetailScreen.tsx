@@ -31,6 +31,7 @@ import { confirm, type ConfirmChoice } from '@/services/confirm';
 import { haptic } from '@/services/haptics';
 
 import { LeavePanel } from '../leave/LeavePanel';
+import { FamilyPanel } from '../family/FamilyPanel';
 import { SocialPanel } from './SocialPanel';
 
 export function EventDetailScreen({
@@ -229,6 +230,8 @@ export function EventDetailScreen({
               />
             </FadeIn>
           ) : null}
+
+          <FamilyPanel event={event} occurrenceKey={item.occurrenceKey} start={item.start} end={item.end} />
 
           {plan ? (
             <FadeIn delay={60}>

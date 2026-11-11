@@ -1,12 +1,12 @@
 import { Tabs, useRouter } from 'expo-router';
-import { CalendarDays, PartyPopper, Plus, Sun, UserRound } from 'lucide-react-native';
+import { CalendarDays, Plus, Sun, UserRound, UsersRound } from 'lucide-react-native';
 
 import { Fab, FloatingTabBar, useTheme } from '@nowish/ui';
 
 import { useI18n } from '@/providers/i18n';
 import { haptic } from '@/services/haptics';
 
-const ICONS = { index: Sun, calendar: CalendarDays, events: PartyPopper, settings: UserRound } as const;
+const ICONS = { index: Sun, calendar: CalendarDays, events: UsersRound, settings: UserRound } as const;
 type TabRoute = keyof typeof ICONS;
 const isTabRoute = (name: string): name is TabRoute => name in ICONS;
 
@@ -17,7 +17,7 @@ export default function TabsLayout() {
   const labels: Record<TabRoute, string> = {
     index: t('tabs.today'),
     calendar: t('tabs.calendar'),
-    events: t('tabs.events'),
+    events: t('tabs.together'),
     settings: t('tabs.settings'),
   };
 

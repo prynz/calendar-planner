@@ -3,11 +3,13 @@ import { antiChaosDe } from './anti-chaos.de';
  * German (default) – source of truth for message keys. ICU MessageFormat syntax.
  * Tone: casual, warm, "du" (docs/brand/brand-foundation.md §3).
  */
+import { circlesDe } from './circles.de';
 import { collabDe } from './collab.de';
 
 export const de = {
   ...collabDe,
   ...antiChaosDe,
+  ...circlesDe,
   'tabs.today': 'Heute',
   'tabs.events': 'Events',
   'tabs.settings': 'Ich',

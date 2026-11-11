@@ -7,7 +7,7 @@ import { createMemoryEventRepository } from '@/data/memory-event-repository';
 import { CalendarScreen } from '@/features/calendar/CalendarScreen';
 import { EventDetailScreen } from '@/features/detail/EventDetailScreen';
 import { EditorScreen } from '@/features/editor/EditorScreen';
-import { EventsScreen } from '@/features/events/EventsScreen';
+import { TogetherScreen } from '@/features/together/TogetherScreen';
 import { TodayScreen } from '@/features/today/TodayScreen';
 
 import { renderApp, router } from './test-utils';
@@ -132,9 +132,9 @@ describe('EventDetailScreen', () => {
   });
 });
 
-describe('EventsScreen', () => {
+describe('TogetherScreen – events', () => {
   it('lists upcoming social events with RSVP summary, but not past ones', async () => {
-    await renderApp(<EventsScreen />);
+    await renderApp(<TogetherScreen />);
     expect(await screen.findByText('Grillabend am See')).toBeTruthy();
     expect(screen.getByTestId('rsvp-demo-games')).toHaveTextContent('Zugesagt · 3 dabei · 1 vielleicht · 0 offen');
     // Tom's party waits for an answer → listed under open invitations; the movie night is hosted by the viewer.

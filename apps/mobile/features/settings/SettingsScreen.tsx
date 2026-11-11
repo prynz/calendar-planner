@@ -13,6 +13,7 @@ import { confirm } from '@/services/confirm';
 import { haptic } from '@/services/haptics';
 
 import { AntiChaosSettings } from './AntiChaosSettings';
+import { CalendarFileSettings } from './CalendarFileSettings';
 
 export function SettingsScreen({ clientConfig, appVersion }: { clientConfig: ClientConfigResult; appVersion: string }) {
   const { t } = useI18n();
@@ -134,6 +135,7 @@ export function SettingsScreen({ clientConfig, appVersion }: { clientConfig: Cli
         <AntiChaosSettings />
       </Gutter>
       <Gutter gap={4}>
+        <CalendarFileSettings />
         <Card testID="example-world">
           <SectionTitle>{t('settings.exampleWorld')}</SectionTitle>
           <Text variant="bodyM" color="textSecondary">

@@ -1,1 +1,1 @@
-export { EventsScreen as default } from '@/features/events/EventsScreen';
+export { TogetherScreen as default } from '@/features/together/TogetherScreen';

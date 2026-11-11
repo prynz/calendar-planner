@@ -269,10 +269,10 @@ export function monthRows(
 }
 
 /** Short weekday names, Monday first. */
-export function weekdayLabels(locale: Locale, timeZone: string): string[] {
-  const monday = '2026-11-09';
+export function weekdayLabels(locale: Locale, timeZone: string, style: 'short' | 'long' = 'short'): string[] {
+  const monday = '2026-11-09'; // any Monday – only the weekday names are used
   return Array.from({ length: 7 }, (_, i) =>
-    formatWeekday(noonOf(addDays(monday, i), timeZone), locale, 'short', timeZone),
+    formatWeekday(noonOf(addDays(monday, i), timeZone), locale, style, timeZone),
   );
 }
 

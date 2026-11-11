@@ -31,3 +31,5 @@ export { ProgressBar } from './components/ProgressBar';
 export { Tile, type TileProps } from './components/Tile';
 export { SwipeDeck, type SwipeChoice, type SwipeDeckProps } from './components/SwipeDeck';
 export { Heatmap, type HeatmapCell } from './components/Heatmap';
+export { MemberAvatar } from './components/MemberAvatar';
+export { WeekBars, type WeekBarDay } from './components/WeekBars';
