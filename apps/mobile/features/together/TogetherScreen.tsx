@@ -33,7 +33,7 @@ export function TogetherScreen() {
       <ScreenHeader
         eyebrow={t('together.eyebrow')}
         title={titles[section]}
-        trailing={<Badge label={t('demo.badge')} tone="demo" />}
+        trailing={<Badge label={t('demo.badge')} tone="demo" testID="together-badge" />}
       />
       <Gutter>
         <SegmentedControl<Section>

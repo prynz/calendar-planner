@@ -490,9 +490,10 @@ appId: ${APP_ID}
       id: 'screen-events'
     timeout: 10000
 # The events list keeps its earlier scroll position – back to the top for the section switch.
+# Up to the header badge, not just the switch: right under the iOS status bar a tap is swallowed (scroll-to-top).
 - scrollUntilVisible:
     element:
-      id: 'together-family'
+      id: 'together-badge'
     direction: UP
 - waitForAnimationToEnd
 - tapOn:
@@ -586,9 +587,10 @@ appId: ${APP_ID}
     id: 'family-back'
     retryTapIfNoChange: true
 # Groups: list, per-occurrence answer, group chat
+# Up to the header badge, not just the switch: right under the iOS status bar a tap is swallowed (scroll-to-top).
 - scrollUntilVisible:
     element:
-      id: 'together-groups'
+      id: 'together-badge'
     direction: UP
 - waitForAnimationToEnd
 - tapOn:
@@ -717,9 +719,10 @@ appId: ${APP_ID}
 # Costs and plan B at the lakeside barbecue
 - tapOn:
     id: 'tab-events'
+# Up to the header badge, not just the switch: right under the iOS status bar a tap is swallowed (scroll-to-top).
 - scrollUntilVisible:
     element:
-      id: 'together-events'
+      id: 'together-badge'
     direction: UP
 - tapOn:
     id: 'together-events'
