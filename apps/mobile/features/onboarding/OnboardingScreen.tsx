@@ -11,6 +11,8 @@ import { useI18n } from '@/providers/i18n';
 import { useReminders } from '@/providers/reminders';
 import { haptic } from '@/services/haptics';
 
+import { AnimatedMark } from './AnimatedMark';
+
 const STEPS = 4;
 
 /**
@@ -75,6 +77,7 @@ export function OnboardingScreen() {
         <View style={{ flex: 1, gap: space[5] }}>
           {step === 0 ? (
             <>
+              <AnimatedMark />
               <Text variant="label" color="textSecondary">
                 {t('onb.welcome.eyebrow')}
               </Text>

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
   expandOccurrences,
@@ -118,5 +118,58 @@ describe('monthly n-th weekday', () => {
     expect(nthOfDay('2026-11-27')).toEqual({ weekday: 4, nth: 4 });
     expect(nthOfDay('2026-10-30')).toEqual({ weekday: 4, nth: -1 });
     expect(nthWeekdayOfMonth(2026, 2, 0, 4)).toBe('2026-02-23');
+  });
+});
+
+describe('expandOccurrences performance (Phase 7)', () => {
+  const countIntl = (fn: () => unknown) => {
+    const spy = vi.spyOn(Intl.DateTimeFormat.prototype, 'formatToParts');
+    try {
+      fn();
+      return spy.mock.calls.length;
+    } finally {
+      spy.mockRestore();
+    }
+  };
+
+  it('does not convert occurrences long before the range (a daily series from 2 years ago)', () => {
+    const daily = evening('2024-11-09', { freq: 'daily', interval: 1 });
+    expect(keys(daily, '2026-11-09', '2026-11-10')).toEqual(['2026-11-09']);
+    // Before the fix: ~5 Intl calls for each of the 730 earlier days.
+    expect(countIntl(() => keys(daily, '2026-11-09', '2026-11-10'))).toBeLessThan(60);
+  });
+
+  it('skipping keeps COUNT, EXDATE and overnight overlap exactly as before', () => {
+    const counted = evening('2026-01-05', { freq: 'daily', interval: 1, count: 300, exdates: ['2026-10-30'] });
+    // 300th occurrence is 31 Oct; 30 Oct is deleted but still counted.
+    expect(keys(counted, '2026-10-29', '2026-11-03')).toEqual(['2026-10-29', '2026-10-31']);
+    // Same result as expanding from the very first day and filtering.
+    const all = expandOccurrences(counted, at('2026-01-01', 0), at('2027-01-01', 0));
+    const from = at('2026-06-01', 0).getTime();
+    expect(expandOccurrences(counted, at('2026-06-01', 0), at('2027-01-01', 0))).toEqual(
+      all.filter((o) => o.end.getTime() > from),
+    );
+    // 19:00–05:00 next day: the occurrence from the previous evening still overlaps the morning.
+    const overnight: RecurringSource = {
+      start: at('2025-03-01', 19),
+      end: at('2025-03-02', 5),
+      timeZone: TZ,
+      allDay: false,
+      recurrence: { freq: 'daily', interval: 1 },
+    };
+    expect(expandOccurrences(overnight, at('2026-11-09', 2), at('2026-11-09', 3)).map((o) => o.key)).toEqual([
+      '2026-11-08',
+    ]);
+    // Across the DST change in late October the wall time stays 19:00.
+    const weekly = evening('2024-01-01', { freq: 'weekly', interval: 1 });
+    const [occ] = expandOccurrences(weekly, at('2026-10-26', 0), at('2026-10-27', 0));
+    expect(occ?.start).toEqual(at('2026-10-26', 19));
+  });
+
+  it('only computes the day key of one-off events that are in range', () => {
+    const many = Array.from({ length: 200 }, (_, i) => evening(`2026-0${(i % 9) + 1}-1${i % 10}`));
+    const from = at('2026-11-09', 0);
+    const to = at('2026-11-10', 0);
+    expect(countIntl(() => many.forEach((e) => expandOccurrences(e, from, to)))).toBe(0);
   });
 });

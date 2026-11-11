@@ -129,15 +129,21 @@ function* candidateDays(first: DayKey, r: Recurrence): Generator<DayKey> {
 /** Occurrences that overlap [rangeStart, rangeEnd). Non-recurring sources yield at most one. */
 export function expandOccurrences(source: RecurringSource, rangeStart: Date, rangeEnd: Date): Occurrence[] {
   const duration = source.end.getTime() - source.start.getTime();
-  const firstDay = dayKeyOf(source.start, source.timeZone);
   const overlaps = (s: number) => s < rangeEnd.getTime() && s + duration > rangeStart.getTime();
   if (!source.recurrence) {
-    return overlaps(source.start.getTime()) ? [{ key: firstDay, start: source.start, end: source.end }] : [];
+    // The day key needs Intl; only compute it for events that are actually shown (Phase 7 performance).
+    return overlaps(source.start.getTime())
+      ? [{ key: dayKeyOf(source.start, source.timeZone), start: source.start, end: source.end }]
+      : [];
   }
   const r = source.recurrence;
   if (!Number.isInteger(r.interval) || r.interval < 1) throw new Error(`Invalid recurrence interval ${r.interval}`);
+  const firstDay = dayKeyOf(source.start, source.timeZone);
   const wall = wallParts(source.start, source.timeZone);
   const exdates = new Set(r.exdates ?? []);
+  // An occurrence starting on a day before this one ends before rangeStart, so its exact instant (several Intl
+  // calls) is not needed. One day of margin covers DST shifts. Skipped days still count towards COUNT.
+  const firstRelevantDay = addDays(dayKeyOf(new Date(rangeStart.getTime() - duration), source.timeZone), -1);
   const out: Occurrence[] = [];
   let produced = 0;
   let iterations = 0;
@@ -146,6 +152,7 @@ export function expandOccurrences(source: RecurringSource, rangeStart: Date, ran
     if (r.until !== undefined && day > r.until) break;
     if (r.count !== undefined && produced >= r.count) break;
     produced++; // COUNT includes deleted occurrences (RFC 5545 EXDATE semantics)
+    if (day < firstRelevantDay) continue;
     const start = source.allDay
       ? zonedWallTimeToInstant(day, 0, 0, source.timeZone)
       : zonedWallTimeToInstant(day, wall.hour, wall.minute, source.timeZone);

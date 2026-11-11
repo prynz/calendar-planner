@@ -19,9 +19,12 @@ export const markGeometry = {
   center: { x: 46.5, y: 50 },
   radius: 36,
   stroke: 11,
-  /** Half-angle (deg) of the gap on the right where the arrow leaves the circle. */
-  gapHalfAngle: 45,
-  hourHandEnd: { x: 46.5, y: 28 },
+  /**
+   * Half-angle (deg) of the gap on the right where the arrow leaves the circle. v1.1 (Phase 7): 45 → 47 and the
+   * hour hand 28 → 31.5, so the strokes keep ~1 px of air at 16 px (tested).
+   */
+  gapHalfAngle: 47,
+  hourHandEnd: { x: 46.5, y: 31.5 },
   arrowTip: { x: 89.5, y: 50 },
   arrowHead: 10,
 } as const;

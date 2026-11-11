@@ -46,6 +46,31 @@ describe('logo mark', () => {
     expect((left + right) / 2).toBeCloseTo(50, 0);
   });
 
+  // Phase 7 minimum-size check: at 16 px (favicon, notification icon) strokes need ~1 px of air between them,
+  // otherwise the hand merges with the ring and the arrow head touches the circle.
+  describe('stays legible at 16 px', () => {
+    const PX = 16 / 100;
+    const { center, radius, stroke, gapHalfAngle, hourHandEnd, arrowTip, arrowHead } = markGeometry;
+    const dist = (a: { x: number; y: number }, b: { x: number; y: number }) => Math.hypot(a.x - b.x, a.y - b.y);
+
+    it('stroke is at least 1.5 px wide', () => {
+      expect(stroke * PX).toBeGreaterThanOrEqual(1.5);
+    });
+
+    it('hour hand ends clear of the ring', () => {
+      const ringInner = center.y - radius + stroke / 2;
+      const handTop = hourHandEnd.y - stroke / 2;
+      expect((handTop - ringInner) * PX).toBeGreaterThanOrEqual(1);
+    });
+
+    it('arrow head stays clear of the ring ends', () => {
+      const a = (gapHalfAngle * Math.PI) / 180;
+      const ringEnd = { x: center.x + radius * Math.cos(a), y: center.y - radius * Math.sin(a) };
+      const headEnd = { x: arrowTip.x - arrowHead, y: arrowTip.y - arrowHead };
+      expect((dist(ringEnd, headEnd) - stroke) * PX).toBeGreaterThanOrEqual(1);
+    });
+  });
+
   it('renders a valid standalone svg with optional background and padding', () => {
     const svg = logoMarkSvg({ fg: '#C8F031', bg: '#0D0E12' }, 0.18);
     expect(svg.startsWith('<svg')).toBe(true);
