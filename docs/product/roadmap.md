@@ -1,6 +1,6 @@
 # Roadmap & Priorisierung
 
-> **Status:** v1.0 · 2026-11-11 · Phase 7 in Arbeit. Phasen 1–6 freigegeben. Änderungswünsche sammelt der PO bis zum Ende aller Phasen. Roadmap neu geschnitten: lokaler Prototyp (Block A) vor Infrastruktur (Block B), ADR 0010. **Prototyp zuerst**:
+> **Status:** v1.1 · 2026-11-12 · **Block A abgeschlossen** (Phasen 1–7 freigegeben). Jetzt: gesammelte Änderungswünsche des PO, danach Usability-Test. Roadmap neu geschnitten: lokaler Prototyp (Block A) vor Infrastruktur (Block B), ADR 0010. **Prototyp zuerst**:
 > Phasen 1–9 bauen einen nicht veröffentlichten Prototyp mit Beispieldaten, Veröffentlichung erst nach
 > Phase 10 ([ADR 0008](../decisions/0008-prototype-first.md)). Phase 1 startet nach Freigabe durch den PO.
 
@@ -24,7 +24,7 @@ Konten, Logins oder Server. Die Infrastruktur folgt danach schrittweise (Block B
 | **4** – Anti-Chaos-Engine komplett | Bereit-Check, „Ich verspäte mich“, Eskalationsstufen + Ton, Trödel-Puffer-Lernen, Pünktlichkeits-Heatmap, **Fokus-Modus**, Karten-/Ortsanzeige (Wegzeit geschätzt, gekennzeichnet) | USP vollständig erlebbar | ✅ freigegeben (2026-11-11); Google-Wegzeit wartet auf das Konto (ADR 0013) |
 | **5** – Familie & Gruppen | Familienbereich, Kinderprofile, Fahrdienste, Einkaufsliste, Ämtchen, Gruppen mit wiederkehrenden Treffen, ICS-Import/Export | Familienplaner | ✅ freigegeben (2026-11-11) |
 | **6** – Profil, Premium & Feinschliff | Onboarding, Profil, Datenschutz-Center (UI), Paywall mit **Demo-Kauf**, House-Ad-Vorschau, Premium-Themes, Kosten-Split mit PayPal-Link, Wetter/Plan B (simuliert) | Alle Kernfunktionen als Prototyp | ✅ freigegeben (2026-11-11, [Report](../previews/milestone-reports/phase-6.md), [ADR 0015](../decisions/0015-premium-demo-entitlements.md)) |
-| **7** – Erlebnis-Politur & Test | Motion- und Haptik-Feinschliff, Barrierefreiheit (VoiceOver/TalkBack, 200 % Schrift), Performance, Usability-Test mit Testpersonen, finales Logo | Prototyp, der überzeugt | 🔧 in Arbeit ([Usability-Leitfaden](usability-test.md)) |
+| **7** – Erlebnis-Politur & Test | Motion- und Haptik-Feinschliff, Barrierefreiheit (VoiceOver/TalkBack, 200 % Schrift), Performance, Usability-Test mit Testpersonen, finales Logo | Prototyp, der überzeugt | ✅ freigegeben (2026-11-12, [Report](../previews/milestone-reports/phase-7.md)); Usability-Test nach den Änderungswünschen ([Leitfaden](usability-test.md)) |
 
 ### Block B – Ausbau (erst wenn der Prototyp überzeugt, Schritt für Schritt)
 

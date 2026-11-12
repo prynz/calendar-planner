@@ -1,6 +1,7 @@
 # Usability-Test – Leitfaden zum Selbst-Durchführen
 
-> **Status:** 2026-11-11 · Phase 7 · Leitfaden fertig, **Test noch nicht durchgeführt** (Sache des PO).
+> **Status:** 2026-11-12 · Leitfaden fertig, **Test noch nicht durchgeführt** (Sache des PO) – PO-Entscheidung: nach den
+> Änderungswünschen, damit die Testpersonen die überarbeitete Version sehen.
 > Ergebnisse trägst du unten in §8 ein. Ich werte sie aus und setze sie mit deinen gesammelten Änderungswünschen um.
 
 ## 1. Ziel

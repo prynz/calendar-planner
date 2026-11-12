@@ -1,6 +1,6 @@
 # Logo – Entwürfe
 
-> **Status:** 2026-11-11 · **v1.1 – Kandidat für das finale Logo (Phase 7), Freigabe durch den PO offen.** v1 wurde am
+> **Status:** 2026-11-12 · **v1.1 – für die Demo in Gebrauch, nicht final.** PO (2026-11-12): Eine Überarbeitung folgt. v1 wurde am
 > 2026-11-10 vorläufig angenommen.
 > Austausch = neue Geometrie in `packages/brand/src/logo.ts` + `pnpm brand:assets`. Arbeitsname Nowish (ADR 0007).
 

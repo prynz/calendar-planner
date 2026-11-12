@@ -1,6 +1,7 @@
 # Milestone-Report Phase 7 – Erlebnis-Politur & Test
 
-> **Status:** 2026-11-12 · Phase 7 umgesetzt · **Stopp – wartet auf Review und Freigabe durch den PO.**
+> **Status:** 2026-11-12 · Phase 7 vom PO freigegeben – **Block A abgeschlossen**. PO-Entscheidungen: Logo v1.1 bleibt
+> für die Demo, eine Überarbeitung folgt (nicht final); Usability-Test nach den Änderungswünschen.
 > Letzte Phase von Block A. Deine gesammelten Änderungswünsche sind der nächste Schritt.
 
 ## 1. Ergebnis in einem Satz
