@@ -14,7 +14,7 @@ export function AccountSettings() {
   const { t } = useI18n();
   const { account } = useAccount();
   const router = useRouter();
-  const go = (pathname: '/profile' | '/privacy') => {
+  const go = (pathname: '/profile' | '/privacy' | '/personalize') => {
     haptic('light');
     router.push(pathname);
   };
@@ -33,6 +33,12 @@ export function AccountSettings() {
           </View>
         </View>
         <Button label={t('profile.open')} variant="secondary" onPress={() => go('/profile')} testID="account-profile" />
+        <Button
+          label={t('personal.open')}
+          variant="secondary"
+          onPress={() => go('/personalize')}
+          testID="account-personalize"
+        />
         <Button label={t('privacy.open')} variant="tertiary" onPress={() => go('/privacy')} testID="account-privacy" />
       </Card>
       <SubscriptionCard />

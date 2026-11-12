@@ -23,6 +23,7 @@ import { ReadyCheckScreen } from '@/features/leave/ReadyCheckScreen';
 import { OnboardingScreen } from '@/features/onboarding/OnboardingScreen';
 import { PaywallScreen } from '@/features/premium/PaywallScreen';
 import { PrivacyScreen } from '@/features/privacy/PrivacyScreen';
+import { PersonalizeScreen } from '@/features/personalize/PersonalizeScreen';
 import { ProfileScreen } from '@/features/profile/ProfileScreen';
 import { IcsImportScreen } from '@/features/settings/IcsImportScreen';
 import { SettingsScreen } from '@/features/settings/SettingsScreen';
@@ -68,6 +69,7 @@ const SCREENS: [string, () => ReactElement][] = [
   ['Paywall', () => <PaywallScreen />],
   ['Privacy center', () => <PrivacyScreen />],
   ['Profile', () => <ProfileScreen />],
+  ['Personalize', () => <PersonalizeScreen />],
   ['Onboarding', () => <OnboardingScreen />],
 ];
 
