@@ -24,12 +24,18 @@ describe('TodayScreen', () => {
     expect(screen.getByTestId('demo-badge')).toBeTruthy();
     expect(screen.getByTestId('leave-hero')).toBeTruthy();
     expect(screen.getByText('08:00 los')).toBeTruthy();
-    expect(screen.getByTestId('today-count')).toHaveTextContent('3 Termine');
-    expect(screen.getByText(/los 18:33/)).toBeTruthy();
+    expect(screen.getByTestId('today-count')).toHaveTextContent('4 Termine');
+    expect(screen.getByText(/Salon Schnittpunkt · los 17:\d\d/)).toBeTruthy();
+    // The demo hairdresser ends after the leave time for game night – the helper speaks up.
+    expect(screen.getByText('Friseur → Spieleabend bei Olivia wird knapp')).toBeTruthy();
+    expect(screen.getByTestId('helper-ask')).toHaveTextContent(/Olivia fragen: 19:\d\d\? \(Demo\)/);
   });
 
   it('opens the detail of a tapped plan', async () => {
     await renderApp(<TodayScreen />);
+    // Three rows first, the rest behind "See all" (Phase 8).
+    expect(screen.queryByTestId('event-demo-games')).toBeNull();
+    await fireEvent.press(await screen.findByTestId('day-all'));
     await fireEvent.press(await screen.findByTestId('event-demo-games'));
     expect(router.push).toHaveBeenCalledWith({
       pathname: '/event/[id]',

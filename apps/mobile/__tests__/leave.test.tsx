@@ -121,7 +121,8 @@ describe('focus mode', () => {
   it('shows only now and up next, and runs the companion timer', async () => {
     await renderApp(<FocusScreen />, { repo: repoAt(EVENING), now: EVENING });
     const nowBox = await screen.findByTestId('focus-now');
-    expect(within(nowBox).getByText('Spieleabend bei Olivia · 19:00')).toBeTruthy();
+    // Phase 8 demo: the hairdresser at 17:45 comes before game night.
+    expect(within(nowBox).getByText('Friseur · 17:45')).toBeTruthy();
     expect(screen.getByTestId('focus-next')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('focus-body-double-toggle'));
     expect(screen.getByTestId('focus-timer')).toHaveTextContent(/^Noch (25:00|24:5\d)$/);

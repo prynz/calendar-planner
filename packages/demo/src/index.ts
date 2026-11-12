@@ -115,6 +115,20 @@ const TEMPLATES: readonly Template[] = [
     prep: 5,
   },
   {
+    // Phase 8: ends after the leave time for game night, so the helper always has something to show in the demo.
+    id: 'hairdresser',
+    dayOffset: 0,
+    from: [17, 45],
+    length: 55,
+    kind: 'appointment',
+    category: 'health',
+    title: { de: 'Friseur', en: 'Hairdresser' },
+    location: { de: 'Salon Schnittpunkt', en: 'Salon Schnittpunkt' },
+    participantIds: ['chris'],
+    travel: { mode: 'walk', minutes: 8 },
+    prep: 5,
+  },
+  {
     id: 'games',
     dayOffset: 0,
     from: [19, 0],

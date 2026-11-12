@@ -10,3 +10,6 @@ MASTER_PROMPT.md
 PROJECT_BRIEF.md
 CLAUDE.md
 README.md
+
+# Design-canvas mockups (own .dc.html format, reformatting can break them)
+docs/design/concept/**/*.dc.html

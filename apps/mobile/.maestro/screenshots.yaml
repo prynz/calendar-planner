@@ -34,7 +34,25 @@ appId: ${APP_ID}
     id: 'demo-badge'
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-01-today-en-dark
-# Detail with the backwards leave plan (game night is the last card today – it cannot always be centred)
+# Phase 8: the helper card (demo hairdresser runs into game night; gone after 23:00 Berlin, hence optional).
+- scrollUntilVisible:
+    element:
+      id: 'helper-card'
+    direction: DOWN
+    centerElement: true
+    optional: true
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-47-today-helper
+# The day shows three rows, the rest behind "See all".
+- scrollUntilVisible:
+    element:
+      id: 'day-all'
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: 'day-all'
+    retryTapIfNoChange: true
+# Detail with the backwards leave plan (game night is the last row today – it cannot always be centred)
 - scrollUntilVisible:
     element:
       id: 'event-demo-games'
@@ -70,16 +88,26 @@ appId: ${APP_ID}
     id: 'cal-view-list'
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-05-calendar-list
-# Create a plan with a leave time
+# Create a plan with a leave time – Phase 8: the + opens the one-line quick entry, "More details" the editor.
 - tapOn:
     id: 'fab-add'
 - extendedWaitUntil:
     visible:
-      id: 'screen-editor'
+      id: 'quick-sheet'
     timeout: 10000
 - tapOn:
-    id: 'editor-title'
-- inputText: 'Physio'
+    id: 'quick-input'
+- inputText: 'Physio im Zentrum'
+- hideKeyboard
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-48-quick-entry
+- tapOn:
+    id: 'quick-details'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-editor'
+    timeout: 10000
 - hideKeyboard
 - scrollUntilVisible:
     element:
@@ -137,7 +165,8 @@ appId: ${APP_ID}
     id: 'tab-index'
 # The Today list is still scrolled down from the detail step at the start.
 - scrollUntilVisible:
-    element: 'Dein Tag'
+    element:
+      id: 'demo-badge'
     direction: UP
     timeout: 15000
 - waitForAnimationToEnd
@@ -148,8 +177,17 @@ appId: ${APP_ID}
     clearState: false
 - runFlow: dismiss-system-dialogs.yaml
 - extendedWaitUntil:
-    visible: 'Dein Tag'
+    visible:
+      id: 'screen-today'
     timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: 'day-all'
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: 'day-all'
+    retryTapIfNoChange: true
 - scrollUntilVisible:
     element: '.*Physio.*'
     direction: DOWN
@@ -180,6 +218,10 @@ appId: ${APP_ID}
     visible:
       id: 'detail-plan'
     timeout: 10000
+# Phase 8: answer, chat and lists live in the "Together" tab.
+- tapOn:
+    id: 'detail-tab-together'
+    retryTapIfNoChange: true
 # The answer card sits below the leave plan.
 - scrollUntilVisible:
     element:
@@ -213,6 +255,9 @@ appId: ${APP_ID}
 - waitForAnimationToEnd
 - tapOn:
     id: 'event-demo-bbq'
+    retryTapIfNoChange: true
+- tapOn:
+    id: 'detail-tab-together'
     retryTapIfNoChange: true
 - scrollUntilVisible:
     element:
@@ -358,6 +403,9 @@ appId: ${APP_ID}
 - waitForAnimationToEnd
 - tapOn:
     id: 'event-demo-movie-night'
+    retryTapIfNoChange: true
+- tapOn:
+    id: 'detail-tab-together'
     retryTapIfNoChange: true
 - scrollUntilVisible:
     element:
@@ -732,6 +780,9 @@ appId: ${APP_ID}
 - tapOn:
     id: 'event-demo-bbq'
     retryTapIfNoChange: true
+- tapOn:
+    id: 'detail-tab-together'
+    retryTapIfNoChange: true
 - scrollUntilVisible:
     element:
       id: 'tile-costs'
@@ -770,6 +821,13 @@ appId: ${APP_ID}
     id: 'fab-add'
 - extendedWaitUntil:
     visible:
+      id: 'quick-sheet'
+    timeout: 10000
+- tapOn:
+    id: 'quick-details'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
       id: 'screen-editor'
     timeout: 10000
 - hideKeyboard
@@ -782,3 +840,55 @@ appId: ${APP_ID}
     id: 'editor-cover-sunset'
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-42-covers
+# ---------------------------------------------------------------- Phase 8: personalise + people filter
+- tapOn:
+    id: 'tab-settings'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-settings'
+    timeout: 10000
+# The account card is at the top; the settings list is still scrolled down from the plan step.
+- scrollUntilVisible:
+    element:
+      id: 'account-personalize'
+    direction: UP
+- waitForAnimationToEnd
+- tapOn:
+    id: 'account-personalize'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-personalize'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-49-personalize
+- tapOn:
+    id: 'accent-ocean'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-50-personalize-ocean
+- tapOn:
+    id: 'accent-lime'
+- tapOn:
+    id: 'personalize-back'
+    retryTapIfNoChange: true
+- tapOn:
+    id: 'tab-calendar'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-calendar'
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: 'cal-view-list'
+    direction: UP
+- tapOn:
+    id: 'cal-view-list'
+- tapOn:
+    id: 'cal-person-lena'
+    retryTapIfNoChange: true
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-51-calendar-people
+- tapOn:
+    id: 'cal-person-all'

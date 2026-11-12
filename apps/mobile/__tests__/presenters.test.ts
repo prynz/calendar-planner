@@ -81,7 +81,7 @@ describe('presenters', () => {
     expect(rows[0]?.[0]?.key).toBe('2026-10-26'); // Monday before 1 Nov
     const nine = rows.flat().find((c) => c.key === TODAY);
     expect(nine).toMatchObject({ isToday: true, inMonth: true });
-    expect(nine?.dots).toHaveLength(3);
+    expect(nine?.dots).toHaveLength(4);
   });
 
   it('titles today and other days', () => {

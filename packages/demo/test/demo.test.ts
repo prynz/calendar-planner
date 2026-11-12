@@ -12,7 +12,7 @@ const ids = (day: string) => agendaForDay(events, day, DEMO_TIME_ZONE).map((i) =
 describe('demo events', () => {
   it('is deterministic and anchored on today', () => {
     expect(buildDemoEvents(NOW)).toEqual(events);
-    expect(ids(TODAY)).toEqual(['demo-dentist', 'demo-lunch', 'demo-games']);
+    expect(ids(TODAY)).toEqual(['demo-dentist', 'demo-lunch', 'demo-hairdresser', 'demo-games']);
   });
 
   it('puts the all-day birthday before the party', () => {
