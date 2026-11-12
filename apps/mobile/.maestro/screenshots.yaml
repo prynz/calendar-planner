@@ -52,11 +52,13 @@ appId: ${APP_ID}
 - tapOn:
     id: 'day-all'
     retryTapIfNoChange: true
-# Detail with the backwards leave plan (game night is the last row today – it cannot always be centred)
+# Detail with the backwards leave plan. Centred: "This week" follows the list now, and an uncentred row can
+# end up under the floating tab bar, so the tap would hit the bar.
 - scrollUntilVisible:
     element:
       id: 'event-demo-games'
     direction: DOWN
+    centerElement: true
 - waitForAnimationToEnd
 - tapOn:
     id: 'event-demo-games'
@@ -841,6 +843,13 @@ appId: ${APP_ID}
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-42-covers
 # ---------------------------------------------------------------- Phase 8: personalise + people filter
+# The covers step leaves the editor open (no tab bar there): restart the app, data and settings are kept.
+- launchApp
+- runFlow: dismiss-system-dialogs.yaml
+- extendedWaitUntil:
+    visible:
+      id: 'screen-today'
+    timeout: 60000
 - tapOn:
     id: 'tab-settings'
     retryTapIfNoChange: true
