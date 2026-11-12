@@ -668,13 +668,7 @@ appId: ${APP_ID}
     direction: UP
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-36-account-plan
-- scrollUntilVisible:
-    element:
-      id: 'subscription-compare'
-    direction: DOWN
-    # No centring: after scrolling up to the plan card the button sits above the middle, and scrolling
-    # down only moves it further up, so centring never succeeds.
-- waitForAnimationToEnd
+# The whole plan card is on screen now, so tap the button directly: scrolling first can push it off the top.
 - tapOn:
     id: 'subscription-compare'
     retryTapIfNoChange: true

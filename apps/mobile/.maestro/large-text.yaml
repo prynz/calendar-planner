@@ -28,17 +28,15 @@ appId: ${APP_ID}
     visible:
       id: 'screen-settings'
     timeout: 10000
-- scrollUntilVisible:
-    element:
-      id: 'subscription'
-    direction: DOWN
-- waitForAnimationToEnd
-- takeScreenshot: screenshots/shot-${PLATFORM}-45-large-text-settings
+# At 200 % the plan card can be taller than the screen, so aim for its button rather than the whole card.
 - scrollUntilVisible:
     element:
       id: 'subscription-compare'
     direction: DOWN
+    # Centred, otherwise the button can stop under the floating tab bar and the tap hits the bar.
+    centerElement: true
 - waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-45-large-text-settings
 - tapOn:
     id: 'subscription-compare'
     retryTapIfNoChange: true
