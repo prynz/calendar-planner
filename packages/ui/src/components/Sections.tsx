@@ -4,6 +4,8 @@ import { Pressable, View } from 'react-native';
 import { useTheme } from '../theme/ThemeProvider';
 import { cardShadow, radii, space, touch } from '../tokens';
 import { PressableScale } from './PressableScale';
+import Svg, { Path } from 'react-native-svg';
+
 import { Text } from './Text';
 
 /**
@@ -105,6 +107,8 @@ export interface ListRowProps {
   testID?: string;
   /** Optional element at the far right (e.g. a small button). */
   action?: ReactNode;
+  /** Phase 9: a round tick button at the start; ticked rows are dimmed. */
+  check?: { checked: boolean; onToggle: () => void; label: string; testID?: string };
 }
 
 export function ListRow({
@@ -118,12 +122,47 @@ export function ListRow({
   accessibilityLabel,
   testID,
   action,
+  check,
 }: ListRowProps) {
   const { colors } = useTheme();
+  const done = check?.checked === true;
   const body = (
     <View
-      style={{ flexDirection: 'row', alignItems: 'center', gap: space[3], minHeight: 64, paddingVertical: space[3] }}
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: space[3],
+        minHeight: 64,
+        paddingVertical: space[3],
+        opacity: done ? 0.6 : 1,
+      }}
     >
+      {check ? (
+        <PressableScale
+          onPress={check.onToggle}
+          accessibilityRole="checkbox"
+          accessibilityState={{ checked: check.checked }}
+          accessibilityLabel={check.label}
+          hitSlop={8}
+          {...(check.testID ? { testID: check.testID } : {})}
+          style={{
+            width: 32,
+            height: 32,
+            borderRadius: radii.pill,
+            borderWidth: 2,
+            borderColor: colors.textPrimary,
+            backgroundColor: done ? colors.textPrimary : 'transparent',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {done ? (
+            <Svg width={16} height={16} viewBox="0 0 24 24">
+              <Path d="M20 6 9 17l-5-5" stroke={colors.canvas} strokeWidth={3} strokeLinecap="round" fill="none" />
+            </Svg>
+          ) : null}
+        </PressableScale>
+      ) : null}
       {avatar ? (
         <View
           style={{
@@ -152,7 +191,9 @@ export function ListRow({
         />
       ) : null}
       <View style={{ flex: 1, gap: space[0.5] }}>
-        <Text variant="bodyStrong">{title}</Text>
+        <Text variant="bodyStrong" color={done ? 'textSecondary' : 'textPrimary'}>
+          {title}
+        </Text>
         {subtitle ? (
           <Text variant="bodyM" color="textSecondary">
             {subtitle}

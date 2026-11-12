@@ -162,3 +162,56 @@ describe('Today personalisation', () => {
     await waitFor(async () => expect(await store.get('settings.weekTiles')).toBe('events,punctual,rides'));
   });
 });
+
+describe('ticking off and moving (Phase 9)', () => {
+  it('ticks a plan off, remembers it, and undoes it', async () => {
+    const store = createMemorySettingsStore();
+    const repo = createMemoryEventRepository([appointment('a', 'Zahnarzt', [9, 0], [10, 0])], true);
+    await renderApp(<TodayScreen />, { repo, store });
+    await fireEvent.press(await screen.findByTestId('done-a'));
+    expect(screen.getByTestId('done-a')).toBeChecked();
+    expect(screen.getByLabelText('Zahnarzt wieder offen setzen')).toBeTruthy();
+    await waitFor(async () => expect(await store.get('today.done')).toBe('a@2026-11-09'));
+    await fireEvent.press(screen.getByTestId('done-a'));
+    expect(screen.getByTestId('done-a')).not.toBeChecked();
+    await waitFor(async () => expect(await store.get('today.done')).toBe(''));
+  });
+
+  it('offers the same actions to screen readers as the swipe', async () => {
+    const repo = createMemoryEventRepository([appointment('a', 'Zahnarzt', [9, 0], [10, 0])], true);
+    await renderApp(<TodayScreen />, { repo });
+    const row = await screen.findByTestId('swipe-a');
+    expect(row.props.accessibilityActions.map((a: { label: string }) => a.label)).toEqual(['Erledigt', 'Später']);
+    await fireEvent(row, 'accessibilityAction', { nativeEvent: { actionName: 'right' } });
+    expect(screen.getByTestId('done-a')).toBeChecked();
+    await fireEvent(row, 'accessibilityAction', { nativeEvent: { actionName: 'left' } });
+    expect(await screen.findByTestId('later-sheet')).toBeTruthy();
+  });
+
+  it('moves my own plan by an hour', async () => {
+    const repo = createMemoryEventRepository([appointment('a', 'Zahnarzt', [9, 0], [10, 0])], true);
+    await renderApp(<TodayScreen />, { repo });
+    await fireEvent(await screen.findByTestId('swipe-a'), 'accessibilityAction', {
+      nativeEvent: { actionName: 'left' },
+    });
+    await fireEvent.press(await screen.findByTestId('later-by60'));
+    await waitFor(async () => expect((await repo.load()).events[0]?.start).toEqual(at(10, 0)));
+    expect((await repo.load()).events[0]?.end).toEqual(at(11, 0));
+  });
+
+  it('does not move someone else’s event, but opens it', async () => {
+    const repo = createMemoryEventRepository(
+      [appointment('x', 'Brunch', [11, 0], [12, 0], { kind: 'social', hostId: 'olivia' })],
+      true,
+    );
+    await renderApp(<TodayScreen />, { repo });
+    await fireEvent(await screen.findByTestId('swipe-x'), 'accessibilityAction', {
+      nativeEvent: { actionName: 'left' },
+    });
+    expect(
+      await screen.findByText('Olivia plant diesen Termin. Öffne ihn, um zu antworten oder zu fragen.'),
+    ).toBeTruthy();
+    expect(screen.queryByTestId('later-by15')).toBeNull();
+    expect(screen.getByTestId('later-open')).toBeTruthy();
+  });
+});

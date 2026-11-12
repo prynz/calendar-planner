@@ -250,7 +250,13 @@ describe('profile and privacy', () => {
     const [uri] = sharing.shareAsync.mock.calls.at(-1) as [string];
     const data = JSON.parse(fs.__files.get(uri) ?? '{}') as Record<string, unknown>;
     expect(Object.keys(data)).toEqual(
-      expect.arrayContaining(['profile', 'events', 'collaboration', 'departureHistory', 'family', 'groups']),
+      expect.arrayContaining(['profile', 'events', 'collaboration', 'departureHistory', 'family', 'groups', 'ticked']),
     );
+  });
+
+  it('counts and exports ticked-off plans (Phase 9)', async () => {
+    const store = createMemorySettingsStore({ 'today.done': 'demo-dentist@2026-11-09,demo-lunch@2026-11-09' });
+    await renderApp(<PrivacyScreen />, { store });
+    expect(await screen.findByTestId('privacy-stored')).toHaveTextContent(/2 abgehakte Termine/);
   });
 });

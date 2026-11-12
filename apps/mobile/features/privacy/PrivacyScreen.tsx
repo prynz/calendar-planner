@@ -7,6 +7,7 @@ import { Button, Card, SectionTitle, space, Text } from '@nowish/ui';
 
 import { DetailShell } from '../shell/DetailShell';
 import { useAccount } from '@/providers/account';
+import { useDone } from '@/providers/done';
 import { useEvents } from '@/providers/events';
 import { useI18n } from '@/providers/i18n';
 import { useNow } from '@/providers/clock';
@@ -21,6 +22,7 @@ import { haptic } from '@/services/haptics';
 export function PrivacyScreen() {
   const { t } = useI18n();
   const store = useEvents();
+  const done = useDone();
   const account = useAccount();
   const now = useNow();
   const router = useRouter();
@@ -36,6 +38,7 @@ export function PrivacyScreen() {
       events: store.events,
       collaboration: store.collabs,
       departureHistory: store.journeys,
+      ticked: done.keys,
       family: h,
       groups: store.groups,
     };
@@ -61,6 +64,7 @@ export function PrivacyScreen() {
         onPress: () => {
           store
             .deleteAll()
+            .then(() => done.clear())
             .then(() => account.reset())
             .then(() => {
               haptic('success');
@@ -78,6 +82,7 @@ export function PrivacyScreen() {
     t('privacy.item.events', { count: store.events.length }),
     t('privacy.item.collabs', { count: store.collabs.length }),
     t('privacy.item.journeys', { count: store.journeys.length }),
+    t('privacy.item.done', { count: done.keys.length }),
     t('privacy.item.family', { count: h ? householdMemberIds(h).length : 0 }),
     t('privacy.item.groups', { count: store.groups.length }),
     t('privacy.item.profile'),

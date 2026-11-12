@@ -39,3 +39,4 @@ export { BottomSheet } from './components/BottomSheet';
 export { FilterChips, type FilterChipOption } from './components/FilterChips';
 export { PillTabs, type PillTab } from './components/PillTabs';
 export { ListCard, ListRow, SectionHeader, SoftCard, StatTile, type ListRowProps } from './components/Sections';
+export { SwipeRow, type SwipeAction } from './components/SwipeRow';

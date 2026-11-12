@@ -9,6 +9,7 @@ import { QuickAddProvider } from '@/features/quick-add/QuickAddProvider';
 import type { EventRepository } from '@/data/event-repository';
 import { ClockProvider } from '@/providers/clock';
 import { AccountProvider, onboardedAccount, type Account } from '@/providers/account';
+import { DoneProvider } from '@/providers/done';
 import { EventsProvider } from '@/providers/events';
 import { I18nProvider } from '@/providers/i18n';
 import { RemindersProvider } from '@/providers/reminders';
@@ -64,7 +65,9 @@ export async function renderApp(
               >
                 <EventsProvider repository={repo} now={() => now} simulate={false}>
                   <RemindersProvider>
-                    <QuickAddProvider>{node}</QuickAddProvider>
+                    <DoneProvider store={store} timeZone="Europe/Berlin">
+                      <QuickAddProvider>{node}</QuickAddProvider>
+                    </DoneProvider>
                   </RemindersProvider>
                 </EventsProvider>
               </AccountProvider>

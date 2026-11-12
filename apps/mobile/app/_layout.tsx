@@ -15,6 +15,7 @@ import { createTranslator } from '@nowish/i18n';
 import { ClockProvider } from '@/providers/clock';
 import { createDeviceEventRepository } from '@/data/device-event-repository';
 import { AccountProvider } from '@/providers/account';
+import { DoneProvider } from '@/providers/done';
 import { EventsProvider } from '@/providers/events';
 import { I18nProvider } from '@/providers/i18n';
 import { RemindersProvider } from '@/providers/reminders';
@@ -98,7 +99,9 @@ export default function RootLayout() {
                 <AccountProvider store={store} timeZone={DEMO_TIME_ZONE}>
                   <EventsProvider repository={eventRepository}>
                     <RemindersProvider>
-                      <Shell />
+                      <DoneProvider store={store} timeZone={DEMO_TIME_ZONE}>
+                        <Shell />
+                      </DoneProvider>
                     </RemindersProvider>
                   </EventsProvider>
                 </AccountProvider>
