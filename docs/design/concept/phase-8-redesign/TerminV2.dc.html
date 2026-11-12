@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Termin v2 – Konzept</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0D0E12;text-decoration:none}
+a:hover{color:#2A2E38}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF9F4; font-family: Inter, system-ui, sans-serif; color: #0D0E12; position: relative; overflow: hidden">
+  <div style="height: 844px; overflow-y: auto; box-sizing: border-box; padding: 18px 20px 40px; display: flex; flex-direction: column; gap: 22px">
+
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <a href="HeuteV2.dc.html" aria-label="Zurück" style="width: 44px; height: 44px; border-radius: 22px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(13,14,18,0.06)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></a>
+      <span style="font-size: 12px; font-weight: 600; color: #FFFFFF; background: #4B2FD6; padding: 4px 10px; border-radius: 999px">Demo</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <span style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #5B5F69"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 5px; background: #7C5CFF"></span>Freunde · Alex lädt ein</span>
+      <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 30px; line-height: 34px; letter-spacing: -0.5px">Mittagessen mit Alex</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <div style="background: #FFFFFF; border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
+        <span style="font-size: 12px; color: #5B5F69">Wann</span>
+        <span style="font-weight: 700; font-size: 16px">Heute, 12:30</span>
+        <span style="font-size: 13px; color: #5B5F69">bis 13:30</span>
+      </div>
+      <div style="background: #FFFFFF; border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
+        <span style="font-size: 12px; color: #5B5F69">Wo</span>
+        <span style="font-weight: 700; font-size: 16px">Café Lindner</span>
+        <span style="font-size: 13px; color: #5B5F69">Bergstraße 4</span>
+      </div>
+    </div>
+
+    <div role="tablist" aria-label="Bereiche des Termins" style="display: flex; gap: 8px; overflow-x: auto">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+        <button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}<sc-if value="{{t.badge}}" hint-placeholder-val="{{ false }}"><span style="{{t.badgeStyle}}">{{t.badge}}</span></sc-if></button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{isPlan}}" hint-placeholder-val="{{ true }}">
+      <div role="tabpanel" style="display: flex; flex-direction: column; gap: 14px">
+        <div style="background: #C8F031; border-radius: 24px; padding: 18px; display: flex; justify-content: space-between; align-items: center">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 13px; font-weight: 600">Losgehen</span>
+            <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 36px; line-height: 40px">11:52</span>
+          </div>
+          <span style="font-size: 13px; text-align: right; line-height: 18px">30 Min. Bus &amp; Bahn<br>+ 8 Min. Puffer</span>
+        </div>
+        <div style="background: #FFFFFF; border-radius: 20px; padding: 14px 16px; display: flex; gap: 12px; align-items: center; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4471F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+          <span style="font-size: 14px; flex: 1">Knapp: Zahnarzt endet erst um 12:00.</span>
+          <a href="HeuteV2.dc.html" style="font-size: 14px; font-weight: 600; text-decoration: underline">Lösen</a>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+            <button type="button" onClick="{{s.go}}" style="height: 92px; border: 0; border-radius: 20px; background: #FFFFFF; text-align: left; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
+              <span style="font-size: 12px; color: #5B5F69">{{s.label}}</span>
+              <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 22px">{{s.value}}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isPeople}}" hint-placeholder-val="{{ false }}">
+      <div role="tabpanel" style="display: flex; flex-direction: column; gap: 14px">
+        <div role="radiogroup" aria-label="Deine Antwort" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; background: #FFFFFF; border-radius: 26px; padding: 4px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
+          <sc-for list="{{rsvp}}" as="r" hint-placeholder-count="3">
+            <button type="button" role="radio" aria-checked="{{r.checked}}" onClick="{{r.pick}}" style="{{r.style}}">{{r.label}}</button>
+          </sc-for>
+        </div>
+        <div style="background: #FFFFFF; border-radius: 24px; padding: 4px 16px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
+          <sc-for list="{{guests}}" as="g" hint-placeholder-count="3">
+            <div style="{{g.row}}">
+              <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 18px; background: #EFE9DC; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px">{{g.initial}}</span>
+              <span style="flex: 1; font-weight: 600; font-size: 15px">{{g.name}}</span>
+              <span style="{{g.chip}}">{{g.state}}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isChat}}" hint-placeholder-val="{{ false }}">
+      <div role="tabpanel" style="display: flex; flex-direction: column; gap: 10px">
+        <div style="align-self: flex-start; max-width: 80%; background: #FFFFFF; border-radius: 18px 18px 18px 6px; padding: 10px 14px; font-size: 15px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">Ich hab für 12:30 reserviert 🙂</div>
+        <div style="align-self: flex-end; max-width: 80%; background: #0D0E12; color: #FBF9F4; border-radius: 18px 18px 6px 18px; padding: 10px 14px; font-size: 15px">Super, ich komm direkt vom Zahnarzt.</div>
+        <div style="display: flex; gap: 8px; margin-top: 6px">
+          <label for="msg" style="position: absolute; left: -9999px">Nachricht</label>
+          <input id="msg" placeholder="Nachricht an Alex" style="flex: 1; height: 48px; border: 1.5px solid #E7E0D2; border-radius: 24px; padding: 0 16px; font: inherit; font-size: 15px; background: #FFFFFF">
+          <button type="button" aria-label="Senden" style="width: 48px; height: 48px; border: 0; border-radius: 24px; background: #C8F031; display: flex; align-items: center; justify-content: center">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isCosts}}" hint-placeholder-val="{{ false }}">
+      <div role="tabpanel" style="display: flex; flex-direction: column; gap: 14px">
+        <div style="background: #FFFFFF; border-radius: 24px; padding: 18px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
+          <span style="font-size: 13px; color: #5B5F69">Du schuldest Alex</span>
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 34px">14,50 €</span>
+          <span style="font-size: 13px; color: #5B5F69">Rechnung 29,00 € · gleich geteilt</span>
+        </div>
+        <button type="button" style="height: 52px; border: 0; border-radius: 26px; background: #0D0E12; color: #FBF9F4; font-weight: 600; font-size: 15px">Ich habe bezahlt</button>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'plan', rsvp: 'yes' };
+  }
+  renderVals() {
+    const tab = this.state.tab;
+    const defs = [['plan', 'Plan', ''], ['people', 'Leute', ''], ['chat', 'Chat', '2'], ['costs', 'Kosten', '']];
+    const tabs = defs.map(([id, label, badge]) => {
+      const sel = tab === id;
+      return {
+        label, badge,
+        sel: sel ? 'true' : 'false',
+        pick: () => this.setState({ tab: id }),
+        style: 'flex-shrink: 0; height: 44px; padding: 0 18px; border-radius: 22px; display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 14px; border: 1.5px solid ' + (sel ? '#0D0E12' : '#E7E0D2') + '; background: ' + (sel ? '#0D0E12' : '#FFFFFF') + '; color: ' + (sel ? '#FBF9F4' : '#0D0E12'),
+        badgeStyle: 'min-width: 20px; height: 20px; border-radius: 10px; background: #C8F031; color: #0D0E12; font-size: 12px; display: flex; align-items: center; justify-content: center',
+      };
+    });
+    const stats = [
+      ['Zusagen', '2 von 3', 'people'],
+      ['Chat', '2 neu', 'chat'],
+      ['Kosten', '14,50 €', 'costs'],
+      ['Bereit-Check', '0 von 3', 'plan'],
+    ].map(([label, value, to]) => ({ label, value, go: () => this.setState({ tab: to }) }));
+    const rsvp = [['yes', 'Zusagen'], ['maybe', 'Vielleicht'], ['no', 'Absagen']].map(([id, label]) => {
+      const sel = this.state.rsvp === id;
+      return {
+        label,
+        checked: sel ? 'true' : 'false',
+        pick: () => this.setState({ rsvp: id }),
+        style: 'height: 44px; border: 0; border-radius: 22px; font-weight: 600; font-size: 14px; background: ' + (sel ? '#0D0E12' : 'transparent') + '; color: ' + (sel ? '#FBF9F4' : '#0D0E12'),
+      };
+    });
+    const myState = { yes: 'dabei', maybe: 'vielleicht', no: 'abgesagt' }[this.state.rsvp];
+    const g = [['Alex', 'A', 'lädt ein'], ['Du', 'D', myState], ['Jonas', 'J', 'offen']];
+    const guests = g.map(([name, initial, state], i) => ({
+      name, initial, state,
+      row: 'display: flex; align-items: center; gap: 12px; min-height: 60px; ' + (i < g.length - 1 ? 'border-bottom: 1px solid #F1ECE2' : ''),
+      chip: 'font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: ' + (state === 'offen' ? '#FFF1E6' : '#F1ECE2'),
+    }));
+    return {
+      tabs, stats, rsvp, guests,
+      isPlan: tab === 'plan', isPeople: tab === 'people', isChat: tab === 'chat', isCosts: tab === 'costs',
+    };
+  }
+}
+</script>
+</body>
+</html>

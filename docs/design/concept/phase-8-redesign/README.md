@@ -17,3 +17,17 @@ persönlicher Helfer, der Überschneidungen und Konflikte bemerkt. Stilrichtung:
 
 Die Dateien sind im `.dc.html`-Format des Design-Canvas und dienen nur als Referenz; die App wird nach Freigabe in
 `packages/ui` und `apps/mobile` umgesetzt.
+
+## v2 (nach PO-Feedback vom 2026-11-12)
+
+Feedback: Bereiche besser voneinander trennen, Seiten nicht textlich überladen; Kacheln und Navigationsarten aus
+Referenz 1 (Icon-Chips, Pill-Tabs, Kennzahlen-Raster) und die cleane, nicht zu bunte Aufbereitung mit viel Weißraum
+aus Referenz 2 übernehmen.
+
+| Datei | Änderung |
+| --- | --- |
+| `HeuteV2.dc.html` | Weiße Karten auf warmem Weiß, Abschnitte mit Überschrift und „Alle ansehen“ (max. 3 Einträge), Icon-Chips als Bereichs-Filter, Helfer als kompaktes Banner, „Diese Woche“ als Kennzahlen-Kacheln inkl. Fahrdienst-Bilanz |
+| `TerminV2.dc.html` | Kopf mit Wann/Wo-Kacheln, Pill-Tabs Plan · Leute · Chat · Kosten statt langer Seite, Kennzahlen-Kacheln führen in den passenden Tab |
+| `KalenderV2.dc.html` | Ansicht Tag/Woche/Monat als Pill-Umschalter, Personen als Avatar-Chips, ruhiges Monatsraster mit einem Punkt pro Tag, Tagesliste mit Avatar und Zeit rechts |
+
+Kategorie-Farben erscheinen in v2 nur noch als Punkt oder Avatar-Hintergrund; Lime bleibt der einzige kräftige Akzent.
