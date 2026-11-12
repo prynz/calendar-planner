@@ -30,7 +30,8 @@ Konten, Logins oder Server. Die Infrastruktur folgt danach schrittweise (Block B
 
 | Phase | Inhalt | Ergebnis | Status |
 | --- | --- | --- | --- |
-| **8** – Redesign & persönlicher Helfer | Ruhige Bereiche (weiße Karten, max. 3 Einträge + „Alle ansehen“), Helfer erkennt Konflikte und freie Zeit, Schnell-Eintrag in einer Zeile, Personalisierung (Akzentfarbe, Dichte, Reihenfolge, Start-Ansicht, Wochen-Kacheln), Kalender mit Personen-Filter, Termin mit Tabs | Prototyp, der sich wie ein eigener Planer-Helfer anfühlt | 🔧 in Arbeit ([Konzept](../design/concept/phase-8-redesign/README.md), [ADR 0016](../decisions/0016-redesign-helper-personalisation.md)) |
+| **8** – Redesign & persönlicher Helfer | Ruhige Bereiche (weiße Karten, max. 3 Einträge + „Alle ansehen“), Helfer erkennt Konflikte und freie Zeit, Schnell-Eintrag in einer Zeile, Personalisierung (Akzentfarbe, Dichte, Reihenfolge, Start-Ansicht, Wochen-Kacheln), Kalender mit Personen-Filter, Termin mit Tabs | Prototyp, der sich wie ein eigener Planer-Helfer anfühlt | ✅ freigegeben (2026-11-12, [Report](../previews/milestone-reports/phase-8.md), [ADR 0016](../decisions/0016-redesign-helper-personalisation.md)) |
+| **9** – Gesten & neuer Aufbau überall | Abhaken und Wischgesten (Erledigt / Verschieben, immer auch per Knopf und Screenreader-Aktion), neuer Aufbau für Events-Liste, Familie, Gruppen und die Kacheln im Tab „Gemeinsam“ | Ein durchgängiges Erlebnis vor dem Usability-Test | 🔧 in Arbeit |
 
 ### Block B – Ausbau (erst wenn der Prototyp überzeugt, Schritt für Schritt)
 

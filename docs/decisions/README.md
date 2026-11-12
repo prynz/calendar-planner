@@ -22,4 +22,4 @@ Format: Kontext → Entscheidung → Alternativen → Konsequenzen. Status: `vor
 | [0013](0013-travel-time-google-later.md) | Wegzeit per Google über Adresseingabe – angeschlossen, sobald das Konto steht | akzeptiert |
 | [0014](0014-family-groups-local.md) | Familie, Gruppen und Kalender-Dateien im lokalen Prototyp | akzeptiert |
 | [0015](0015-premium-demo-entitlements.md) | Premium im Prototyp: Entitlements als Daten, Demo-Kauf, lokales Konto | akzeptiert |
-| [0016](0016-redesign-helper-personalisation.md) | Redesign: ruhige Bereiche, regelbasierter Helfer, Personalisierung | vorgeschlagen |
+| [0016](0016-redesign-helper-personalisation.md) | Redesign: ruhige Bereiche, regelbasierter Helfer, Personalisierung | akzeptiert |

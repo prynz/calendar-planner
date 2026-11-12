@@ -1,6 +1,7 @@
 # Milestone-Report Phase 8 – Redesign & persönlicher Helfer
 
-> **Status:** 2026-11-12 · Phase 8 umgesetzt · **Stopp – wartet auf Review und Freigabe durch den PO.**
+> **Status:** 2026-11-12 · Phase 8 vom PO freigegeben. Entscheidungen: Events/Familie/Gruppen bekommen den neuen
+> Aufbau, Wischgesten und Abhaken kommen jetzt (Phase 9), danach Usability-Test.
 > Grundlage: deine gesammelten Änderungswünsche nach Block A, Konzept v2 + 5 Ideen
 > ([Mockup](../../design/concept/phase-8-redesign/README.md)), [ADR 0016](../../decisions/0016-redesign-helper-personalisation.md).
 

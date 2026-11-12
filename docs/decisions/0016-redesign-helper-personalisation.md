@@ -1,6 +1,6 @@
 # ADR 0016 – Redesign: ruhige Bereiche, regelbasierter Helfer, Personalisierung
 
-> **Status:** vorgeschlagen · 2026-11-12 · Phase 8 (Richtung vom PO am 2026-11-12 freigegeben: Konzept v2 + 5 Ideen)
+> **Status:** akzeptiert · 2026-11-12 (Phase 8 freigegeben) · Phase 8 (Richtung vom PO am 2026-11-12 freigegeben: Konzept v2 + 5 Ideen)
 
 ## Kontext
 
