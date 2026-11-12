@@ -1,6 +1,6 @@
 # Roadmap & Priorisierung
 
-> **Status:** v1.1 · 2026-11-12 · **Block A abgeschlossen** (Phasen 1–7 freigegeben). Jetzt: gesammelte Änderungswünsche des PO, danach Usability-Test. Roadmap neu geschnitten: lokaler Prototyp (Block A) vor Infrastruktur (Block B), ADR 0010. **Prototyp zuerst**:
+> **Status:** v1.2 · 2026-11-12 · **Block A abgeschlossen** (Phasen 1–7 freigegeben). Jetzt: Phase 8 (Änderungswünsche des PO: Redesign & Helfer), danach Usability-Test. Roadmap neu geschnitten: lokaler Prototyp (Block A) vor Infrastruktur (Block B), ADR 0010. **Prototyp zuerst**:
 > Phasen 1–9 bauen einen nicht veröffentlichten Prototyp mit Beispieldaten, Veröffentlichung erst nach
 > Phase 10 ([ADR 0008](../decisions/0008-prototype-first.md)). Phase 1 startet nach Freigabe durch den PO.
 
@@ -25,6 +25,12 @@ Konten, Logins oder Server. Die Infrastruktur folgt danach schrittweise (Block B
 | **5** – Familie & Gruppen | Familienbereich, Kinderprofile, Fahrdienste, Einkaufsliste, Ämtchen, Gruppen mit wiederkehrenden Treffen, ICS-Import/Export | Familienplaner | ✅ freigegeben (2026-11-11) |
 | **6** – Profil, Premium & Feinschliff | Onboarding, Profil, Datenschutz-Center (UI), Paywall mit **Demo-Kauf**, House-Ad-Vorschau, Premium-Themes, Kosten-Split mit PayPal-Link, Wetter/Plan B (simuliert) | Alle Kernfunktionen als Prototyp | ✅ freigegeben (2026-11-11, [Report](../previews/milestone-reports/phase-6.md), [ADR 0015](../decisions/0015-premium-demo-entitlements.md)) |
 | **7** – Erlebnis-Politur & Test | Motion- und Haptik-Feinschliff, Barrierefreiheit (VoiceOver/TalkBack, 200 % Schrift), Performance, Usability-Test mit Testpersonen, finales Logo | Prototyp, der überzeugt | ✅ freigegeben (2026-11-12, [Report](../previews/milestone-reports/phase-7.md)); Usability-Test nach den Änderungswünschen ([Leitfaden](usability-test.md)) |
+
+### Zwischenschritt – Änderungswünsche des PO (nach Block A)
+
+| Phase | Inhalt | Ergebnis | Status |
+| --- | --- | --- | --- |
+| **8** – Redesign & persönlicher Helfer | Ruhige Bereiche (weiße Karten, max. 3 Einträge + „Alle ansehen“), Helfer erkennt Konflikte und freie Zeit, Schnell-Eintrag in einer Zeile, Personalisierung (Akzentfarbe, Dichte, Reihenfolge, Start-Ansicht, Wochen-Kacheln), Kalender mit Personen-Filter, Termin mit Tabs | Prototyp, der sich wie ein eigener Planer-Helfer anfühlt | 🔧 in Arbeit ([Konzept](../design/concept/phase-8-redesign/README.md), [ADR 0016](../decisions/0016-redesign-helper-personalisation.md)) |
 
 ### Block B – Ausbau (erst wenn der Prototyp überzeugt, Schritt für Schritt)
 
