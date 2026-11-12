@@ -152,6 +152,7 @@ describe('EventsProvider with collaboration data', () => {
 describe('event detail (social)', () => {
   it('answers an invitation and shows the bento overview', async () => {
     const { repo } = await renderApp(<EventDetailScreen eventId="demo-tom-party" occurrence="2026-11-12" />);
+    await fireEvent.press(await screen.findByTestId('detail-tab-together'));
     expect(await screen.findByText('Tom lädt dich ein')).toBeTruthy();
     for (const id of ['tile-guests', 'tile-poll', 'tile-bring', 'tile-tasks', 'tile-chat'])
       expect(screen.getByTestId(id)).toBeTruthy();
@@ -292,6 +293,7 @@ describe('creating events', () => {
 describe('detail tiles', () => {
   it('summarise the bring list, tasks and chat', async () => {
     await renderApp(<EventDetailScreen eventId="demo-games" occurrence="2026-11-09" />);
+    await fireEvent.press(await screen.findByTestId('detail-tab-together'));
     expect(within(await screen.findByTestId('tile-bring')).getByText('1 von 3 vergeben')).toBeTruthy();
     expect(within(screen.getByTestId('tile-tasks')).getByText('1 von 2 erledigt')).toBeTruthy();
     expect(within(screen.getByTestId('tile-chat')).getByText('2 Nachrichten')).toBeTruthy();

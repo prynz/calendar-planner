@@ -219,10 +219,12 @@ describe('costs and plan B', () => {
 
   it('shows the demo forecast and lets the host switch to plan B', async () => {
     await renderApp(<EventDetailScreen eventId="demo-bbq" occurrence="2026-11-14" />);
+    await press('detail-tab-together');
     expect(await screen.findByTestId('weather-line')).toHaveTextContent('Regen 🌧️ · 14 °C · Regen 70 %');
     expect(screen.getByTestId('plan-b-suggest')).toBeTruthy();
     expect(screen.queryByTestId('plan-b-toggle')).toBeNull(); // Olivia hosts
     await renderApp(<EventDetailScreen eventId="demo-run" occurrence="2026-11-14" />);
+    await press('detail-tab-together');
     await press('plan-b-toggle');
     expect(await screen.findByTestId('plan-b-active')).toHaveTextContent('Plan B ist aktiv: Halle Nord');
   });

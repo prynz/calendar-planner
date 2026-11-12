@@ -86,6 +86,10 @@ export const redesignDe = {
   'calendar.people': 'Wessen Termine',
   'calendar.people.all': 'Alle',
 
+  'detail.tab.plan': 'Plan',
+  'detail.tab.together': 'Gemeinsam',
+  'detail.tabs': 'Bereiche des Termins',
+
   'personal.title': 'Personalisieren',
   'personal.open': 'Personalisieren',
   'personal.intro': 'Richte Nowish so ein, wie du planst.',

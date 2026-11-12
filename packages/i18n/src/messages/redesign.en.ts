@@ -88,6 +88,10 @@ export const redesignEn: Record<keyof typeof redesignDe, string> = {
   'calendar.people': 'Whose plans',
   'calendar.people.all': 'Everyone',
 
+  'detail.tab.plan': 'Plan',
+  'detail.tab.together': 'Together',
+  'detail.tabs': 'Parts of the plan',
+
   'personal.title': 'Personalise',
   'personal.open': 'Personalise',
   'personal.intro': 'Set up Nowish the way you plan.',

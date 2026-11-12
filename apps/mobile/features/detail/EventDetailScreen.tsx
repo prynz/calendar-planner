@@ -18,6 +18,7 @@ import {
   FadeIn,
   Gutter,
   IconButton,
+  PillTabs,
   radii,
   SectionTitle,
   space,
@@ -52,6 +53,8 @@ export function EventDetailScreen({
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const [deleteFailed, setDeleteFailed] = useState(false);
+  // Phase 8: social events split into "Plan" and "Together" instead of one long page.
+  const [tab, setTab] = useState<'plan' | 'together'>('plan');
   const event = store.getEvent(eventId);
   const day = occurrence ?? today;
   const item = event ? (agendaForDay([event], day, event.timeZone)[0] ?? null) : null;
@@ -75,6 +78,7 @@ export function EventDetailScreen({
   const upcomingStages = plan ? reminderStages(plan, settings.reminderIntensity, new Date(0), event.prepMinutes) : [];
   const others = event.participantIds.filter((id) => id !== VIEWER_ID).map(personName);
   const location = displayLocation(event, locale);
+  const hasCollab = Boolean(store.getCollab(event.id));
 
   const confirmDelete = () => {
     haptic('warning');
@@ -166,124 +170,147 @@ export function EventDetailScreen({
               {t('detail.deleteFailed')}
             </Text>
           ) : null}
-          <FadeIn>
-            <Card testID="detail-plan">
-              <SectionTitle>{t('detail.leavePlan')}</SectionTitle>
-              {plan ? (
-                <View style={{ gap: space[3] }}>
-                  {timeline.map((row) => {
-                    const past = row.at.getTime() < now.getTime();
-                    return (
-                      <View
-                        key={row.key}
-                        style={{ flexDirection: 'row', alignItems: 'center', gap: space[3] }}
-                        accessible
-                        accessibilityLabel={`${fmt(row.at)} ${row.label}`}
-                      >
-                        <View
-                          style={{
-                            width: space[3],
-                            height: space[3],
-                            borderRadius: radii.pill,
-                            backgroundColor: row.strong
-                              ? colors.accentFill
-                              : past
-                                ? colors.border
-                                : colors.textSecondary,
-                          }}
-                        />
-                        <Text
-                          variant={row.strong ? 'titleM' : 'bodyL'}
-                          tabular
-                          color={past ? 'textSecondary' : 'textPrimary'}
-                        >
-                          {fmt(row.at)}
-                        </Text>
-                        <Text
-                          variant={row.strong ? 'titleM' : 'bodyL'}
-                          color={row.strong ? 'accentText' : past ? 'textSecondary' : 'textPrimary'}
-                        >
-                          {row.label}
-                        </Text>
-                      </View>
-                    );
-                  })}
-                  {event.travel ? (
-                    <Text variant="label" color="textSecondary">
-                      {`${t('leave.hero.breakdown', { travel: event.travel.minutes, mode: t(`leave.mode.${event.travel.mode}`), buffer })} · ${t('leave.manualHint')}`}
-                    </Text>
-                  ) : null}
-                </View>
-              ) : (
-                <Text variant="bodyM" color="textSecondary">
-                  {t('detail.noLeavePlan')}
-                </Text>
-              )}
-            </Card>
-          </FadeIn>
-
-          {plan && now.getTime() < item.start.getTime() ? (
-            <FadeIn delay={30}>
-              <LeavePanel
-                event={event}
-                occurrenceKey={item.occurrenceKey}
-                start={item.start}
-                plan={plan}
-                openLate={openLate}
+          {hasCollab ? (
+            <View style={{ marginHorizontal: -space[5] }}>
+              <PillTabs
+                tabs={[
+                  { value: 'plan', label: t('detail.tab.plan') },
+                  { value: 'together', label: t('detail.tab.together') },
+                ]}
+                value={tab}
+                onChange={(v) => {
+                  haptic('selection');
+                  setTab(v);
+                }}
+                accessibilityLabel={t('detail.tabs')}
+                testIDPrefix="detail-tab"
               />
-            </FadeIn>
+            </View>
           ) : null}
-
-          <FamilyPanel event={event} occurrenceKey={item.occurrenceKey} start={item.start} end={item.end} />
-
-          {plan ? (
-            <FadeIn delay={60}>
-              <Card testID="detail-reminders">
-                <SectionTitle>{t('detail.reminders')}</SectionTitle>
-                {reminders.permission === 'granted' ? (
-                  <Text variant="bodyM" testID="reminders-count">
-                    {t('detail.reminders.scheduled', { count: reminders.scheduledFor(event.id) })}
-                  </Text>
-                ) : reminders.permission === 'denied' ? (
-                  <>
-                    <Text variant="bodyM" color="textSecondary">
-                      {t('detail.reminders.denied')}
-                    </Text>
-                    <Button
-                      label={t('detail.reminders.openSettings')}
-                      variant="secondary"
-                      onPress={reminders.openSettings}
-                    />
-                  </>
-                ) : reminders.permission === 'unavailable' ? (
-                  <Text variant="bodyM" color="textSecondary">
-                    {t('detail.reminders.unavailable')}
-                  </Text>
-                ) : (
-                  <>
-                    <Text variant="bodyM" color="textSecondary">
-                      {t('detail.reminders.off')}
-                    </Text>
-                    <Button
-                      label={t('detail.reminders.enable')}
-                      onPress={() => {
-                        haptic('light');
-                        void reminders.request();
-                      }}
-                      loading={reminders.permission === 'checking'}
-                      testID="reminders-enable"
-                    />
-                  </>
-                )}
-              </Card>
-            </FadeIn>
-          ) : null}
-
-          {store.getCollab(event.id) ? (
+          {tab === 'plan' ? (
             <>
-              <SocialPanel eventId={event.id} />
-              <PlanBCard eventId={event.id} day={item.occurrenceKey} />
+              <FadeIn>
+                <Card testID="detail-plan">
+                  <SectionTitle>{t('detail.leavePlan')}</SectionTitle>
+                  {plan ? (
+                    <View style={{ gap: space[3] }}>
+                      {timeline.map((row) => {
+                        const past = row.at.getTime() < now.getTime();
+                        return (
+                          <View
+                            key={row.key}
+                            style={{ flexDirection: 'row', alignItems: 'center', gap: space[3] }}
+                            accessible
+                            accessibilityLabel={`${fmt(row.at)} ${row.label}`}
+                          >
+                            <View
+                              style={{
+                                width: space[3],
+                                height: space[3],
+                                borderRadius: radii.pill,
+                                backgroundColor: row.strong
+                                  ? colors.accentFill
+                                  : past
+                                    ? colors.border
+                                    : colors.textSecondary,
+                              }}
+                            />
+                            <Text
+                              variant={row.strong ? 'titleM' : 'bodyL'}
+                              tabular
+                              color={past ? 'textSecondary' : 'textPrimary'}
+                            >
+                              {fmt(row.at)}
+                            </Text>
+                            <Text
+                              variant={row.strong ? 'titleM' : 'bodyL'}
+                              color={row.strong ? 'accentText' : past ? 'textSecondary' : 'textPrimary'}
+                            >
+                              {row.label}
+                            </Text>
+                          </View>
+                        );
+                      })}
+                      {event.travel ? (
+                        <Text variant="label" color="textSecondary">
+                          {`${t('leave.hero.breakdown', { travel: event.travel.minutes, mode: t(`leave.mode.${event.travel.mode}`), buffer })} · ${t('leave.manualHint')}`}
+                        </Text>
+                      ) : null}
+                    </View>
+                  ) : (
+                    <Text variant="bodyM" color="textSecondary">
+                      {t('detail.noLeavePlan')}
+                    </Text>
+                  )}
+                </Card>
+              </FadeIn>
+
+              {plan && now.getTime() < item.start.getTime() ? (
+                <FadeIn delay={30}>
+                  <LeavePanel
+                    event={event}
+                    occurrenceKey={item.occurrenceKey}
+                    start={item.start}
+                    plan={plan}
+                    openLate={openLate}
+                  />
+                </FadeIn>
+              ) : null}
+
+              <FamilyPanel event={event} occurrenceKey={item.occurrenceKey} start={item.start} end={item.end} />
+
+              {plan ? (
+                <FadeIn delay={60}>
+                  <Card testID="detail-reminders">
+                    <SectionTitle>{t('detail.reminders')}</SectionTitle>
+                    {reminders.permission === 'granted' ? (
+                      <Text variant="bodyM" testID="reminders-count">
+                        {t('detail.reminders.scheduled', { count: reminders.scheduledFor(event.id) })}
+                      </Text>
+                    ) : reminders.permission === 'denied' ? (
+                      <>
+                        <Text variant="bodyM" color="textSecondary">
+                          {t('detail.reminders.denied')}
+                        </Text>
+                        <Button
+                          label={t('detail.reminders.openSettings')}
+                          variant="secondary"
+                          onPress={reminders.openSettings}
+                        />
+                      </>
+                    ) : reminders.permission === 'unavailable' ? (
+                      <Text variant="bodyM" color="textSecondary">
+                        {t('detail.reminders.unavailable')}
+                      </Text>
+                    ) : (
+                      <>
+                        <Text variant="bodyM" color="textSecondary">
+                          {t('detail.reminders.off')}
+                        </Text>
+                        <Button
+                          label={t('detail.reminders.enable')}
+                          onPress={() => {
+                            haptic('light');
+                            void reminders.request();
+                          }}
+                          loading={reminders.permission === 'checking'}
+                          testID="reminders-enable"
+                        />
+                      </>
+                    )}
+                  </Card>
+                </FadeIn>
+              ) : null}
             </>
+          ) : null}
+
+          {hasCollab ? (
+            tab === 'together' ? (
+              <>
+                <SocialPanel eventId={event.id} />
+                <PlanBCard eventId={event.id} day={item.occurrenceKey} />
+              </>
+            ) : null
           ) : others.length > 0 ? (
             <FadeIn delay={120}>
               <Card>
