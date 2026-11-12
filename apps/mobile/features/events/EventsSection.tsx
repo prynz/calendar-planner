@@ -1,10 +1,21 @@
 import { useRouter } from 'expo-router';
 import { View } from 'react-native';
 
-import { upcomingSocial, type AgendaItem } from '@nowish/demo';
-import { dayKeyOf, invitationOf, noonOf, rsvpState, rsvpSummary, type RsvpState } from '@nowish/domain';
-import { formatLongDate } from '@nowish/i18n';
-import { Button, EmptyState, EventCard, FadeIn, Gutter, SectionTitle, space, Text } from '@nowish/ui';
+import { personName, upcomingSocial, type AgendaItem } from '@nowish/demo';
+import { addDays, dayKeyOf, invitationOf, noonOf, rsvpState, rsvpSummary, type RsvpState } from '@nowish/domain';
+import { formatShortDate, formatWeekday } from '@nowish/i18n';
+import {
+  Button,
+  categoryColors,
+  EmptyState,
+  FadeIn,
+  Gutter,
+  initialsOf,
+  ListCard,
+  ListRow,
+  SectionHeader,
+  space,
+} from '@nowish/ui';
 
 import { eventCardProps, VIEWER_ID } from '../agenda/presenters';
 import { StoreGate } from '../agenda/StoreGate';
@@ -33,6 +44,9 @@ export function EventsSection() {
   };
   const invitations = items.filter(needsAnswer);
   const upcoming = items.filter((i) => !needsAnswer(i));
+  const weekEnd = addDays(dayKeyOf(now, store.timeZone), 7);
+  const thisWeek = upcoming.filter((i) => i.occurrenceKey < weekEnd);
+  const later = upcoming.filter((i) => i.occurrenceKey >= weekEnd);
   const go = (pathname: '/editor' | '/templates') => {
     haptic('light');
     router.push(pathname === '/editor' ? { pathname, params: { kind: 'social' } } : { pathname });
@@ -60,22 +74,25 @@ export function EventsSection() {
           {items.length === 0 ? (
             <EmptyState title={t('events.empty.title')} body={t('events.empty.body')} testID="events-empty" />
           ) : (
-            <>
-              {invitations.length > 0 ? (
-                <View style={{ gap: space[4] }} testID="events-invitations">
-                  <SectionTitle>{t('events.invitations')}</SectionTitle>
-                  {invitations.map((item, i) => (
-                    <EventRow key={item.event.id} item={item} index={i} role={roleOf(item.event.id)} ctx={ctx} />
-                  ))}
+            // Phase 9: three calm sections instead of one long stack of cards.
+            [
+              { key: 'invitations', title: t('events.invitations'), list: invitations },
+              { key: 'week', title: t('events.thisWeek'), list: thisWeek },
+              { key: 'later', title: t('events.later'), list: later },
+            ]
+              .filter((section) => section.list.length > 0)
+              .map((section) => (
+                <View key={section.key} style={{ gap: space[3] }} testID={`events-${section.key}`}>
+                  <SectionHeader title={`${section.title} · ${section.list.length}`} />
+                  <FadeIn>
+                    <ListCard>
+                      {section.list.map((item) => (
+                        <EventRow key={item.event.id} item={item} role={roleOf(item.event.id)} ctx={ctx} />
+                      ))}
+                    </ListCard>
+                  </FadeIn>
                 </View>
-              ) : null}
-              <View style={{ gap: space[4] }}>
-                {invitations.length > 0 ? <SectionTitle>{t('events.upcoming')}</SectionTitle> : null}
-                {upcoming.map((item, i) => (
-                  <EventRow key={item.event.id} item={item} index={i} role={roleOf(item.event.id)} ctx={ctx} />
-                ))}
-              </View>
-            </>
+              ))
           )}
           <HouseAd slot="events_overview_banner" surface="events" />
         </Gutter>
@@ -86,39 +103,40 @@ export function EventsSection() {
 
 function EventRow({
   item,
-  index,
   role,
   ctx,
 }: {
   item: AgendaItem;
-  index: number;
   role: ViewerRole;
   ctx: ReturnType<typeof useAgendaContext>;
 }) {
   const { store, now, locale, t, openEvent, buffer } = ctx;
   const tz = store.timeZone;
   const collab = store.getCollab(item.event.id);
+  const card = eventCardProps(item, now, locale, t, buffer);
+  const host = item.event.hostId && item.event.hostId !== VIEWER_ID ? personName(item.event.hostId) : null;
+  const when = `${formatWeekday(item.start, locale, 'short', tz)}, ${formatShortDate(noonOf(dayKeyOf(item.start, tz), tz), locale, tz)} · ${card.timeLabel}`;
+  const meta = collab
+    ? [
+        role === 'host' ? t('rsvp.hosting') : role ? t(`rsvp.state.${role}`) : null,
+        t('events.rsvp', { ...rsvpSummary(collab, now) }),
+      ]
+        .filter(Boolean)
+        .join(' · ')
+    : null;
+  const open = role === 'pending' || role === 'expired';
   return (
-    <FadeIn delay={index * 40}>
-      <View style={{ gap: space[2] }}>
-        <Text variant="label" color="textSecondary">
-          {formatLongDate(noonOf(dayKeyOf(item.start, tz), tz), locale, tz)}
-        </Text>
-        <EventCard
-          {...eventCardProps(item, now, locale, t, buffer)}
-          onPress={() => openEvent(item.event.id, item.occurrenceKey)}
-        />
-        {collab ? (
-          <Text variant="label" color="textSecondary" testID={`rsvp-${item.event.id}`}>
-            {[
-              role === 'host' ? t('rsvp.hosting') : role ? t(`rsvp.state.${role}`) : null,
-              t('events.rsvp', { ...rsvpSummary(collab, now) }),
-            ]
-              .filter(Boolean)
-              .join(' · ')}
-          </Text>
-        ) : null}
-      </View>
-    </FadeIn>
+    <ListRow
+      avatar={{ initials: initialsOf(host ?? t('family.you')), color: categoryColors[item.event.category] }}
+      title={card.title}
+      subtitle={when}
+      {...(meta ? { meta: { text: meta, testID: `rsvp-${item.event.id}` } } : {})}
+      {...(open ? { note: t('events.answerOpen') } : {})}
+      onPress={() => openEvent(item.event.id, item.occurrenceKey)}
+      accessibilityLabel={[card.title, when, card.subtitle, meta, open ? t('events.answerOpen') : null]
+        .filter(Boolean)
+        .join(', ')}
+      {...(card.testID ? { testID: card.testID } : {})}
+    />
   );
 }

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
 import { useTheme } from '../theme/ThemeProvider';
-import { radii, space } from '../tokens';
+import { radii, space, cardShadow } from '../tokens';
 import { PressableScale } from './PressableScale';
 import { Text } from './Text';
 
@@ -21,7 +21,7 @@ export interface TileProps {
 
 /** Bento tile for the event overview (EVT-08). Always tappable – it opens the full section. */
 export function Tile({ title, value, detail, icon, onPress, hint, children, testID }: TileProps) {
-  const { colors } = useTheme();
+  const { colors, name } = useTheme();
   return (
     <PressableScale
       onPress={onPress}
@@ -30,7 +30,15 @@ export function Tile({ title, value, detail, icon, onPress, hint, children, test
       accessibilityHint={hint}
       {...(testID ? { testID } : {})}
       pressedScale={0.97}
-      style={{ flex: 1, backgroundColor: colors.surface, borderRadius: radii.lg, padding: space[4], gap: space[2] }}
+      style={{
+        flex: 1,
+        backgroundColor: colors.elevated,
+        borderRadius: radii.lg,
+        padding: space[4],
+        gap: space[2],
+        // Phase 9: white tiles with a soft shadow, like every other card.
+        ...cardShadow(name),
+      }}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space[2] }}>
         {icon ? icon(colors.textSecondary) : null}

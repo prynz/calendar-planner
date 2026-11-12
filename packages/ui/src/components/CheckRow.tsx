@@ -43,7 +43,7 @@ export function CheckRow({
           borderRadius: radii.sm,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: checked ? colors.accentFill : colors.elevated,
+          backgroundColor: checked ? colors.accentFill : colors.surface,
         }}
       >
         {checked ? (

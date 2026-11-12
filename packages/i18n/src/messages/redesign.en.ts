@@ -110,6 +110,14 @@ export const redesignEn: Record<keyof typeof redesignDe, string> = {
   'later.done': '{title} is now {when}.',
   'later.failed': 'Couldn’t move it. Please try again.',
 
+  'events.thisWeek': 'This week',
+  'events.later': 'Later',
+  'events.answerOpen': 'Reply open',
+
+  'family.tile.rides': 'open rides',
+  'family.tile.shopping': 'on the list',
+  'family.tile.chores': 'chores today',
+
   'personal.title': 'Personalise',
   'personal.open': 'Personalise',
   'personal.intro': 'Set up Nowish the way you plan.',

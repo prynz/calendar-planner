@@ -108,6 +108,14 @@ export const redesignDe = {
   'later.done': '{title} ist jetzt {when}.',
   'later.failed': 'Konnte nicht verschieben. Bitte versuch es nochmal.',
 
+  'events.thisWeek': 'Diese Woche',
+  'events.later': 'Später',
+  'events.answerOpen': 'Antwort offen',
+
+  'family.tile.rides': 'offene Fahrten',
+  'family.tile.shopping': 'auf der Liste',
+  'family.tile.chores': 'Ämtchen heute',
+
   'personal.title': 'Personalisieren',
   'personal.open': 'Personalisieren',
   'personal.intro': 'Richte Nowish so ein, wie du planst.',

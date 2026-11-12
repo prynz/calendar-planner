@@ -32,7 +32,7 @@ export function SegmentedControl<T extends string>({
       accessibilityLabel={accessibilityLabel}
       style={{
         flexDirection: 'row',
-        backgroundColor: colors.elevated,
+        backgroundColor: colors.surface,
         borderRadius: radii.pill,
         padding: space[1],
         gap: space[1],

@@ -14,7 +14,18 @@ import {
   sortedShopping,
 } from '@nowish/domain';
 import { formatLongDate, formatWeekday } from '@nowish/i18n';
-import { Button, Card, EmptyState, Gutter, MemberAvatar, SectionTitle, space, Text, WeekBars } from '@nowish/ui';
+import {
+  Button,
+  Card,
+  EmptyState,
+  Gutter,
+  MemberAvatar,
+  SectionTitle,
+  space,
+  StatTile,
+  Text,
+  WeekBars,
+} from '@nowish/ui';
 
 import { haptic } from '@/services/haptics';
 
@@ -67,6 +78,7 @@ export function FamilySection() {
   const slots = rideSlots(household, ctx.week);
   const gaps = rideGapCount(slots);
   const open = sortedShopping(household).filter((i) => !i.doneAt);
+  const chores = choresFor(household, ctx.today);
 
   return (
     <Gutter gap={4}>
@@ -75,6 +87,16 @@ export function FamilySection() {
           {error}
         </Text>
       ) : null}
+      {/* Phase 9: the family at a glance – three numbers before the details. */}
+      <View style={{ flexDirection: 'row', gap: space[3] }} testID="family-tiles">
+        <StatTile value={String(gaps)} label={t('family.tile.rides')} testID="family-tile-rides" />
+        <StatTile value={String(open.length)} label={t('family.tile.shopping')} testID="family-tile-shopping" />
+        <StatTile
+          value={`${chores.filter((c) => c.done).length}/${chores.length}`}
+          label={t('family.tile.chores')}
+          testID="family-tile-chores"
+        />
+      </View>
       <Card testID="family-members">
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <SectionTitle>{t('family.members')}</SectionTitle>

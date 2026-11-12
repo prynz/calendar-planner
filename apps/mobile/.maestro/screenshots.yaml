@@ -928,3 +928,29 @@ appId: ${APP_ID}
 - takeScreenshot: screenshots/shot-${PLATFORM}-51-calendar-people
 - tapOn:
     id: 'cal-person-all'
+# ---------------------------------------------------------------- Phase 9: tick off + swipe to move
+- tapOn:
+    id: 'tab-index'
+    retryTapIfNoChange: true
+- scrollUntilVisible:
+    element:
+      id: 'done-demo-dentist'
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: 'done-demo-dentist'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-52-today-ticked
+- swipe:
+    from:
+      id: 'swipe-demo-dentist'
+    direction: LEFT
+- extendedWaitUntil:
+    visible:
+      id: 'later-sheet'
+    timeout: 10000
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-53-later-sheet
+- tapOn:
+    id: 'later-sheet-close'
+    retryTapIfNoChange: true

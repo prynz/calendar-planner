@@ -109,6 +109,8 @@ export interface ListRowProps {
   action?: ReactNode;
   /** Phase 9: a round tick button at the start; ticked rows are dimmed. */
   check?: { checked: boolean; onToggle: () => void; label: string; testID?: string };
+  /** Phase 9: a small third line, e.g. "Accepted · 3 going". */
+  meta?: { text: string; testID?: string };
 }
 
 export function ListRow({
@@ -123,6 +125,7 @@ export function ListRow({
   testID,
   action,
   check,
+  meta,
 }: ListRowProps) {
   const { colors } = useTheme();
   const done = check?.checked === true;
@@ -197,6 +200,11 @@ export function ListRow({
         {subtitle ? (
           <Text variant="bodyM" color="textSecondary">
             {subtitle}
+          </Text>
+        ) : null}
+        {meta ? (
+          <Text variant="label" color="textSecondary" {...(meta.testID ? { testID: meta.testID } : {})}>
+            {meta.text}
           </Text>
         ) : null}
       </View>

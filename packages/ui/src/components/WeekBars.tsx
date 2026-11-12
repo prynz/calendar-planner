@@ -35,7 +35,7 @@ export function WeekBars({ days, testID }: { days: readonly WeekBarDay[]; testID
             gap: space[2],
             paddingVertical: space[3],
             borderRadius: radii.md,
-            backgroundColor: d.full ? colors.accentFill : colors.elevated,
+            backgroundColor: d.full ? colors.accentFill : colors.surface,
             borderWidth: d.today ? 2 : 0,
             borderColor: colors.textPrimary,
           }}

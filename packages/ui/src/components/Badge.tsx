@@ -13,7 +13,7 @@ export interface BadgeProps {
 
 export function Badge({ label, tone = 'neutral', testID }: BadgeProps) {
   const { colors } = useTheme();
-  const bg = tone === 'demo' ? colors.secondaryFill : tone === 'accent' ? colors.accentFill : colors.elevated;
+  const bg = tone === 'demo' ? colors.secondaryFill : tone === 'accent' ? colors.accentFill : colors.surface;
   const fg = tone === 'demo' ? 'onSecondaryFill' : tone === 'accent' ? 'onAccentFill' : 'textPrimary';
   return (
     <View

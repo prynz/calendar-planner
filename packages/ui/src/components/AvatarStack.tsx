@@ -39,7 +39,7 @@ export function AvatarStack({ names, max = 3, accessibilityLabel }: AvatarStackP
       {shown.map((n, i) => (
         <View
           key={`${n}-${i}`}
-          style={[circle, { backgroundColor: colors.elevated, marginStart: i === 0 ? 0 : -space[2] }]}
+          style={[circle, { backgroundColor: colors.surface, marginStart: i === 0 ? 0 : -space[2] }]}
         >
           <Text variant="label" color="textPrimary" maxFontSizeMultiplier={FIXED_SIZE_TEXT_SCALE}>
             {initialsOf(n)}

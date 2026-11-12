@@ -37,7 +37,7 @@ export function IconButton({
         borderRadius: radii.pill,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: accent ? colors.accentFill : colors.elevated,
+        backgroundColor: accent ? colors.accentFill : colors.surface,
       }}
     >
       {icon(accent ? colors.onAccentFill : colors.textPrimary)}
@@ -93,7 +93,7 @@ export function ChipGroup<T extends string>({
               flexDirection: 'row',
               alignItems: 'center',
               gap: space[2],
-              backgroundColor: on ? colors.accentFill : colors.elevated,
+              backgroundColor: on ? colors.accentFill : colors.surface,
             }}
             hitSlop={space[1]}
           >
@@ -168,7 +168,7 @@ export function TextField({
           minHeight: touch.cta,
           borderRadius: radii.md,
           paddingHorizontal: space[4],
-          backgroundColor: colors.elevated,
+          backgroundColor: colors.surface,
           color: colors.textPrimary,
           fontFamily: t.fontFamily,
           fontSize: t.fontSize,
@@ -214,7 +214,7 @@ export function Stepper({
         width: touch.min,
         height: touch.min,
         borderRadius: radii.pill,
-        backgroundColor: colors.elevated,
+        backgroundColor: colors.surface,
         alignItems: 'center',
         justifyContent: 'center',
       }}
@@ -292,7 +292,7 @@ export function ValueRow({
         justifyContent: 'space-between',
         paddingHorizontal: space[4],
         borderRadius: radii.md,
-        backgroundColor: colors.elevated,
+        backgroundColor: colors.surface,
       }}
     >
       <Text variant="bodyL" color="textSecondary">

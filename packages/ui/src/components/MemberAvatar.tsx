@@ -37,7 +37,7 @@ export function MemberAvatar({
         borderRadius: radii.pill,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: color ? categoryColors[color] : colors.elevated,
+        backgroundColor: color ? categoryColors[color] : colors.surface,
       }}
     >
       <Text
