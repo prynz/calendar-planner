@@ -100,7 +100,8 @@ appId: ${APP_ID}
 - tapOn:
     id: 'quick-input'
 - inputText: 'Physio im Zentrum'
-- hideKeyboard
+# hideKeyboard cannot close the keyboard inside the sheet on iOS; Enter ends the single-line field on both.
+- pressKey: Enter
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-48-quick-entry
 - tapOn:
@@ -778,10 +779,15 @@ appId: ${APP_ID}
     element:
       id: 'event-demo-bbq'
     direction: DOWN
+    centerElement: true
 - waitForAnimationToEnd
 - tapOn:
     id: 'event-demo-bbq'
     retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'detail-plan'
+    timeout: 10000
 - tapOn:
     id: 'detail-tab-together'
     retryTapIfNoChange: true
