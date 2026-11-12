@@ -1,6 +1,6 @@
 # Milestone-Report Phase 9 – Gesten & neuer Aufbau überall
 
-> **Status:** 2026-11-12 · Phase 9 umgesetzt · **Stopp – wartet auf Review und Freigabe durch den PO.**
+> **Status:** 2026-11-12 · Phase 9 **freigegeben** durch den PO (2026-11-12); Abhaken/Wischen in Kalender & Events folgt als Phase 10.
 > Auftrag (PO, 2026-11-12): Events-Liste, Familie und Gruppen bekommen den neuen Aufbau; Wischgesten und Abhaken jetzt.
 
 ## 1. Ergebnis in einem Satz

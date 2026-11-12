@@ -21,6 +21,7 @@ import { eventCardProps, VIEWER_ID } from '../agenda/presenters';
 import { StoreGate } from '../agenda/StoreGate';
 import { useAgendaContext } from '../agenda/use-agenda';
 import { HouseAd } from '../premium/HouseAd';
+import { useRowActions, type RowExtras } from '../today/row-actions';
 import { haptic } from '@/services/haptics';
 
 type ViewerRole = RsvpState | 'host' | null;
@@ -30,6 +31,7 @@ export function EventsSection() {
   const ctx = useAgendaContext();
   const { store, now, t } = ctx;
   const router = useRouter();
+  const actions = useRowActions();
   const items = upcomingSocial(store.events, now, store.timeZone);
   const roleOf = (eventId: string): ViewerRole => {
     const c = store.getCollab(eventId);
@@ -86,9 +88,13 @@ export function EventsSection() {
                   <SectionHeader title={`${section.title} · ${section.list.length}`} />
                   <FadeIn>
                     <ListCard>
-                      {section.list.map((item) => (
-                        <EventRow key={item.event.id} item={item} role={roleOf(item.event.id)} ctx={ctx} />
-                      ))}
+                      {section.list.map((item) =>
+                        actions.wrap(
+                          item,
+                          (x) => <EventRow item={item} role={roleOf(item.event.id)} ctx={ctx} extras={x} />,
+                          item.event.id,
+                        ),
+                      )}
                     </ListCard>
                   </FadeIn>
                 </View>
@@ -97,6 +103,7 @@ export function EventsSection() {
           <HouseAd slot="events_overview_banner" surface="events" />
         </Gutter>
       </StoreGate>
+      {actions.sheet}
     </>
   );
 }
@@ -105,10 +112,12 @@ function EventRow({
   item,
   role,
   ctx,
+  extras,
 }: {
   item: AgendaItem;
   role: ViewerRole;
   ctx: ReturnType<typeof useAgendaContext>;
+  extras: RowExtras;
 }) {
   const { store, now, locale, t, openEvent, buffer } = ctx;
   const tz = store.timeZone;
@@ -133,10 +142,12 @@ function EventRow({
       {...(meta ? { meta: { text: meta, testID: `rsvp-${item.event.id}` } } : {})}
       {...(open ? { note: t('events.answerOpen') } : {})}
       onPress={() => openEvent(item.event.id, item.occurrenceKey)}
-      accessibilityLabel={[card.title, when, card.subtitle, meta, open ? t('events.answerOpen') : null]
-        .filter(Boolean)
-        .join(', ')}
+      accessibilityLabel={
+        [card.title, when, card.subtitle, meta, open ? t('events.answerOpen') : null].filter(Boolean).join(', ') +
+        extras.a11ySuffix
+      }
       {...(card.testID ? { testID: card.testID } : {})}
+      check={extras.check}
     />
   );
 }

@@ -954,3 +954,18 @@ appId: ${APP_ID}
 - tapOn:
     id: 'later-sheet-close'
     retryTapIfNoChange: true
+# ---------------------------------------------------------------- Phase 10: the same ticks in the calendar
+- tapOn:
+    id: 'tab-calendar'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: 'screen-calendar'
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: 'done-demo-dentist'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-54-calendar-ticked

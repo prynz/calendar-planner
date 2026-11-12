@@ -15,7 +15,6 @@ import {
   ListRow,
   SectionHeader,
   space,
-  SwipeRow,
   Text,
   type EventCategory,
   type FilterChipOption,
@@ -25,10 +24,8 @@ import { categoryIcon } from '../agenda/category-icons';
 import { duration, leavePlanFor, timeLabel } from '../agenda/presenters';
 import { useAgendaContext } from '../agenda/use-agenda';
 import { useQuickAdd } from '../quick-add/QuickAddProvider';
-import { useDone } from '@/providers/done';
-import { haptic } from '@/services/haptics';
 import { itemKey } from './insights';
-import { LaterSheet } from './LaterSheet';
+import { useRowActions } from './row-actions';
 
 /** Rows shown before "See all" – keeps the page calm (PO feedback, Phase 8). */
 const COLLAPSED = 3;
@@ -54,8 +51,7 @@ export function DaySection({
   const quick = useQuickAdd();
   const [filter, setFilter] = useState<Filter>('all');
   const [expanded, setExpanded] = useState(false);
-  const [later, setLater] = useState<AgendaItem | null>(null);
-  const done = useDone();
+  const actions = useRowActions();
   const tz = store.timeZone;
 
   const present = [...new Set(items.map((i) => i.event.category))];
@@ -105,20 +101,8 @@ export function DaySection({
     const leave = plan && upcoming ? formatTime(plan.leaveAt, locale, e.timeZone) : null;
     const time = timeLabel(item, locale, t);
     const isTight = tight.has(key);
-    const isDone = done.isDone(key);
-    const title = displayTitle(e, locale);
-    const toggleDone = () => {
-      haptic(isDone ? 'selection' : 'success');
-      done.toggle(key);
-    };
     rows.push(
-      <SwipeRow
-        key={key}
-        right={{ label: isDone ? t('swipe.undo') : t('swipe.done'), onAction: toggleDone }}
-        left={{ label: t('swipe.later'), onAction: () => setLater(item) }}
-        onThreshold={() => haptic('selection')}
-        testID={`swipe-${e.id}`}
-      >
+      actions.wrap(item, (x) => (
         <ListRow
           marker={{ color: categoryColors[e.category] }}
           title={displayTitle(e, locale)}
@@ -129,17 +113,12 @@ export function DaySection({
           accessibilityLabel={
             t('day.row', { title: displayTitle(e, locale), time, place: place || 'none', leave: leave ?? 'none' }) +
             (isTight ? `, ${t('day.tight')}` : '') +
-            (isDone ? `, ${t('done.label')}` : '')
+            x.a11ySuffix
           }
           testID={`event-${e.id}`}
-          check={{
-            checked: isDone,
-            onToggle: toggleDone,
-            label: isDone ? t('done.unmark', { title }) : t('done.mark', { title }),
-            testID: `done-${e.id}`,
-          }}
+          check={x.check}
         />
-      </SwipeRow>,
+      )),
     );
     if (showGaps) gaps.filter((g) => g.after === key).forEach((g) => rows.push(gapRow(g)));
   });
@@ -200,7 +179,7 @@ export function DaySection({
           </FadeIn>
         </>
       )}
-      <LaterSheet item={later} onClose={() => setLater(null)} />
+      {actions.sheet}
     </Gutter>
   );
 }

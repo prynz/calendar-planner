@@ -32,6 +32,7 @@ import { haptic } from '@/services/haptics';
 import { categoryIcon } from '../agenda/category-icons';
 import { dotColor, memberName } from '../family/names';
 import { useQuickAdd } from '../quick-add/QuickAddProvider';
+import { useRowActions } from '../today/row-actions';
 import { calendarPeople, isFor, type PersonFilter } from './people';
 
 type View_ = 'week' | 'month' | 'list';
@@ -47,6 +48,7 @@ export function CalendarScreen() {
   const [weekStart, setWeekStart] = useState<DayKey>(addDays(today, -weekdayOf(today)));
   const [person, setPerson] = useState<PersonFilter>('all');
   const quick = useQuickAdd();
+  const actions = useRowActions();
   const household = store.household;
   const people = calendarPeople(household);
   const activePerson = person === 'all' || people.includes(person) ? person : 'all';
@@ -81,25 +83,27 @@ export function CalendarScreen() {
     </View>
   );
 
-  // Phase 8: one calm white card per day with simple rows instead of a stack of coloured cards.
+  // Phase 8: one calm white card per day with simple rows; Phase 10: tick off and swipe like on "Today".
   const cards = (items: AgendaItem[]) => (
     <FadeIn>
       <ListCard>
         {items.map((item) => {
           const card = eventCardProps(item, ctx.now, locale, t, ctx.buffer);
           const sub = [card.subtitle, card.leaveLabel].filter(Boolean).join(' · ');
-          return (
+          return actions.wrap(item, (x) => (
             <ListRow
-              key={`${item.event.id}-${item.occurrenceKey}`}
               marker={{ color: categoryColors[item.event.category] }}
               title={card.title}
               {...(sub ? { subtitle: sub } : {})}
               trailing={card.timeLabel}
               onPress={() => ctx.openEvent(item.event.id, item.occurrenceKey)}
-              accessibilityLabel={[card.title, card.timeLabel, sub, card.statusLabel].filter(Boolean).join(', ')}
+              accessibilityLabel={
+                [card.title, card.timeLabel, sub, card.statusLabel].filter(Boolean).join(', ') + x.a11ySuffix
+              }
               {...(card.testID ? { testID: card.testID } : {})}
+              check={x.check}
             />
-          );
+          ));
         })}
       </ListCard>
     </FadeIn>
@@ -252,6 +256,7 @@ export function CalendarScreen() {
         />
       ) : null}
       <StoreGate>{body}</StoreGate>
+      {actions.sheet}
     </Screen>
   );
 }

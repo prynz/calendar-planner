@@ -3,7 +3,9 @@ import { fireEvent, screen, waitFor, within } from '@testing-library/react-nativ
 import { zonedWallTimeToInstant, type CalendarEvent } from '@nowish/domain';
 
 import { createMemoryEventRepository } from '@/data/memory-event-repository';
+import { CalendarScreen } from '@/features/calendar/CalendarScreen';
 import { TodayScreen } from '@/features/today/TodayScreen';
+import { TogetherScreen } from '@/features/together/TogetherScreen';
 import { createMemorySettingsStore } from '@/storage/memory-settings-store';
 
 import { NOW, renderApp } from './test-utils';
@@ -213,5 +215,36 @@ describe('ticking off and moving (Phase 9)', () => {
     ).toBeTruthy();
     expect(screen.queryByTestId('later-by15')).toBeNull();
     expect(screen.getByTestId('later-open')).toBeTruthy();
+  });
+});
+
+describe('ticking off and swiping in Calendar and Events (Phase 10)', () => {
+  it('shares the ticks with Today and can tick off in the calendar', async () => {
+    const store = createMemorySettingsStore();
+    await store.set('today.done', 'a@2026-11-09');
+    const repo = createMemoryEventRepository(
+      [appointment('a', 'Zahnarzt', [9, 0], [10, 0]), appointment('b', 'Physio', [15, 0], [16, 0])],
+      true,
+    );
+    await renderApp(<CalendarScreen />, { repo, store });
+    await waitFor(() => expect(screen.getByTestId('done-a')).toBeChecked());
+    await fireEvent.press(screen.getByTestId('done-b'));
+    expect(screen.getByTestId('done-b')).toBeChecked();
+    await waitFor(async () => expect(await store.get('today.done')).toBe('a@2026-11-09,b@2026-11-09'));
+    await fireEvent(screen.getByTestId('swipe-b'), 'accessibilityAction', { nativeEvent: { actionName: 'left' } });
+    await fireEvent.press(await screen.findByTestId('later-by15'));
+    await waitFor(async () => expect((await repo.load()).events.find((e) => e.id === 'b')?.start).toEqual(at(15, 15)));
+  });
+
+  it('offers tick-off and "later" in the events list', async () => {
+    const repo = createMemoryEventRepository(
+      [appointment('x', 'Brunch', [11, 0], [12, 0], { kind: 'social', hostId: 'olivia', category: 'social' })],
+      true,
+    );
+    await renderApp(<TogetherScreen />, { repo });
+    await fireEvent.press(await screen.findByTestId('done-x'));
+    expect(screen.getByTestId('done-x')).toBeChecked();
+    await fireEvent(screen.getByTestId('swipe-x'), 'accessibilityAction', { nativeEvent: { actionName: 'left' } });
+    expect(await screen.findByTestId('later-open')).toBeTruthy();
   });
 });
