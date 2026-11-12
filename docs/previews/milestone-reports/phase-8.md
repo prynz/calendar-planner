@@ -32,8 +32,9 @@ Konflikte und freie Zeit erkennt und fertige Lösungen anbietet, ein **Schnell-E
 | Neue Tests | Helfer-Regeln (18), Helfer/Schnell-Eintrag/Kacheln/Anordnung in der App (8), Personalisieren (3), Personen-Filter (1), alle Akzent × Hell/Dunkel-Kontraste |
 | Barrierefreiheit | Audit jetzt über 29 Screens (inkl. Personalisieren): jedes tippbare Element mit Rolle und Vorlese-Namen |
 | Web-Vorschau | ✅ Heute, Schnell-Eintrag, Kalender, Personalisieren im Browser geprüft |
+| CI (Qualität, Datenbank, Secret-Scan) | ✅ Lauf 43302685070 |
 | CI Android | ✅ 51 Screenshots (Lauf 43302684769) |
-| CI iOS | wird eingetragen, sobald der Lauf grün ist |
+| CI iOS | ✅ 51 Screenshots (Lauf 43302684802, zweiter Versuch – beim ersten startete das Testwerkzeug nicht) |
 
 ## 4. Screenshots (echt, aus CI)
 
@@ -55,6 +56,7 @@ Präfix `2026-11-12-phase-08`. Neu: 47–51.
   sie nicht mehr enthalten.
 - **Termin-Tabs**: zwei Tabs (Plan · Gemeinsam) statt vier wie im Konzept; Chat und Kosten sind Kacheln im Tab
   „Gemeinsam“.
+- Die **Kacheln im Tab „Gemeinsam“** (Gäste, Umfrage, Mitbringliste …) sind noch im alten Kachel-Stil.
 - **Events-Liste, Familie, Gruppen** haben das neue Grundgerüst (Farben, Karten), aber noch nicht den neuen
   Aufbau mit Abschnitten und Filtern.
 - **Helfer**: „Fragen“ bei fremden Events ist simuliert (Demo). Wiederkehrende eigene Termine verschiebt er nicht
