@@ -31,3 +31,11 @@ aus Referenz 2 übernehmen.
 | `KalenderV2.dc.html` | Ansicht Tag/Woche/Monat als Pill-Umschalter, Personen als Avatar-Chips, ruhiges Monatsraster mit einem Punkt pro Tag, Tagesliste mit Avatar und Zeit rechts |
 
 Kategorie-Farben erscheinen in v2 nur noch als Punkt oder Avatar-Hintergrund; Lime bleibt der einzige kräftige Akzent.
+
+### Ergänzt in `HeuteV2.dc.html` (PO: „die 5 Ideen auch mit einbauen“, 2026-11-12)
+
+1. **Aktionsblatt von unten** statt neuer Seiten (Plus-Knopf, „Planen“ in freien Lücken, „Anpassen“).
+2. **„Dein Tag in 10 Sekunden“** oben, ausblendbar; abends als Rückblick auf morgen (Tweak „Morgen/Abend“).
+3. **Freie Zeit** als gestrichelte Zeile zwischen Terminen mit Vorschlag und „Planen“.
+4. **Schnell-Eintrag** in einer Zeile („Freitag 19 Uhr Grillen bei Tom“) mit Live-Vorschau Was/Wann/Wo – regelbasiert, ohne KI.
+5. **Wochen-Kacheln anpassbar**: bis zu 3 aus 6 Kennzahlen wählen.

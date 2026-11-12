@@ -15,6 +15,11 @@ body{margin:0}
 a{color:#0D0E12;text-decoration:none}
 a:hover{color:#2A2E38}
 button{font:inherit;cursor:pointer}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.sheet{animation:sheetUp 320ms cubic-bezier(.2,.9,.3,1)}
+.backdrop{animation:fadeIn 200ms ease-out}
+@media (prefers-reduced-motion: reduce){.sheet,.backdrop{animation:none}}
 </style>
 </helmet>
 <div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF9F4; font-family: Inter, system-ui, sans-serif; color: #0D0E12; position: relative; overflow: hidden">
@@ -30,6 +35,24 @@ button{font:inherit;cursor:pointer}
       </div>
       <span style="font-size: 12px; font-weight: 600; color: #FFFFFF; background: #4B2FD6; padding: 4px 10px; border-radius: 999px">Demo</span>
     </div>
+
+    <sc-if value="{{summaryOpen}}" hint-placeholder-val="{{ true }}">
+      <section aria-label="{{summaryTitle}}" style="background: #FFFFFF; border-radius: 24px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <span style="font-size: 13px; font-weight: 600; color: #5B5F69">{{summaryTitle}}</span>
+          <button type="button" onClick="{{closeSummary}}" aria-label="Übersicht ausblenden" style="width: 32px; height: 32px; border: 0; border-radius: 16px; background: #F6F2EA; display: flex; align-items: center; justify-content: center; padding: 0">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+          <sc-for list="{{summary}}" as="m" hint-placeholder-count="3">
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 20px">{{m.value}}</span>
+              <span style="font-size: 12px; color: #5B5F69; line-height: 16px">{{m.label}}</span>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
 
     <div style="background: #C8F031; border-radius: 28px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
@@ -84,6 +107,17 @@ button{font:inherit;cursor:pointer}
       </div>
       <div style="background: #FFFFFF; border-radius: 24px; padding: 4px 16px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
         <sc-for list="{{rows}}" as="r" hint-placeholder-count="3">
+          <sc-if value="{{r.isGap}}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; align-items: center; gap: 12px; min-height: 52px; border-bottom: 1px solid #F1ECE2">
+              <span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 5px; flex-shrink: 0; border: 2px dashed #C9C1B0; box-sizing: border-box"></span>
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 14px; font-weight: 600; color: #2F7A3F">{{r.gapText}}</span>
+                <span style="font-size: 12px; color: #5B5F69">{{r.idea}}</span>
+              </div>
+              <button type="button" onClick="{{openNew}}" style="height: 36px; padding: 0 12px; border: 1.5px solid #E7E0D2; border-radius: 18px; background: #FFFFFF; font-weight: 600; font-size: 13px">Planen</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{r.isEvent}}" hint-placeholder-val="{{ true }}">
           <a href="TerminV2.dc.html" style="{{r.row}}">
             <span aria-hidden="true" style="{{r.mark}}"></span>
             <div style="flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0">
@@ -97,6 +131,7 @@ button{font:inherit;cursor:pointer}
               </sc-if>
             </div>
           </a>
+          </sc-if>
         </sc-for>
         <sc-if value="{{noRows}}" hint-placeholder-val="{{ false }}">
           <div style="padding: 18px 0; font-size: 14px; color: #5B5F69">Nichts in diesem Bereich heute.</div>
@@ -105,20 +140,17 @@ button{font:inherit;cursor:pointer}
     </section>
 
     <section aria-label="Diese Woche" style="display: flex; flex-direction: column; gap: 14px">
-      <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 20px">Diese Woche</span>
+      <div style="display: flex; align-items: baseline; justify-content: space-between">
+        <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 20px">Diese Woche</span>
+        <button type="button" onClick="{{openTiles}}" style="border: 0; background: transparent; font-size: 14px; font-weight: 600; color: #5B5F69; padding: 8px 0">Anpassen</button>
+      </div>
       <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
-        <div style="background: #FFFFFF; border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
-          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 26px">14</span>
-          <span style="font-size: 12px; color: #5B5F69">Termine</span>
-        </div>
-        <div style="background: #FFFFFF; border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
-          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 26px">2</span>
-          <span style="font-size: 12px; color: #5B5F69">freie Abende</span>
-        </div>
-        <div style="background: #FFFFFF; border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
-          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 26px">94 %</span>
-          <span style="font-size: 12px; color: #5B5F69">pünktlich</span>
-        </div>
+        <sc-for list="{{tiles}}" as="t" hint-placeholder-count="3">
+          <div style="background: #FFFFFF; border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
+            <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 26px">{{t.value}}</span>
+            <span style="font-size: 12px; color: #5B5F69">{{t.label}}</span>
+          </div>
+        </sc-for>
       </div>
       <div style="background: #FFFFFF; border-radius: 20px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
         <span style="font-size: 13px; font-weight: 600">Fahrdienste – wer fährt wie oft</span>
@@ -148,17 +180,88 @@ button{font:inherit;cursor:pointer}
       <a href="Personalisieren.dc.html" aria-label="Ich" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; color: #A3A9B7">
         <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1-4 4.2-6 8-6s7 2 8 6"></path></svg></a>
     </nav>
-    <button type="button" aria-label="Neuer Termin" style="width: 64px; height: 64px; border: 0; border-radius: 32px; background: #C8F031; display: flex; align-items: center; justify-content: center">
+    <button type="button" onClick="{{openNew}}" aria-label="Neuer Termin" style="width: 64px; height: 64px; border: 0; border-radius: 32px; background: #C8F031; display: flex; align-items: center; justify-content: center">
       <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
     </button>
   </div>
+
+  <sc-if value="{{sheetOpen}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end">
+      <button type="button" class="backdrop" onClick="{{closeSheet}}" aria-label="Schließen" style="position: absolute; inset: 0; border: 0; background: rgba(13,14,18,0.35); padding: 0"></button>
+      <div class="sheet" role="dialog" aria-modal="true" aria-label="{{sheetTitle}}" style="position: relative; background: #FBF9F4; border-radius: 28px 28px 0 0; padding: 10px 20px 28px; display: flex; flex-direction: column; gap: 16px">
+        <span aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #DDD5C4"></span>
+        <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 22px">{{sheetTitle}}</span>
+
+        <sc-if value="{{isNew}}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; flex-direction: column; gap: 14px">
+            <label for="quick" style="font-size: 13px; color: #5B5F69">Einfach so schreiben, wie du es sagen würdest</label>
+            <input id="quick" value="{{quick}}" onChange="{{onQuick}}" placeholder="Freitag 19 Uhr Grillen bei Tom" style="height: 52px; border: 1.5px solid #0D0E12; border-radius: 26px; padding: 0 18px; font: inherit; font-size: 16px; background: #FFFFFF; color: #0D0E12">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap">
+              <sc-for list="{{examples}}" as="ex" hint-placeholder-count="3">
+                <button type="button" onClick="{{ex.use}}" style="height: 36px; padding: 0 12px; border: 1.5px solid #E7E0D2; border-radius: 18px; background: #FFFFFF; font-size: 13px; font-weight: 600">{{ex.text}}</button>
+              </sc-for>
+            </div>
+            <div style="background: #FFFFFF; border-radius: 20px; padding: 14px 16px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; box-shadow: 0 8px 28px rgba(13,14,18,0.05)">
+              <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #5B5F69">Was</span><span style="font-weight: 600; font-size: 14px">{{parsed.title}}</span></div>
+              <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #5B5F69">Wann</span><span style="font-weight: 600; font-size: 14px">{{parsed.when}}</span></div>
+              <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #5B5F69">Wo</span><span style="font-weight: 600; font-size: 14px">{{parsed.where}}</span></div>
+            </div>
+            <sc-if value="{{saved}}" hint-placeholder-val="{{ false }}">
+              <span style="font-size: 14px; color: #2F7A3F; font-weight: 600">Eingetragen (Demo). Losgeh-Zeit rechne ich dir aus.</span>
+            </sc-if>
+            <button type="button" onClick="{{save}}" style="height: 52px; border: 0; border-radius: 26px; background: #C8F031; color: #0D0E12; font-weight: 600; font-size: 16px">Eintragen</button>
+            <span style="font-size: 12px; color: #5B5F69; text-align: center">Ohne KI – Nowish erkennt Tag, Uhrzeit und Ort selbst.</span>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{isTiles}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 13px; color: #5B5F69">Wähle bis zu 3 Kacheln für „Diese Woche“.</span>
+            <sc-for list="{{tileOptions}}" as="o" hint-placeholder-count="6">
+              <button type="button" role="checkbox" aria-checked="{{o.checked}}" onClick="{{o.toggle}}" style="{{o.style}}">
+                <span style="flex: 1; text-align: left">{{o.label}}</span>
+                <span aria-hidden="true" style="{{o.box}}">
+                  <sc-if value="{{o.on}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBF9F4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if>
+                </span>
+              </button>
+            </sc-for>
+            <button type="button" onClick="{{closeSheet}}" style="height: 52px; margin-top: 6px; border: 0; border-radius: 26px; background: #0D0E12; color: #FBF9F4; font-weight: 600; font-size: 16px">Fertig</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+<script type="text/x-dc" data-dc-script data-props='{"moment":{"editor":"enum","options":["Morgen","Abend"],"default":"Morgen","section":"Konzept"},"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { filter: 'all', helper: 'open', showAll: false };
+    this.state = { filter: 'all', helper: 'open', showAll: false, summary: true, sheet: null, quick: '', saved: false, tiles: ['events', 'free', 'punctual'] };
+  }
+  parse(text) {
+    const t = text.trim();
+    if (!t) return { title: '–', when: '–', where: '–' };
+    const days = ['montag', 'dienstag', 'mittwoch', 'donnerstag', 'freitag', 'samstag', 'sonntag', 'heute', 'morgen'];
+    let rest = t;
+    let day = '';
+    for (const d of days) {
+      const re = new RegExp('\\b' + d + '\\b', 'i');
+      if (re.test(rest)) { day = d.charAt(0).toUpperCase() + d.slice(1); rest = rest.replace(re, ''); break; }
+    }
+    let time = '';
+    const tm = rest.match(/(\d{1,2})(?::(\d{2}))?\s*uhr|(\d{1,2}):(\d{2})/i);
+    if (tm) {
+      const h = tm[1] ?? tm[3];
+      const m = tm[2] ?? tm[4] ?? '00';
+      time = h.padStart(2, '0') + ':' + m;
+      rest = rest.replace(tm[0], '');
+    }
+    let where = '';
+    const wm = rest.match(/\b(bei|im|in der|am)\s+(.+)$/i);
+    if (wm) { where = wm[0].trim(); rest = rest.replace(wm[0], ''); }
+    const title = rest.replace(/\s+/g, ' ').trim();
+    return { title: title || '–', when: [day, time].filter(Boolean).join(', ') || '–', where: where || '–' };
   }
   renderVals() {
     const cat = {
@@ -177,12 +280,19 @@ class Component extends DCLogic {
     ];
     const filtered = items.filter((i) => this.state.filter === 'all' || i.cat === this.state.filter);
     const shown = this.state.showAll ? filtered : filtered.slice(0, 3);
-    const rows = shown.map((r, i) => ({
-      ...r,
-      warn: r.warn ?? '',
-      row: 'display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 0; ' + (i < shown.length - 1 ? 'border-bottom: 1px solid #F1ECE2' : ''),
-      mark: 'width: 10px; height: 10px; border-radius: 5px; flex-shrink: 0; background: ' + cat[r.cat].color,
-    }));
+    const gaps = { run: ['3 Std. frei', 'Idee: Wocheneinkauf vor dem Zahnarzt?'], lunch: ['3 Std. frei', 'Idee: Sport oder Erledigungen'], pickup: ['2 Std. frei', 'Idee: kurz ausruhen vor dem Spieleabend'] };
+    const rows = [];
+    shown.forEach((r, i) => {
+      rows.push({
+        ...r,
+        isEvent: true, isGap: false,
+        warn: r.warn ?? '',
+        row: 'display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 0; ' + (i < shown.length - 1 ? 'border-bottom: 1px solid #F1ECE2' : ''),
+        mark: 'width: 10px; height: 10px; border-radius: 5px; flex-shrink: 0; background: ' + cat[r.cat].color,
+      });
+      const g = gaps[r.id];
+      if (g && this.state.filter === 'all' && i < shown.length - 1) rows.push({ isEvent: false, isGap: true, gapText: g[0], idea: g[1] });
+    });
     const chipDefs = [['all', 'Alle', 'M4 6h16M4 12h16M4 18h16']].concat(Object.keys(cat).map((k) => [k, cat[k].label, cat[k].icon]));
     const chips = chipDefs.map(([id, label, icon]) => {
       const sel = this.state.filter === id;
@@ -199,7 +309,51 @@ class Component extends DCLogic {
       name, initial, share,
       avatar: 'width: 32px; height: 32px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; background: ' + bg,
     }));
+    const evening = (this.props.moment ?? 'Morgen') === 'Abend';
+    const summary = evening
+      ? [{ value: '10:38', label: 'morgen los zum Zahnarzt' }, { value: '2', label: 'Termine morgen' }, { value: 'Regen', label: 'ab 17 Uhr – Schirm?' }]
+      : [{ value: '5', label: 'Termine heute' }, { value: '1', label: 'wird knapp' }, { value: 'Regen', label: 'ab 17 Uhr' }];
+    const tileDefs = { events: ['14', 'Termine'], free: ['2', 'freie Abende'], punctual: ['94 %', 'pünktlich'], rides: ['3×', 'du fährst'], open: ['4', 'offene Zusagen'], focus: ['6 Std.', 'Fokuszeit'] };
+    const tileLabels = { events: 'Termine diese Woche', free: 'Freie Abende', punctual: 'Pünktlichkeit', rides: 'Deine Fahrdienste', open: 'Offene Zusagen', focus: 'Fokuszeit' };
+    const chosen = this.state.tiles;
+    const tiles = chosen.map((k) => ({ value: tileDefs[k][0], label: tileDefs[k][1] }));
+    const tileOptions = Object.keys(tileDefs).map((k) => {
+      const on = chosen.includes(k);
+      const blocked = !on && chosen.length >= 3;
+      return {
+        label: tileLabels[k] + (blocked ? ' (max. 3)' : ''),
+        on,
+        checked: on ? 'true' : 'false',
+        toggle: () => {
+          if (on) this.setState({ tiles: chosen.filter((x) => x !== k) });
+          else if (!blocked) this.setState({ tiles: chosen.concat(k) });
+        },
+        style: 'height: 52px; border: 0; border-radius: 16px; background: #FFFFFF; display: flex; align-items: center; gap: 12px; padding: 0 16px; font-weight: 600; font-size: 15px; color: ' + (blocked ? '#8A8F9A' : '#0D0E12'),
+        box: 'width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 2px solid #0D0E12; background: ' + (on ? '#0D0E12' : 'transparent'),
+      };
+    });
+    const sheet = this.state.sheet;
+    const examples = ['Freitag 19 Uhr Grillen bei Tom', 'Morgen 8:15 Zahnarzt', 'Samstag 10 Uhr Brunch bei Oma'].map((text) => ({ text, use: () => this.setState({ quick: text, saved: false }) }));
     return {
+      summaryOpen: this.state.summary,
+      summaryTitle: evening ? 'Dein Abend-Rückblick · morgen' : 'Dein Tag in 10 Sekunden',
+      summary,
+      closeSummary: () => this.setState({ summary: false }),
+      tiles,
+      tileOptions,
+      openTiles: () => this.setState({ sheet: 'tiles' }),
+      openNew: () => this.setState({ sheet: 'new', saved: false }),
+      closeSheet: () => this.setState({ sheet: null }),
+      sheetOpen: sheet !== null,
+      isNew: sheet === 'new',
+      isTiles: sheet === 'tiles',
+      sheetTitle: sheet === 'tiles' ? 'Kacheln wählen' : 'Neuer Termin',
+      quick: this.state.quick,
+      onQuick: (e) => this.setState({ quick: e.target.value, saved: false }),
+      examples,
+      parsed: this.parse(this.state.quick),
+      saved: this.state.saved,
+      save: () => this.setState({ saved: this.state.quick.trim().length > 0 }),
       rows,
       noRows: rows.length === 0,
       chips,
