@@ -26,7 +26,7 @@ dieselben ruhigen weißen Karten – Events, Familie, Gruppen und die Kacheln im
 | `pnpm check` | ✅ 1585 Tests: i18n 1024, ui 215, App 167, domain 132, demo 21, brand 11, entitlements 9, config 6 |
 | Neue Tests | Abhaken speichern/zurücknehmen, Screenreader-Aktionen = Wisch-Aktionen, Verschieben um 1 Std., fremdes Event nicht verschiebbar, Datenschutz zählt abgehakte Termine |
 | Web-Vorschau | ✅ Heute (abgehakt), Events, Familie, Termin „Gemeinsam“ geprüft |
-| CI Android / iOS | wird eingetragen, sobald die Läufe grün sind |
+| CI Android / iOS | ✅ Läufe 43319261701 (Android) und 43319262028 (iOS) grün, je 53 Screenshots; CI-Checks auf dem Report-Commit grün |
 
 ## 4. Screenshots (echt, aus CI)
 
