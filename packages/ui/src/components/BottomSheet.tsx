@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { KeyboardAvoidingView, Modal, Platform, Pressable, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, View } from 'react-native';
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -117,7 +117,14 @@ export function BottomSheet({
               {...(testID ? { testID: `${testID}-close` } : {})}
             />
           </View>
-          {children}
+          {/* Scrolls when the keyboard or large text leaves too little room, so no button is ever out of reach. */}
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ gap: space[4], paddingBottom: space[2] }}
+            showsVerticalScrollIndicator={false}
+          >
+            {children}
+          </ScrollView>
         </Animated.View>
       </KeyboardAvoidingView>
     </Modal>

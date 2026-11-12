@@ -104,6 +104,10 @@ appId: ${APP_ID}
 - pressKey: Enter
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-48-quick-entry
+- scrollUntilVisible:
+    element:
+      id: 'quick-details'
+    direction: DOWN
 - tapOn:
     id: 'quick-details'
     retryTapIfNoChange: true
@@ -719,7 +723,17 @@ appId: ${APP_ID}
     direction: UP
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-36-account-plan
-# The whole plan card is on screen now, so tap the button directly: scrolling first can push it off the top.
+# From the very top the compare button sits below the middle, so a centring scroll down always reaches it.
+- scrollUntilVisible:
+    element:
+      id: 'account-profile'
+    direction: UP
+- scrollUntilVisible:
+    element:
+      id: 'subscription-compare'
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
 - tapOn:
     id: 'subscription-compare'
     retryTapIfNoChange: true
@@ -831,6 +845,13 @@ appId: ${APP_ID}
     visible:
       id: 'quick-sheet'
     timeout: 10000
+# The field opens with the keyboard; Enter closes it so the buttons below are reachable.
+- pressKey: Enter
+- waitForAnimationToEnd
+- scrollUntilVisible:
+    element:
+      id: 'quick-details'
+    direction: DOWN
 - tapOn:
     id: 'quick-details'
     retryTapIfNoChange: true
