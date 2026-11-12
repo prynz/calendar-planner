@@ -74,9 +74,12 @@ export function EditorScreen({
   social = false,
   templateId,
   groupId,
+  prefill,
 }: {
   eventId?: string;
   initialDay?: string;
+  /** From the quick entry ("More details"): what it already understood. */
+  prefill?: { title?: string; startMinute?: number; location?: string };
   /** New social event hosted by the viewer (EVT-01) instead of a personal appointment. */
   social?: boolean;
   templateId?: string;
@@ -95,7 +98,14 @@ export function EditorScreen({
   const initial = useMemo<EventDraft>(() => {
     if (existing) return eventToDraft(existing, locale);
     const w = wallParts(now, tz);
-    const base = newDraft(initialDay ?? today, today, w.hour * 60 + w.minute);
+    const fresh = newDraft(initialDay ?? today, today, w.hour * 60 + w.minute);
+    const base = prefill
+      ? {
+          ...(prefill.startMinute !== undefined ? withStart(fresh, prefill.startMinute) : fresh),
+          ...(prefill.title ? { title: prefill.title } : {}),
+          ...(prefill.location ? { location: prefill.location } : {}),
+        }
+      : fresh;
     return template ? templateDraft(base, template, templateText(t, template.id, 'title')) : base;
     // Initial draft is computed once when the editor opens.
     // eslint-disable-next-line react-hooks/exhaustive-deps

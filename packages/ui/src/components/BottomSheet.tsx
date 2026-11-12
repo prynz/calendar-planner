@@ -40,19 +40,16 @@ export function BottomSheet({
   const insets = useSafeAreaInsets();
   const reduceMotion = useReducedMotion();
   const y = useSharedValue(reduceMotion ? 0 : OFFSCREEN);
-  // Stays mounted until the slide-out finished.
+  // Stays mounted until the slide-out finished (set during render, React's pattern for derived state).
   const [mounted, setMounted] = useState(visible);
+  if (visible && !mounted) setMounted(true);
 
   useEffect(() => {
     if (visible) {
-      setMounted(true);
       y.set(reduceMotion ? 0 : withTiming(0, { duration: motion.duration.base }));
       return;
     }
-    if (reduceMotion) {
-      setMounted(false);
-      return;
-    }
+    if (reduceMotion) return;
     y.set(
       withTiming(OFFSCREEN, { duration: motion.duration.fast }, (finished) => {
         if (finished) runOnJS(setMounted)(false);
@@ -63,7 +60,7 @@ export function BottomSheet({
   const sheet = useAnimatedStyle(() => ({ transform: [{ translateY: y.get() }] }));
   const backdrop = useAnimatedStyle(() => ({ opacity: 1 - y.get() / OFFSCREEN }));
 
-  if (!mounted) return null;
+  if (!visible && (!mounted || reduceMotion)) return null;
   return (
     <Modal transparent visible animationType="none" onRequestClose={onClose} statusBarTranslucent>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>

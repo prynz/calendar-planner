@@ -18,7 +18,7 @@ export type StartTab = (typeof START_TABS)[number];
 /** Building blocks of the Today screen, in the user's order. */
 export const HOME_BLOCKS = ['summary', 'leave', 'helper', 'day', 'week'] as const;
 export type HomeBlock = (typeof HOME_BLOCKS)[number];
-export const WEEK_TILES = ['events', 'free', 'punctual', 'rides', 'open', 'focus'] as const;
+export const WEEK_TILES = ['events', 'free', 'punctual', 'rides', 'open', 'busiest'] as const;
 export type WeekTile = (typeof WEEK_TILES)[number];
 export const MAX_WEEK_TILES = 3;
 

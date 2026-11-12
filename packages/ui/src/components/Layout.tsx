@@ -12,10 +12,13 @@ export function Screen({
   children,
   testID,
   withTabBar = true,
+  gap = 5,
 }: {
   children: ReactNode;
   testID?: string;
   withTabBar?: boolean;
+  /** Space between sections; Phase 8 uses 6 (airy) or 4 (compact). */
+  gap?: 4 | 5 | 6 | 8;
 }) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
@@ -26,7 +29,7 @@ export function Screen({
       contentContainerStyle={{
         paddingTop: insets.top + space[4],
         paddingBottom: (withTabBar ? FLOATING_TAB_BAR_CLEARANCE : 0) + insets.bottom + space[4],
-        gap: space[5],
+        gap: space[gap],
       }}
     >
       {children}

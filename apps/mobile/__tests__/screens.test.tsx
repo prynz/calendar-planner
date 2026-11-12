@@ -25,7 +25,7 @@ describe('TodayScreen', () => {
     expect(screen.getByTestId('leave-hero')).toBeTruthy();
     expect(screen.getByText('08:00 los')).toBeTruthy();
     expect(screen.getByTestId('today-count')).toHaveTextContent('3 Termine');
-    expect(screen.getByText('→ los um 18:33')).toBeTruthy();
+    expect(screen.getByText(/los 18:33/)).toBeTruthy();
   });
 
   it('opens the detail of a tapped plan', async () => {
@@ -42,7 +42,16 @@ describe('TodayScreen', () => {
     await fireEvent.press(await screen.findByTestId(`day-${addDays('2026-11-09', 4)}`));
     expect(screen.getByTestId('today-empty')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('today-add'));
-    expect(router.push).toHaveBeenCalledWith({ pathname: '/editor', params: { day: '2026-11-13' } });
+    // Phase 8: a quick entry sheet for that day instead of the full editor.
+    expect(await screen.findByTestId('quick-sheet')).toBeTruthy();
+    await fireEvent.changeText(screen.getByTestId('quick-input'), 'Yoga 18 Uhr im Studio');
+    expect(screen.getByLabelText('Was: Yoga')).toBeTruthy();
+    expect(screen.getByLabelText('Wo: im Studio')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('quick-details'));
+    expect(router.push).toHaveBeenCalledWith({
+      pathname: '/editor',
+      params: { day: '2026-11-13', start: '1080', title: 'Yoga', place: 'im Studio' },
+    });
   });
 
   it('follows the system language', async () => {

@@ -44,7 +44,7 @@ describe('settings model', () => {
         startTab: 'calendar',
         homeOrder: 'day,nonsense,leave,day',
         homeHidden: 'week,bogus',
-        weekTiles: 'rides,open,focus,events',
+        weekTiles: 'rides,open,busiest,events',
       }),
     ).toEqual({
       language: 'en',
@@ -61,7 +61,7 @@ describe('settings model', () => {
       // Stored order first, unknown/duplicates dropped, missing blocks appended.
       homeOrder: ['day', 'leave', 'summary', 'helper', 'week'],
       homeHidden: ['week'],
-      weekTiles: ['rides', 'open', 'focus'],
+      weekTiles: ['rides', 'open', 'busiest'],
     });
     expect(parseSettings({ dawdleBuffer: '999' }).dawdleBuffer).toBe(5);
   });

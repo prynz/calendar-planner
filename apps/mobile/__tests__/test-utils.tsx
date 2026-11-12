@@ -5,6 +5,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { buildDemoCollabs, buildDemoEvents, buildDemoGroups, buildDemoHousehold } from '@nowish/demo';
 
 import { createMemoryEventRepository } from '@/data/memory-event-repository';
+import { QuickAddProvider } from '@/features/quick-add/QuickAddProvider';
 import type { EventRepository } from '@/data/event-repository';
 import { ClockProvider } from '@/providers/clock';
 import { AccountProvider, onboardedAccount, type Account } from '@/providers/account';
@@ -62,7 +63,9 @@ export async function renderApp(
                 fallback={opts.account ?? onboardedAccount(now, 'Europe/Berlin')}
               >
                 <EventsProvider repository={repo} now={() => now} simulate={false}>
-                  <RemindersProvider>{node}</RemindersProvider>
+                  <RemindersProvider>
+                    <QuickAddProvider>{node}</QuickAddProvider>
+                  </RemindersProvider>
                 </EventsProvider>
               </AccountProvider>
             </ClockProvider>
