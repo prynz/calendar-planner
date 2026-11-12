@@ -35,3 +35,7 @@ export { MemberAvatar } from './components/MemberAvatar';
 export { WeekBars, type WeekBarDay } from './components/WeekBars';
 export { CheckRow } from './components/CheckRow';
 export { CoverBand } from './components/CoverBand';
+export { BottomSheet } from './components/BottomSheet';
+export { FilterChips, type FilterChipOption } from './components/FilterChips';
+export { PillTabs, type PillTab } from './components/PillTabs';
+export { ListCard, ListRow, SectionHeader, SoftCard, StatTile, type ListRowProps } from './components/Sections';

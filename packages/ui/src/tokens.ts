@@ -13,11 +13,20 @@ export const palette = {
   ink400: '#5C6270',
   ink300: '#8A90A0',
   cream50: '#F7F3EA',
+  /** Phase 8: warm white page and quiet sand for chips and tracks (light theme). */
+  paper: '#FBF9F4',
+  sand: '#F1ECE2',
   cream100: '#EFE9DC',
   cream200: '#DDD5C4',
   white: '#FFFFFF',
   lime400: '#C8F031',
   limeInk: '#4A5E00',
+  /** Phase 8 accent palettes: a light fill (ink text on it) and an ink shade for text on light backgrounds. */
+  oceanFill: '#8EDBEA',
+  oceanInk: '#0B5D6E',
+  coralFill: '#FFB59E',
+  coralInk: '#A13A17',
+  lavenderFill: '#C9B8FF',
   violet500: '#7C5CFF',
   violet300: '#B9A8FF',
   violet700: '#4B2FD6',
@@ -63,6 +72,19 @@ export type CoverTheme = keyof typeof coverThemes;
 export const EVENT_CATEGORIES = Object.keys(categoryColors) as EventCategory[];
 
 export type ThemeName = 'dark' | 'light';
+
+/**
+ * Personal accent colour (Phase 8, ADR 0016). `fill` carries ink text and is the only strong colour on a screen;
+ * `ink` is the same hue dark enough for text on the light theme. All combinations are contrast-tested.
+ */
+export const ACCENTS = {
+  lime: { fill: palette.lime400, ink: palette.limeInk },
+  ocean: { fill: palette.oceanFill, ink: palette.oceanInk },
+  coral: { fill: palette.coralFill, ink: palette.coralInk },
+  lavender: { fill: palette.lavenderFill, ink: palette.violet700 },
+} as const;
+export type AccentName = keyof typeof ACCENTS;
+export const ACCENT_NAMES = Object.keys(ACCENTS) as AccentName[];
 
 /** Semantic colors per theme. Foreground/background pairs are checked in test/contrast.test.ts. */
 export interface ThemeColors {
@@ -111,8 +133,8 @@ export const themes: Record<ThemeName, ThemeColors> = {
     scrim: 'rgba(13, 14, 18, 0.6)',
   },
   light: {
-    canvas: palette.cream50,
-    surface: palette.cream100,
+    canvas: palette.paper,
+    surface: palette.sand,
     elevated: palette.white,
     border: palette.cream200,
     textPrimary: palette.ink900,
@@ -132,6 +154,30 @@ export const themes: Record<ThemeName, ThemeColors> = {
     scrim: 'rgba(13, 14, 18, 0.6)',
   },
 };
+
+/** Theme colours with a personal accent applied (fill for buttons/active tabs, readable text shade per theme). */
+export function themeColors(name: ThemeName, accent: AccentName = 'lime'): ThemeColors {
+  const a = ACCENTS[accent];
+  return {
+    ...themes[name],
+    accentFill: a.fill,
+    accentText: name === 'dark' ? a.fill : a.ink,
+    tabActiveFill: a.fill,
+  };
+}
+
+/** Soft card shadow for white cards on the light page (Phase 8). Flat on dark, where surfaces carry depth. */
+export function cardShadow(name: ThemeName) {
+  return name === 'light'
+    ? {
+        shadowColor: palette.ink900,
+        shadowOpacity: 0.06,
+        shadowRadius: 14,
+        shadowOffset: { width: 0, height: 6 },
+        elevation: 2,
+      }
+    : {};
+}
 
 /** 4-pt spacing scale. */
 export const space = { 0: 0, 0.5: 2, 1: 4, 2: 8, 3: 12, 4: 16, 5: 20, 6: 24, 8: 32, 10: 40, 12: 48, 16: 64 } as const;
@@ -164,6 +210,8 @@ export const typography = {
   titleL: { fontFamily: fontFamilies.displaySemiBold, fontSize: 28, lineHeight: 34, maxScale: 1.6 },
   titleM: { fontFamily: fontFamilies.textSemiBold, fontSize: 20, lineHeight: 26, maxScale: 2 },
   bodyL: { fontFamily: fontFamilies.textRegular, fontSize: 17, lineHeight: 24, maxScale: 2 },
+  /** Phase 8: row titles – semibold body size. */
+  bodyStrong: { fontFamily: fontFamilies.textSemiBold, fontSize: 16, lineHeight: 22, maxScale: 2 },
   bodyM: { fontFamily: fontFamilies.textRegular, fontSize: 15, lineHeight: 22, maxScale: 2 },
   label: { fontFamily: fontFamilies.textSemiBold, fontSize: 13, lineHeight: 18, maxScale: 2 },
 } as const satisfies Record<string, TypeStyle>;

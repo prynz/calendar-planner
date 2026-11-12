@@ -1,4 +1,4 @@
-import { categoryColors, themes, type ThemeColors, type ThemeName } from './tokens';
+import { categoryColors, themeColors, type AccentName, type ThemeColors, type ThemeName } from './tokens';
 
 /** WCAG 2.x relative luminance of a #RRGGBB color. */
 export function relativeLuminance(hex: string): number {
@@ -28,8 +28,8 @@ export interface ColorPair {
 }
 
 /** Every foreground/background combination the components are allowed to render. */
-export function themePairs(name: ThemeName): ColorPair[] {
-  const t: ThemeColors = themes[name];
+export function themePairs(name: ThemeName, accent: AccentName = 'lime'): ColorPair[] {
+  const t: ThemeColors = themeColors(name, accent);
   const textOn = (bgName: keyof ThemeColors) =>
     (['textPrimary', 'textSecondary', 'accentText', 'secondaryText', 'dangerText'] as const).map((fg): ColorPair => ({
       name: `${name}.${fg} on ${bgName}`,
@@ -42,6 +42,7 @@ export function themePairs(name: ThemeName): ColorPair[] {
     ...textOn('surface'),
     ...textOn('elevated'),
     { name: `${name}.onAccentFill on accentFill`, fg: t.onAccentFill, bg: t.accentFill, kind: 'text' },
+    { name: `${name}.canvas on textPrimary (inverse chips)`, fg: t.canvas, bg: t.textPrimary, kind: 'text' },
     { name: `${name}.onSecondaryFill on secondaryFill`, fg: t.onSecondaryFill, bg: t.secondaryFill, kind: 'text' },
     { name: `${name}.onTabActiveFill on tabActiveFill`, fg: t.onTabActiveFill, bg: t.tabActiveFill, kind: 'text' },
     { name: `${name}.tabInactiveText on tabBar`, fg: t.tabInactiveText, bg: t.tabBar, kind: 'text' },

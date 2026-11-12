@@ -14,5 +14,9 @@ export function resolveTheme(preference: ThemePreference, system: string | null 
 export function AppThemeProvider({ children }: { children: ReactNode }) {
   const { settings } = useSettings();
   const system = useColorScheme();
-  return <ThemeProvider name={resolveTheme(settings.theme, system)}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider name={resolveTheme(settings.theme, system)} accent={settings.accent}>
+      {children}
+    </ThemeProvider>
+  );
 }

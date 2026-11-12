@@ -2,12 +2,25 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 
 import { REMINDER_INTENSITIES, REMINDER_TONES, type ReminderIntensity, type ReminderTone } from '@nowish/domain';
 import { LANGUAGE_PREFERENCES, type LanguagePreference } from '@nowish/i18n';
+import { ACCENT_NAMES, type AccentName } from '@nowish/ui';
 
 import { setHapticsEnabled } from '@/services/haptics';
 import type { SettingsStore } from '@/storage/settings-store';
 
 export const THEME_PREFERENCES = ['system', 'dark', 'light'] as const;
 export type ThemePreference = (typeof THEME_PREFERENCES)[number];
+
+/** Phase 8 personalisation (ADR 0016). */
+export const DENSITIES = ['airy', 'compact'] as const;
+export type Density = (typeof DENSITIES)[number];
+export const START_TABS = ['today', 'calendar', 'together'] as const;
+export type StartTab = (typeof START_TABS)[number];
+/** Building blocks of the Today screen, in the user's order. */
+export const HOME_BLOCKS = ['summary', 'leave', 'helper', 'day', 'week'] as const;
+export type HomeBlock = (typeof HOME_BLOCKS)[number];
+export const WEEK_TILES = ['events', 'free', 'punctual', 'rides', 'open', 'focus'] as const;
+export type WeekTile = (typeof WEEK_TILES)[number];
+export const MAX_WEEK_TILES = 3;
 
 export interface Settings {
   language: LanguagePreference;
@@ -22,6 +35,13 @@ export interface Settings {
   punctualityStats: boolean;
   /** Haptic feedback on taps, swipes and saves (Phase 7: switchable for people who find it irritating). */
   haptics: boolean;
+  accent: AccentName;
+  density: Density;
+  startTab: StartTab;
+  /** All blocks in display order; hidden ones stay in the list so their place is remembered. */
+  homeOrder: readonly HomeBlock[];
+  homeHidden: readonly HomeBlock[];
+  weekTiles: readonly WeekTile[];
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -33,6 +53,12 @@ export const DEFAULT_SETTINGS: Settings = {
   bufferLearning: true,
   punctualityStats: true,
   haptics: true,
+  accent: 'lime',
+  density: 'airy',
+  startTab: 'today',
+  homeOrder: HOME_BLOCKS,
+  homeHidden: [],
+  weekTiles: ['events', 'free', 'punctual'],
 };
 export const BUFFER_RANGE = { min: 0, max: 30, step: 5 } as const;
 
@@ -45,6 +71,12 @@ const KEYS: Record<keyof Settings, string> = {
   bufferLearning: 'settings.bufferLearning',
   punctualityStats: 'settings.punctualityStats',
   haptics: 'settings.haptics',
+  accent: 'settings.accent',
+  density: 'settings.density',
+  startTab: 'settings.startTab',
+  homeOrder: 'settings.homeOrder',
+  homeHidden: 'settings.homeHidden',
+  weekTiles: 'settings.weekTiles',
 };
 
 const oneOf =
@@ -55,6 +87,22 @@ const isLanguage = oneOf(LANGUAGE_PREFERENCES);
 const isTheme = oneOf(THEME_PREFERENCES);
 const isIntensity = oneOf(REMINDER_INTENSITIES);
 const isTone = oneOf(REMINDER_TONES);
+const isAccent = oneOf(ACCENT_NAMES);
+const isDensity = oneOf(DENSITIES);
+const isStartTab = oneOf(START_TABS);
+
+/** Comma-separated list of known values, unknown and duplicate entries dropped. */
+function parseList<T extends string>(v: string | null | undefined, values: readonly T[]): T[] | null {
+  if (v == null) return null;
+  const known = oneOf(values);
+  return [...new Set(v.split(',').filter(known))];
+}
+
+/** Keeps the stored order and appends blocks added in a later version, so nothing ever disappears. */
+function parseHomeOrder(v: string | null | undefined): readonly HomeBlock[] {
+  const stored = parseList(v, HOME_BLOCKS) ?? [];
+  return [...stored, ...HOME_BLOCKS.filter((b) => !stored.includes(b))];
+}
 const parseBool = (v: string | null | undefined, fallback: boolean) =>
   v === 'true' ? true : v === 'false' ? false : fallback;
 
@@ -76,6 +124,12 @@ export function parseSettings(raw: Partial<Record<keyof Settings, string | null>
     bufferLearning: parseBool(raw.bufferLearning, DEFAULT_SETTINGS.bufferLearning),
     punctualityStats: parseBool(raw.punctualityStats, DEFAULT_SETTINGS.punctualityStats),
     haptics: parseBool(raw.haptics, DEFAULT_SETTINGS.haptics),
+    accent: isAccent(raw.accent) ? raw.accent : DEFAULT_SETTINGS.accent,
+    density: isDensity(raw.density) ? raw.density : DEFAULT_SETTINGS.density,
+    startTab: isStartTab(raw.startTab) ? raw.startTab : DEFAULT_SETTINGS.startTab,
+    homeOrder: parseHomeOrder(raw.homeOrder),
+    homeHidden: parseList(raw.homeHidden, HOME_BLOCKS) ?? DEFAULT_SETTINGS.homeHidden,
+    weekTiles: (parseList(raw.weekTiles, WEEK_TILES) ?? DEFAULT_SETTINGS.weekTiles).slice(0, MAX_WEEK_TILES),
   };
 }
 

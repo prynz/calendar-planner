@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { contrastRatio, MIN_RATIO, relativeLuminance, themePairs } from '../src/contrast';
-import { palette, withAlpha } from '../src/tokens';
+import { ACCENT_NAMES, palette, withAlpha } from '../src/tokens';
 
 describe('contrastRatio', () => {
   it('matches the WCAG reference values', () => {
@@ -22,8 +22,12 @@ describe('contrastRatio', () => {
   });
 });
 
-describe.each(['dark', 'light'] as const)('%s theme', (name) => {
-  it.each(themePairs(name).map((p) => [p.name, p] as const))('%s meets WCAG AA', (_label, pair) => {
+describe.each(
+  (['dark', 'light'] as const).flatMap((name) =>
+    ACCENT_NAMES.map((accent) => [`${name} + ${accent}`, name, accent] as const),
+  ),
+)('%s', (_label, name, accent) => {
+  it.each(themePairs(name, accent).map((p) => [p.name, p] as const))('%s meets WCAG AA', (_l, pair) => {
     expect(contrastRatio(pair.fg, pair.bg)).toBeGreaterThanOrEqual(MIN_RATIO[pair.kind]);
   });
 });

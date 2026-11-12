@@ -22,6 +22,12 @@ describe('settings model', () => {
       bufferLearning: true,
       punctualityStats: true,
       haptics: true,
+      accent: 'lime',
+      density: 'airy',
+      startTab: 'today',
+      homeOrder: ['summary', 'leave', 'helper', 'day', 'week'],
+      homeHidden: [],
+      weekTiles: ['events', 'free', 'punctual'],
     });
     expect(
       parseSettings({
@@ -33,6 +39,12 @@ describe('settings model', () => {
         bufferLearning: 'false',
         punctualityStats: 'nonsense',
         haptics: 'false',
+        accent: 'ocean',
+        density: 'compact',
+        startTab: 'calendar',
+        homeOrder: 'day,nonsense,leave,day',
+        homeHidden: 'week,bogus',
+        weekTiles: 'rides,open,focus,events',
       }),
     ).toEqual({
       language: 'en',
@@ -43,6 +55,13 @@ describe('settings model', () => {
       bufferLearning: false,
       punctualityStats: true,
       haptics: false,
+      accent: 'ocean',
+      density: 'compact',
+      startTab: 'calendar',
+      // Stored order first, unknown/duplicates dropped, missing blocks appended.
+      homeOrder: ['day', 'leave', 'summary', 'helper', 'week'],
+      homeHidden: ['week'],
+      weekTiles: ['rides', 'open', 'focus'],
     });
     expect(parseSettings({ dawdleBuffer: '999' }).dawdleBuffer).toBe(5);
   });

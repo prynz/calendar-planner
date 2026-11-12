@@ -13,7 +13,9 @@ type TextColor =
   | 'onSecondaryFill'
   | 'onCategoryFill'
   | 'onTabActiveFill'
-  | 'tabInactiveText';
+  | 'tabInactiveText'
+  /** Inverse text on a `textPrimary` fill (selected chips and tabs, Phase 8). */
+  | 'canvas';
 
 export interface TextProps extends Omit<RNTextProps, 'style'> {
   variant?: TypographyVariant;
