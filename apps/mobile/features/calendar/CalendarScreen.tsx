@@ -7,11 +7,15 @@ import { addDays, noonOf, weekdayOf, type DayKey } from '@nowish/domain';
 import { formatLongDate, formatMonthYear, formatShortDate } from '@nowish/i18n';
 import {
   Button,
+  categoryColors,
   EmptyState,
-  EventCard,
   FadeIn,
+  FilterChips,
   Gutter,
   IconButton,
+  ListCard,
+  ListRow,
+  MemberAvatar,
   MonthGrid,
   Screen,
   ScreenHeader,
@@ -25,6 +29,11 @@ import { StoreGate } from '../agenda/StoreGate';
 import { useAgendaContext } from '../agenda/use-agenda';
 import { haptic } from '@/services/haptics';
 
+import { categoryIcon } from '../agenda/category-icons';
+import { dotColor, memberName } from '../family/names';
+import { useQuickAdd } from '../quick-add/QuickAddProvider';
+import { calendarPeople, isFor, type PersonFilter } from './people';
+
 type View_ = 'week' | 'month' | 'list';
 const LIST_DAYS = 30;
 
@@ -36,6 +45,12 @@ export function CalendarScreen() {
   const [selected, setSelected] = useState<DayKey>(today);
   const [monthAnchor, setMonthAnchor] = useState<DayKey>(monthStart(today));
   const [weekStart, setWeekStart] = useState<DayKey>(addDays(today, -weekdayOf(today)));
+  const [person, setPerson] = useState<PersonFilter>('all');
+  const quick = useQuickAdd();
+  const household = store.household;
+  const people = calendarPeople(household);
+  const activePerson = person === 'all' || people.includes(person) ? person : 'all';
+  const events = store.events.filter((e) => isFor(household, e, activePerson));
 
   const goToday = () => {
     haptic('selection');
@@ -66,15 +81,29 @@ export function CalendarScreen() {
     </View>
   );
 
-  const cards = (items: AgendaItem[]) =>
-    items.map((item, i) => (
-      <FadeIn key={`${item.event.id}-${item.occurrenceKey}`} delay={i * 30}>
-        <EventCard
-          {...eventCardProps(item, ctx.now, locale, t, ctx.buffer)}
-          onPress={() => ctx.openEvent(item.event.id, item.occurrenceKey)}
-        />
-      </FadeIn>
-    ));
+  // Phase 8: one calm white card per day with simple rows instead of a stack of coloured cards.
+  const cards = (items: AgendaItem[]) => (
+    <FadeIn>
+      <ListCard>
+        {items.map((item) => {
+          const card = eventCardProps(item, ctx.now, locale, t, ctx.buffer);
+          const sub = [card.subtitle, card.leaveLabel].filter(Boolean).join(' · ');
+          return (
+            <ListRow
+              key={`${item.event.id}-${item.occurrenceKey}`}
+              marker={{ color: categoryColors[item.event.category] }}
+              title={card.title}
+              {...(sub ? { subtitle: sub } : {})}
+              trailing={card.timeLabel}
+              onPress={() => ctx.openEvent(item.event.id, item.occurrenceKey)}
+              accessibilityLabel={[card.title, card.timeLabel, sub, card.statusLabel].filter(Boolean).join(', ')}
+              {...(card.testID ? { testID: card.testID } : {})}
+            />
+          );
+        })}
+      </ListCard>
+    </FadeIn>
+  );
 
   const dayTitle = (d: DayKey) => (
     <Text variant="label" color={d === today ? 'accentText' : 'textSecondary'} accessibilityRole="header">
@@ -84,7 +113,7 @@ export function CalendarScreen() {
 
   let body: React.ReactNode = null;
   if (mode === 'month') {
-    const items = agendaForDay(store.events, selected, tz);
+    const items = agendaForDay(events, selected, tz);
     body = (
       <Gutter gap={4}>
         {pager(
@@ -100,7 +129,7 @@ export function CalendarScreen() {
         )}
         <MonthGrid
           weekdayLabels={weekdayLabels(locale, tz)}
-          rows={monthRows(monthAnchor, today, store.events, tz, locale, t)}
+          rows={monthRows(monthAnchor, today, events, tz, locale, t)}
           selectedKey={selected}
           onSelect={(k) => {
             haptic('selection');
@@ -112,7 +141,7 @@ export function CalendarScreen() {
           <EmptyState
             title={t('calendar.free')}
             body={t('today.empty.body')}
-            action={{ label: t('today.addEvent'), onPress: () => ctx.createEvent(selected), testID: 'cal-add' }}
+            action={{ label: t('today.addEvent'), onPress: () => quick.open(selected), testID: 'cal-add' }}
           />
         ) : (
           cards(items)
@@ -121,7 +150,7 @@ export function CalendarScreen() {
     );
   } else if (mode === 'week') {
     const end = addDays(weekStart, 7);
-    const groups = groupByDay(agendaBetween(store.events, weekStart, end, tz), weekStart, end, tz, true);
+    const groups = groupByDay(agendaBetween(events, weekStart, end, tz), weekStart, end, tz, true);
     body = (
       <Gutter gap={4}>
         {pager(
@@ -154,14 +183,14 @@ export function CalendarScreen() {
     );
   } else {
     const end = addDays(today, LIST_DAYS);
-    const groups = groupByDay(agendaBetween(store.events, today, end, tz), today, end, tz, false);
+    const groups = groupByDay(agendaBetween(events, today, end, tz), today, end, tz, false);
     body = (
       <Gutter gap={5}>
         {groups.length === 0 ? (
           <EmptyState
             title={t('calendar.free')}
             body={t('calendar.list.empty')}
-            action={{ label: t('today.addEvent'), onPress: () => ctx.createEvent(), testID: 'list-add' }}
+            action={{ label: t('today.addEvent'), onPress: () => quick.open(), testID: 'list-add' }}
           />
         ) : (
           groups.map((g) => (
@@ -197,6 +226,31 @@ export function CalendarScreen() {
           testIDPrefix="cal-view"
         />
       </Gutter>
+      {people.length > 1 ? (
+        <FilterChips
+          options={[
+            { value: 'all', label: t('calendar.people.all'), icon: (c: string) => categoryIcon('all', c) },
+            ...people.map((id) => ({
+              value: id,
+              label: memberName(household, id, t),
+              icon: () => (
+                <MemberAvatar
+                  name={memberName(household, id, t)}
+                  color={household ? dotColor(household, id) : undefined}
+                  size="sm"
+                />
+              ),
+            })),
+          ]}
+          value={activePerson}
+          onChange={(v) => {
+            haptic('selection');
+            setPerson(v);
+          }}
+          accessibilityLabel={t('calendar.people')}
+          testIDPrefix="cal-person"
+        />
+      ) : null}
       <StoreGate>{body}</StoreGate>
     </Screen>
   );

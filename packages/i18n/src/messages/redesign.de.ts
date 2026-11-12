@@ -83,6 +83,9 @@ export const redesignDe = {
   'quick.error.save': 'Konnte nicht speichern. Bitte versuch es nochmal.',
   'quick.defaultHint': 'Ohne Uhrzeit trage ich {time} ein – du kannst es danach ändern.',
 
+  'calendar.people': 'Wessen Termine',
+  'calendar.people.all': 'Alle',
+
   'personal.title': 'Personalisieren',
   'personal.open': 'Personalisieren',
   'personal.intro': 'Richte Nowish so ein, wie du planst.',

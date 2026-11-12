@@ -85,6 +85,9 @@ export const redesignEn: Record<keyof typeof redesignDe, string> = {
   'quick.error.save': 'Couldn’t save. Please try again.',
   'quick.defaultHint': 'Without a time I’ll use {time} – you can change it afterwards.',
 
+  'calendar.people': 'Whose plans',
+  'calendar.people.all': 'Everyone',
+
   'personal.title': 'Personalise',
   'personal.open': 'Personalise',
   'personal.intro': 'Set up Nowish the way you plan.',

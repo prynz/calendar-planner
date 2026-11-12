@@ -153,3 +153,20 @@ describe('TogetherScreen – events', () => {
     expect(screen.queryByText('Zahnarzt')).toBeNull();
   });
 });
+
+describe('CalendarScreen person filter (Phase 8)', () => {
+  it('shows only the plans of the chosen family member', async () => {
+    await renderApp(<CalendarScreen />);
+    await fireEvent.press(await screen.findByTestId('cal-view-list'));
+    expect((await screen.findAllByTestId('event-demo-swim')).length).toBeGreaterThan(0);
+    expect(screen.getAllByTestId('event-demo-games').length).toBeGreaterThan(0);
+    await fireEvent.press(screen.getByTestId('cal-person-lena'));
+    expect(screen.getAllByTestId('event-demo-swim').length).toBeGreaterThan(0);
+    expect(screen.queryAllByTestId('event-demo-games')).toHaveLength(0);
+    await fireEvent.press(screen.getByTestId('cal-person-chris'));
+    expect(screen.queryAllByTestId('event-demo-swim')).toHaveLength(0);
+    expect(screen.getAllByTestId('event-demo-games').length).toBeGreaterThan(0);
+    await fireEvent.press(screen.getByTestId('cal-person-all'));
+    expect(screen.getAllByTestId('event-demo-swim').length).toBeGreaterThan(0);
+  });
+});
