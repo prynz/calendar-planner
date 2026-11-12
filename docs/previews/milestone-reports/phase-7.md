@@ -28,7 +28,7 @@ Selbst-Durchführen bereit.
 | --- | --- |
 | `pnpm check` (typecheck · lint · format · Tests) | ✅ 1257 Tests: i18n 890, App 149, domain 114, ui 57, demo 21, brand 11, entitlements 9, config 6 |
 | Web-Vorschau | ✅ Onboarding mit Animation (normal und reduzierte Bewegung) im Browser geprüft |
-| CI (Qualität, Datenbank, Secret-Scan), Android, iOS | wird nach dem grünen Lauf eingetragen |
+| CI (Qualität, Datenbank, Secret-Scan), Android, iOS | ✅ grün: CI 43127908114, Android 43127793627, iOS 43127793718 (je 46 Screenshots inkl. 200 %) |
 
 ## 4. Screenshots (echt, aus CI)
 
@@ -67,6 +67,7 @@ Präfix `2026-11-11-phase-07`. Bilder 01–42 wie in Phase 6 (jetzt mit Logo v1.
 | Volle Kalender: 213 ms pro Tagesansicht | ✅ 12 ms, getestet |
 | Logo bei 16 px: Zeiger verschmolz mit dem Ring | ✅ v1.1 |
 | iOS-CI: Taps direkt unter der Statusleiste wurden verschluckt (Wechsel zu „Gruppen“) | ✅ Ablauf scrollt bis zur Überschrift |
+| CI-Ablauf: Scrollen schob „Tarife vergleichen“ aus dem Bild; bei 200 % ist die Tarif-Karte höher als der Bildschirm | ✅ Knopf wird direkt bzw. zentriert angesteuert |
 | CI-Rechner konnte einmal ein Android-Werkzeug (NDK) nicht laden | Einmalig, Neustart reichte |
 
 ## 7. Offene Fragen an den PO
