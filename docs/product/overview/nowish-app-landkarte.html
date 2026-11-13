@@ -1,9 +1,9 @@
 <title>Nowish App-Landkarte</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap">
 <style>
-/* Layout: one band per app area; each screen is a real phone mockup in the v7 look (white, ink, lime, pastel chips). */
+/* Layout: one band per app area; each screen is a real phone mockup in the v4 look (warm white, pastel light, big cards and numbers). */
 :root {
   --bg: #F4F4F1; --surface: #FFFFFF; --ink: #16171A; --muted: #62656D; --line: #E3E2DD;
   --live: #C8F031; --live-ink: #16171A; --planned: #6B5BD6;
@@ -38,106 +38,129 @@ p { margin: 0; max-width: 70ch; }
 .caption .route { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11px; color: var(--muted); }
 .note { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
 
-/* ---------- Phone mockup: a fixed light app look, independent of the page theme ---------- */
-.ph { --i: #0D0E12; --m: #5B5F69; --l: #EEEAE2; --w: #FFFFFF; --s: #F6F4EF; --lime: #C8F031; --red: #D93D42;
-  width: 250px; height: 520px; box-sizing: border-box; border-radius: 34px; background: var(--w); color: var(--i);
+/* ---------- Phone mockup in the v4 look: warm white, soft pastel light, big round cards, big numbers ---------- */
+.ph { --i: #0D0E12; --m: #4A4E58; --l: #EFE9DC; --w: #FFFFFF; --s: #F3EFE8; --bg: #FBF8F4; --lime: #C8F031; --red: #C2410C; --vio: #7C5CFF;
+  width: 250px; height: 520px; box-sizing: border-box; border-radius: 34px; color: var(--i);
+  background: radial-gradient(130px 120px at 15% 2%, #E2D8FC 0%, rgba(251,248,244,0) 100%), radial-gradient(120px 110px at 100% 14%, #FFDCC2 0%, rgba(251,248,244,0) 100%), var(--bg);
   border: 7px solid #0D0E12; box-shadow: 0 18px 40px rgba(13,14,18,0.18); position: relative; overflow: hidden;
   font-family: var(--f-body); font-size: 11px; line-height: 1.35; }
-.ph .sc { position: absolute; inset: 0; padding: 18px 13px 60px; display: flex; flex-direction: column; gap: 9px; overflow: hidden; }
+.ph .sc { position: absolute; inset: 0; padding: 18px 13px 64px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
 .ph .sc > * { flex-shrink: 0; }
 .ph .k { font-size: 10px; font-weight: 600; color: var(--m); }
-.ph .k.red { color: var(--red); }
-.ph .h { font-weight: 800; font-size: 21px; letter-spacing: -0.5px; line-height: 1.1; }
+.ph .k.red { color: var(--m); }
+.ph .h { font-family: "Bricolage Grotesque", var(--f-body); font-weight: 700; font-size: 22px; letter-spacing: -0.4px; line-height: 1.08; }
 .ph .h2 { font-weight: 700; font-size: 13px; }
 .ph .top { display: flex; justify-content: space-between; align-items: flex-end; gap: 6px; }
-.ph .demo { font-size: 9px; font-weight: 700; color: #4B2FD6; background: #EDE7FF; padding: 2px 6px; border-radius: 99px; }
-.ph .back { width: 26px; height: 26px; border-radius: 13px; background: var(--s); display: flex; align-items: center; justify-content: center; font-weight: 700; }
-.ph .next { border-radius: 14px; background: var(--i); color: #fff; padding: 10px 11px; display: flex; align-items: center; gap: 8px; }
-.ph .next .big { font-weight: 800; font-size: 22px; letter-spacing: -0.5px; }
-.ph .next .go { width: 30px; height: 30px; border-radius: 15px; background: var(--lime); color: var(--i); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; flex-shrink: 0; }
-.ph .lime { color: var(--lime); font-weight: 700; }
-.ph .row { display: flex; align-items: center; gap: 8px; min-height: 30px; border-bottom: 1px solid var(--l); padding: 3px 0; }
-.ph .row .t { width: 30px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ph .demo { font-size: 9px; font-weight: 700; color: #4B2FD6; background: rgba(255,255,255,0.8); padding: 2px 7px; border-radius: 99px; }
+.ph .back { width: 28px; height: 28px; border-radius: 14px; background: rgba(255,255,255,0.85); box-shadow: 0 3px 10px rgba(13,14,18,0.06); display: flex; align-items: center; justify-content: center; font-weight: 700; }
+/* hero: one big white card with the next cards peeking behind (stack) */
+.ph .next { position: relative; margin-top: 12px; border-radius: 26px; background: var(--w); padding: 13px; display: flex; flex-direction: column; gap: 2px;
+  box-shadow: 0 -7px 0 -3px rgba(255,255,255,0.75), 0 -14px 0 -7px rgba(255,255,255,0.5), 0 14px 30px rgba(75,47,214,0.14); }
+.ph .next .who { display: flex; align-items: center; gap: 7px; font-weight: 600; }
+.ph .next .ico { width: 24px; height: 24px; border-radius: 12px; background: #CDEFF6; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 10px; }
+.ph .next .big { font-family: "Bricolage Grotesque", var(--f-body); font-weight: 700; font-size: 46px; line-height: 46px; letter-spacing: -1.5px; margin-top: 2px; }
+.ph .next .acts { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+.ph .next .more { width: 30px; height: 30px; border-radius: 15px; background: var(--s); display: flex; align-items: center; justify-content: center; font-weight: 800; }
+.ph .next .go { height: 34px; border-radius: 17px; background: var(--lime); display: flex; align-items: center; gap: 7px; padding: 0 4px 0 12px; font-weight: 700; box-shadow: 0 6px 14px rgba(160,200,20,0.35); }
+.ph .next .go span { width: 26px; height: 26px; border-radius: 13px; background: var(--i); color: var(--lime); display: flex; align-items: center; justify-content: center; font-weight: 800; }
+.ph .lime { color: #4E6B00; font-weight: 700; }
+/* rows: calm white cards instead of boxes in boxes */
+.ph .row { display: flex; align-items: center; gap: 8px; min-height: 30px; background: var(--w); border-radius: 16px; padding: 5px 10px; box-shadow: 0 4px 12px rgba(13,14,18,0.04); }
+.ph .row .t { width: 32px; font-family: "Bricolage Grotesque", var(--f-body); font-weight: 700; font-size: 12.5px; font-variant-numeric: tabular-nums; }
 .ph .row .x { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .ph .row .x b { font-weight: 600; font-size: 11.5px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .ph .row .x span { color: var(--m); font-size: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.ph .cb { width: 15px; height: 15px; border-radius: 8px; border: 1.5px solid #A3A9B7; box-sizing: border-box; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #fff; }
-.ph .cb.on { background: var(--i); border-color: var(--i); }
-.ph .dot { width: 7px; height: 7px; border-radius: 4px; flex-shrink: 0; }
-.ph .av { width: 22px; height: 22px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 10px; flex-shrink: 0; }
-.ph .gap { display: flex; align-items: center; gap: 6px; color: var(--m); font-size: 10px; height: 18px; }
+.ph .cb { width: 16px; height: 16px; border-radius: 8px; border: 1.5px solid #A3A9B7; box-sizing: border-box; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--i); }
+.ph .cb.on { background: var(--lime); border-color: var(--lime); }
+.ph .dot { width: 8px; height: 8px; border-radius: 4px; flex-shrink: 0; }
+.ph .av { width: 24px; height: 24px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 10px; flex-shrink: 0; }
+.ph .gap { display: flex; align-items: center; gap: 6px; color: var(--m); font-size: 10px; height: 16px; padding: 0 6px; }
 .ph .gap i { flex: 1; border-top: 1.5px dashed #DDD5C4; }
-.ph .chip { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 99px; background: var(--s); white-space: nowrap; }
+.ph .chip { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 4px 9px; border-radius: 99px; background: var(--w); box-shadow: 0 3px 8px rgba(13,14,18,0.05); white-space: nowrap; }
 .ph .chip.on { background: var(--i); color: #fff; }
 .ph .chips { display: flex; gap: 5px; flex-wrap: wrap; }
-.ph .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 2px; background: #F1EEE7; border-radius: 12px; padding: 2px; }
-.ph .seg span { text-align: center; font-size: 10px; font-weight: 600; color: var(--m); padding: 4px 0; border-radius: 10px; }
-.ph .seg span.on { background: var(--w); color: var(--i); box-shadow: 0 1px 4px rgba(13,14,18,0.1); }
-.ph .btn { border-radius: 99px; background: var(--i); color: #fff; font-weight: 700; text-align: center; padding: 8px 0; font-size: 11.5px; }
-.ph .btn.lime { background: var(--lime); color: var(--i); }
-.ph .btn.ghost { background: transparent; border: 1.5px solid var(--i); color: var(--i); padding: 6.5px 0; }
-.ph .fld { display: flex; flex-direction: column; gap: 2px; border-bottom: 1.5px solid var(--l); padding-bottom: 5px; }
+.ph .seg { display: flex; gap: 5px; }
+.ph .seg span { flex: 1; text-align: center; font-size: 10px; font-weight: 600; padding: 6px 0; border-radius: 99px; background: rgba(255,255,255,0.85); box-shadow: 0 3px 8px rgba(13,14,18,0.05); }
+.ph .seg span.on { background: var(--i); color: #fff; box-shadow: none; }
+.ph .btn { border-radius: 99px; background: var(--i); color: #fff; font-weight: 700; text-align: center; padding: 9px 0; font-size: 11.5px; }
+.ph .btn.lime { background: var(--lime); color: var(--i); box-shadow: 0 6px 14px rgba(160,200,20,0.3); }
+.ph .btn.ghost { background: var(--w); color: var(--i); box-shadow: 0 4px 12px rgba(13,14,18,0.06); }
+.ph .fld { display: flex; flex-direction: column; gap: 2px; background: var(--w); border-radius: 14px; padding: 6px 10px; box-shadow: 0 4px 12px rgba(13,14,18,0.04); }
 .ph .fld span { font-size: 9.5px; color: var(--m); font-weight: 600; }
-.ph .fld b { font-weight: 500; font-size: 12px; }
-.ph .tiles { display: grid; grid-template-columns: repeat(var(--n, 2), 1fr); gap: 6px; }
-.ph .tile { border-radius: 12px; padding: 8px; display: flex; flex-direction: column; gap: 1px; background: var(--s); }
-.ph .tile b { font-weight: 800; font-size: 17px; letter-spacing: -0.3px; }
+.ph .fld b { font-weight: 600; font-size: 12px; }
+.ph .tiles { display: grid; grid-template-columns: repeat(var(--n, 2), 1fr); gap: 7px; }
+.ph .tile { border-radius: 18px; padding: 9px 10px; display: flex; flex-direction: column; gap: 1px; background: var(--w); box-shadow: 0 4px 12px rgba(13,14,18,0.05); }
+.ph .tile b { font-family: "Bricolage Grotesque", var(--f-body); font-weight: 700; font-size: 20px; letter-spacing: -0.4px; }
 .ph .tile span { font-size: 9.5px; }
-.ph .card { border-radius: 14px; border: 1px solid var(--l); padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+.ph .card { border-radius: 22px; background: var(--w); padding: 11px 12px; display: flex; flex-direction: column; gap: 5px; box-shadow: 0 8px 20px rgba(13,14,18,0.06); }
 .ph .sub { color: var(--m); font-size: 10px; }
-.ph .mgrid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; row-gap: 3px; font-size: 10px; }
+.ph .mgrid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); text-align: center; row-gap: 3px; font-size: 10px; background: var(--w); border-radius: 20px; padding: 8px 4px; box-shadow: 0 8px 20px rgba(13,14,18,0.05); }
 .ph .mgrid .wd { font-size: 8.5px; font-weight: 600; color: #8A8F9A; }
 .ph .mgrid .d { display: flex; flex-direction: column; align-items: center; gap: 1px; font-weight: 600; }
 .ph .mgrid .d i { width: 3px; height: 3px; border-radius: 2px; background: #A3A9B7; }
-.ph .mgrid .d.today span { background: var(--i); color: var(--lime); border-radius: 9px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; }
-.ph .xgrid { display: grid; grid-template-columns: repeat(7, 1fr); }
-.ph .xgrid > div { border-top: 1px solid var(--l); min-height: 62px; padding: 2px 1px; display: flex; flex-direction: column; gap: 2px; }
+.ph .mgrid .d.today span { background: var(--i); color: #fff; border-radius: 9px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; }
+.ph .xgrid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); background: var(--w); border-radius: 18px; padding: 2px; box-shadow: 0 8px 20px rgba(13,14,18,0.05); }
+.ph .xgrid > div { border-top: 1px solid var(--l); min-height: 52px; min-width: 0; padding: 2px 1px; display: flex; flex-direction: column; gap: 2px; }
 .ph .xgrid .n { text-align: center; font-weight: 700; font-size: 10px; }
-.ph .xgrid .n.today { background: var(--i); color: var(--lime); border-radius: 8px; }
-.ph .ec { border-radius: 4px; padding: 1px 2px; font-size: 7.5px; font-weight: 700; line-height: 9px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.ph .wrow { display: flex; gap: 6px; border-top: 1px solid var(--l); padding: 5px 0; }
-.ph .wrow .dl { width: 30px; height: 36px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; line-height: 1.1; flex-shrink: 0; }
-.ph .wrow .dl small { font-size: 8.5px; font-weight: 600; }
-.ph .wrow .dl.today { background: var(--i); color: var(--lime); }
-.ph .wrow .bl { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
-.ph .blk { border-radius: 7px; padding: 4px 5px; font-size: 8.5px; font-weight: 700; line-height: 1.2; min-height: 30px; }
+.ph .xgrid .n.today { background: var(--i); color: #fff; border-radius: 8px; }
+.ph .ec { border-radius: 5px; padding: 1px 3px; font-size: 7.5px; font-weight: 700; line-height: 9px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ph .wrow { display: flex; gap: 6px; padding: 4px 0; }
+.ph .wrow .dl { width: 32px; height: 38px; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: "Bricolage Grotesque", var(--f-body); font-weight: 700; font-size: 13px; line-height: 1.1; flex-shrink: 0; background: rgba(255,255,255,0.8); }
+.ph .wrow .dl small { font-family: var(--f-body); font-size: 8.5px; font-weight: 600; }
+.ph .wrow .dl.today { background: var(--i); color: #fff; }
+.ph .wrow .bl { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.ph .blk { border-radius: 12px; padding: 5px 6px; font-size: 8.5px; font-weight: 700; line-height: 1.2; min-height: 30px; }
 .ph .blk small { display: block; font-weight: 500; font-size: 8px; opacity: 0.85; }
-.ph .ring { width: 120px; height: 120px; border-radius: 50%; align-self: center; background: conic-gradient(var(--i) 0 58%, #ECE8DF 58% 100%); display: flex; align-items: center; justify-content: center; }
-.ph .ring > div { width: 98px; height: 98px; border-radius: 50%; background: var(--w); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.ph .ring b { font-weight: 800; font-size: 28px; letter-spacing: -1px; line-height: 1; }
-.ph .bub { max-width: 78%; border-radius: 12px; padding: 6px 9px; background: var(--s); font-size: 10.5px; }
-.ph .bub.me { align-self: flex-end; background: var(--i); color: #fff; }
+.ph .ring { width: 128px; height: 128px; border-radius: 50%; align-self: center; background: conic-gradient(var(--vio) 0 58%, rgba(13,14,18,0.07) 58% 100%); display: flex; align-items: center; justify-content: center; }
+.ph .ring > div { width: 106px; height: 106px; border-radius: 50%; background: var(--w); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.ph .ring b { font-family: "Bricolage Grotesque", var(--f-body); font-weight: 700; font-size: 30px; letter-spacing: -1px; line-height: 1; }
+.ph .bub { max-width: 78%; border-radius: 16px; padding: 7px 10px; background: var(--w); font-size: 10.5px; box-shadow: 0 3px 8px rgba(13,14,18,0.05); }
+.ph .bub.me { align-self: flex-end; background: #E4DAFB; box-shadow: none; }
 .ph .bub small { display: block; font-size: 8.5px; color: var(--m); font-weight: 600; }
-.ph .input { margin-top: auto; border-radius: 99px; border: 1.5px solid var(--l); padding: 6px 10px; color: var(--m); display: flex; justify-content: space-between; }
-.ph .bar { height: 6px; border-radius: 3px; background: #ECE8DF; overflow: hidden; }
-.ph .bar i { display: block; height: 100%; border-radius: 3px; background: var(--i); }
-.ph .sw { width: 26px; height: 26px; border-radius: 13px; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--l); }
+.ph .input { margin-top: auto; border-radius: 99px; background: var(--w); padding: 8px 12px; color: var(--m); display: flex; justify-content: space-between; box-shadow: 0 4px 12px rgba(13,14,18,0.06); }
+.ph .bar { height: 7px; border-radius: 4px; background: rgba(13,14,18,0.07); overflow: hidden; }
+.ph .bar i { display: block; height: 100%; border-radius: 4px; background: var(--vio); }
+.ph .sw { width: 30px; height: 30px; border-radius: 15px; border: 3px solid #fff; box-shadow: 0 3px 8px rgba(13,14,18,0.1); }
 .ph .sw.on { box-shadow: 0 0 0 2px var(--i); }
-.ph .tog { width: 28px; height: 16px; border-radius: 8px; background: var(--i); position: relative; flex-shrink: 0; }
-.ph .tog::after { content: ""; position: absolute; right: 2px; top: 2px; width: 12px; height: 12px; border-radius: 6px; background: var(--lime); }
+.ph .tog { width: 30px; height: 18px; border-radius: 9px; background: var(--i); position: relative; flex-shrink: 0; }
+.ph .tog::after { content: ""; position: absolute; right: 2px; top: 2px; width: 14px; height: 14px; border-radius: 7px; background: var(--lime); }
 .ph .tog.off { background: #DDD8CC; }
 .ph .tog.off::after { right: auto; left: 2px; background: #fff; }
-.ph .nav { position: absolute; left: 0; right: 0; bottom: 0; height: 50px; background: rgba(255,255,255,0.97); border-top: 1px solid var(--l); display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; justify-items: center; }
+/* tab bar with a notch and a round plus in the middle */
+.ph .nav { position: absolute; left: 0; right: 0; bottom: 0; height: 54px; background: var(--w); border-radius: 18px 18px 0 0; box-shadow: 0 -6px 16px rgba(75,47,214,0.08);
+  -webkit-mask: radial-gradient(circle 25px at 50% -4px, transparent 24px, #000 25px); mask: radial-gradient(circle 25px at 50% -4px, transparent 24px, #000 25px);
+  display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; justify-items: center; padding-top: 4px; box-sizing: border-box; }
 .ph .nav span { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 8px; color: #6B6F7A; font-weight: 500; }
-.ph .nav span i { width: 14px; height: 14px; border-radius: 4px; border: 1.6px solid #6B6F7A; box-sizing: border-box; }
+.ph .nav span i { width: 15px; height: 15px; border-radius: 5px; border: 1.6px solid #6B6F7A; box-sizing: border-box; }
 .ph .nav span.on { color: var(--i); font-weight: 700; }
 .ph .nav span.on i { border-color: var(--i); background: var(--i); }
-.ph .nav .plus { width: 32px; height: 32px; border-radius: 16px; background: var(--i); color: var(--lime); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; margin-top: -8px; }
-.ph .dim { position: absolute; inset: 0; background: rgba(13,14,18,0.32); }
-.ph .sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--w); border-radius: 20px 20px 0 0; padding: 8px 13px 18px; display: flex; flex-direction: column; gap: 8px; }
+.ph .plus { position: absolute; left: 50%; bottom: 31px; transform: translateX(-50%); width: 38px; height: 38px; border-radius: 19px; background: linear-gradient(145deg, #9B7DFF, #6A4CF0); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 22px; box-shadow: 0 8px 16px rgba(106,76,240,0.4); z-index: 2; }
+.ph .dim { position: absolute; inset: 0; background: rgba(13,14,18,0.32); z-index: 3; }
+.ph .sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; background: var(--bg); border-radius: 24px 24px 0 0; padding: 8px 13px 18px; display: flex; flex-direction: column; gap: 8px; }
 .ph .sheet .grab { align-self: center; width: 30px; height: 4px; border-radius: 2px; background: #DDD8CC; }
-.ph .url { align-self: center; font-size: 9.5px; color: var(--m); background: var(--s); border-radius: 99px; padding: 3px 10px; }
+.ph .url { align-self: center; font-size: 9.5px; color: var(--m); background: var(--w); border-radius: 99px; padding: 3px 10px; }
 .ph .wd2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.ph .wg { border-radius: 16px; padding: 9px; display: flex; flex-direction: column; gap: 3px; background: #fff; box-shadow: 0 4px 14px rgba(13,14,18,0.08); }
-.ph .wg.dark { background: var(--i); color: #fff; }
+.ph .wg { border-radius: 20px; padding: 10px; display: flex; flex-direction: column; gap: 3px; background: #fff; box-shadow: 0 6px 16px rgba(13,14,18,0.08); }
+.ph .wg.dark { background: linear-gradient(150deg, #E4DAFB, #FFE3CF); }
 .ph .wg.wide { grid-column: span 2; }
 .ph .wall { background: linear-gradient(170deg, #C9D6F2, #E8D9F0 55%, #F7DCCB); }
+.ph .grad { border-radius: 24px; padding: 13px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 12px 26px rgba(120,60,90,0.12); }
+.ph .carousel { display: flex; gap: 8px; margin-right: -13px; }
+.ph .carousel > div { width: 150px; flex-shrink: 0; min-height: 150px; }
+.ph .picker { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 2px; }
+.ph .picker span { display: flex; flex-direction: column; align-items: center; gap: 2px; font-family: "Bricolage Grotesque", var(--f-body); font-weight: 700; color: #8A8F9A; }
+.ph .picker span small { font-family: var(--f-body); font-size: 8.5px; font-weight: 500; color: var(--m); }
+.ph .bigcard { border-radius: 22px; background: var(--w); padding: 9px 11px; display: flex; align-items: center; gap: 9px; box-shadow: 0 8px 20px rgba(13,14,18,0.05); }
+.ph .bigcard .tm { font-family: "Bricolage Grotesque", var(--f-body); font-weight: 700; font-size: 16px; min-width: 40px; }
+.ph .circle { width: 46px; height: 46px; border-radius: 23px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; background: var(--w); box-shadow: 0 4px 12px rgba(13,14,18,0.08); }
+.ph .circle.on { background: var(--i); color: #fff; }
+.ph .floatbar { position: absolute; left: 12px; right: 12px; bottom: 14px; height: 52px; border-radius: 26px; background: var(--w); box-shadow: 0 10px 24px rgba(13,14,18,0.14); display: flex; align-items: center; padding: 0 6px 0 16px; gap: 8px; z-index: 2; }
 </style>
 
 <div class="wrap">
   <header class="intro">
     <h1>Nowish App-Landkarte</h1>
-    <p class="lead">Alle Seiten, die für die App angedacht sind – jetzt mit echtem Layout im vorgemerkten Stil v7 „Klar &amp; farbig“: Weiß, schwarze Schrift, Lime nur für den Aufbruch, Termine als Pastell-Chips. Alle Inhalte sind Beispieldaten (Mockup, keine App-Screenshots).</p>
+    <p class="lead">Alle Seiten, die für die App angedacht sind – jetzt im Stil v4 „Weich &amp; groß“ mit deinen Wünschen: ruhige, klar getrennte Bereiche, eine Hauptsache pro Screen, große Zahlen statt Text, weiche Pastell-Flächen, runde Karten und die Leiste mit Mulde und Plus-Knopf in der Mitte. Lime bleibt der Hauptaktion vorbehalten. Alle Inhalte sind Beispieldaten (Mockup, keine App-Screenshots).</p>
     <div class="legend">
       <span><span class="pill live">im Prototyp</span> gebaut und durchspielbar</span>
       <span><span class="pill plan">geplant</span> folgt mit Konten, Servern oder später</span>
@@ -174,7 +197,7 @@ flowchart LR
 
   <div id="areas" style="display: flex; flex-direction: column; gap: 56px"></div>
 
-  <p class="note">Stand 13.11.2026 · Prototyp lokal mit Beispieldaten, ohne Konten. Routen entsprechen den Pfaden in <code>apps/mobile/app</code>. Die Mockups zeigen die Richtung v7 und sind keine App-Screenshots; der endgültige Stil ist noch offen.</p>
+  <p class="note">Stand 13.11.2026 · Prototyp lokal mit Beispieldaten, ohne Konten. Routen entsprechen den Pfaden in <code>apps/mobile/app</code>. Die Mockups zeigen die Richtung v4 und sind keine App-Screenshots.</p>
 </div>
 
 <script>
@@ -184,7 +207,6 @@ const C = { sky: ['#DDF1FA', '#0E5F78'], lav: ['#EDE7FF', '#4B2FD6'], peach: ['#
 const st = (c) => 'background:' + C[c][0] + ';color:' + C[c][1];
 const hdr = (k, h, right, red) => '<div class="top"><div><div class="k' + (red ? ' red' : '') + '">' + k + '</div><div class="h">' + h + '</div></div>' + (right ?? '<span class="demo">Demo</span>') + '</div>';
 const back = (title, right) => '<div class="top" style="align-items:center"><span class="back">‹</span><span class="h2">' + (title || '') + '</span>' + (right ?? '<span class="demo">Demo</span>') + '</div>';
-const next = (k, big, s) => '<div class="next"><div style="flex:1"><div style="font-size:9.5px;color:#C9CCD3">' + k + '</div><div><span class="big">' + big + '</span> <span class="lime">' + s + '</span></div></div><span class="go">→</span></div>';
 const row = (t, title, sub, c, done, extra) => '<div class="row">' + (t ? '<span class="t">' + t + '</span>' : '') + (c ? '<span class="dot" style="background:' + C[c][1] + '"></span>' : '') + '<div class="x"><b' + (done ? ' style="color:#8A8F9A;text-decoration:line-through"' : '') + '>' + title + '</b>' + (sub ? '<span>' + sub + '</span>' : '') + '</div>' + (extra ?? '<span class="cb' + (done ? ' on' : '') + '">' + (done ? '✓' : '') + '</span>') + '</div>';
 const gap = (txt) => '<div class="gap"><span style="width:30px"></span><i></i>' + txt + '</div>';
 const chips = (arr, on) => '<div class="chips">' + arr.map((x, i) => '<span class="chip' + (i === on ? ' on' : '') + '">' + x + '</span>').join('') + '</div>';
@@ -199,7 +221,7 @@ const sub = (t) => '<div class="sub">' + t + '</div>';
 const tog = (l, on, s) => '<div class="row"><div class="x"><b>' + l + '</b>' + (s ? '<span>' + s + '</span>' : '') + '</div><span class="tog' + (on ? '' : ' off') + '"></span></div>';
 const bub = (t, me, who) => '<div class="bub' + (me ? ' me' : '') + '">' + (who ? '<small>' + who + '</small>' : '') + t + '</div>';
 const bar = (p) => '<div class="bar"><i style="width:' + p + '%"></i></div>';
-const nav = (on) => '<div class="nav">' + ['Heute', 'Kalender', '+', 'Gemeinsam', 'Ich'].map((x, i) => x === '+' ? '<div class="plus">+</div>' : '<span' + (i === on ? ' class="on"' : '') + '><i></i>' + x + '</span>').join('') + '</div>';
+const nav = (on) => '<div class="plus">+</div><div class="nav">' + ['Heute', 'Kalender', '+', 'Gemeinsam', 'Ich'].map((x, i) => x === '+' ? '<span></span>' : '<span' + (i === on ? ' class="on"' : '') + '><i></i>' + x + '</span>').join('') + '</div>';
 const sheet = (html) => '<div class="dim"></div><div class="sheet"><span class="grab"></span>' + html + '</div>';
 function month(withChips) {
   const ev = { 2: [['Workout', 'peach']], 3: [['Elternabend', 'sand']], 5: [['Meeting', 'rose'], ['Dinner', 'peach']], 9: [['Nägel', 'lav']], 10: [['Fest', 'mint']], 12: [['Workout', 'peach']], 13: [['Zahnarzt', 'sky'], ['Lunch', 'lav']], 14: [['Lauftreff', 'mint']], 16: [['Tom Geb.', 'rose']], 17: [['Arzt', 'sky']], 18: [['Grillen', 'mint']], 19: [['Lunch', 'peach']], 22: [['Meeting', 'rose']], 25: [['Workout', 'peach']], 26: [['Advent', 'rose']] };
@@ -301,33 +323,69 @@ const S = {
     h2('Hinweise im eigenen System', '') + tog('agenda_feed', true, 'max. 1 pro 10 Einträge') + tog('post_event_create', false, 'nie in der ersten Woche') + h2('Audit-Log', '') + row('', 'Comp-Abo vergeben', 'heute 09:12 · admin', null, false, '') + row('', 'Slot geändert', 'gestern · admin', null, false, ''),
 };
 
+const next = () => '<div class="next"><div class="who"><span class="ico">Z</span><div style="display:flex;flex-direction:column"><b>Zahnarzt · 08:30</b><span class="sub">Praxis Dr. Sommer</span></div><span class="sub" style="margin-left:auto">1 von 3</span></div><span class="sub" style="margin-top:6px">Losgehen um</span><span class="big">07:55</span><span class="sub">in 25 Min. · 20 Min. Rad + 10 Puffer</span><div class="acts"><span class="more">···</span><span class="go">Bin unterwegs <span>→</span></span></div></div>';
+const bigcard = (tm, end, title, place, who, c, tint) => '<div class="bigcard"' + (tint ? ' style="background:linear-gradient(135deg,#fff 40%,' + C[c][0] + ')"' : '') + '><span style="display:flex;flex-direction:column"><span class="tm">' + tm + '</span><span class="sub" style="font-size:9px">' + end + '</span></span><span style="flex:1;min-width:0;display:flex;flex-direction:column"><b style="font-size:11.5px">' + title + '</b><span class="sub">' + place + '</span></span>' + av(who, c) + '</div>';
+const picker = (sel) => '<div class="picker">' + [[10, 'Di'], [11, 'Mi'], [12, 'Do'], [13, 'Fr'], [14, 'Sa'], [15, 'So'], [16, 'Mo']].map(([n, w]) => { const d = Math.abs(n - sel); return '<span style="font-size:' + (d === 0 ? 30 : d === 1 ? 17 : 13) + 'px;' + (d === 0 ? 'color:#0D0E12' : d === 1 ? 'color:#4A4E58' : '') + '">' + n + '<small>' + w + '</small></span>'; }).join('') + '</div><div style="height:5px;border-radius:3px;background:linear-gradient(90deg,#E4DAFB,#FFC9A6,#E4DAFB)"></div>';
+const fullTop = (bg, inner, pb) => '<div style="margin:-18px -13px 0;padding:18px 13px ' + (pb || 18) + 'px;border-radius:0 0 30px 30px;background:' + bg + ';display:flex;flex-direction:column;gap:8px">' + inner + '</div>';
+const G = { warm: 'linear-gradient(170deg,#FFC9A6 0%,#F6C9DA 45%,#E4DAFB 100%)', lav: 'linear-gradient(160deg,#DCCFFF 0%,#FFD9C2 100%)', rose: 'linear-gradient(160deg,#FFC9A6,#F6C9DA)', sky: 'linear-gradient(160deg,#E4DAFB,#CDE7F6)', mint: 'linear-gradient(160deg,#DDF2C6,#FFF1C9)' };
+Object.assign(S, {
+  heute: () => hdr('Freitag, 13. Nov', 'Hallo, Kim') + next() +
+    '<div class="row" style="background:#FFF1E6;box-shadow:none"><span class="dot" style="background:#E0702F"></span><div class="x"><b>Spieleabend → Physio wird knapp</b></div><b>Lösen</b></div>' +
+    h2('Dein Tag', '6 Termine · 3 h frei') + row('12:30', 'Mittagessen mit Alex', 'Café Lindner', 'lav') + gap('3 Std. frei · planen') + row('17:45', 'Friseur', 'Salon Schnittpunkt', 'peach') + nav(0),
+  los: () => '<div class="sc" style="background:radial-gradient(160px 160px at 20% 10%,#DCCFFF,rgba(246,240,255,0)),radial-gradient(150px 150px at 95% 45%,#FFD2B0,rgba(246,240,255,0)),radial-gradient(140px 140px at 10% 90%,#CDEFF6,rgba(246,240,255,0)),#F6F0FF">' +
+    back('Zahnarzt · 08:30') + '<div class="ring"><div><span class="sub">los in</span><b>25:00</b><span class="sub">um 07:55</span></div></div>' +
+    h2('Bereit-Check', '1 von 3') + '<div class="seg"><span style="background:#C8F031">✓ Schlüssel</span><span>Karte</span><span>Helm</span></div>' +
+    '<div class="card"><b>Ich verspäte mich um …</b><div class="seg"><span>5 Min.</span><span>10 Min.</span><span>15 Min.</span></div>' + sub('Die Praxis bekommt Bescheid (Demo)') + '</div>' + btn('Angekommen') + '</div>',
+  monat: () => hdr('2026', 'November', '<span class="chip">Alle</span>') + seg(['Woche', 'Monat', 'Liste'], 1) + month(false) + h2('Heute', '4 Termine') +
+    bigcard('08:30', 'bis 09:15', 'Zahnarzt', 'Praxis Dr. Sommer', 'Du', 'sky', 1) + bigcard('12:30', 'bis 13:30', 'Mittagessen mit Alex', 'Café Lindner', 'A', 'lav') + nav(1),
+  liste: () => hdr('2026', 'November', '<span class="chip">Alle</span>') + picker(13) + h2('Heute', '4 Termine') +
+    bigcard('08:30', 'bis 09:15', 'Zahnarzt', 'Praxis Dr. Sommer', 'Du', 'sky', 1) + bigcard('12:30', 'bis 13:30', 'Mittagessen mit Alex', 'Café Lindner', 'A', 'lav') + bigcard('17:45', 'bis 18:40', 'Friseur', 'Salon Schnittpunkt', 'Du', 'sky') + bigcard('19:00', 'bis 23:00', 'Spieleabend bei Olivia', 'Lindenstraße 8', 'O', 'lav', 1) + nav(1),
+  termin: () => fullTop(G.warm, '<div class="top" style="align-items:center"><span class="back">‹</span><span class="demo">Demo</span><span class="back">···</span></div><div style="text-align:center;font-weight:600">Freitag, 13. Nov · 19:00</div><div class="sub" style="text-align:center;color:#3A2E3A">Lindenstraße 8</div>', 74) +
+    '<div class="card" style="margin-top:-66px;border-radius:26px;box-shadow:0 -7px 0 -3px rgba(255,255,255,0.6),0 16px 34px rgba(120,60,90,0.18)"><div class="who" style="display:flex;gap:7px;align-items:center">' + av('O', 'lav') + '<span class="sub">Olivia lädt ein</span></div><div class="h" style="font-size:24px">Spieleabend bei Olivia</div><div class="chips"><span class="chip" style="background:#F3EFE8;box-shadow:none">Gäste 4/6</span><span class="chip" style="background:#F3EFE8;box-shadow:none">Mitbringen 1/2</span><span class="chip" style="background:#F3EFE8;box-shadow:none">Chat 2</span></div></div>' +
+    '<div style="display:flex;justify-content:center;gap:14px">' + [['✓', 'Dabei', 1], ['?', 'Vielleicht'], ['×', 'Kann nicht']].map(([s, l, on]) => '<span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span class="circle' + (on ? ' on' : '') + '">' + s + '</span><span style="font-size:9.5px;font-weight:600">' + l + '</span></span>').join('') + '</div>' +
+    '<div class="sub" style="text-align:center;font-weight:600;color:#0D0E12;text-decoration:underline">+ Umfrage oder Kosten</div>' +
+    '<div class="floatbar"><span style="flex:1;display:flex;flex-direction:column"><span class="sub" style="font-size:9px">Losgehen · 22 Min. Rad + 10 Puffer</span><b style="font-family:\'Bricolage Grotesque\',sans-serif;font-size:20px">18:28</b></span><span class="circle" style="width:40px;height:40px;background:#C8F031;box-shadow:0 6px 14px rgba(160,200,20,0.35)">✓</span></div>',
+  events: () => hdr('Mit deinen Leuten', 'Gemeinsam') + seg(['Events', 'Gruppen', 'Familie'], 0) + h2('Wartet auf dich', '') +
+    '<div class="carousel"><div class="grad" style="background:' + G.rose + '"><span class="chip" style="align-self:flex-start;background:rgba(255,255,255,0.7);box-shadow:none">Antwort offen</span><div class="h" style="font-size:18px">Geburtstag von Tom</div><div style="flex:1"></div><b>Mo, 16. Nov · 19:30</b><span class="sub" style="color:#3A3550">3 dabei · 2 offen</span></div>' +
+    '<div class="grad" style="background:' + G.sky + '"><span class="chip" style="align-self:flex-start;background:rgba(255,255,255,0.7);box-shadow:none">Heute</span><div class="h" style="font-size:18px">Spieleabend bei Olivia</div><div style="flex:1"></div><b>Fr · 19:00</b><span class="sub" style="color:#3A3550">Du bist dabei</span></div></div>' +
+    h2('Deine Woche auf einen Blick', '') + '<div class="tiles"><div class="tile"><span>Zugesagt</span><b>4</b><span>Events</span></div><div class="tile" style="background:' + G.lav + ';box-shadow:none"><span>Fahrten offen</span><b>3</b><span>Familie</span></div></div>' + nav(3),
+  familie: () => back('Familie Berger') + '<div class="h">Wer macht was?</div>' +
+    '<div style="display:flex;justify-content:space-between">' + [['D', 'Du', 'lav'], ['S', 'Sam', 'sky'], ['L', 'Lena', 'peach', 1], ['P', 'Paul', 'rose']].map(([i, n, c, on]) => '<span style="display:flex;flex-direction:column;align-items:center;gap:3px"><span style="width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;' + (on ? 'background:conic-gradient(#7C5CFF,#FFB98C,#7C5CFF)' : '') + '"><span class="av" style="width:38px;height:38px;border-radius:19px;font-size:14px;border:2.5px solid #FBF8F4;box-sizing:border-box;' + st(c) + '">' + i + '</span></span><b style="font-size:10px">' + n + '</b></span>').join('') + '</div>' +
+    '<div class="grad" style="background:' + G.mint + '"><span class="chip" style="align-self:flex-start;background:rgba(255,255,255,0.7);box-shadow:none">Fahrt offen</span><div class="h" style="font-size:17px">Lena vom Schwimmen abholen</div><span class="sub" style="color:#2F3A20">Sa · 16:00 · Hallenbad Mitte</span><div class="tiles">' + btn('Ich fahre') + btn('Sam fragen', 'ghost') + '</div></div>' +
+    '<div class="tiles"><div class="tile"><span>Einkauf</span><b>5</b>' + bar(40) + '</div><div class="tile"><span>Ämtchen</span><b>1/2</b>' + bar(50) + '</div></div>' + nav(3),
+  ich: () => fullTop(G.lav, '<div class="top"><div class="h">Ich</div><span class="demo">Demo</span></div><div style="display:flex;align-items:center;gap:10px"><span class="circle" style="width:44px;height:44px;font-family:\'Bricolage Grotesque\',sans-serif;font-size:18px">K</span><span style="display:flex;flex-direction:column"><b style="font-size:14px">Kim</b><span class="sub" style="color:#3A3550">Plus · Test noch 12 Tage</span></span></div>') +
+    '<div class="card"><div class="top" style="align-items:flex-end"><span style="display:flex;flex-direction:column"><span class="sub">Pünktlich diese Woche</span><b style="font-family:\'Bricolage Grotesque\',sans-serif;font-size:30px;line-height:32px">92 %</b></span><span class="sub" style="color:#2F7A3F;font-weight:600">+8 %</span></div><div style="display:flex;align-items:flex-end;gap:5px;height:38px">' + [96, 88, 100, 82, 92, 0, 0].map((p, i) => '<i style="flex:1;border-radius:6px;height:' + Math.max(6, p * 0.38) + 'px;background:' + (p === 0 ? '#F1ECE2' : i === 4 ? 'linear-gradient(180deg,#9B7DFF,#6A4CF0)' : '#E4DAFB') + '"></i>').join('') + '</div></div>' +
+    '<span class="h2">Dein Look</span><div style="display:flex;gap:10px">' + [G.lav, 'linear-gradient(160deg,#C7ECF7,#DCCFFF)', G.rose, G.mint].map((g, i) => '<span class="sw' + (i === 0 ? ' on' : '') + '" style="background:' + g + '"></span>').join('') + '</div>' +
+    row('', 'Start-Ansicht', 'Heute', null, false, '<b>›</b>') + row('', 'Datenschutz', 'nur auf dem Gerät', null, false, '<b>›</b>') + nav(4),
+});
+
 const AREAS = [
   { id: 'start', title: 'Einstieg', what: 'Erster Start und Abo-Entscheidung.', screens: [
     ['Onboarding', '/onboarding', 1, 'Willkommen, Alter bestätigen (16+), Testphase anbieten – ohne Konto.', 'onboarding'],
     ['Paywall', '/paywall', 1, 'Free, Plus, Family im Vergleich; nichts ist vorausgewählt, Kauf ist im Prototyp eine Demo.', 'paywall'],
   ]},
   { id: 'heute', title: 'Heute', what: 'Der Start-Tab: Wann muss ich los, was steht an, wo wird es knapp.', screens: [
-    ['Heute', '/(tabs)/index', 1, 'Nächster Aufbruch, Helfer-Hinweis, Tagesliste mit Haken und freien Lücken.', 'heute'],
+    ['Heute', '/(tabs)/index', 1, '„Hallo, Kim“, der nächste Aufbruch als große Karte (dahinter die nächsten), Helfer-Zeile, Tag mit freien Lücken.', 'heute'],
     ['Schnell-Eintrag', 'Blatt über +', 1, 'Eine Zeile tippen – Titel, Tag, Zeit und Ort werden erkannt.', 'quick'],
     ['Verschieben', 'Blatt per Wischen', 1, 'Nach links wischen: +15 Min., +1 Std. oder morgen.', 'later'],
     ['Losgeh-Modus', 'Idee aus dem Konzept', 0, 'Countdown bis zum Losgehen, Bereit-Check, „Ich verspäte mich“ mit einem Tipp.', 'los'],
   ]},
   { id: 'kalender', title: 'Kalender', what: 'Alle Termine im Überblick, auch erweitert und als Widget.', screens: [
     ['Monat', '/(tabs)/calendar', 1, 'Monatsraster mit Punkten, Filter nach Person, darunter der gewählte Tag.', 'monat'],
-    ['Woche & Liste', '/(tabs)/calendar', 1, 'Liste der nächsten 30 Tage nach Tagen gruppiert; Abhaken und Wischen wie auf Heute.', 'liste'],
+    ['Woche & Liste', '/(tabs)/calendar', 1, 'Tages-Picker wie ein Zahlenrad, Termine als runde Karten mit großer Uhrzeit.', 'liste'],
     ['Monat erweitert', 'Idee v7', 0, 'Jeder Tag zeigt bis zu zwei Termine; Tippen öffnet die Tagesliste.', 'monatX'],
     ['Woche erweitert', 'Idee v7', 0, 'Eine Zeile pro Tag, Termine als Blöcke nebeneinander.', 'wocheX'],
     ['Kalenderdatei', '/ics-import', 1, 'Termine aus einer .ics-Datei übernehmen oder exportieren.', 'ics'],
   ]},
   { id: 'termin', title: 'Termin & Event', what: 'Alles zu einem Termin an einem Ort.', screens: [
-    ['Termin', '/event/[id]', 1, 'Wann, wo, Losgeh-Plan, deine Antwort; Tab „Gemeinsam“ bei Events.', 'termin'],
+    ['Termin', '/event/[id]', 1, 'Termin als große Karte im Fokus, Antwort mit drei runden Knöpfen, unten schwebend „Losgehen 18:28“.', 'termin'],
     ['Editor', '/editor', 1, 'Titel, Zeit, Ort, Weg, Losgeh-Vorschau, Erinnerungen, Wiederholung.', 'editor'],
     ['Vorlagen', '/templates', 1, 'Grillabend, Spieleabend, Geburtstag … mit fertigen Listen und Aufgaben.', 'vorlagen'],
     ['Bereit-Check', '/ready', 1, 'Was muss mit? Abhaken, dann „Bin unterwegs“.', 'ready'],
     ['Fokus-Modus', '/focus', 1, 'Nur der nächste Schritt, sichtbare Zeit, Mikroschritte.', 'fokus'],
   ]},
   { id: 'gemeinsam', title: 'Gemeinsam', what: 'Events, Gruppen und Familie – alles, was man mit anderen plant.', screens: [
-    ['Events', '/(tabs)/events', 1, 'Was auf deine Antwort wartet, darunter diese Woche.', 'events'],
+    ['Events', '/(tabs)/events', 1, '„Wartet auf dich“ als wischbares Karten-Karussell, darunter die Woche in zwei Kacheln.', 'events'],
     ['Gäste & Zusagen', '/event/[id]/guests', 1, 'Wer kommt; „Vielleicht“ läuft zur Frist ab.', 'gaeste'],
     ['Umfrage', '/event/[id]/poll', 1, 'Termin abstimmen, per Wischen, mit Deadline.', 'umfrage'],
     ['Mitbringliste', '/event/[id]/bring', 1, 'Wer bringt was; Offenes mit einem Tipp übernehmen.', 'bring'],
