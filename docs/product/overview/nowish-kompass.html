@@ -1,0 +1,446 @@
+<title>Nowish Kompass</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a concept book — thesis and principles first, then every screen as a phone in the "Kompass" look:
+   cool fog paper, indigo ink, one sunrise gradient that only ever means "now". */
+:root {
+  --bg: #F1F2F6; --surface: #FFFFFF; --ink: #17163A; --muted: #5D5F78; --line: #E1E2EA;
+  --sun-a: #FF6B4A; --sun-b: #FFB547; --peri: #5B67F1; --plan: #6B5BD6;
+  --f-display: "Sora", "Inter", system-ui, sans-serif; --f-body: "Inter", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0F0F1E; --surface: #18182C; --ink: #ECECF6; --muted: #A3A4BC; --line: #2A2A42; --peri: #8D96FF; --plan: #B1A6FF; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #0F0F1E; --surface: #18182C; --ink: #ECECF6; --muted: #A3A4BC; --line: #2A2A42; --peri: #8D96FF; --plan: #B1A6FF; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 48px 88px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 56px; }
+h1, h2, h3 { font-family: var(--f-display); letter-spacing: -0.03em; text-wrap: balance; margin: 0; line-height: 1.08; }
+h1 { font-size: clamp(38px, 7vw, 76px); font-weight: 800; }
+h2 { font-size: clamp(22px, 3vw, 28px); font-weight: 700; }
+h3 { font-size: 17px; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+.muted { color: var(--muted); }
+.sunword { background: linear-gradient(100deg, var(--sun-a), var(--sun-b)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+@media (max-width: 820px) { .hero { grid-template-columns: 1fr; } }
+.hero .kick { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.hero .thesis { font-size: 19px; color: var(--muted); margin-top: 16px; }
+.orbbig { width: min(320px, 80vw); aspect-ratio: 1; max-width: 100%; border-radius: 50%; justify-self: center; position: relative; display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 35% 30%, #FFD9A0 0%, var(--sun-b) 30%, var(--sun-a) 75%); box-shadow: 0 30px 80px rgba(255,107,74,0.35), inset 0 -20px 40px rgba(180,40,20,0.18); }
+.orbbig::after { content: ""; position: absolute; inset: -18px; border-radius: 50%; border: 1px solid rgba(255,107,74,0.35); }
+.orbbig div { text-align: center; color: #2A0E05; }
+.orbbig b { display: block; font-family: var(--f-display); font-weight: 800; font-size: clamp(54px, 9vw, 84px); letter-spacing: -0.04em; line-height: 1; }
+.orbbig span { font-weight: 600; }
+@media (prefers-reduced-motion: no-preference) { .orbbig { animation: breathe 5s ease-in-out infinite; } @keyframes breathe { 50% { transform: scale(1.025); } } }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.tile .no { font-family: var(--f-display); font-weight: 700; color: var(--peri); font-size: 13px; }
+.tile p { font-size: 14px; color: var(--muted); }
+.pill { font-size: 11px; font-weight: 700; letter-spacing: 0.02em; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.pill.live { background: #DFF5EC; color: #1E6B4E; }
+.pill.plan { border: 1px solid var(--plan); color: var(--plan); }
+.pill.new { background: linear-gradient(100deg, var(--sun-a), var(--sun-b)); color: #2A0E05; }
+.pill.plus { background: var(--ink); color: var(--bg); }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 14px; }
+th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+.specimen { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.sw { border-radius: 16px; padding: 14px; min-height: 86px; display: flex; flex-direction: column; justify-content: flex-end; font-size: 12px; font-weight: 600; border: 1px solid var(--line); }
+.area { display: flex; flex-direction: column; gap: 18px; }
+.area-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+.area-head p { color: var(--muted); font-size: 14px; }
+.screens { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 34px 22px; }
+.screen { display: flex; flex-direction: column; gap: 12px; min-width: 0; margin: 0; }
+.caption { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.caption .nm { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-weight: 700; }
+.caption .what { font-size: 13px; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.note { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+
+/* ---------------- Phone in the Kompass look (fixed light app look) ---------------- */
+.ph { --i: #17163A; --m: #5D5F78; --l: #E6E7EF; --w: #FFFFFF; --f: #F3F4F8; --peri: #5B67F1;
+  --sun: linear-gradient(135deg, #FF6B4A, #FFB547);
+  width: 250px; height: 520px; box-sizing: border-box; border-radius: 36px; background: var(--f); color: var(--i);
+  border: 7px solid #17163A; box-shadow: 0 20px 44px rgba(23,22,58,0.20); position: relative; overflow: hidden;
+  font-family: var(--f-body); font-size: 11px; line-height: 1.35; }
+.ph .sc { position: absolute; inset: 0; padding: 18px 13px 72px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+.ph .sc > * { flex-shrink: 0; }
+.ph .D { font-family: "Sora", var(--f-body); }
+.ph .k { font-size: 10px; font-weight: 600; color: var(--m); }
+.ph .h { font-family: "Sora", var(--f-body); font-weight: 700; font-size: 20px; letter-spacing: -0.6px; line-height: 1.1; }
+.ph .h2 { font-family: "Sora", var(--f-body); font-weight: 700; font-size: 12.5px; letter-spacing: -0.2px; }
+.ph .hd { display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; }
+.ph .me { width: 28px; height: 28px; border-radius: 14px; background: linear-gradient(135deg, #C9CEFF, #FFD3C2); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; flex-shrink: 0; }
+.ph .demo { font-size: 8.5px; font-weight: 700; color: var(--peri); border: 1px solid #C9CEFF; padding: 1px 6px; border-radius: 99px; }
+.ph .bk { width: 28px; height: 28px; border-radius: 10px; background: var(--w); display: flex; align-items: center; justify-content: center; font-weight: 700; box-shadow: 0 2px 8px rgba(23,22,58,0.06); }
+.ph .say { font-family: "Sora", var(--f-body); font-size: 15px; font-weight: 600; line-height: 1.3; letter-spacing: -0.3px; }
+.ph .say em { font-style: normal; background: var(--sun); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.ph .orb { border-radius: 50%; background: radial-gradient(circle at 35% 30%, #FFD9A0 0%, #FFB547 32%, #FF6B4A 78%); box-shadow: 0 14px 30px rgba(255,107,74,0.35); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #2A0E05; align-self: center; position: relative; }
+.ph .orb::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 1px solid rgba(255,107,74,0.35); }
+.ph .orb b { font-family: "Sora", var(--f-body); font-weight: 800; letter-spacing: -1px; line-height: 1; }
+.ph .orb span { font-size: 9px; font-weight: 600; }
+.ph .orb.calm { background: radial-gradient(circle at 35% 30%, #E4E7FF 0%, #9EA7FF 45%, #5B67F1 90%); box-shadow: 0 14px 30px rgba(91,103,241,0.3); color: #fff; }
+.ph .card { background: var(--w); border-radius: 20px; padding: 11px 12px; display: flex; flex-direction: column; gap: 5px; box-shadow: 0 6px 18px rgba(23,22,58,0.06); }
+.ph .sub { color: var(--m); font-size: 10px; }
+.ph .thread { position: relative; display: flex; flex-direction: column; gap: 0; padding-left: 16px; }
+.ph .thread::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 2px; border-radius: 1px; background: var(--l); }
+.ph .tr { position: relative; display: flex; gap: 8px; align-items: flex-start; padding: 5px 0; }
+.ph .tr::before { content: ""; position: absolute; left: -15px; top: 9px; width: 10px; height: 10px; border-radius: 5px; background: var(--w); border: 2px solid var(--c, #A3A6BD); box-sizing: border-box; }
+.ph .tr.past { opacity: 0.45; }
+.ph .tr.now::before { background: #FF6B4A; border-color: #FFD3C2; box-shadow: 0 0 0 4px rgba(255,107,74,0.18); }
+.ph .tr .t { width: 32px; font-family: "Sora", var(--f-body); font-weight: 700; font-size: 11px; font-variant-numeric: tabular-nums; padding-top: 1px; }
+.ph .tr .x { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ph .tr .x b { font-weight: 600; font-size: 11.5px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ph .tr .x span { color: var(--m); font-size: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ph .free { margin: 2px 0; border: 1.5px dashed #C9CCDD; border-radius: 12px; padding: 5px 8px; color: var(--m); font-size: 10px; display: flex; justify-content: space-between; }
+.ph .free b { color: var(--peri); }
+.ph .chip { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 4px 9px; border-radius: 10px; background: var(--w); box-shadow: 0 2px 6px rgba(23,22,58,0.05); white-space: nowrap; }
+.ph .chip.on { background: var(--i); color: #fff; }
+.ph .chips { display: flex; gap: 5px; flex-wrap: wrap; }
+.ph .plusb { align-self: flex-start; flex-shrink: 0; font-size: 8px; font-weight: 800; letter-spacing: 0.04em; padding: 1px 6px; border-radius: 6px; background: var(--sun); color: #2A0E05; }
+.ph .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: #E6E7EF; border-radius: 12px; padding: 3px; gap: 2px; }
+.ph .seg span { text-align: center; font-size: 10px; font-weight: 600; color: var(--m); padding: 5px 0; border-radius: 9px; }
+.ph .seg span.on { background: var(--w); color: var(--i); box-shadow: 0 1px 4px rgba(23,22,58,0.1); }
+.ph .btn { border-radius: 14px; background: var(--i); color: #fff; font-weight: 700; text-align: center; padding: 10px 0; font-size: 11.5px; }
+.ph .btn.sun { background: var(--sun); color: #2A0E05; box-shadow: 0 8px 18px rgba(255,107,74,0.3); }
+.ph .btn.soft { background: var(--w); color: var(--i); box-shadow: 0 2px 8px rgba(23,22,58,0.06); }
+.ph .row { display: flex; align-items: center; gap: 8px; background: var(--w); border-radius: 14px; padding: 7px 10px; box-shadow: 0 2px 8px rgba(23,22,58,0.04); }
+.ph .row .x { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ph .row .x b { font-weight: 600; font-size: 11.5px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ph .row .x span { color: var(--m); font-size: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ph .av { width: 24px; height: 24px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 10px; flex-shrink: 0; border: 2px solid #fff; box-sizing: border-box; }
+.ph .stack { display: flex; }
+.ph .stack .av + .av { margin-left: -7px; }
+.ph .cb { width: 16px; height: 16px; border-radius: 6px; border: 1.5px solid #A3A6BD; box-sizing: border-box; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #fff; }
+.ph .cb.on { background: var(--peri); border-color: var(--peri); }
+.ph .bar { height: 7px; border-radius: 4px; background: #E6E7EF; overflow: hidden; }
+.ph .bar i { display: block; height: 100%; border-radius: 4px; background: var(--peri); }
+.ph .tog { width: 30px; height: 18px; border-radius: 9px; background: var(--peri); position: relative; flex-shrink: 0; }
+.ph .tog::after { content: ""; position: absolute; right: 2px; top: 2px; width: 14px; height: 14px; border-radius: 7px; background: #fff; }
+.ph .tog.off { background: #D3D5E2; }
+.ph .tog.off::after { right: auto; left: 2px; }
+.ph .tiles { display: grid; grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); gap: 7px; }
+.ph .tl { background: var(--w); border-radius: 16px; padding: 9px 10px; display: flex; flex-direction: column; gap: 1px; box-shadow: 0 2px 8px rgba(23,22,58,0.04); }
+.ph .tl b { font-family: "Sora", var(--f-body); font-weight: 700; font-size: 18px; letter-spacing: -0.5px; }
+.ph .tl span { font-size: 9.5px; color: var(--m); }
+.ph .heat { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+.ph .heat span { aspect-ratio: 1; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 9.5px; font-weight: 600; }
+.ph .heat .wd { aspect-ratio: auto; font-size: 8.5px; color: #8A8CA3; }
+.ph .lanes { display: grid; grid-template-columns: 26px repeat(3, minmax(0, 1fr)); gap: 3px; font-size: 8.5px; }
+.ph .lanes .lh { font-weight: 700; text-align: center; padding: 2px 0; border-radius: 6px; }
+.ph .lanes .lt { color: #8A8CA3; font-size: 8px; padding-top: 2px; }
+.ph .lanes .ev { border-radius: 7px; padding: 3px 4px; font-weight: 700; line-height: 1.2; }
+.ph .xg { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); background: var(--w); border-radius: 16px; padding: 3px; box-shadow: 0 2px 8px rgba(23,22,58,0.04); }
+.ph .xg > div { min-width: 0; border-top: 1px solid var(--l); min-height: 50px; padding: 2px 1px; display: flex; flex-direction: column; gap: 2px; }
+.ph .xg .n { text-align: center; font-weight: 700; font-size: 9.5px; }
+.ph .xg .n.today { background: var(--sun); border-radius: 7px; color: #2A0E05; }
+.ph .ec { border-radius: 4px; padding: 1px 2px; font-size: 7.5px; font-weight: 700; line-height: 9px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ph .bub { max-width: 78%; border-radius: 14px; padding: 6px 9px; background: var(--w); font-size: 10.5px; box-shadow: 0 2px 6px rgba(23,22,58,0.05); }
+.ph .bub.mine { align-self: flex-end; background: var(--i); color: #fff; box-shadow: none; }
+.ph .bub small { display: block; font-size: 8.5px; color: var(--m); font-weight: 600; }
+.ph .pin { border-radius: 12px; padding: 6px 9px; background: #E8EBFF; color: #2F3AB5; font-size: 10px; font-weight: 600; }
+.ph .fill { font-family: "Sora", var(--f-body); font-size: 16px; line-height: 1.75; font-weight: 600; letter-spacing: -0.3px; }
+.ph .fill u { text-decoration: none; background: var(--w); border-radius: 8px; padding: 1px 6px; box-shadow: 0 2px 6px rgba(23,22,58,0.08); color: var(--peri); white-space: nowrap; }
+.ph .cover { border-radius: 20px; height: 92px; position: relative; overflow: hidden; }
+.ph .dock { position: absolute; left: 10px; right: 10px; bottom: 12px; height: 46px; border-radius: 18px; background: rgba(255,255,255,0.96); box-shadow: 0 10px 26px rgba(23,22,58,0.16); display: flex; align-items: center; gap: 4px; padding: 0 5px; z-index: 2; }
+.ph .dock .tab { width: 30px; flex-shrink: 0; height: 34px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+.ph .dock .tab i { width: 14px; height: 14px; border-radius: 4px; border: 1.7px solid #8A8CA3; box-sizing: border-box; }
+.ph .dock .tab.on { background: var(--i); }
+.ph .dock .tab.on i { border-color: #fff; }
+.ph .dock .ask { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; height: 34px; border-radius: 12px; background: var(--f); display: flex; align-items: center; justify-content: space-between; padding: 0 6px 0 10px; color: var(--m); font-size: 10px; }
+.ph .dock .ask b { width: 24px; height: 24px; border-radius: 8px; background: var(--sun); display: flex; align-items: center; justify-content: center; color: #2A0E05; font-size: 13px; }
+.ph .dim { position: absolute; inset: 0; background: rgba(23,22,58,0.35); z-index: 3; }
+.ph .sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; background: var(--f); border-radius: 24px 24px 0 0; padding: 8px 13px 18px; display: flex; flex-direction: column; gap: 8px; }
+.ph .sheet .grab { align-self: center; width: 30px; height: 4px; border-radius: 2px; background: #C9CCDD; }
+.ph .sunbg { background: radial-gradient(160px 160px at 20% 0%, #FFD9A0, rgba(255,240,230,0)), radial-gradient(200px 200px at 100% 60%, #FFC2B0, rgba(255,240,230,0)), #FFF3EC; }
+.ph .route { height: 60px; border-radius: 16px; background: var(--w); position: relative; overflow: hidden; box-shadow: 0 2px 8px rgba(23,22,58,0.04); }
+.ph .wall { background: linear-gradient(170deg, #C8CDF5 0%, #E9D9F2 55%, #FFE0CC 100%); }
+.ph .wg { background: rgba(255,255,255,0.92); border-radius: 18px; padding: 9px; display: flex; flex-direction: column; gap: 3px; box-shadow: 0 6px 16px rgba(23,22,58,0.08); }
+.ph .wgs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ph .wg.wide { grid-column: span 2; }
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <span class="kick">Neues Konzept · Prototyp-Übersicht · Mockup</span>
+      <h1>Nowish <span class="sunword">Kompass</span></h1>
+      <p class="thesis">Eine App, die nur eine Frage wirklich laut beantwortet: <strong>Wie viel Zeit habe ich noch?</strong> Alles andere tritt zurück, bis es gebraucht wird. Schreiben statt Formulare, Zeit als Form statt als Zahl, und Premium heißt bei uns: mehr Gelassenheit – nie mehr Druck.</p>
+    </div>
+    <div class="orbbig" role="img" aria-label="Die Jetzt-Kugel: noch 25 Minuten bis zum Losgehen"><div><b>25</b><span>Min. bis los</span></div></div>
+  </header>
+
+  <section class="area" aria-labelledby="ideas-h">
+    <div class="area-head"><h2 id="ideas-h">Die fünf großen Ideen</h2><p>Was Kompass anders macht als v1–v7.</p></div>
+    <div class="grid">
+      <div class="tile"><span class="no">Jetzt-Kugel</span><h3>Zeit als Form</h3><p>Eine Kugel zeigt die Minuten bis zum Aufbruch. Ruhig blau, wenn Zeit ist – sie wird zum Sonnenaufgang, wenn es losgeht. Das Farbverlauf-Orange bedeutet in der ganzen App nur eins: jetzt.</p></div>
+      <div class="tile"><span class="no">Schreibleiste</span><h3>Ein Feld statt Plus-Knopf</h3><p>Unten sitzt immer „Was steht an?“. Tippen oder sprechen: „Fr 19 Uhr Grillen bei Tom mit Mia“ wird Termin, Ort und Einladung. Auch Suche und Befehle („Zahnarzt eine Stunde später“) laufen hier.</p></div>
+      <div class="tile"><span class="no">Der Faden</span><h3>Der Tag als Linie</h3><p>Termine hängen an einem Faden, freie Zeit ist eine gestrichelte Lücke mit Vorschlag. Kein Raster, keine Kästen – man liest den Tag wie einen Satz.</p></div>
+      <div class="tile"><span class="no">Lückentext-Editor</span><h3>Termine als Satz</h3><p>„Ich habe <u>Zahnarzt</u> am <u>Fr 13.</u> um <u>08:30</u> bei <u>Praxis Sommer</u>.“ Jedes Wort ist antippbar. Keine Formularfelder, trotzdem alles drin.</p></div>
+      <div class="tile"><span class="no">Ruhe zuerst</span><h3>Nur drei Tabs</h3><p>Jetzt · Kalender · Leute. Profil und Einstellungen liegen hinter deinem Avatar oben rechts. Ein „Ruhe-Modus“ blendet alles außer dem Nächsten aus.</p></div>
+    </div>
+  </section>
+
+  <section class="area" aria-labelledby="prem-h">
+    <div class="area-head"><h2 id="prem-h">Premium, das sich lohnt</h2><p>Plus-Funktionen kaufen Gelassenheit – Free bleibt voll benutzbar.</p></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Funktion</th><th>Was sie tut</th><th>Stufe</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><b>Morgen-Briefing</b></td><td>Um 7 Uhr eine Karte: Wetter, alle Losgeh-Zeiten, was mit muss, erster Konflikt mit Lösung.</td><td><span class="pill plus">Plus</span></td><td><span class="pill new">neue Idee</span></td></tr>
+        <tr><td><b>Puffer-Coach</b></td><td>Lernt, wie viel Luft du brauchst – nach Wochentag, Uhrzeit und Weg („Montags +6 Min.“).</td><td><span class="pill plus">Plus</span></td><td><span class="pill live">Basis im Prototyp</span></td></tr>
+        <tr><td><b>Live-Ankunft</b></td><td>Teilt deine Ankunftszeit mit den Gästen, nur für diesen Termin, endet automatisch beim Ankommen.</td><td><span class="pill plus">Plus</span></td><td><span class="pill plan">braucht Konten + Ort (opt-in)</span></td></tr>
+        <tr><td><b>Wann passt’s allen?</b></td><td>Umfrage als Wärmekarte: zeigt freie Zeiten aller Eingeladenen, ohne Kalender offenzulegen.</td><td><span class="pill plus">Plus</span></td><td><span class="pill new">neue Idee</span></td></tr>
+        <tr><td><b>Einladungskarten</b></td><td>Generative Cover und Themen für Events – Gäste sehen sie im Weblink.</td><td><span class="pill plus">Plus</span></td><td><span class="pill live">Cover im Prototyp</span></td></tr>
+        <tr><td><b>Familien-Spuren</b></td><td>Der Tag als Spuren nebeneinander – wer ist wann wo, wer fährt wen.</td><td><span class="pill plus">Family</span></td><td><span class="pill new">neue Idee</span></td></tr>
+        <tr><td><b>Plan B</b></td><td>Wetter-Hinweis mit Alternative („Regen ab 18 Uhr – Grillen nach drinnen?“).</td><td><span class="pill plus">Plus</span></td><td><span class="pill live">simuliert im Prototyp</span></td></tr>
+        <tr><td><b>Uhr &amp; Widgets</b></td><td>Jetzt-Kugel am Handgelenk, auf dem Sperrbildschirm und als Live-Aktivität.</td><td>Free / Plus</td><td><span class="pill plan">später</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="area" aria-labelledby="look-h">
+    <div class="area-head"><h2 id="look-h">Der Look</h2><p>Kühles Nebelweiß, Indigo-Tinte, ein Verlauf mit fester Bedeutung.</p></div>
+    <div class="specimen">
+      <div class="sw" style="background:#F3F4F8;color:#17163A">Nebel · Grund</div>
+      <div class="sw" style="background:#17163A;color:#fff">Tinte · Text &amp; Aktionen</div>
+      <div class="sw" style="background:linear-gradient(135deg,#FF6B4A,#FFB547);color:#2A0E05">Sonnenaufgang · nur „jetzt“</div>
+      <div class="sw" style="background:#5B67F1;color:#fff">Periwinkle · Ruhe &amp; Auswahl</div>
+      <div class="sw" style="background:#fff;color:#17163A;font-family:Sora,sans-serif;font-size:22px;font-weight:800;letter-spacing:-0.04em">07:55<span style="font-family:Inter,sans-serif;font-size:12px;font-weight:600;letter-spacing:0">Sora für Zahlen</span></div>
+    </div>
+    <div class="legend">
+      <span><span class="pill live">im Prototyp</span> Funktion existiert schon (neuer Look)</span>
+      <span><span class="pill new">neue Idee</span> neu in Kompass</span>
+      <span><span class="pill plan">geplant</span> braucht Konten, Server oder Zusatzmodule</span>
+      <span id="count"></span>
+    </div>
+  </section>
+
+  <div id="areas" style="display:flex;flex-direction:column;gap:56px"></div>
+
+  <p class="note">Stand 13.11.2026 · Konzept „Kompass“ ist ein Mockup mit Beispieldaten, keine App-Screenshots. Neue Ideen sind Vorschläge und noch nicht entschieden; Premium-Zuordnung, Preise und Live-Ankunft brauchen deine Freigabe (Live-Standort nur opt-in, zeitlich begrenzt, jederzeit stoppbar).</p>
+</div>
+
+<script>
+(() => {
+const C = { peri: ['#E8EBFF', '#3B48C9'], apri: ['#FFEBDD', '#A2470F'], mint: ['#DFF5EC', '#1E6B4E'], rose: ['#FCE4EE', '#9C2A55'], sky: ['#DDF2FB', '#0F5E7A'], sand: ['#F2EEE6', '#5B4A26'] };
+const st = (c) => 'background:' + C[c][0] + ';color:' + C[c][1];
+const hd = (k, h, right) => `<div class="hd"><div><div class="k">${k}</div><div class="h">${h}</div></div>${right ?? '<span class="me">K</span>'}</div>`;
+const bk = (t, right) => `<div class="hd" style="align-items:center"><span class="bk">‹</span><span class="h2">${t || ''}</span>${right ?? '<span class="demo">Demo</span>'}</div>`;
+const orb = (big, top, bottom, size, calm) => `<div class="orb${calm ? ' calm' : ''}" style="width:${size}px;height:${size}px"><span>${top}</span><b style="font-size:${Math.round(size / 3.3)}px">${big}</b><span>${bottom}</span></div>`;
+const tr = (t, title, sub, c, cls) => `<div class="tr ${cls || ''}" style="--c:${c ? C[c][1] : '#A3A6BD'}"><span class="t">${t}</span><div class="x"><b>${title}</b>${sub ? '<span>' + sub + '</span>' : ''}</div></div>`;
+const free = (a, b) => `<div class="free"><span>${a}</span><b>${b}</b></div>`;
+const chips = (arr, on) => '<div class="chips">' + arr.map((x, i) => `<span class="chip${i === on ? ' on' : ''}">${x}</span>`).join('') + '</div>';
+const cc = (t, c) => `<span class="chip" style="${st(c)};box-shadow:none">${t}</span>`;
+const seg = (arr, on) => '<div class="seg">' + arr.map((x, i) => `<span${i === on ? ' class="on"' : ''}>${x}</span>`).join('') + '</div>';
+const btn = (t, k) => `<div class="btn${k ? ' ' + k : ''}">${t}</div>`;
+const row = (title, sub, right, left) => `<div class="row">${left || ''}<div class="x"><b>${title}</b>${sub ? '<span>' + sub + '</span>' : ''}</div>${right ?? ''}</div>`;
+const av = (ch, c) => `<span class="av" style="${st(c)}">${ch}</span>`;
+const stack = (arr) => '<div class="stack">' + arr.map(([ch, c]) => av(ch, c)).join('') + '</div>';
+const cb = (on) => `<span class="cb${on ? ' on' : ''}">${on ? '✓' : ''}</span>`;
+const tog = (on) => `<span class="tog${on ? '' : ' off'}"></span>`;
+const bar = (p, col) => `<div class="bar"><i style="width:${p}%${col ? ';background:' + col : ''}"></i></div>`;
+const tiles = (arr, n) => `<div class="tiles" style="--n:${n || arr.length}">` + arr.map(([v, l]) => `<div class="tl"><b>${v}</b><span>${l}</span></div>`).join('') + '</div>';
+const sub = (t) => `<div class="sub">${t}</div>`;
+const h2 = (t, r) => `<div class="hd" style="align-items:baseline"><span class="h2">${t}</span><span class="sub">${r || ''}</span></div>`;
+const PL = '<span class="plusb">PLUS</span>';
+const dock = (on, hint) => '<div class="dock">' + [0, 1, 2].map((i) => `<span class="tab${i === on ? ' on' : ''}"><i></i></span>`).join('') + `<span class="ask">${hint || 'Was steht an?'}<b>↑</b></span></div>`;
+const sheet = (h) => `<div class="dim"></div><div class="sheet"><span class="grab"></span>${h}</div>`;
+const bub = (t, mine, who) => `<div class="bub${mine ? ' mine' : ''}">${who ? '<small>' + who + '</small>' : ''}${t}</div>`;
+const say = (h) => `<div class="say">${h}</div>`;
+const sc = (inner, cls) => `<div class="sc ${cls || ''}">${inner}</div>`;
+
+const S = {
+  onboard: () => sc(`<div style="flex:1"></div>${orb('25', 'noch', 'Min.', 110, true)}<div class="h" style="text-align:center">Wie kommst du meistens hin?</div>${sub('<span style="display:block;text-align:center">Damit Nowish ab dem ersten Termin weiß, wann du losmusst.</span>')}
+    <div class="chips" style="justify-content:center"><span class="chip">Zu Fuß</span><span class="chip on">Rad</span><span class="chip">Auto</span><span class="chip">Bus &amp; Bahn</span></div>
+    <div class="card"><div class="hd"><b>Bist du eher …</b><span class="sub">anpassbar</span></div><div class="hd"><span class="sub">früh dran</span><span class="sub">knapp dran</span></div>${bar(70)}</div>
+    <div class="row"><span class="cb on">✓</span><div class="x"><b>Ich bin mindestens 16</b></div></div>${btn('Weiter', 'sun')}<div class="sub" style="text-align:center">Schritt 2 von 3 · ohne Konto</div>`),
+  paywall: () => sc(`${bk('', '<span class="sub">Später</span>')}<div class="h">Mehr Gelassenheit<br>mit Nowish Plus</div>
+    ${row('Morgen-Briefing', 'Dein Tag um 7 Uhr in einer Karte', PL)}${row('Puffer-Coach', 'lernt, wie viel Luft du brauchst', PL)}${row('Live-Ankunft', 'Gäste sehen, wann du da bist', PL)}${row('Wann passt’s allen?', 'Umfrage als Wärmekarte', PL)}
+    ${seg(['Monatlich 2,99 €', 'Jährlich 24,99 €'], -1)}${btn('14 Tage kostenlos testen', 'sun')}<div class="sub" style="text-align:center">Nichts vorausgewählt · inkl. MwSt. · kündbar in 2 Taps · Demo</div>`),
+  jetzt: () => sc(`${hd('Freitag, 13. Nov', 'Guten Morgen, Kim')}${say('Noch <em>25 Minuten</em>, dann los zum Zahnarzt. Karte nicht vergessen.')}
+    ${orb('25', 'los in', 'Min. · 07:55', 112)}<div class="chips" style="justify-content:center"><span class="chip">Bereit-Check 1/3</span><span class="chip">Ich verspäte mich</span></div>
+    <div class="thread">${tr('07:00', 'Physio', 'erledigt', 'rose', 'past')}${tr('08:30', 'Zahnarzt', 'Rad · 20 Min.', 'sky', 'now')}${free('3 Std. frei', 'Sport?')}${tr('12:30', 'Mittagessen mit Alex', 'Café Lindner', 'peri')}</div>${dock(0)}`),
+  briefing: () => sc(`${bk('Morgen-Briefing', PL)}<div class="h">Dein Freitag</div>
+    <div class="tiles" style="--n:3"><div class="tl"><b>9°</b><span>Regen ab 18 Uhr</span></div><div class="tl"><b>4</b><span>Termine</span></div><div class="tl"><b>3 h</b><span>frei</span></div></div>
+    ${h2('Losgehen um', '')}${row('07:55', 'Zahnarzt', '<span class="chip" style="' + st('sky') + ';box-shadow:none">Rad</span>')}${row('12:08', 'Mittagessen mit Alex', '<span class="chip" style="' + st('peri') + ';box-shadow:none">Fuß</span>')}${row('18:28', 'Spieleabend', '<span class="chip" style="' + st('apri') + ';box-shadow:none">Bus statt Rad</span>')}
+    <div class="card" style="background:#FFF3EC"><b>1 Sache klären</b>${sub('Spieleabend und Physio liegen 10 Min. zu eng.')}<div class="tiles">${btn('Physio 14:15', 'soft')}${btn('Passt so', 'soft')}</div></div>${btn('Mitnehmen: Karte, Schirm', 'soft')}`),
+  eingabe: () => S.jetzt().replace('</div>' + dock(0) + '</div>', '</div>' + dock(0) + '</div>') + sheet(`<div class="fill" style="font-size:14px">Fr 19 Uhr grillen bei Tom mit Mia<span style="color:#5B67F1">|</span></div>
+    <div class="chips">${cc('Was · Grillen', 'apri')}${cc('Wann · Fr 13.11. 19:00', 'sky')}${cc('Wo · bei Tom', 'mint')}${cc('Wer · Mia', 'rose')}</div>
+    ${sub('Losgehen um 18:31 · Mia bekommt eine Einladung')}<div class="tiles">${btn('Speichern', 'sun')}${btn('Anpassen', 'soft')}</div>
+    ${sub('Du kannst auch fragen: „Wann habe ich nächste Woche frei?“')}`),
+  verschieben: () => S.jetzt() + sheet(`<span class="h2">Zahnarzt verschieben</span><div class="card"><div class="hd"><b class="D" style="font-size:20px">09:30</b><span class="sub">+1 Std.</span></div>${bar(60)}<div class="hd"><span class="sub">08:30</span><span class="sub">12:30</span></div></div>
+    ${h2('Vorschläge', 'passen in deinen Tag')}<div class="chips"><span class="chip on">09:30</span><span class="chip">14:15 (Lücke)</span><span class="chip">Morgen 08:30</span></div>${btn('Praxis Bescheid geben & verschieben')}`),
+  los: () => sc(`${bk('Zahnarzt · 08:30')}${orb('07:42', 'noch', 'Min. bis los', 150)}
+    <div class="card">${h2('Bereit?', '2 von 3')}<div class="chips">${cc('✓ Schlüssel', 'mint')}${cc('✓ Karte', 'mint')}<span class="chip">Helm</span></div></div>
+    <div class="card"><div class="hd" style="align-items:center"><div class="x" style="display:flex;flex-direction:column"><b>Live-Ankunft teilen</b><span class="sub">endet beim Ankommen</span></div>${PL}</div></div>
+    <div class="row" style="justify-content:space-between"><span class="sub">← wischen: Ich verspäte mich</span><b>+10</b></div>${btn('Bin unterwegs', 'sun')}`, 'sunbg'),
+  ankunft: () => sc(`${bk('Live-Ankunft', PL)}<div class="h">Du kommst um<br><span class="D" style="font-size:30px">18:57</span> an</div>${sub('3 Min. früher als geplant · Spieleabend 19:00')}
+    <div class="route"><svg width="100%" height="60" viewBox="0 0 220 60" preserveAspectRatio="none" aria-hidden="true"><path d="M10 48 C 60 48, 70 12, 120 22 S 190 10, 210 14" fill="none" stroke="#E6E7EF" stroke-width="6" stroke-linecap="round"/><path d="M10 48 C 60 48, 70 12, 120 22" fill="none" stroke="#5B67F1" stroke-width="6" stroke-linecap="round"/><circle cx="120" cy="22" r="7" fill="#FF6B4A" stroke="#fff" stroke-width="3"/></svg></div>
+    ${h2('Wer sieht das', '')}${row('Olivia, Tom, Mia', 'nur deine Ankunftszeit, kein Standort', stack([['O', 'peri'], ['T', 'rose'], ['M', 'apri']]))}${btn('Teilen beenden', 'soft')}${sub('Nur mit deiner Erlaubnis, zeitlich begrenzt, jederzeit stoppbar.')}`),
+  zoom: () => sc(`${hd('Kalender', 'November', '<span class="chip">Jahr</span>')}${seg(['Monat', 'Woche', 'Tag'], 0)}${sub('Farbe = wie voll der Tag ist. Zwei Finger: hinein- und herauszoomen.')}
+    <div class="heat">${['M', 'D', 'M', 'D', 'F', 'S', 'S'].map((w) => '<span class="wd">' + w + '</span>').join('')}${(() => { const v = [0, 0, 0, 0, 0, 0, 1, 2, 1, 0, 3, 0, 1, 0, 1, 3, 1, 2, 4, 3, 2, 1, 0, 2, 1, 3, 2, 1, 0, 1, 2, 1, 3, 1, 0, 2]; const col = ['#FFFFFF', '#E8EBFF', '#C9CEFF', '#9EA7FF', '#5B67F1']; let h = ''; for (let i = 0; i < 35; i++) { const n = i - 5; if (n < 1 || n > 30) { h += '<span></span>'; continue; } h += '<span style="background:' + col[v[i]] + ';color:' + (v[i] > 2 ? '#fff' : '#17163A') + (n === 13 ? ';box-shadow:0 0 0 2px #FF6B4A' : '') + '">' + n + '</span>'; } return h; })()}</div>
+    ${h2('Fr, 13. Nov', '4 Termine · 3 h frei')}<div class="thread">${tr('08:30', 'Zahnarzt', '', 'sky')}${tr('12:30', 'Mittagessen mit Alex', '', 'peri')}</div>${dock(1)}`),
+  woche: () => sc(`${hd('9.–15. November', 'Familie diese Woche', '<span class="chip">Fr</span>')}${sub('Spuren nebeneinander: wer ist wann wo.')}
+    <div class="lanes"><span></span><span class="lh" style="${st('peri')}">Du</span><span class="lh" style="${st('sky')}">Sam</span><span class="lh" style="${st('apri')}">Lena</span>
+      <span class="lt">08</span><span class="ev" style="${st('sky')}">Zahnarzt</span><span class="ev" style="${st('sky')}">Büro</span><span></span>
+      <span class="lt">12</span><span class="ev" style="${st('peri')}">Lunch Alex</span><span class="ev" style="${st('sky')}">Büro</span><span class="ev" style="${st('apri')}">Schule</span>
+      <span class="lt">16</span><span class="ev" style="${st('mint')}">Grillen</span><span class="ev" style="${st('mint')}">Grillen</span><span class="ev" style="${st('apri')}">Schwimmen</span>
+      <span class="lt">17</span><span></span><span class="ev" style="background:#FFF3EC;color:#A2470F;outline:1.5px dashed #FF6B4A">fährt Lena?</span><span></span>
+      <span class="lt">19</span><span class="ev" style="${st('peri')}">Spieleabend</span><span></span><span></span></div>
+    <div class="card" style="background:#FFF3EC"><b>17:00 fährt noch niemand</b><div class="tiles">${btn('Ich fahre')}${btn('Sam fragen', 'soft')}</div></div>${PL.replace('PLUS', 'FAMILY')}${dock(1)}`),
+  tag: () => sc(`${hd('Freitag, 13. Nov', 'Dein Tag')}${seg(['Monat', 'Woche', 'Tag'], 2)}
+    <div class="thread">${tr('07:00', 'Physio', 'erledigt', 'rose', 'past')}${tr('08:30', 'Zahnarzt', 'los 07:55 · Rad', 'sky', 'now')}${free('09:15 – 12:30 frei', '+ Laufen?')}${tr('12:30', 'Mittagessen mit Alex', 'zu Fuß · los 12:08', 'peri')}${free('13:30 – 17:45 frei', '+ Einkauf?')}${tr('17:45', 'Friseur', 'Salon Schnittpunkt', 'apri')}${tr('19:00', 'Spieleabend bei Olivia', 'knapp nach Friseur', 'peri')}</div>${dock(1)}`),
+  monat: () => sc(`${hd('Erweitert', 'November', '<span class="chip">Monat</span>')}<div class="xg">${(() => { const ev = { 2: [['Workout', 'apri']], 3: [['Eltern', 'sand']], 5: [['Meeting', 'rose'], ['Dinner', 'apri']], 9: [['Nägel', 'peri']], 10: [['Fest', 'mint']], 12: [['Workout', 'apri']], 13: [['Zahnarzt', 'sky'], ['Lunch', 'peri']], 14: [['Lauftreff', 'mint']], 16: [['Tom', 'rose']], 17: [['Arzt', 'sky']], 18: [['Grillen', 'mint']], 19: [['Lunch', 'apri']], 22: [['Meeting', 'rose']], 25: [['Workout', 'apri']], 26: [['Advent', 'rose']] }; let h = ''; for (let i = 0; i < 35; i++) { const n = i - 5; if (n < 1 || n > 30) { h += '<div></div>'; continue; } h += '<div><span class="n' + (n === 13 ? ' today' : '') + '">' + n + '</span>' + (ev[n] || []).map(([t, c]) => '<span class="ec" style="' + st(c) + '">' + t + '</span>').join('') + '</div>'; } return h; })()}</div>${dock(1, 'Suchen oder planen …')}`),
+  sync: () => sc(`${bk('Kalender verbinden')}<div class="h">Alle Kalender an einem Faden</div>${sub('Termine aus anderen Kalendern bekommen auch eine Losgeh-Zeit.')}
+    ${row('Google Kalender', 'nicht verbunden', '<span class="chip on">Verbinden</span>')}${row('Outlook', 'nicht verbunden', '<span class="chip on">Verbinden</span>')}${row('iCloud', 'nicht verbunden', '<span class="chip on">Verbinden</span>')}
+    <div class="card">${h2('Kalenderdatei (.ics)', 'im Prototyp')}${sub('familie.ics · 12 Termine · 2 doppelt')}${btn('10 Termine übernehmen', 'soft')}</div>`),
+  termin: () => sc(`<div class="cover" style="background:radial-gradient(70px 70px at 20% 30%,#C9CEFF,transparent),radial-gradient(90px 90px at 85% 70%,#FFD3C2,transparent),radial-gradient(60px 60px at 55% 10%,#DFF5EC,transparent),#EEF0FB"><div style="position:absolute;left:10px;top:10px" class="bk">‹</div></div>
+    <div class="h" style="margin-top:-4px">Spieleabend bei Olivia</div>${say('Fr, 19:00 · Lindenstr. 8 · <em>los 18:28</em>')}
+    <div class="hd" style="align-items:center">${stack([['O', 'peri'], ['T', 'rose'], ['M', 'apri'], ['J', 'mint']])}<span class="sub">4 dabei · 1 vielleicht</span></div>${seg(['Plan', 'Leute', 'Chat 2'], 0)}
+    <div class="thread">${tr('17:58', 'Fertig machen', 'Bereit-Check 0/2', null)}${tr('18:28', 'Losgehen', 'Rad · 22 Min. + 10', 'apri', 'now')}${tr('19:00', 'Ankommen', 'Pizza um 20 Uhr', 'peri')}</div>${seg(['Dabei', 'Vielleicht', 'Nein'], 0)}`),
+  editor: () => sc(`${bk('Neuer Termin', '<b>Fertig</b>')}<div class="fill">Ich habe <u>Zahnarzt</u><br>am <u>Fr, 13. Nov</u> um <u>08:30</u><br>bei <u>Praxis Sommer</u>.<br>Ich fahre <u>mit dem Rad</u>,<br>erinnere mich <u>3-mal</u>.</div>
+    <div class="card" style="background:#17163A;color:#fff"><span class="sub" style="color:#C9CCDD">Daraus folgt</span><b class="D" style="font-size:18px">Losgehen 07:55</b><span style="font-size:10px;color:#C9CCDD">20 Min. Weg + 10 Min. Puffer (gelernt)</span></div>
+    ${sub('Antippen zum Ändern · Gäste, Wiederholung, Notiz: „+ mehr“')}${btn('Speichern', 'sun')}`),
+  vorlagen: () => sc(`${bk('Vorlagen')}<div class="h">Womit startest du?</div><div class="tiles">${[['Grillabend', 'apri', '8 Dinge zum Mitbringen'], ['Spieleabend', 'peri', 'Snacks, Spiele'], ['Geburtstag', 'rose', 'Geschenk-Pool'], ['Umzug', 'sand', '12 Aufgaben'], ['Kino', 'sky', 'Film-Umfrage'], ['Brunch', 'mint', 'Wer bringt was']].map(([t, c, s]) => '<div class="tl" style="' + st(c) + ';box-shadow:none;min-height:62px"><b style="font-size:13px">' + t + '</b><span style="color:inherit;opacity:.85">' + s + '</span></div>').join('')}</div>${btn('Leer starten', 'soft')}`),
+  bereit: () => sc(`${bk('Bereit-Check')}<div class="h">Alles dabei?</div>${sub('Zahnarzt · los 07:55')}${bar(33)}
+    ${row('Schlüssel', '', cb(true))}${row('Versichertenkarte', 'liegt im Flur', cb(false))}${row('Fahrradhelm', '', cb(false))}
+    <div class="card" style="background:#E8EBFF"><div class="hd"><b style="color:#2F3AB5">Regen ab 18 Uhr</b>${PL}</div>${sub('Schirm für den Spieleabend dazulegen?')}<div class="tiles">${btn('Hinzufügen', 'soft')}${btn('Nein', 'soft')}</div></div>${btn('Bin unterwegs', 'sun')}`),
+  fokus: () => sc(`${bk('Fokus', '<span class="sub">Beenden</span>')}<div style="flex:1"></div><div class="k" style="text-align:center">Jetzt nur das</div><div class="h" style="text-align:center;font-size:24px">Schuhe anziehen</div>
+    ${orb('4', '', 'Min.', 120, true)}<div class="sub" style="text-align:center">Danach: Helm · dann los um 07:55</div><div style="flex:1"></div>${btn('Erledigt')}${btn('2 Min. mehr', 'soft')}`),
+  leute: () => sc(`${hd('Mit deinen Leuten', 'Leute')}<div class="card" style="background:linear-gradient(135deg,#FCE4EE,#FFEBDD)"><span class="k" style="color:#9C2A55">Wartet auf dich</span><b class="h2">Geburtstag von Tom · Mo 19:30</b><div class="tiles">${btn('Dabei')}${btn('Vielleicht', 'soft')}</div></div>
+    ${h2('Gruppen', '3')}${row('Lauftreff', 'Sa 09:00 · Kai ist Gastgeber', stack([['K', 'mint'], ['D', 'sky']]))}${row('Spieleclub', 'jeden 2. Freitag · reihum', stack([['O', 'peri'], ['T', 'rose']]))}
+    ${h2('Familie', '')}${row('Familie Berger', '1 Fahrt sucht noch jemanden', '<span class="chip" style="' + st('apri') + ';box-shadow:none">1</span>')}${dock(2)}`),
+  karte: () => sc(`${bk('Einladung gestalten', PL)}<div class="cover" style="height:150px;background:radial-gradient(90px 90px at 25% 35%,#FFB547,transparent),radial-gradient(110px 110px at 80% 70%,#FF6B4A,transparent),radial-gradient(80px 80px at 60% 15%,#C9CEFF,transparent),#FFF3EC"><div style="position:absolute;left:12px;bottom:12px;color:#2A0E05"><div class="D" style="font-weight:800;font-size:20px;letter-spacing:-.5px">Grillabend</div><div style="font-size:10px;font-weight:600">Sa 21. Nov · bei Tom</div></div></div>
+    ${h2('Stil', '')}<div class="chips"><span class="chip on">Sonnenaufgang</span><span class="chip">Nebel</span><span class="chip">Konfetti</span><span class="chip">Minimal</span></div>${sub('Gäste sehen die Karte auch im Weblink – ohne App.')}${btn('Einladen per Link', 'sun')}`),
+  gaeste: () => sc(`${bk('Gäste')}<div class="h">6 eingeladen</div>${tiles([['4', 'dabei'], ['1', 'vielleicht'], ['1', 'offen']])}${sub('„Vielleicht“ gilt bis So 18:00 – dann zählt es als offen.')}
+    ${row('Tom', 'bringt Spiele', '<span class="chip" style="' + st('mint') + ';box-shadow:none">dabei</span>', av('T', 'rose'))}${row('Mia', '+1', '<span class="chip" style="' + st('mint') + ';box-shadow:none">dabei</span>', av('M', 'apri'))}${row('Jonas', '', '<span class="chip" style="' + st('apri') + ';box-shadow:none">vielleicht</span>', av('J', 'sky'))}${row('Sara', 'per Link eingeladen', '<span class="chip">erinnern</span>', av('S', 'sand'))}`),
+  umfrage: () => sc(`${bk('Wann passt’s allen?', PL)}${sub('Wärmekarte aus freien Zeiten – niemand sieht fremde Termine.')}
+    <div class="lanes" style="grid-template-columns:26px repeat(4,minmax(0,1fr))"><span></span>${['Fr', 'Sa', 'So', 'Mo'].map((d) => '<span class="lh" style="background:#fff">' + d + '</span>').join('')}${[['17', [1, 3, 2, 0]], ['18', [2, 4, 3, 1]], ['19', [2, 5, 3, 1]], ['20', [1, 4, 2, 0]]].map(([t, v]) => '<span class="lt">' + t + '</span>' + v.map((x) => '<span class="ev" style="height:20px;background:' + ['#fff', '#E8EBFF', '#C9CEFF', '#9EA7FF', '#5B67F1', '#FF6B4A'][x] + '"></span>').join('')).join('')}</div>
+    <div class="card"><b>Sa, 19:00 passt allen 5</b>${sub('Umfrage endet So 18:00 · dann wird eingeladen')}</div>${btn('Sa 19:00 festlegen', 'sun')}`),
+  bring: () => sc(`${bk('Mitbringliste')}<div class="h">Wer bringt was?</div>${bar(75)}${sub('3 von 4 vergeben')}
+    ${row('Kartoffelsalat', 'Mia', '', av('M', 'apri'))}${row('Getränke', 'Tom', '', av('T', 'rose'))}${row('Grillkohle', 'Du', '', av('K', 'peri'))}${row('Nachtisch', 'noch offen', '<span class="chip on">Ich</span>')}${dock(2, 'Etwas hinzufügen …')}`),
+  aufgaben: () => sc(`${bk('Aufgaben')}<div class="h">Bis Samstag</div>${row('Grill reinigen', 'Du · Fr', cb(true))}${row('Musik-Box laden', 'Tom · Sa', cb(false))}${row('Tische leihen', 'Mia · Do', cb(false))}${row('Fleisch kaufen', 'offen · tippen zum Übernehmen', cb(false))}${dock(2, 'Aufgabe hinzufügen …')}`),
+  chat: () => sc(`${bk('Spieleabend')}<div class="pin">Festgehalten: Pizza um 20 Uhr · Tom bringt Catan</div>${bub('Wer bringt Catan mit?', false, 'Olivia')}${bub('Ich!', false, 'Tom')}${bub('Ich bin 10 Min. später da', true)}<div class="sub" style="text-align:center">Kim kommt um 19:10 · automatisch aus „Ich verspäte mich“</div>${bub('Kein Stress', false, 'Olivia')}${dock(2, 'Nachricht …')}`),
+  kosten: () => sc(`${bk('Kosten')}<div class="k">Spieleabend · 4 Personen</div><div class="D" style="font-weight:800;font-size:32px;letter-spacing:-1px">84,50 €</div>
+    ${row('Pizza', 'Olivia', '<b>52,00 €</b>')}${row('Getränke', 'Du', '<b>24,50 €</b>')}${row('Snacks', 'Tom', '<b>8,00 €</b>')}<div class="card" style="background:#DFF5EC"><b style="color:#1E6B4E">Tom schuldet dir 3,38 €</b>${sub('Ein Tipp schickt ihm deinen PayPal-Link.')}</div>${btn('Abrechnen')}`),
+  gruppen: () => sc(`${bk('Spieleclub')}<div class="h">Jeden 2. Freitag</div>${sub('Gastgeber wechselt automatisch – fair verteilt.')}
+    <div class="card"><div class="hd"><b>Nächstes Mal: 27. Nov</b><span class="chip" style="${st('peri')};box-shadow:none">Tom</span></div>${sub('Danach: Mia · Olivia · Du')}</div>${tiles([['5', 'Mitglieder'], ['12', 'Treffen 2026']])}${row('Gruppen-Chat', '3 neue Nachrichten', '<b>›</b>')}${row('Spiele-Liste', 'wer hat was', '<b>›</b>')}`),
+  familie: () => sc(`${hd('Familie Berger', 'Heute zuhause', '<span class="chip">Woche</span>')}
+    <div class="tiles" style="--n:4">${[['K', 'peri', 'Zahnarzt'], ['S', 'sky', 'Büro'], ['L', 'apri', 'Schule'], ['P', 'rose', 'Fußball']].map(([i, c, t]) => '<div class="tl" style="align-items:center;box-shadow:none;background:transparent;padding:2px">' + av(i, c).replace('class="av"', 'class="av" style="width:34px;height:34px;border-radius:17px;font-size:13px;' + st(c) + '"') + '<span style="text-align:center">' + t + '</span></div>').join('')}</div>
+    <div class="card" style="background:#FFF3EC"><span class="k" style="color:#A2470F">Fahrt offen · Sa 16:00</span><b class="h2">Lena vom Schwimmen</b><div class="tiles">${btn('Ich fahre')}${btn('Sam fragen', 'soft')}</div></div>
+    ${row('Einkauf', '5 Dinge · Sam geht um 17 Uhr', '<b>›</b>')}${row('Ämtchen', 'Paul: Spülmaschine ✓', '<b>›</b>')}${dock(2)}`),
+  gast: () => sc(`<div class="sub" style="align-self:center;background:#fff;border-radius:99px;padding:2px 10px">nowish.app/e/•••• · ohne App</div><div class="cover" style="height:96px;background:radial-gradient(70px 70px at 25% 35%,#FFB547,transparent),radial-gradient(90px 90px at 80% 70%,#FF6B4A,transparent),#FFF3EC"></div>
+    <div class="h">Grillabend bei Tom</div>${sub('Sa 21. Nov · 19:00 · Gartenweg 3')}${seg(['Ich komme', 'Vielleicht', 'Nein'], 0)}<div class="row"><div class="x"><b>Ich bringe Nachtisch</b><span>noch offen</span></div>${cb(true)}</div>${btn('Antworten', 'sun')}${sub('<span style="display:block;text-align:center">Mit Nowish geplant · kostenlos für Gäste</span>')}`),
+  ich: () => sc(`${hd('Dein Konto', 'Kim', '<span class="me" style="width:40px;height:40px;border-radius:20px;font-size:15px">K</span>')}${seg(['Free', 'Plus · Test 12 Tage'], 1)}
+    ${row('Puffer-Coach', 'Diese Woche 92 % pünktlich', PL)}${row('Ruhe-Modus', 'nur das Nächste zeigen', tog(false))}${row('Erinnerungen', 'sanft · 3 Stufen', '<b>›</b>')}${row('Look', 'Nebel · Sonnenaufgang', '<b>›</b>')}${row('Datenschutz', 'alles nur auf dem Gerät', '<b>›</b>')}${row('Hilfe & Feedback', '', '<b>›</b>')}`),
+  coach: () => sc(`${bk('Puffer-Coach', PL)}<div class="h">Du bist oft knapp, aber nie spät.</div>
+    <div class="card"><div class="hd"><b class="D" style="font-size:24px">92 %</b><span class="sub" style="color:#1E6B4E">+8 % zur Vorwoche</span></div><div style="display:flex;align-items:flex-end;gap:5px;height:44px">${[96, 88, 100, 82, 92, 70, 0].map((p, i) => '<i style="flex:1;border-radius:6px;height:' + Math.max(6, p * 0.44) + 'px;background:' + (i === 4 ? 'linear-gradient(180deg,#FFB547,#FF6B4A)' : p ? '#C9CEFF' : '#E6E7EF') + '"></i>').join('')}</div></div>
+    ${h2('Gelernt', '')}${row('Montags', 'brauchst du 6 Min. länger', '<b>+6</b>')}${row('Mit dem Rad', 'bist du schneller als geschätzt', '<b>−3</b>')}${row('Nach 18 Uhr', 'mehr Puffer bei Bus & Bahn', '<b>+5</b>')}${sub('Kein Ranking, keine Serien – nur Hilfe.')}`),
+  look: () => sc(`${bk('Look & Bedienung')}<span class="h2">Stimmung</span><div class="tiles" style="--n:3">${[['Nebel', '#F3F4F8', '#17163A'], ['Nacht', '#17163A', '#fff'], ['Kontrast', '#fff', '#000']].map(([n, b, c], i) => '<div class="tl" style="background:' + b + ';color:' + c + ';' + (i === 0 ? 'box-shadow:0 0 0 2px #5B67F1' : '') + '"><b style="font-size:13px">Aa</b><span style="color:inherit">' + n + '</span></div>').join('')}</div>
+    <span class="h2">Tabs anordnen</span>${row('Jetzt', 'Start-Ansicht', '<b>≡</b>')}${row('Kalender', '', '<b>≡</b>')}${row('Leute', '', '<b>≡</b>')}${row('Schrift größer', '', tog(false))}${row('Bewegung reduzieren', 'Kugel atmet nicht', tog(false))}${row('Ruhe-Modus abends', 'ab 21 Uhr', tog(true))}`),
+  daten: () => sc(`${bk('Datenschutz')}<div class="h">Deine Daten bleiben bei dir</div>${tiles([['48', 'Termine'], ['12', 'abgehakt'], ['0', 'Tracker']], 3)}${row('Was wird gespeichert?', 'alles nur auf diesem Gerät', '<b>›</b>')}${row('Standort', 'aus · nur für Live-Ankunft', tog(false))}${btn('Daten exportieren', 'soft')}<div class="btn" style="background:#FCE4EE;color:#9C2A55">Alles löschen</div>`),
+  widgets: () => `<div class="sc wall" style="gap:9px"><span class="k" style="text-align:center;color:#2A2E50">Homescreen</span><div class="wgs">
+    <div class="wg" style="align-items:center">${orb('25', 'los in', 'Min.', 76)}<span style="font-size:9px;font-weight:700">Zahnarzt 08:30</span></div>
+    <div class="wg"><span class="k">FR 13.</span><div class="thread" style="padding-left:12px">${tr('08:30', 'Zahnarzt', '', 'sky', 'now')}${tr('12:30', 'Lunch', '', 'peri')}${tr('19:00', 'Spiele', '', 'apri')}</div></div>
+    <div class="wg wide"><div class="hd"><b class="D">Diese Woche</b><span class="sub">14 Termine</span></div><div class="heat" style="grid-template-columns:repeat(7,minmax(0,1fr))">${[1, 2, 1, 3, 4, 2, 1].map((v, i) => '<span style="background:' + ['#fff', '#E8EBFF', '#C9CEFF', '#9EA7FF', '#5B67F1'][v] + ';color:' + (v > 2 ? '#fff' : '#17163A') + (i === 4 ? ';box-shadow:0 0 0 2px #FF6B4A' : '') + '">' + ['M', 'D', 'M', 'D', 'F', 'S', 'S'][i] + '</span>').join('')}</div></div></div>
+    <span class="k" style="text-align:center;color:#2A2E50">Sperrbildschirm &amp; Live-Aktivität</span><div class="wg" style="flex-direction:row;align-items:center;gap:8px;background:rgba(23,22,58,0.85);color:#fff">${orb('7', '', 'Min.', 40)}<div style="display:flex;flex-direction:column"><b>Zahnarzt · los 07:55</b><span style="font-size:9px;color:#C9CCDD">Rad · 20 Min. · Karte dabei</span></div></div></div>`,
+  watch: () => sc(`<div style="flex:1"></div><span class="k" style="text-align:center">Uhr · Mockup</span><div style="align-self:center;width:150px;height:180px;border-radius:44px;background:#17163A;padding:16px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 14px 30px rgba(23,22,58,0.3)">${orb('25', 'los in', 'Min.', 86)}<b style="color:#fff;font-size:11px">Zahnarzt 08:30</b><span style="color:#C9CCDD;font-size:9px">Tippen: Bin unterwegs</span></div><div style="flex:1"></div>${sub('<span style="display:block;text-align:center">Vibriert sanft in drei Stufen. Später: watchOS & Wear OS.</span>')}`),
+  login: () => sc(`<div style="flex:1"></div>${orb('', '', '', 70, true)}<div class="h" style="text-align:center">Willkommen zurück</div>${sub('<span style="display:block;text-align:center">Damit Einladungen und Familie überall gleich sind.</span>')}<div class="row"><div class="x"><span>E-Mail</span><b>kim@beispiel.de</b></div></div>${btn('Mit Passkey anmelden', 'sun')}${btn('Link per E-Mail', 'soft')}${btn('Mit Apple fortfahren', 'soft')}`),
+  admin: () => sc(`${hd('Intern · Web', 'Admin', '<span class="demo">Rollen</span>')}${tiles([['1 284', 'aktiv'], ['3,9 %', 'Test → Plus'], ['0', 'Meldungen'], ['5', 'Hinweis-Slots']], 2)}${row('Hinweise im eigenen System', 'nie in der ersten Woche', tog(true))}${row('Comp-Abo vergeben', 'heute · admin', '')}${row('Audit-Log', '24 Einträge', '<b>›</b>')}${sub('Kennzahlen aggregiert, ohne Tracking.')}`),
+};
+
+const AREAS = [
+  ['start', 'Einstieg', 'Drei Fragen statt Konto-Formular.', [
+    ['Onboarding', 'live', 'Drei kurze Fragen (Weg, früh oder knapp, Alter) – danach stimmt die erste Losgeh-Zeit sofort.', 'onboard'],
+    ['Nowish Plus', 'live', 'Ehrliche Paywall: was Plus bringt, nichts vorausgewählt, Kündigung erklärt.', 'paywall'],
+  ]],
+  ['jetzt', 'Jetzt', 'Der Start-Tab beantwortet eine Frage: Wie viel Zeit habe ich noch?', [
+    ['Jetzt', 'live', 'Ein Satz vom Helfer, die Jetzt-Kugel, der Faden des Tages. Unten die Schreibleiste.', 'jetzt'],
+    ['Morgen-Briefing', 'new', 'Um 7 Uhr: Wetter, alle Losgeh-Zeiten, was mit muss, ein Konflikt mit fertiger Lösung.', 'briefing'],
+    ['Schreibleiste', 'new', '„Fr 19 Uhr grillen bei Tom mit Mia“ – Termin, Ort und Einladung in einem Satz. Auch Fragen.', 'eingabe'],
+    ['Verschieben', 'live', 'Schieberegler plus Vorschläge, die in deinen Tag passen; auf Wunsch mit Nachricht.', 'verschieben'],
+    ['Losgeh-Modus', 'new', 'Große Kugel, Bereit-Check, „Ich verspäte mich“ per Wischen, Live-Ankunft.', 'los'],
+    ['Live-Ankunft', 'plan', 'Gäste sehen nur deine Ankunftszeit, nie den Ort; endet beim Ankommen.', 'ankunft'],
+  ]],
+  ['kalender', 'Kalender', 'Zoomen statt umschalten: Monat → Woche → Tag.', [
+    ['Monat als Wärmekarte', 'new', 'Wie voll ist mein Monat? Farbe statt Punkte, heute mit Sonnenring.', 'zoom'],
+    ['Familien-Spuren', 'new', 'Woche als Spuren nebeneinander; offene Fahrten fallen sofort auf.', 'woche'],
+    ['Tag als Faden', 'live', 'Termine am Faden, freie Lücken mit Vorschlag, Losgeh-Zeit in jeder Zeile.', 'tag'],
+    ['Monat erweitert', 'new', 'Jeder Tag mit zwei Terminen im Klartext – Grundlage für das Widget.', 'monat'],
+    ['Kalender verbinden', 'plan', 'Google, Outlook, iCloud; Kalenderdatei (.ics) geht schon heute.', 'sync'],
+  ]],
+  ['termin', 'Termin', 'Ein Termin ist ein Satz – und ein Plan.', [
+    ['Termin', 'live', 'Cover, ein Satz mit Losgeh-Zeit, wer kommt, Plan als Faden, deine Antwort.', 'termin'],
+    ['Lückentext-Editor', 'new', 'Der Termin als Satz mit antippbaren Wörtern. Darunter: was daraus folgt.', 'editor'],
+    ['Vorlagen', 'live', 'Grillabend, Spieleabend, Geburtstag … mit fertigen Listen.', 'vorlagen'],
+    ['Bereit-Check', 'live', 'Abhaken, was mit muss – mit Wetter-Vorschlag (Plan B).', 'bereit'],
+    ['Fokus-Modus', 'live', 'Nur ein Schritt, ruhige Kugel, mehr Zeit mit einem Tipp.', 'fokus'],
+  ]],
+  ['leute', 'Leute', 'Alles, was man mit anderen plant – Events, Gruppen, Familie.', [
+    ['Leute', 'live', 'Was auf dich wartet, deine Gruppen, deine Familie – eine Seite.', 'leute'],
+    ['Einladungskarte', 'new', 'Generative Cover mit Stil-Auswahl; Gäste sehen sie im Link.', 'karte'],
+    ['Gäste', 'live', 'Zahlen oben, ablaufendes „Vielleicht“, sanftes Erinnern.', 'gaeste'],
+    ['Wann passt’s allen?', 'new', 'Umfrage als Wärmekarte aus freien Zeiten, ohne fremde Termine zu zeigen.', 'umfrage'],
+    ['Mitbringliste', 'live', 'Fortschritt oben, Offenes mit einem Tipp übernehmen.', 'bring'],
+    ['Aufgaben', 'live', 'Wer macht was bis wann.', 'aufgaben'],
+    ['Chat', 'live', 'Mit „Festgehalten“-Leiste für Entscheidungen; Verspätungen erscheinen automatisch.', 'chat'],
+    ['Kosten', 'live', 'Summe groß, wer wem was schuldet, Abrechnen per PayPal-Link.', 'kosten'],
+    ['Gruppen-Rituale', 'new', 'Wiederkehrende Treffen mit automatisch wechselnden Gastgebern.', 'gruppen'],
+    ['Familie', 'live', 'Wer ist heute wo, offene Fahrt groß, Einkauf und Ämtchen als Zeilen.', 'familie'],
+    ['Gast-Weblink', 'plan', 'Zusagen und mitbringen ohne App, mit der Einladungskarte.', 'gast'],
+  ]],
+  ['ich', 'Ich', 'Hinter dem Avatar oben rechts – kein eigener Tab.', [
+    ['Ich', 'live', 'Abo, Puffer-Coach, Ruhe-Modus, Erinnerungen, Look, Datenschutz.', 'ich'],
+    ['Puffer-Coach', 'new', 'Lernt deine Zeiten und erklärt sie freundlich – ohne Rangliste, ohne Serien.', 'coach'],
+    ['Look & Bedienung', 'live', 'Stimmungen, Tabs anordnen, große Schrift, Bewegung reduzieren, Ruhe abends.', 'look'],
+    ['Datenschutz', 'live', 'Zahlen statt Juristendeutsch, Standort standardmäßig aus.', 'daten'],
+  ]],
+  ['spaeter', 'Später', 'Die Kugel überall – und was mit Konten kommt.', [
+    ['Widgets', 'plan', 'Jetzt-Kugel, Tagesfaden, Wochen-Wärmekarte, Live-Aktivität.', 'widgets'],
+    ['Uhr', 'plan', 'Die Kugel am Handgelenk, drei sanfte Vibrationen.', 'watch'],
+    ['Anmeldung', 'plan', 'Passkey zuerst, Link per E-Mail, kein Passwort.', 'login'],
+    ['Admin', 'plan', 'Intern: Kennzahlen ohne Tracking, Hinweis-Slots, Audit-Log.', 'admin'],
+  ]],
+];
+const PILL = { live: ['im Prototyp', 'live'], new: ['neue Idee', 'new'], plan: ['geplant', 'plan'] };
+const root = document.getElementById('areas');
+const counts = { live: 0, new: 0, plan: 0 };
+let total = 0;
+AREAS.forEach(([id, title, what, screens]) => {
+  const sec = document.createElement('section');
+  sec.className = 'area';
+  sec.setAttribute('aria-labelledby', 'k-' + id);
+  sec.innerHTML = '<div class="area-head"><h2 id="k-' + id + '"></h2><p></p></div><div class="screens"></div>';
+  sec.querySelector('h2').textContent = title + ' · ' + screens.length;
+  sec.querySelector('p').textContent = what;
+  const list = sec.querySelector('.screens');
+  screens.forEach(([nm, kind, desc, key]) => {
+    total++; counts[kind]++;
+    const fig = document.createElement('figure');
+    fig.className = 'screen';
+    const ph = document.createElement('div');
+    ph.className = 'ph';
+    ph.setAttribute('role', 'img');
+    ph.setAttribute('aria-label', 'Mockup: ' + nm);
+    ph.innerHTML = S[key]();
+    fig.appendChild(ph);
+    const cap = document.createElement('figcaption');
+    cap.className = 'caption';
+    cap.innerHTML = '<span class="nm"><span></span><span class="pill"></span></span><span class="what"></span>';
+    cap.querySelector('.nm span').textContent = nm;
+    const pill = cap.querySelector('.pill');
+    pill.textContent = PILL[kind][0];
+    pill.classList.add(PILL[kind][1]);
+    cap.querySelector('.what').textContent = desc;
+    fig.appendChild(cap);
+    list.appendChild(fig);
+  });
+  root.appendChild(sec);
+});
+document.getElementById('count').textContent = total + ' Seiten · ' + counts.live + ' im Prototyp · ' + counts.new + ' neue Ideen · ' + counts.plan + ' geplant';
+})();
+</script>
