@@ -1,6 +1,6 @@
 # Phase 8 – Redesign-Konzept (**Mockup**)
 
-> **Status:** 2026-11-13 · v3 „Schlank“ ergänzt · **Mockup zur Abnahme durch den PO – keine App-Screenshots.** Alle Daten sind erfunden.
+> **Status:** 2026-11-13 · v3 „Schlank“ und v4 „Weich & groß“ ergänzt · **Mockup zur Abnahme durch den PO – keine App-Screenshots.** Alle Daten sind erfunden.
 > Klickbare Fassung: Design-Canvas „Nowish Redesign Konzept“ (privat, Link im Chat).
 
 Vorgaben des PO (2026-11-12): Lesbarkeit, Übersichtlichkeit, einfache Bedienung, moderne und nicht
@@ -54,3 +54,17 @@ Feedback: Die App wirkt trotz v2 noch überladen und unübersichtlich – sie so
 Regeln: eine Hauptsache pro Screen · keine Kästen in Kästen (Abstand und feine Linien) · Grün nur für die eine
 Hauptaktion, Tab-Leiste hell · Zeilen einzeilig, Details nur beim nächsten Termin · Nebenaktionen im „…“-Menü ·
 Leeres ausblenden · Zusatzinfos (Tageszusammenfassung, Wochen-Kacheln) standardmäßig aus. Keine Funktion fällt weg.
+
+## v4 – „Weich & groß“ (Referenz des PO vom 2026-11-13, **Mockup**)
+
+PO: „geh mal in diese Richtung vom Layout her“ – Referenz mit weichen Pastell-Verläufen, einer großen Karte im
+Fokus, großen Zahlen und runden, schwebenden Knöpfen. Übernommen wird nur die **Layout-Richtung**, keine fremden
+Inhalte; ein Maskottchen gibt es nicht (Markenregel), stattdessen weiche Farbflächen. Die Schlank-Regeln aus v3
+gelten weiter.
+
+| Datei | Kernidee |
+| --- | --- |
+| `HeuteV4.dc.html` | Pastell-Verlauf oben, „Als Nächstes“ als große Karte mit Kartenstapel dahinter, riesige Losgeh-Zeit, runder Lime-Knopf „Bin unterwegs →“, darunter „Dein Tag auf einen Blick“ als zwei Kacheln + Helfer-Zeile |
+| `KalenderV4.dc.html` | Tages-Picker wie ein Zahlenrad (gewählter Tag groß, Nachbarn kleiner), Termine als runde Karten mit großer Uhrzeit |
+| `TerminV4.dc.html` | Verlauf-Kopf, Termin als große Karte im Fokus (leicht gestapelt), Antwort als drei runde Knöpfe, unten schwebende Leiste „Losgehen 18:28“ + runder Lime-Knopf |
+| `GemeinsamV4.dc.html` | „Wartet auf dich“ als wischbares Karten-Karussell in Pastell, darunter „Deine Woche auf einen Blick“ |
