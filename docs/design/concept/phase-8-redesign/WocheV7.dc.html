@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Woche v7 – Konzept</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0D0E12;text-decoration:none}
+a:hover{color:#2A2E38}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FFFFFF; font-family: Inter, system-ui, sans-serif; color: #0D0E12; position: relative; overflow: hidden">
+  <div style="height: 844px; overflow-y: auto; box-sizing: border-box; padding: 16px 0 100px; display: flex; flex-direction: column; gap: 12px">
+
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 16px">
+      <span style="font-weight: 800; font-size: 26px; letter-spacing: -0.5px">November 2026</span>
+      <div role="tablist" aria-label="Ansicht" style="display: flex; gap: 2px; background: #F3F1EC; border-radius: 18px; padding: 3px">
+        <span role="tab" aria-selected="true" style="height: 34px; padding: 0 12px; border-radius: 15px; display: flex; align-items: center; font-size: 13px; font-weight: 700; background: #FFFFFF; box-shadow: 0 2px 8px rgba(13,14,18,0.08)">Woche</span>
+        <a href="MonatV7.dc.html" role="tab" aria-selected="false" style="height: 34px; padding: 0 12px; border-radius: 15px; display: flex; align-items: center; font-size: 13px; font-weight: 600; color: #5B5F69">Monat</a>
+      </div>
+    </div>
+
+    <div role="group" aria-label="Woche wählen" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; padding: 0 12px">
+      <sc-for list="{{weeks}}" as="w" hint-placeholder-count="5">
+        <button type="button" onClick="{{w.pick}}" aria-pressed="{{w.sel}}" style="{{w.style}}">
+          <span style="font-size: 11px; opacity: 0.8">{{w.month}}</span>
+          <span style="font-size: 14px; font-weight: 700">{{w.range}}</span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; flex-direction: column">
+      <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+        <div style="{{d.row}}">
+          <span style="{{d.label}}">
+            <span style="font-size: 20px; font-weight: 800; line-height: 22px">{{d.n}}</span>
+            <span style="font-size: 11px; font-weight: 600">{{d.wd}}</span>
+          </span>
+          <div style="flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; align-content: start; position: relative">
+            <sc-for list="{{d.items}}" as="e" hint-placeholder-count="2">
+              <a href="HeuteV7.dc.html" style="{{e.style}}">
+                <span style="font-size: 12px; font-weight: 700; line-height: 15px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical">{{e.title}}</span>
+                <span style="flex: 1"></span>
+                <span style="font-size: 10.5px; opacity: 0.85">{{e.time}}</span>
+              </a>
+            </sc-for>
+            <sc-if value="{{d.isToday}}" hint-placeholder-val="{{ false }}">
+              <span aria-hidden="true" style="position: absolute; left: -4px; right: 0; top: 34px; display: flex; align-items: center">
+                <span style="width: 8px; height: 8px; border-radius: 4px; background: #0D0E12"></span>
+                <span style="flex: 1; height: 2px; background: #0D0E12"></span>
+                <span style="font-size: 10px; font-weight: 700; background: #C8F031; border-radius: 8px; padding: 2px 6px">07:30</span>
+              </span>
+            </sc-if>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <nav aria-label="Hauptnavigation" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; background: rgba(255,255,255,0.96); border-top: 1px solid #EEEAE2; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: start; padding-top: 8px">
+    <a href="HeuteV7.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 48px; color: #6B6F7A">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"></path></svg>
+      <span style="font-size: 11px; font-weight: 500">Heute</span></a>
+    <a href="MonatV7.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 48px">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>
+      <span style="font-size: 11px; font-weight: 700">Kalender</span></a>
+    <span style="display: flex; justify-content: center">
+      <button type="button" aria-label="Neuer Termin" style="width: 52px; height: 52px; border: 0; border-radius: 26px; background: #0D0E12; display: flex; align-items: center; justify-content: center; padding: 0; margin-top: -6px">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C8F031" stroke-width="2.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button></span>
+    <a href="WocheV7.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 48px; color: #6B6F7A">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6M16 4a4 4 0 0 1 0 8M22 21c0-3-2-5-4-6"></path></svg>
+      <span style="font-size: 11px; font-weight: 500">Gemeinsam</span></a>
+    <a href="WidgetsV7.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 48px; color: #6B6F7A">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>
+      <span style="font-size: 11px; font-weight: 500">Ich</span></a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { week: 2 };
+  }
+  renderVals() {
+    const pal = {
+      sky: ['#DDF1FA', '#0E5F78'], lav: ['#EDE7FF', '#4B2FD6'], peach: ['#FFE8D6', '#9A3F0B'],
+      mint: ['#E3F5DA', '#2F6B1F'], rose: ['#FDE3EA', '#9E2347'], sand: ['#F3EFE6', '#5B4A26'],
+    };
+    const weekDefs = [['Okt/Nov', '26–1', 26], ['Nov', '2–8', 2], ['Nov', '9–15', 9], ['Nov', '16–22', 16], ['Nov', '23–29', 23]];
+    const weeks = weekDefs.map(([month, range], i) => {
+      const sel = i === this.state.week;
+      return {
+        month, range, sel,
+        style: 'height: 52px; border: 0; border-radius: 16px; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; ' +
+          (sel ? 'background: #0D0E12; color: #FFFFFF' : 'background: transparent; color: #0D0E12'),
+        pick: () => this.setState({ week: i }),
+      };
+    });
+    const ev = {
+      9: [['Nagelstudio', '10:00', 'lav']],
+      10: [['Fest', 'ganztägig', 'mint'], ['Elternabend', '19:00', 'sand']],
+      11: [['Kochkurs', '18:00 – 20:00', 'sand']],
+      12: [['Workout', '10:00', 'peach'], ['Team-Feedback', '14:00 – 15:00', 'mint']],
+      13: [['Zahnarzt', '08:30', 'sky'], ['Mittagessen mit Alex', '12:30', 'lav'], ['Spieleabend bei Olivia', '19:00', 'lav']],
+      14: [['Lauftreff', '09:00', 'mint'], ['Schwimmen Lena', '15:00', 'sky']],
+      15: [['Familien-Brunch', '11:00', 'peach'], ['Wanderung', '14:00 – 17:00', 'sand']],
+    };
+    const wd = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+    const start = weekDefs[this.state.week][2];
+    const days = wd.map((w, i) => {
+      let n = start + i;
+      if (this.state.week === 0 && n > 31) n -= 31;
+      const real = this.state.week === 0 && start + i <= 31 ? null : n;
+      const today = real === 13;
+      const list = real ? (ev[real] || []) : [];
+      return {
+        n: String(n), wd: w, isToday: today,
+        row: 'display: flex; gap: 10px; padding: 8px 12px; min-height: 92px; box-sizing: border-box; border-top: 1px solid #EEEAE2' + (today ? '; background: #FBFAF6' : ''),
+        label: 'width: 44px; height: 56px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; ' +
+          (today ? 'background: #0D0E12; color: #C8F031' : i >= 5 ? 'color: #8A8F9A' : 'color: #0D0E12'),
+        items: list.map(([title, time, c]) => ({
+          title, time,
+          style: 'min-height: 72px; border-radius: 12px; padding: 7px 8px; display: flex; flex-direction: column; background: ' + pal[c][0] + '; color: ' + pal[c][1],
+        })),
+      };
+    });
+    return { weeks, days };
+  }
+}
+</script>
+</body>
+</html>

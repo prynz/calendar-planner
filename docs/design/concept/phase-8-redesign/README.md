@@ -1,6 +1,6 @@
 # Phase 8 – Redesign-Konzept (**Mockup**)
 
-> **Status:** 2026-11-13 · v3 „Schlank“, v4 „Weich & groß“ (Basis, optimiert) – v5/v6 verworfen · **Mockup zur Abnahme durch den PO – keine App-Screenshots.** Alle Daten sind erfunden.
+> **Status:** 2026-11-13 · v3 „Schlank“, v4 „Weich & groß“, v7 „Klar & farbig“ + Widgets – v5/v6 verworfen · **Mockup zur Abnahme durch den PO – keine App-Screenshots.** Alle Daten sind erfunden.
 > Klickbare Fassung: Design-Canvas „Nowish Redesign Konzept“ (privat, Link im Chat).
 
 Vorgaben des PO (2026-11-12): Lesbarkeit, Übersichtlichkeit, einfache Bedienung, moderne und nicht
@@ -90,3 +90,20 @@ Plus-Knopf in der Mitte).
 **Navigation:** weiße Leiste über die ganze Breite mit **Mulde in der Mitte**, darin ein runder violetter
 Plus-Knopf; vier Ziele mit Symbol **und** Beschriftung (Heute, Kalender, Gemeinsam, Ich). Alle Bewegungen sind bei
 „Bewegung reduzieren“ aus.
+
+## v7 – Neuer Prototyp „Klar & farbig“ + erweiterte Kalender-Übersicht + Widgets (PO, 2026-11-13, **Mockup**)
+
+PO: „nein, gefällt mir nicht – baue einen neuen Prototyp und gleichzeitig eine Idee für eine weitere
+Kalenderübersicht, die erweitert ist und später auch als Widget auf Handys genutzt werden kann, passend zur App“
+(Referenzen: Monatsraster mit Termin-Chips je Tag, Wochenansicht mit Zeilen pro Tag und farbigen Blöcken).
+
+| Datei | Kernidee |
+| --- | --- |
+| `HeuteV7.dc.html` | Klares Weiß, große schwarze Schrift; Aufbruch als schwarze Leiste („07:55 los“), darunter der Tagesplan als Zeitraster mit farbigen Blöcken und „Jetzt“-Linie |
+| `MonatV7.dc.html` | **Monat erweitert:** jeder Tag zeigt bis zu 2 Termine als Chips (Titel + Uhrzeit), „+n“ für mehr; Tag antippen öffnet die Tagesliste von unten |
+| `WocheV7.dc.html` | **Woche erweitert:** Wochen-Wähler oben, eine Zeile pro Tag, Termine als Blöcke nebeneinander, heutiger Tag mit „Jetzt“-Linie |
+| `WidgetsV7.dc.html` | **Widgets** im selben Look: klein (Losgeh-Zeit / Tag), mittel (heute), groß (Woche), Sperrbildschirm (Countdown-Ring, Zeile) |
+
+Farben: Termine als Pastell-Fläche mit dunkler Schrift derselben Farbe (gut lesbar); heute = schwarz mit Lime.
+Technik für später: echte Widgets brauchen ein natives Zusatzmodul (iOS WidgetKit, Android App-Widget) und eine
+geteilte Datenablage zwischen App und Widget – das ist eine neue Abhängigkeit und wird vor dem Bau mit dem PO geklärt.

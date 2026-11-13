@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Monat v7 – Konzept</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0D0E12;text-decoration:none}
+a:hover{color:#2A2E38}
+button{font:inherit;cursor:pointer}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+.sheet{animation:sheetUp 300ms cubic-bezier(.2,.9,.3,1)}
+@media (prefers-reduced-motion: reduce){.sheet{animation:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FFFFFF; font-family: Inter, system-ui, sans-serif; color: #0D0E12; position: relative; overflow: hidden">
+  <div style="height: 844px; overflow-y: auto; box-sizing: border-box; padding: 16px 0 100px; display: flex; flex-direction: column; gap: 10px">
+
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 16px">
+      <span style="font-weight: 800; font-size: 32px; letter-spacing: -1px">November</span>
+      <div role="tablist" aria-label="Ansicht" style="display: flex; gap: 2px; background: #F3F1EC; border-radius: 18px; padding: 3px">
+        <a href="WocheV7.dc.html" role="tab" aria-selected="false" style="height: 34px; padding: 0 12px; border-radius: 15px; display: flex; align-items: center; font-size: 13px; font-weight: 600; color: #5B5F69">Woche</a>
+        <span role="tab" aria-selected="true" style="height: 34px; padding: 0 12px; border-radius: 15px; display: flex; align-items: center; font-size: 13px; font-weight: 700; background: #FFFFFF; box-shadow: 0 2px 8px rgba(13,14,18,0.08)">Monat</span>
+      </div>
+    </div>
+
+    <div aria-hidden="true" style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); text-align: center; font-size: 11px; font-weight: 600; color: #8A8F9A; padding: 0 4px">
+      <span>M</span><span>D</span><span>M</span><span>D</span><span>F</span><span>S</span><span>S</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); padding: 0 4px">
+      <sc-for list="{{cells}}" as="c" hint-placeholder-count="42">
+        <button type="button" onClick="{{c.pick}}" aria-label="{{c.label}}" style="{{c.style}}">
+          <span style="{{c.num}}">{{c.n}}</span>
+          <sc-for list="{{c.chips}}" as="e" hint-placeholder-count="2">
+            <span style="{{e.style}}">
+              <span style="display: block; font-size: 10px; font-weight: 700; line-height: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{e.title}}</span>
+              <span style="display: block; font-size: 9.5px; line-height: 11px; opacity: 0.85">{{e.time}}</span>
+            </span>
+          </sc-for>
+          <sc-if value="{{c.hasMore}}" hint-placeholder-val="{{ false }}">
+            <span style="font-size: 10px; font-weight: 600; color: #5B5F69; padding-left: 4px">{{c.more}}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+
+  <nav aria-label="Hauptnavigation" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; background: rgba(255,255,255,0.96); border-top: 1px solid #EEEAE2; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: start; padding-top: 8px">
+    <a href="HeuteV7.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 48px; color: #6B6F7A">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"></path></svg>
+      <span style="font-size: 11px; font-weight: 500">Heute</span></a>
+    <a href="MonatV7.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 48px">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>
+      <span style="font-size: 11px; font-weight: 700">Kalender</span></a>
+    <span style="display: flex; justify-content: center">
+      <button type="button" aria-label="Neuer Termin" style="width: 52px; height: 52px; border: 0; border-radius: 26px; background: #0D0E12; display: flex; align-items: center; justify-content: center; padding: 0; margin-top: -6px">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C8F031" stroke-width="2.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button></span>
+    <a href="WocheV7.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 48px; color: #6B6F7A">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6M16 4a4 4 0 0 1 0 8M22 21c0-3-2-5-4-6"></path></svg>
+      <span style="font-size: 11px; font-weight: 500">Gemeinsam</span></a>
+    <a href="WidgetsV7.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 48px; color: #6B6F7A">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>
+      <span style="font-size: 11px; font-weight: 500">Ich</span></a>
+  </nav>
+
+  <sc-if value="{{sheetOpen}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(13,14,18,0.30); display: flex; flex-direction: column; justify-content: flex-end">
+      <button type="button" onClick="{{close}}" aria-label="Schließen" style="flex: 1; border: 0; background: transparent"></button>
+      <div class="sheet" role="dialog" aria-label="{{sheetTitle}}" style="background: #FFFFFF; border-radius: 26px 26px 0 0; padding: 12px 20px 34px; display: flex; flex-direction: column; gap: 10px">
+        <span aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #DDD8CC"></span>
+        <span style="font-weight: 800; font-size: 22px">{{sheetTitle}}</span>
+        <sc-if value="{{sheetEmpty}}" hint-placeholder-val="{{ false }}"><span style="font-size: 15px; color: #5B5F69">Frei – nichts geplant.</span></sc-if>
+        <sc-for list="{{sheetItems}}" as="s" hint-placeholder-count="3">
+          <span style="{{s.style}}">
+            <span style="font-weight: 700; font-size: 15px">{{s.title}}</span>
+            <span style="font-size: 13px">{{s.time}}</span>
+          </span>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sel: null };
+  }
+  renderVals() {
+    const pal = {
+      sky: ['#DDF1FA', '#0E5F78'], lav: ['#EDE7FF', '#4B2FD6'], peach: ['#FFE8D6', '#9A3F0B'],
+      mint: ['#E3F5DA', '#2F6B1F'], rose: ['#FDE3EA', '#9E2347'], sand: ['#F3EFE6', '#5B4A26'],
+    };
+    const ev = {
+      2: [['Workout', '09:00', 'peach']],
+      3: [['Elternabend', '19:00', 'sand'], ['Frühstück Dan', '09:00', 'peach']],
+      5: [['Meeting Emma', '14:00', 'rose'], ['Dinner', '18:00', 'peach']],
+      7: [['Hair', '12:00', 'lav']],
+      9: [['Nagelstudio', '10:00', 'lav']],
+      10: [['Fest', 'ganztägig', 'mint']],
+      12: [['Workout', '10:00', 'peach']],
+      13: [['Zahnarzt', '08:30', 'sky'], ['Mittagessen Alex', '12:30', 'lav'], ['Friseur', '17:45', 'peach'], ['Spieleabend', '19:00', 'lav']],
+      14: [['Lauftreff', '09:00', 'mint'], ['Schwimmen Lena', '15:00', 'sky']],
+      16: [['Geburtstag Tom', '19:30', 'rose']],
+      17: [['Arzt Nachtermin', '09:00', 'sky'], ['Flug Köln', '15:10', 'sky']],
+      18: [['Grillabend', '16:00', 'mint'], ['Meeting Emma', '11:00', 'rose']],
+      19: [['Erinnerung', '09:00', 'peach'], ['Lunch-Date', '12:00', 'peach']],
+      20: [['Kaffee', '13:00', 'lav']],
+      22: [['Meeting Emma', '11:00', 'rose']],
+      24: [['Yoga', '18:00', 'mint']],
+      25: [['Workout', '10:00', 'peach']],
+      26: [['Adventsmarkt', '17:00', 'rose']],
+      28: [['Fest', 'ganztägig', 'mint']],
+    };
+    const wd = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+    const offset = 6; // 1. Nov 2026 is a Sunday, weeks start Monday
+    const cells = [];
+    for (let i = 0; i < 42; i++) {
+      const n = i - offset + 1;
+      const inMonth = n >= 1 && n <= 30;
+      const list = inMonth ? (ev[n] || []) : [];
+      const today = n === 13;
+      const weekend = i % 7 >= 5;
+      cells.push({
+        n: inMonth ? String(n) : '',
+        label: inMonth ? wd[i % 7] + ', ' + n + '. November, ' + (list.length ? list.length + ' Termine' : 'frei') : 'leer',
+        style: 'min-height: 104px; border: 0; border-top: 1px solid #EEEAE2; background: transparent; padding: 4px 2px 6px; display: flex; flex-direction: column; align-items: stretch; gap: 3px; text-align: start' + (inMonth ? '' : '; visibility: hidden'),
+        num: 'align-self: center; width: 28px; height: 28px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: ' + (today ? '800' : '600') + '; ' +
+          (today ? 'background: #0D0E12; color: #C8F031' : 'color: ' + (weekend ? '#8A8F9A' : '#0D0E12')),
+        chips: list.slice(0, 2).map(([title, time, c]) => ({ title, time, style: 'border-radius: 6px; padding: 2px 4px; background: ' + pal[c][0] + '; color: ' + pal[c][1] })),
+        hasMore: list.length > 2,
+        more: '+' + (list.length - 2),
+        pick: () => inMonth && this.setState({ sel: n }),
+      });
+    }
+    const sel = this.state.sel;
+    const items = sel ? (ev[sel] || []) : [];
+    return {
+      cells,
+      sheetOpen: sel !== null,
+      sheetTitle: sel ? wd[(sel + offset - 1) % 7] + ', ' + sel + '. November' : '',
+      sheetEmpty: sel !== null && items.length === 0,
+      sheetItems: items.map(([title, time, c]) => ({ title, time, style: 'border-radius: 14px; padding: 12px 14px; display: flex; justify-content: space-between; background: ' + pal[c][0] + '; color: ' + pal[c][1] })),
+      close: () => this.setState({ sel: null }),
+    };
+  }
+}
+</script>
+</body>
+</html>
