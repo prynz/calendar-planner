@@ -24,7 +24,7 @@ Kalender.
 | --- | --- |
 | `pnpm check` | ✅ 1587 Tests: i18n 1024, ui 215, App 169, domain 132, demo 21, brand 11, entitlements 9, config 6 |
 | Neue Tests | Häkchen von „Heute“ erscheinen im Kalender, Abhaken und Verschieben im Kalender, Abhaken und „Später“ in der Events-Liste |
-| CI Android / iOS | wird eingetragen, sobald die Läufe grün sind |
+| CI Android / iOS | ✅ Läufe 43349586818 (Android) und 43349586648 (iOS) grün, je 54 Screenshots |
 
 ## 4. Screenshots (echt, aus CI)
 
@@ -48,6 +48,8 @@ Events-Screenshots zeigen jetzt die Haken.
 | Fund | Status |
 | --- | --- |
 | Mit Haken + Avatar + „Antwort offen“ brach in der Events-Liste der Titel mitten im Wort um („Geburtstag­sfeier“) | ✅ Hinweis rechts entfernt – der Antwortstand steht als Wort in der Zeile darunter („Noch offen · …“) und wird vorgelesen |
+| Maestro fand die abgehakte Kalender-Zeile auf iOS nicht (scrollt vor dem Suchen; gedimmter Haken gilt nicht als „sichtbar“) | ✅ Ablauf wartet auf die Zeile selbst – nur Testablauf, App unverändert |
+| Ein iOS-Lauf um ca. 3 Uhr nachts fand „Physio“ nach dem Speichern im ersten Versuch nicht (zweiter Versuch ok) | Beobachten – vermutlich abhängig von der Uhrzeit des Laufs |
 
 ## 7. Offene Fragen an den PO
 
