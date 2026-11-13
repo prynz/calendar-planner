@@ -178,10 +178,11 @@ flowchart LR
 </div>
 
 <script>
+(() => {
 // ---------- tiny UI kit (static, our own content only) ----------
 const C = { sky: ['#DDF1FA', '#0E5F78'], lav: ['#EDE7FF', '#4B2FD6'], peach: ['#FFE8D6', '#9A3F0B'], mint: ['#E3F5DA', '#2F6B1F'], rose: ['#FDE3EA', '#9E2347'], sand: ['#F3EFE6', '#5B4A26'] };
 const st = (c) => 'background:' + C[c][0] + ';color:' + C[c][1];
-const top = (k, h, right, red) => '<div class="top"><div><div class="k' + (red ? ' red' : '') + '">' + k + '</div><div class="h">' + h + '</div></div>' + (right ?? '<span class="demo">Demo</span>') + '</div>';
+const hdr = (k, h, right, red) => '<div class="top"><div><div class="k' + (red ? ' red' : '') + '">' + k + '</div><div class="h">' + h + '</div></div>' + (right ?? '<span class="demo">Demo</span>') + '</div>';
 const back = (title, right) => '<div class="top" style="align-items:center"><span class="back">‹</span><span class="h2">' + (title || '') + '</span>' + (right ?? '<span class="demo">Demo</span>') + '</div>';
 const next = (k, big, s) => '<div class="next"><div style="flex:1"><div style="font-size:9.5px;color:#C9CCD3">' + k + '</div><div><span class="big">' + big + '</span> <span class="lime">' + s + '</span></div></div><span class="go">→</span></div>';
 const row = (t, title, sub, c, done, extra) => '<div class="row">' + (t ? '<span class="t">' + t + '</span>' : '') + (c ? '<span class="dot" style="background:' + C[c][1] + '"></span>' : '') + '<div class="x"><b' + (done ? ' style="color:#8A8F9A;text-decoration:line-through"' : '') + '>' + title + '</b>' + (sub ? '<span>' + sub + '</span>' : '') + '</div>' + (extra ?? '<span class="cb' + (done ? ' on' : '') + '">' + (done ? '✓' : '') + '</span>') + '</div>';
@@ -224,7 +225,7 @@ const S = {
     '<div class="card" style="border:1.5px solid #0D0E12"><div class="top" style="align-items:center"><b class="h2">Plus</b><b>24,99 €/Jahr</b></div>' + sub('Alle Erinnerungsstufen, Bereit-Check, Puffer lernt mit, unbegrenzte Events') + '<span class="chip" style="align-self:flex-start;background:#C8F031">Beliebt</span></div>' +
     '<div class="card"><div class="top" style="align-items:center"><b class="h2">Family</b><b>59,99 €/Jahr</b></div>' + sub('Für bis zu 6 Erwachsene + Kinderprofile') + '</div>' +
     btn('Plan wählen, dann 14 Tage testen') + '<div class="sub" style="text-align:center">Preise inkl. MwSt. · Kündigen in 2 Taps · Kauf ist Demo</div>',
-  heute: () => top('Freitag', '13. November', null, true) + next('Zahnarzt 08:30 · Praxis Dr. Sommer', '07:55', 'los · in 25 Min.') +
+  heute: () => hdr('Freitag', '13. November', null, true) + next('Zahnarzt 08:30 · Praxis Dr. Sommer', '07:55', 'los · in 25 Min.') +
     '<div class="row" style="background:#FFF1E6;border:0;border-radius:10px;padding:5px 8px"><span class="dot" style="background:#E0702F"></span><div class="x"><b>Spieleabend → Physio wird knapp</b></div><b>Lösen</b></div>' +
     h2('Dein Tag', '6 Termine') + row('07:00', 'Physio', 'im Zentrum', 'rose', true) + row('08:30', 'Zahnarzt', 'los 07:55', 'sky') + row('12:30', 'Mittagessen mit Alex', 'Café Lindner', 'lav') + gap('3 Std. frei · planen') + row('17:45', 'Friseur', 'Salon Schnittpunkt', 'peach') + row('19:00', 'Spieleabend bei Olivia', 'knapp nach Physio', 'lav') + nav(0),
   quick: () => S.heute() + sheet('<span class="h2">Neuer Termin</span><div class="fld"><span>In einer Zeile</span><b>Fr 19 Uhr Grillen bei Tom</b></div>' +
@@ -233,11 +234,11 @@ const S = {
   los: () => back('Zahnarzt · 08:30', '<span class="demo">Demo</span>') + '<div class="ring"><div><span class="sub">los in</span><b>25:00</b><span class="sub">um 07:55</span></div></div>' +
     h2('Bereit-Check', '1 von 3') + '<div class="chips"><span class="chip" style="background:#C8F031">✓ Schlüssel</span><span class="chip">Karte</span><span class="chip">Helm</span></div>' +
     '<div class="card"><b>Ich verspäte mich um …</b><div class="chips"><span class="chip">5 Min.</span><span class="chip">10 Min.</span><span class="chip">15 Min.</span></div>' + sub('Praxis bekommt Bescheid (Demo)') + '</div>' + btn('Bin unterwegs', 'lime') + btn('Angekommen', 'ghost'),
-  monat: () => top('2026', 'November', '<span class="sub">Heute</span>') + seg(['Woche', 'Monat', 'Liste'], 1) + chips(['Alle', 'Du', 'Sam', 'Lena', 'Paul'], 0) + month(false) + h2('Heute, 13. Nov', '4 Termine') + row('08:30', 'Zahnarzt', 'Praxis Dr. Sommer', 'sky') + row('12:30', 'Mittagessen mit Alex', 'Café Lindner', 'lav') + nav(1),
-  liste: () => top('2026', 'November', '<span class="sub">Heute</span>') + seg(['Woche', 'Monat', 'Liste'], 2) + '<span class="k" style="color:#0D0E12">Heute · Fr 13.</span>' + row('08:30', 'Zahnarzt', '', 'sky') + row('12:30', 'Mittagessen mit Alex', '', 'lav') + row('19:00', 'Spieleabend bei Olivia', '', 'lav') +
+  monat: () => hdr('2026', 'November', '<span class="sub">Heute</span>') + seg(['Woche', 'Monat', 'Liste'], 1) + chips(['Alle', 'Du', 'Sam', 'Lena', 'Paul'], 0) + month(false) + h2('Heute, 13. Nov', '4 Termine') + row('08:30', 'Zahnarzt', 'Praxis Dr. Sommer', 'sky') + row('12:30', 'Mittagessen mit Alex', 'Café Lindner', 'lav') + nav(1),
+  liste: () => hdr('2026', 'November', '<span class="sub">Heute</span>') + seg(['Woche', 'Monat', 'Liste'], 2) + '<span class="k" style="color:#0D0E12">Heute · Fr 13.</span>' + row('08:30', 'Zahnarzt', '', 'sky') + row('12:30', 'Mittagessen mit Alex', '', 'lav') + row('19:00', 'Spieleabend bei Olivia', '', 'lav') +
     '<span class="k">Sa 14.</span>' + row('09:00', 'Lauftreff', 'Stadtpark', 'mint') + row('15:00', 'Schwimmkurs Lena', 'Hallenbad', 'sky') + '<span class="k">Mo 16.</span>' + row('19:30', 'Geburtstag Tom', 'Antwort offen', 'rose') + nav(1),
-  monatX: () => top('Erweitert', 'November', '<span class="sub">Woche · <b style="color:#0D0E12">Monat</b></span>') + month(true) + nav(1),
-  wocheX: () => top('November 2026', '9.–15. Nov', '<span class="sub"><b style="color:#0D0E12">Woche</b> · Monat</span>') +
+  monatX: () => hdr('Erweitert', 'November', '<span class="sub">Woche · <b style="color:#0D0E12">Monat</b></span>') + month(true) + nav(1),
+  wocheX: () => hdr('November 2026', '9.–15. Nov', '<span class="sub"><b style="color:#0D0E12">Woche</b> · Monat</span>') +
     '<div class="chips"><span class="chip">2–8</span><span class="chip on">9–15</span><span class="chip">16–22</span><span class="chip">23–29</span></div>' +
     wrow(10, 'Di', false, [['Fest', 'ganztägig', 'mint'], ['Elternabend', '19:00', 'sand']]) + wrow(11, 'Mi', false, [['Kochkurs', '18:00', 'sand']]) + wrow(12, 'Do', false, [['Workout', '10:00', 'peach'], ['Feedback', '14:00', 'mint']]) +
     wrow(13, 'Fr', true, [['Zahnarzt', '08:30', 'sky'], ['Lunch Alex', '12:30', 'lav'], ['Spieleabend', '19:00', 'lav']]) + wrow(14, 'Sa', false, [['Lauftreff', '09:00', 'mint'], ['Schwimmen', '15:00', 'sky']]) + nav(1),
@@ -255,7 +256,7 @@ const S = {
     row('', 'Schlüssel', '', null, true) + row('', 'Versichertenkarte', 'liegt im Flur', null, false) + row('', 'Fahrradhelm', '', null, false) + '<div class="sub">+ Eigenen Punkt hinzufügen</div><div style="flex:1"></div>' + btn('Bin unterwegs', 'lime'),
   fokus: () => back('Fokus', '<span class="sub">Beenden</span>') + '<div style="flex:1"></div><span class="k" style="text-align:center">Jetzt</span><div class="h" style="text-align:center;font-size:24px">Schuhe anziehen</div>' +
     '<div class="ring" style="background:conic-gradient(#C8F031 0 70%, #ECE8DF 70% 100%)"><div><b>4</b><span class="sub">Min. übrig</span></div></div>' + '<div class="sub" style="text-align:center">Danach: Helm holen · los um 07:55</div><div style="flex:1"></div>' + btn('Erledigt') + btn('Mehr Zeit', 'ghost'),
-  events: () => top('Mit deinen Leuten', 'Gemeinsam', null) + seg(['Events', 'Gruppen', 'Familie'], 0) + '<div class="card" style="background:#FDE3EA;border:0"><span class="k" style="color:#9E2347">Wartet auf deine Antwort</span><b class="h2">Geburtstagsfeier von Tom</b>' + sub('Mo, 16. Nov · 19:30 · 3 dabei') + '<div class="tiles">' + btn('Dabei') + btn('Andere Antwort', 'ghost') + '</div></div>' +
+  events: () => hdr('Mit deinen Leuten', 'Gemeinsam', null) + seg(['Events', 'Gruppen', 'Familie'], 0) + '<div class="card" style="background:#FDE3EA;border:0"><span class="k" style="color:#9E2347">Wartet auf deine Antwort</span><b class="h2">Geburtstagsfeier von Tom</b>' + sub('Mo, 16. Nov · 19:30 · 3 dabei') + '<div class="tiles">' + btn('Dabei') + btn('Andere Antwort', 'ghost') + '</div></div>' +
     h2('Diese Woche', '5') + row('', 'Mittagessen mit Alex', 'Fr · 12:30 · Dabei', null, false, av('A', 'lav')) + row('', 'Spieleabend bei Olivia', 'Fr · 19:00 · Dabei', null, false, av('O', 'lav')) + row('', 'Lauftreff', 'Sa · 09:00 · Gastgeber:in', null, false, av('D', 'mint')) + nav(3),
   gaeste: () => back('Gäste') + '<div class="h">6 eingeladen</div>' + tiles([['4', 'dabei', 'mint'], ['1', 'vielleicht', 'peach'], ['1', 'offen', 'sand']]) + sub('„Vielleicht“ gilt bis So, 15. Nov – danach zählt es als offen.') +
     row('', 'Tom', 'Bringt Spiele', null, false, av('T', 'rose')) + row('', 'Mia', '+1 Begleitung', null, false, av('M', 'lav')) + row('', 'Jonas', 'Vielleicht', null, false, av('J', 'peach')) + row('', 'Sara', 'Noch keine Antwort', null, false, av('S', 'sand')) + btn('Per Link einladen', 'ghost'),
@@ -267,17 +268,17 @@ const S = {
   chat: () => back('Spieleabend · Chat') + bub('Wer bringt Catan mit? 🎲'.replace(' 🎲', ''), false, 'Olivia') + bub('Ich!', true) + bub('Ich komme 10 Min. später', false, 'Tom') + bub('Pizza bestellen wir um 20 Uhr', false, 'Olivia') + bub('Perfekt', true) + '<div class="sub" style="text-align:center">Antworten sind im Prototyp simuliert</div><div class="input">Nachricht <b>↑</b></div>',
   kosten: () => back('Kosten') + '<span class="k">Spieleabend</span><div class="h" style="font-size:28px">84,50 €</div>' + sub('4 Personen · gleich verteilt') + row('', 'Pizza', 'Olivia', null, false, '<b>52,00 €</b>') + row('', 'Getränke', 'Du', null, false, '<b>24,50 €</b>') + row('', 'Snacks', 'Tom', null, false, '<b>8,00 €</b>') +
     '<div class="card" style="background:#E3F5DA;border:0"><b style="color:#2F6B1F">Du bekommst 3,38 €</b>' + sub('Tom schuldet dir 3,38 €') + '</div>' + btn('PayPal-Link teilen') + btn('+ Ausgabe', 'ghost'),
-  gruppen: () => top('Mit deinen Leuten', 'Gemeinsam', null) + seg(['Events', 'Gruppen', 'Familie'], 1) +
+  gruppen: () => hdr('Mit deinen Leuten', 'Gemeinsam', null) + seg(['Events', 'Gruppen', 'Familie'], 1) +
     '<div class="card"><div class="top" style="align-items:center"><b class="h2">Lauftreff</b>' + av('7', 'mint') + '</div>' + sub('Jeden Samstag 09:00 · Stadtpark') + '<span class="chip" style="align-self:flex-start;background:#E3F5DA;color:#2F6B1F">Nächstes Treffen: morgen</span></div>' +
     '<div class="card"><div class="top" style="align-items:center"><b class="h2">Spieleclub</b>' + av('5', 'lav') + '</div>' + sub('Jeden 2. Freitag · reihum') + '</div>' +
     '<div class="card"><div class="top" style="align-items:center"><b class="h2">Elternrat 3b</b>' + av('9', 'sand') + '</div>' + sub('Nächstes Treffen 24. Nov') + '</div>' + btn('Neue Gruppe', 'ghost') + nav(3),
   gchat: () => back('Lauftreff · Chat') + bub('Morgen 5 km oder 10?', false, 'Dana') + bub('5, ich bin erkältet', false, 'Kai') + bub('Ich mach 10, wer mit?', true) + bub('Ich!', false, 'Dana') + '<div class="input">Nachricht <b>↑</b></div>',
-  familie: () => top('Familie Berger', 'Wer macht was?', null) + '<div class="chips">' + [['Du', 'lav'], ['Sam', 'sky'], ['Lena', 'peach'], ['Paul', 'rose']].map(([n, c]) => '<span class="chip" style="' + st(c) + '">' + n + '</span>').join('') + '</div>' +
+  familie: () => hdr('Familie Berger', 'Wer macht was?', null) + '<div class="chips">' + [['Du', 'lav'], ['Sam', 'sky'], ['Lena', 'peach'], ['Paul', 'rose']].map(([n, c]) => '<span class="chip" style="' + st(c) + '">' + n + '</span>').join('') + '</div>' +
     tiles([['3', 'offene Fahrten'], ['5', 'auf der Liste'], ['1/2', 'Ämtchen heute']]) + '<div class="card" style="background:#E3F5DA;border:0"><span class="k" style="color:#2F6B1F">Fahrt offen</span><b class="h2">Lena vom Schwimmen abholen</b>' + sub('Sa · 16:00 · Hallenbad Mitte') + '<div class="tiles">' + btn('Ich fahre') + btn('Sam fragen', 'ghost') + '</div></div>' +
     row('', 'Milch, Brot, Äpfel', 'Einkauf · Sam', null, false) + row('', 'Spülmaschine', 'Paul · heute', null, true) + nav(3),
   gast: () => '<span class="url">nowish.app/e/•••••• · ohne App</span><span class="k">Olivia lädt dich ein</span><div class="h">Spieleabend bei Olivia</div>' + sub('Fr, 13. Nov · 19:00 · Lindenstraße 8') + seg(['Ich komme', 'Vielleicht', 'Absagen'], 0) + fld('Dein Name', 'Gabi') +
     h2('Ich bringe mit', 'freiwillig') + row('', 'Nachtisch', 'noch offen', null, false, '<span class="cb on">✓</span>') + row('', 'Spiele', 'Tom', null, false, '') + btn('Antwort senden', 'lime') + '<div class="sub" style="text-align:center">Mit Nowish geplant · kostenlos für Gäste</div>',
-  ich: () => top('Dein Konto', 'Ich', null) + '<div class="row" style="border:0">' + av('K', 'lav') + '<div class="x"><b>Kim</b><span>Plus · Test noch 12 Tage</span></div><b>›</b></div>' +
+  ich: () => hdr('Dein Konto', 'Ich', null) + '<div class="row" style="border:0">' + av('K', 'lav') + '<div class="x"><b>Kim</b><span>Plus · Test noch 12 Tage</span></div><b>›</b></div>' +
     tiles([['92 %', 'pünktlich', 'mint'], ['14', 'Termine/Woche', 'sky']]) + row('', 'Personalisieren', 'Farbe, Dichte, Start-Ansicht', null, false, '<b>›</b>') + row('', 'Erinnerungen', 'sanft · 3 Stufen', null, false, '<b>›</b>') + row('', 'Datenschutz-Center', 'nur auf dem Gerät', null, false, '<b>›</b>') + row('', 'Abo & Preise', 'Plus', null, false, '<b>›</b>') + row('', 'Sprache', 'Deutsch', null, false, '<b>›</b>') + nav(4),
   profil: () => back('Profil') + '<span class="av" style="width:56px;height:56px;border-radius:28px;font-size:22px;align-self:center;' + st('lav') + '">K</span><div class="h" style="text-align:center">Kim</div>' +
     '<div class="card"><div class="top" style="align-items:baseline"><b style="font-size:22px">92 %</b><span class="sub" style="color:#2F6B1F">+8 % zur Vorwoche</span></div>' + sub('pünktlich diese Woche') +
@@ -296,7 +297,7 @@ const S = {
     '<div class="card" style="background:#F6F4EF;border:0"><b>Echte Wegzeit</b>' + sub('Aus der Adresse berechnet, sobald Karten verbunden sind.') + '</div>',
   login: () => '<div style="flex:1"></div><div class="h" style="font-size:26px">Willkommen zurück</div>' + sub('Melde dich an, damit Einladungen und deine Familie überall synchron sind.') + fld('E-Mail', 'kim@beispiel.de') + btn('Mit Passkey anmelden', 'lime') + btn('Link per E-Mail senden') +
     '<div class="sub" style="text-align:center">oder</div>' + btn('Mit Apple fortfahren', 'ghost') + btn('Mit Google fortfahren', 'ghost') + '<div class="sub" style="text-align:center">Kein Passwort nötig</div>',
-  admin: () => top('Intern · Web', 'Admin', '<span class="demo">Rollen</span>') + tiles([['1 284', 'aktive Nutzer', 'sky'], ['3,9 %', 'Test → Abo', 'mint'], ['0', 'Meldungen offen', 'sand'], ['5', 'Hinweis-Slots', 'lav']], 2) +
+  admin: () => hdr('Intern · Web', 'Admin', '<span class="demo">Rollen</span>') + tiles([['1 284', 'aktive Nutzer', 'sky'], ['3,9 %', 'Test → Abo', 'mint'], ['0', 'Meldungen offen', 'sand'], ['5', 'Hinweis-Slots', 'lav']], 2) +
     h2('Hinweise im eigenen System', '') + tog('agenda_feed', true, 'max. 1 pro 10 Einträge') + tog('post_event_create', false, 'nie in der ersten Woche') + h2('Audit-Log', '') + row('', 'Comp-Abo vergeben', 'heute 09:12 · admin', null, false, '') + row('', 'Slot geändert', 'gestern · admin', null, false, ''),
 };
 
@@ -388,4 +389,5 @@ AREAS.forEach((a) => {
   root.appendChild(sec);
 });
 document.getElementById('count').textContent = total + ' Seiten · ' + live + ' im Prototyp · ' + (total - live) + ' geplant';
+})();
 </script>
