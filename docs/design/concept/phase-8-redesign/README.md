@@ -1,6 +1,6 @@
 # Phase 8 – Redesign-Konzept (**Mockup**)
 
-> **Status:** 2026-11-12 · **Mockup zur Abnahme durch den PO – keine App-Screenshots.** Alle Daten sind erfunden.
+> **Status:** 2026-11-13 · v3 „Schlank“ ergänzt · **Mockup zur Abnahme durch den PO – keine App-Screenshots.** Alle Daten sind erfunden.
 > Klickbare Fassung: Design-Canvas „Nowish Redesign Konzept“ (privat, Link im Chat).
 
 Vorgaben des PO (2026-11-12): Lesbarkeit, Übersichtlichkeit, einfache Bedienung, moderne und nicht
@@ -39,3 +39,18 @@ Kategorie-Farben erscheinen in v2 nur noch als Punkt oder Avatar-Hintergrund; Li
 3. **Freie Zeit** als gestrichelte Zeile zwischen Terminen mit Vorschlag und „Planen“.
 4. **Schnell-Eintrag** in einer Zeile („Freitag 19 Uhr Grillen bei Tom“) mit Live-Vorschau Was/Wann/Wo – regelbasiert, ohne KI.
 5. **Wochen-Kacheln anpassbar**: bis zu 3 aus 6 Kennzahlen wählen.
+
+## v3 – „Schlank“ (nach PO-Feedback vom 2026-11-13, **Mockup**)
+
+Feedback: Die App wirkt trotz v2 noch überladen und unübersichtlich – sie soll sehr ausgeschlankt werden.
+
+| Datei | Kernidee |
+| --- | --- |
+| `HeuteV3.dc.html` | Nur noch „Als Nächstes“ (eine Karte, ein grüner Knopf, Rest im „…“-Menü), Helfer als eine Zeile, Tag als einzeilige Zeitleiste (Uhrzeit · Titel · Haken), freie Zeit als feine Linie, „Morgen“ als Link |
+| `KalenderV3.dc.html` | Monatsraster ohne Karte, Ansicht als Text-Tabs, Personen-Filter hinter einem „Alle ▾“-Knopf, Tagesliste einzeilig |
+| `TerminV3.dc.html` | Titel, Zeit, Ort, Antwort, Losgehen – darunter eine ruhige Liste (Gäste, Mitbringliste, Aufgaben, Chat); leere Bereiche hinter „+ Hinzufügen“, Bearbeiten/Löschen im „…“-Menü |
+| `GemeinsamV3.dc.html` | Oben nur, was auf dich wartet (offene Einladung mit Antwort-Knöpfen), darunter „Diese Woche“ als Liste |
+
+Regeln: eine Hauptsache pro Screen · keine Kästen in Kästen (Abstand und feine Linien) · Grün nur für die eine
+Hauptaktion, Tab-Leiste hell · Zeilen einzeilig, Details nur beim nächsten Termin · Nebenaktionen im „…“-Menü ·
+Leeres ausblenden · Zusatzinfos (Tageszusammenfassung, Wochen-Kacheln) standardmäßig aus. Keine Funktion fällt weg.

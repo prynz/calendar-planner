@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Gemeinsam v3 – Konzept</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0D0E12;text-decoration:none}
+a:hover{color:#2A2E38}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF9F4; font-family: Inter, system-ui, sans-serif; color: #0D0E12; position: relative; overflow: hidden">
+  <div style="height: 844px; overflow-y: auto; box-sizing: border-box; padding: 24px 24px 120px; display: flex; flex-direction: column; gap: 28px">
+
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 30px; letter-spacing: -0.5px">Gemeinsam</span>
+      <button type="button" style="height: 40px; border: 1px solid #DDD5C4; background: transparent; border-radius: 20px; padding: 0 14px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+        Event</button>
+    </div>
+
+    <div role="tablist" aria-label="Bereich" style="display: flex; gap: 20px">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+        <button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}</button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{isEvents}}" hint-placeholder-val="{{ true }}">
+      <section aria-label="Wartet auf dich" style="background: #FFFFFF; border-radius: 24px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 8px 28px rgba(13,14,18,0.06)">
+        <span style="font-size: 13px; font-weight: 600; color: #5B5F69">Wartet auf deine Antwort</span>
+        <span style="font-weight: 600; font-size: 18px">Geburtstagsfeier von Tom</span>
+        <span style="font-size: 14px; color: #5B5F69">Mo, 16. Nov · 19:30 · 3 dabei</span>
+        <sc-if value="{{unanswered}}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; gap: 10px; margin-top: 10px">
+            <button type="button" onClick="{{accept}}" style="flex: 1; height: 48px; border: 0; border-radius: 24px; background: #C8F031; color: #0D0E12; font-weight: 600; font-size: 15px">Dabei</button>
+            <button type="button" onClick="{{decline}}" style="flex: 1; height: 48px; border: 0; border-radius: 24px; background: #F1ECE2; color: #0D0E12; font-weight: 600; font-size: 15px">Andere Antwort</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{answered}}" hint-placeholder-val="{{ false }}">
+          <span style="font-size: 15px; font-weight: 600; margin-top: 6px">{{answerText}}</span>
+        </sc-if>
+      </section>
+
+      <section aria-label="Diese Woche" style="display: flex; flex-direction: column">
+        <span style="font-weight: 600; font-size: 17px; padding-bottom: 6px">Diese Woche</span>
+        <sc-for list="{{events}}" as="e" hint-placeholder-count="4">
+          <a href="TerminV3.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 60px; border-bottom: 1px solid #EFE9DC">
+            <span aria-hidden="true" style="{{e.avatar}}">{{e.initial}}</span>
+            <span style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 16px">{{e.title}}</span>
+              <span style="font-size: 13px; color: #5B5F69">{{e.when}}</span>
+            </span>
+            <span style="font-size: 13px; color: #5B5F69">{{e.state}}</span>
+          </a>
+        </sc-for>
+        <span style="height: 52px; display: flex; align-items: center; font-size: 15px; color: #5B5F69">Später · 2 Events</span>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isOther}}" hint-placeholder-val="{{ false }}">
+      <span style="font-size: 15px; color: #5B5F69">Gleicher Aufbau: oben nur, was auf dich wartet (z. B. eine offene Fahrt), darunter eine ruhige Liste.</span>
+    </sc-if>
+  </div>
+
+  <nav aria-label="Hauptnavigation" style="position: absolute; left: 20px; right: 20px; bottom: 24px; display: flex; gap: 10px; align-items: center">
+    <div style="flex: 1; height: 60px; border-radius: 30px; background: #FFFFFF; box-shadow: 0 8px 28px rgba(13,14,18,0.10); display: flex; align-items: center; justify-content: space-around; padding: 0 8px">
+      <a href="HeuteV3.dc.html" aria-label="Heute" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B5F69" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"></path></svg></a>
+      <a href="KalenderV3.dc.html" aria-label="Kalender" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B5F69" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg></a>
+      <a href="GemeinsamV3.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 6px; height: 44px; padding: 0 14px; border-radius: 22px; background: #0D0E12; color: #FFFFFF; font-size: 14px; font-weight: 600">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6M16 4a4 4 0 0 1 0 8M22 21c0-3-2-5-4-6"></path></svg>Gemeinsam</a>
+      <a href="HeuteV3.dc.html" aria-label="Ich" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B5F69" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg></a>
+    </div>
+    <button type="button" aria-label="Neuer Termin" style="width: 60px; height: 60px; border: 0; border-radius: 30px; background: #0D0E12; display: flex; align-items: center; justify-content: center; padding: 0; box-shadow: 0 8px 28px rgba(13,14,18,0.18)">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'events', answer: null };
+  }
+  renderVals() {
+    const tabs = [['events', 'Events'], ['groups', 'Gruppen'], ['family', 'Familie']].map(([k, label]) => {
+      const sel = this.state.tab === k;
+      return {
+        label, sel,
+        style: 'height: 36px; border: 0; background: transparent; padding: 0; font-size: 15px; ' +
+          (sel ? 'font-weight: 600; color: #0D0E12; box-shadow: inset 0 -2px 0 #0D0E12' : 'color: #5B5F69'),
+        pick: () => this.setState({ tab: k }),
+      };
+    });
+    const av = (c) => 'width: 36px; height: 36px; border-radius: 18px; background: ' + c + '; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; flex-shrink: 0';
+    return {
+      tabs,
+      isEvents: this.state.tab === 'events',
+      isOther: this.state.tab !== 'events',
+      unanswered: this.state.answer === null,
+      answered: this.state.answer !== null,
+      answerText: this.state.answer === 'yes' ? 'Du bist dabei (Demo).' : 'Antwort im Event wählen.',
+      accept: () => this.setState({ answer: 'yes' }),
+      decline: () => this.setState({ answer: 'other' }),
+      events: [
+        { initial: 'A', avatar: av('#DCD3F7'), title: 'Mittagessen mit Alex', when: 'Fr · 12:30', state: 'Dabei' },
+        { initial: 'O', avatar: av('#DCD3F7'), title: 'Spieleabend bei Olivia', when: 'Fr · 19:00', state: 'Dabei' },
+        { initial: 'D', avatar: av('#FFE0C7'), title: 'Lauftreff', when: 'Sa · 09:00', state: 'Gastgeber:in' },
+        { initial: 'S', avatar: av('#CDEFF6'), title: 'Grillabend am See', when: 'Mi · 16:00', state: 'Vielleicht' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
