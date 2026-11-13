@@ -962,10 +962,10 @@ appId: ${APP_ID}
     visible:
       id: 'screen-calendar'
     timeout: 10000
+# The list is already at the top (today first); scrolling DOWN first would push the row out of view on iOS.
 - scrollUntilVisible:
     element:
       id: 'done-demo-dentist'
-    direction: DOWN
-    centerElement: true
+    direction: UP
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-54-calendar-ticked
