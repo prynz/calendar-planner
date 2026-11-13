@@ -1,6 +1,6 @@
 # Roadmap & Priorisierung
 
-> **Status:** v1.2 · 2026-11-12 · **Block A abgeschlossen** (Phasen 1–7 freigegeben). Phasen 8–9 (Redesign, Helfer, Gesten) freigegeben; Phase 10 (Gesten in Kalender & Events) wartet auf Freigabe, danach Usability-Test. Roadmap neu geschnitten: lokaler Prototyp (Block A) vor Infrastruktur (Block B), ADR 0010. **Prototyp zuerst**:
+> **Status:** v1.2 · 2026-11-13 · **Block A abgeschlossen** (Phasen 1–7 freigegeben). Phasen 8–9 (Redesign, Helfer, Gesten) freigegeben; Phase 10 (Gesten in Kalender & Events) freigegeben. Jetzt: gesammelte Änderungswünsche des PO, danach Usability-Test. Roadmap neu geschnitten: lokaler Prototyp (Block A) vor Infrastruktur (Block B), ADR 0010. **Prototyp zuerst**:
 > Phasen 1–9 bauen einen nicht veröffentlichten Prototyp mit Beispieldaten, Veröffentlichung erst nach
 > Phase 10 ([ADR 0008](../decisions/0008-prototype-first.md)). Phase 1 startet nach Freigabe durch den PO.
 
@@ -32,7 +32,7 @@ Konten, Logins oder Server. Die Infrastruktur folgt danach schrittweise (Block B
 | --- | --- | --- | --- |
 | **8** – Redesign & persönlicher Helfer | Ruhige Bereiche (weiße Karten, max. 3 Einträge + „Alle ansehen“), Helfer erkennt Konflikte und freie Zeit, Schnell-Eintrag in einer Zeile, Personalisierung (Akzentfarbe, Dichte, Reihenfolge, Start-Ansicht, Wochen-Kacheln), Kalender mit Personen-Filter, Termin mit Tabs | Prototyp, der sich wie ein eigener Planer-Helfer anfühlt | ✅ freigegeben (2026-11-12, [Report](../previews/milestone-reports/phase-8.md), [ADR 0016](../decisions/0016-redesign-helper-personalisation.md)) |
 | **9** – Gesten & neuer Aufbau überall | Abhaken und Wischgesten (Erledigt / Verschieben, immer auch per Knopf und Screenreader-Aktion), neuer Aufbau für Events-Liste, Familie, Gruppen und die Kacheln im Tab „Gemeinsam“ | Ein durchgängiges Erlebnis vor dem Usability-Test | ✅ freigegeben (2026-11-12, [Report](../previews/milestone-reports/phase-9.md)) |
-| **10** – Gesten auch in Kalender & Events | Abhaken und Wischen (Erledigt / Verschieben) gleich wie auf „Heute“ in allen Kalender-Ansichten und in der Events-Liste; Häkchen sind überall dieselben | Eine Geste, überall gleich | 🔧 umgesetzt, wartet auf Freigabe ([Report](../previews/milestone-reports/phase-10.md)) |
+| **10** – Gesten auch in Kalender & Events | Abhaken und Wischen (Erledigt / Verschieben) gleich wie auf „Heute“ in allen Kalender-Ansichten und in der Events-Liste; Häkchen sind überall dieselben | Eine Geste, überall gleich | ✅ freigegeben (2026-11-13, [Report](../previews/milestone-reports/phase-10.md)) |
 
 ### Block B – Ausbau (erst wenn der Prototyp überzeugt, Schritt für Schritt)
 

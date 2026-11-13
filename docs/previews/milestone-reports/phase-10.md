@@ -1,6 +1,6 @@
 # Milestone-Report Phase 10 – Gesten auch in Kalender & Events
 
-> **Status:** 2026-11-12 · Phase 10 umgesetzt · **Stopp – wartet auf Review und Freigabe durch den PO.**
+> **Status:** 2026-11-12 · Phase 10 **freigegeben** durch den PO (2026-11-13). Als Nächstes: gesammelte Änderungswünsche des PO, dann Usability-Test.
 > Auftrag (PO, 2026-11-12, Freigabe Phase 9): Abhaken und Wischen auch im Kalender und in der Events-Liste.
 
 ## 1. Ergebnis in einem Satz
