@@ -5,7 +5,7 @@
 
 | Datei | Inhalt |
 | --- | --- |
-| `nowish-app-landkarte.html` | Alle angedachten Seiten als schlichte Skizzen (ohne Design), gruppiert nach Heute, Kalender, Termin, Gemeinsam, Ich, Einstieg und „Später“; Status „im Prototyp“ oder „geplant“; Navigationsfluss |
+| `nowish-app-landkarte.html` | Alle angedachten Seiten als echte Mockups im vorgemerkten Stil v7 „Klar & farbig“, gruppiert nach Heute, Kalender, Termin, Gemeinsam, Ich, Einstieg und „Später“; Status „im Prototyp“ oder „geplant“; Navigationsfluss |
 | `nowish-guide.html` | Kurz- und Langfassung, Vorteile, optimale Nutzung, Workflows, Beispieltag, Werbung mit Leitplanken, Preisvorschlag, kurz- bis langfristige Phasen |
 
 Die klickbaren Fassungen liegen als private Artifacts beim PO (Links im Chat). Claims, Preise und Werbeaussagen sind

@@ -1,92 +1,145 @@
 <title>Nowish App-Landkarte</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap">
 <style>
-/* Layout: a quiet sitemap — one band per app area, each screen a wireframe phone with a short caption. */
+/* Layout: one band per app area; each screen is a real phone mockup in the v7 look (white, ink, lime, pastel chips). */
 :root {
-  --bg: #F7F7F5; --surface: #FFFFFF; --ink: #16171A; --muted: #62656D; --line: #E3E2DD;
-  --wire: #D9D8D2; --wire-strong: #B9B8B1; --accent: #C8F031; --accent-ink: #16171A; --planned: #6B5BD6;
+  --bg: #F4F4F1; --surface: #FFFFFF; --ink: #16171A; --muted: #62656D; --line: #E3E2DD;
+  --live: #C8F031; --live-ink: #16171A; --planned: #6B5BD6;
   --f-display: "Space Grotesk", "Inter", system-ui, sans-serif; --f-body: "Inter", system-ui, -apple-system, sans-serif;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #121315; --surface: #1B1C1F; --ink: #EDEDEA; --muted: #A2A4AA; --line: #2C2D31;
-  --wire: #34363B; --wire-strong: #4A4C52; --accent: #C8F031; --accent-ink: #16171A; --planned: #A99CF5; color-scheme: dark } }
-:root[data-theme="dark"] {
-  --bg: #121315; --surface: #1B1C1F; --ink: #EDEDEA; --muted: #A2A4AA; --line: #2C2D31;
-  --wire: #34363B; --wire-strong: #4A4C52; --accent: #C8F031; --accent-ink: #16171A; --planned: #A99CF5; color-scheme: dark }
+  --bg: #121315; --surface: #1B1C1F; --ink: #EDEDEA; --muted: #A2A4AA; --line: #2C2D31; --planned: #A99CF5; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #121315; --surface: #1B1C1F; --ink: #EDEDEA; --muted: #A2A4AA; --line: #2C2D31; --planned: #A99CF5; color-scheme: dark }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5; }
-.wrap { max-width: 1180px; margin: 0 auto; padding-block: 40px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 48px; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 40px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 48px; }
 h1, h2 { font-family: var(--f-display); letter-spacing: -0.02em; text-wrap: balance; margin: 0; }
 h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.05; }
 h2 { font-size: 22px; }
-p { margin: 0; max-width: 68ch; }
+p { margin: 0; max-width: 70ch; }
 .lead { color: var(--muted); font-size: 16px; }
 .intro { display: flex; flex-direction: column; gap: 12px; }
 .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--muted); }
 .legend span { display: inline-flex; align-items: center; gap: 6px; }
 .pill { font-size: 11px; font-weight: 600; letter-spacing: 0.02em; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
-.pill.live { background: var(--accent); color: var(--accent-ink); }
+.pill.live { background: var(--live); color: var(--live-ink); }
 .pill.plan { border: 1px solid var(--planned); color: var(--planned); }
 .flow { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; overflow-x: auto; }
 .flow pre { margin: 0; }
-.area { display: flex; flex-direction: column; gap: 16px; }
+.area { display: flex; flex-direction: column; gap: 18px; }
 .area-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
 .area-head p { color: var(--muted); font-size: 14px; }
-.screens { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 28px 20px; }
-.screen { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-.phone { width: 150px; height: 300px; box-sizing: border-box; border: 1.5px solid var(--wire-strong); border-radius: 22px; background: var(--surface); padding: 14px 10px 0; display: flex; flex-direction: column; gap: 6px; position: relative; overflow: hidden; }
-.phone > * { flex-shrink: 0; }
-.b { background: var(--wire); border-radius: 4px; }
-.t1 { height: 10px; width: 70%; background: var(--wire-strong); border-radius: 3px; }
-.t2 { height: 6px; width: 45%; }
-.hero { height: 70px; border-radius: 10px; }
-.hero.accent { background: var(--accent); opacity: 0.85; }
-.row { display: flex; gap: 6px; align-items: center; }
-.row .dot { width: 14px; height: 14px; border-radius: 7px; background: var(--wire); flex-shrink: 0; }
-.row .lines { flex: 1; display: flex; flex-direction: column; gap: 3px; }
-.row .lines i { display: block; height: 5px; border-radius: 3px; background: var(--wire); }
-.row .lines i:last-child { width: 60%; }
-.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-.tiles span { height: 40px; border-radius: 8px; background: var(--wire); }
-.chips { display: flex; gap: 4px; }
-.chips span { height: 12px; width: 28px; border-radius: 6px; background: var(--wire); }
-.chips span:first-child { background: var(--ink); opacity: 0.75; }
-.seg { height: 14px; border-radius: 7px; background: var(--wire); display: grid; grid-template-columns: repeat(3, 1fr); padding: 2px; gap: 2px; }
-.seg span:first-child { background: var(--surface); border-radius: 5px; }
-.grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
-.grid span { height: 13px; border-radius: 3px; background: var(--wire); }
-.grid span.on { background: var(--ink); opacity: 0.75; }
-.btn { height: 16px; border-radius: 8px; background: var(--ink); opacity: 0.8; }
-.btn.ghost { background: transparent; border: 1.5px solid var(--wire-strong); opacity: 1; }
-.field { height: 16px; border-radius: 5px; border: 1.5px solid var(--wire); }
-.ring { width: 70px; height: 70px; border-radius: 50%; border: 7px solid var(--wire); border-top-color: var(--ink); align-self: center; box-sizing: border-box; }
-.bubble { height: 14px; width: 60%; border-radius: 7px; background: var(--wire); }
-.bubble.me { align-self: flex-end; background: var(--wire-strong); }
-.bars { display: flex; align-items: flex-end; gap: 4px; height: 40px; }
-.bars span { flex: 1; border-radius: 3px; background: var(--wire); }
-.nav { position: absolute; left: 0; right: 0; bottom: 0; height: 22px; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; justify-items: center; background: var(--surface); }
-.nav i { width: 8px; height: 8px; border-radius: 4px; background: var(--wire); }
-.nav i.on { background: var(--ink); }
-.nav i.plus { width: 14px; height: 14px; border-radius: 7px; background: var(--ink); }
-.sheet { position: absolute; left: 0; right: 0; bottom: 0; height: 46%; border-radius: 14px 14px 0 0; background: var(--surface); border-top: 1.5px solid var(--wire-strong); padding: 10px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; }
-.dim { position: absolute; inset: 0; background: var(--ink); opacity: 0.08; }
-.widget { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.widget span { height: 54px; border-radius: 10px; background: var(--wire); }
-.widget span.wide { grid-column: span 2; }
+.screens { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 32px 22px; }
+.screen { display: flex; flex-direction: column; gap: 12px; min-width: 0; margin: 0; }
 .caption { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .caption .name { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-weight: 600; }
 .caption .what { font-size: 13px; color: var(--muted); }
 .caption .route { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11px; color: var(--muted); }
 .note { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+
+/* ---------- Phone mockup: a fixed light app look, independent of the page theme ---------- */
+.ph { --i: #0D0E12; --m: #5B5F69; --l: #EEEAE2; --w: #FFFFFF; --s: #F6F4EF; --lime: #C8F031; --red: #D93D42;
+  width: 250px; height: 520px; box-sizing: border-box; border-radius: 34px; background: var(--w); color: var(--i);
+  border: 7px solid #0D0E12; box-shadow: 0 18px 40px rgba(13,14,18,0.18); position: relative; overflow: hidden;
+  font-family: var(--f-body); font-size: 11px; line-height: 1.35; }
+.ph .sc { position: absolute; inset: 0; padding: 18px 13px 60px; display: flex; flex-direction: column; gap: 9px; overflow: hidden; }
+.ph .sc > * { flex-shrink: 0; }
+.ph .k { font-size: 10px; font-weight: 600; color: var(--m); }
+.ph .k.red { color: var(--red); }
+.ph .h { font-weight: 800; font-size: 21px; letter-spacing: -0.5px; line-height: 1.1; }
+.ph .h2 { font-weight: 700; font-size: 13px; }
+.ph .top { display: flex; justify-content: space-between; align-items: flex-end; gap: 6px; }
+.ph .demo { font-size: 9px; font-weight: 700; color: #4B2FD6; background: #EDE7FF; padding: 2px 6px; border-radius: 99px; }
+.ph .back { width: 26px; height: 26px; border-radius: 13px; background: var(--s); display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.ph .next { border-radius: 14px; background: var(--i); color: #fff; padding: 10px 11px; display: flex; align-items: center; gap: 8px; }
+.ph .next .big { font-weight: 800; font-size: 22px; letter-spacing: -0.5px; }
+.ph .next .go { width: 30px; height: 30px; border-radius: 15px; background: var(--lime); color: var(--i); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; flex-shrink: 0; }
+.ph .lime { color: var(--lime); font-weight: 700; }
+.ph .row { display: flex; align-items: center; gap: 8px; min-height: 30px; border-bottom: 1px solid var(--l); padding: 3px 0; }
+.ph .row .t { width: 30px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ph .row .x { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ph .row .x b { font-weight: 600; font-size: 11.5px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ph .row .x span { color: var(--m); font-size: 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ph .cb { width: 15px; height: 15px; border-radius: 8px; border: 1.5px solid #A3A9B7; box-sizing: border-box; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #fff; }
+.ph .cb.on { background: var(--i); border-color: var(--i); }
+.ph .dot { width: 7px; height: 7px; border-radius: 4px; flex-shrink: 0; }
+.ph .av { width: 22px; height: 22px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 10px; flex-shrink: 0; }
+.ph .gap { display: flex; align-items: center; gap: 6px; color: var(--m); font-size: 10px; height: 18px; }
+.ph .gap i { flex: 1; border-top: 1.5px dashed #DDD5C4; }
+.ph .chip { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 99px; background: var(--s); white-space: nowrap; }
+.ph .chip.on { background: var(--i); color: #fff; }
+.ph .chips { display: flex; gap: 5px; flex-wrap: wrap; }
+.ph .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 2px; background: #F1EEE7; border-radius: 12px; padding: 2px; }
+.ph .seg span { text-align: center; font-size: 10px; font-weight: 600; color: var(--m); padding: 4px 0; border-radius: 10px; }
+.ph .seg span.on { background: var(--w); color: var(--i); box-shadow: 0 1px 4px rgba(13,14,18,0.1); }
+.ph .btn { border-radius: 99px; background: var(--i); color: #fff; font-weight: 700; text-align: center; padding: 8px 0; font-size: 11.5px; }
+.ph .btn.lime { background: var(--lime); color: var(--i); }
+.ph .btn.ghost { background: transparent; border: 1.5px solid var(--i); color: var(--i); padding: 6.5px 0; }
+.ph .fld { display: flex; flex-direction: column; gap: 2px; border-bottom: 1.5px solid var(--l); padding-bottom: 5px; }
+.ph .fld span { font-size: 9.5px; color: var(--m); font-weight: 600; }
+.ph .fld b { font-weight: 500; font-size: 12px; }
+.ph .tiles { display: grid; grid-template-columns: repeat(var(--n, 2), 1fr); gap: 6px; }
+.ph .tile { border-radius: 12px; padding: 8px; display: flex; flex-direction: column; gap: 1px; background: var(--s); }
+.ph .tile b { font-weight: 800; font-size: 17px; letter-spacing: -0.3px; }
+.ph .tile span { font-size: 9.5px; }
+.ph .card { border-radius: 14px; border: 1px solid var(--l); padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+.ph .sub { color: var(--m); font-size: 10px; }
+.ph .mgrid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; row-gap: 3px; font-size: 10px; }
+.ph .mgrid .wd { font-size: 8.5px; font-weight: 600; color: #8A8F9A; }
+.ph .mgrid .d { display: flex; flex-direction: column; align-items: center; gap: 1px; font-weight: 600; }
+.ph .mgrid .d i { width: 3px; height: 3px; border-radius: 2px; background: #A3A9B7; }
+.ph .mgrid .d.today span { background: var(--i); color: var(--lime); border-radius: 9px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; }
+.ph .xgrid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.ph .xgrid > div { border-top: 1px solid var(--l); min-height: 62px; padding: 2px 1px; display: flex; flex-direction: column; gap: 2px; }
+.ph .xgrid .n { text-align: center; font-weight: 700; font-size: 10px; }
+.ph .xgrid .n.today { background: var(--i); color: var(--lime); border-radius: 8px; }
+.ph .ec { border-radius: 4px; padding: 1px 2px; font-size: 7.5px; font-weight: 700; line-height: 9px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ph .wrow { display: flex; gap: 6px; border-top: 1px solid var(--l); padding: 5px 0; }
+.ph .wrow .dl { width: 30px; height: 36px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; line-height: 1.1; flex-shrink: 0; }
+.ph .wrow .dl small { font-size: 8.5px; font-weight: 600; }
+.ph .wrow .dl.today { background: var(--i); color: var(--lime); }
+.ph .wrow .bl { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+.ph .blk { border-radius: 7px; padding: 4px 5px; font-size: 8.5px; font-weight: 700; line-height: 1.2; min-height: 30px; }
+.ph .blk small { display: block; font-weight: 500; font-size: 8px; opacity: 0.85; }
+.ph .ring { width: 120px; height: 120px; border-radius: 50%; align-self: center; background: conic-gradient(var(--i) 0 58%, #ECE8DF 58% 100%); display: flex; align-items: center; justify-content: center; }
+.ph .ring > div { width: 98px; height: 98px; border-radius: 50%; background: var(--w); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.ph .ring b { font-weight: 800; font-size: 28px; letter-spacing: -1px; line-height: 1; }
+.ph .bub { max-width: 78%; border-radius: 12px; padding: 6px 9px; background: var(--s); font-size: 10.5px; }
+.ph .bub.me { align-self: flex-end; background: var(--i); color: #fff; }
+.ph .bub small { display: block; font-size: 8.5px; color: var(--m); font-weight: 600; }
+.ph .input { margin-top: auto; border-radius: 99px; border: 1.5px solid var(--l); padding: 6px 10px; color: var(--m); display: flex; justify-content: space-between; }
+.ph .bar { height: 6px; border-radius: 3px; background: #ECE8DF; overflow: hidden; }
+.ph .bar i { display: block; height: 100%; border-radius: 3px; background: var(--i); }
+.ph .sw { width: 26px; height: 26px; border-radius: 13px; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--l); }
+.ph .sw.on { box-shadow: 0 0 0 2px var(--i); }
+.ph .tog { width: 28px; height: 16px; border-radius: 8px; background: var(--i); position: relative; flex-shrink: 0; }
+.ph .tog::after { content: ""; position: absolute; right: 2px; top: 2px; width: 12px; height: 12px; border-radius: 6px; background: var(--lime); }
+.ph .tog.off { background: #DDD8CC; }
+.ph .tog.off::after { right: auto; left: 2px; background: #fff; }
+.ph .nav { position: absolute; left: 0; right: 0; bottom: 0; height: 50px; background: rgba(255,255,255,0.97); border-top: 1px solid var(--l); display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; justify-items: center; }
+.ph .nav span { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 8px; color: #6B6F7A; font-weight: 500; }
+.ph .nav span i { width: 14px; height: 14px; border-radius: 4px; border: 1.6px solid #6B6F7A; box-sizing: border-box; }
+.ph .nav span.on { color: var(--i); font-weight: 700; }
+.ph .nav span.on i { border-color: var(--i); background: var(--i); }
+.ph .nav .plus { width: 32px; height: 32px; border-radius: 16px; background: var(--i); color: var(--lime); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; margin-top: -8px; }
+.ph .dim { position: absolute; inset: 0; background: rgba(13,14,18,0.32); }
+.ph .sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--w); border-radius: 20px 20px 0 0; padding: 8px 13px 18px; display: flex; flex-direction: column; gap: 8px; }
+.ph .sheet .grab { align-self: center; width: 30px; height: 4px; border-radius: 2px; background: #DDD8CC; }
+.ph .url { align-self: center; font-size: 9.5px; color: var(--m); background: var(--s); border-radius: 99px; padding: 3px 10px; }
+.ph .wd2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ph .wg { border-radius: 16px; padding: 9px; display: flex; flex-direction: column; gap: 3px; background: #fff; box-shadow: 0 4px 14px rgba(13,14,18,0.08); }
+.ph .wg.dark { background: var(--i); color: #fff; }
+.ph .wg.wide { grid-column: span 2; }
+.ph .wall { background: linear-gradient(170deg, #C9D6F2, #E8D9F0 55%, #F7DCCB); }
 </style>
 
 <div class="wrap">
   <header class="intro">
     <h1>Nowish App-Landkarte</h1>
-    <p class="lead">Alle Seiten, die für die App angedacht sind, als schlichte Skizzen – ohne Farben und ohne endgültiges Design, damit nur der Aufbau zählt. Die Design-Richtung wird separat entschieden.</p>
+    <p class="lead">Alle Seiten, die für die App angedacht sind – jetzt mit echtem Layout im vorgemerkten Stil v7 „Klar &amp; farbig“: Weiß, schwarze Schrift, Lime nur für den Aufbruch, Termine als Pastell-Chips. Alle Inhalte sind Beispieldaten (Mockup, keine App-Screenshots).</p>
     <div class="legend">
-      <span><span class="pill live">im Prototyp</span> gebaut und durchspielbar (Beispieldaten)</span>
+      <span><span class="pill live">im Prototyp</span> gebaut und durchspielbar</span>
       <span><span class="pill plan">geplant</span> folgt mit Konten, Servern oder später</span>
       <span id="count"></span>
     </div>
@@ -119,111 +172,186 @@ flowchart LR
     </div>
   </section>
 
-  <div id="areas" style="display: flex; flex-direction: column; gap: 48px"></div>
+  <div id="areas" style="display: flex; flex-direction: column; gap: 56px"></div>
 
-  <p class="note">Stand 13.11.2026 · Prototyp lokal mit Beispieldaten, ohne Konten. Routen in Klammern entsprechen den Pfaden in <code>apps/mobile/app</code>. Skizzen sind keine App-Screenshots.</p>
+  <p class="note">Stand 13.11.2026 · Prototyp lokal mit Beispieldaten, ohne Konten. Routen entsprechen den Pfaden in <code>apps/mobile/app</code>. Die Mockups zeigen die Richtung v7 und sind keine App-Screenshots; der endgültige Stil ist noch offen.</p>
 </div>
 
 <script>
-const N = 'nav';
-// Wireframe vocabulary: each screen is a list of block names, rendered as grey shapes.
+// ---------- tiny UI kit (static, our own content only) ----------
+const C = { sky: ['#DDF1FA', '#0E5F78'], lav: ['#EDE7FF', '#4B2FD6'], peach: ['#FFE8D6', '#9A3F0B'], mint: ['#E3F5DA', '#2F6B1F'], rose: ['#FDE3EA', '#9E2347'], sand: ['#F3EFE6', '#5B4A26'] };
+const st = (c) => 'background:' + C[c][0] + ';color:' + C[c][1];
+const top = (k, h, right, red) => '<div class="top"><div><div class="k' + (red ? ' red' : '') + '">' + k + '</div><div class="h">' + h + '</div></div>' + (right ?? '<span class="demo">Demo</span>') + '</div>';
+const back = (title, right) => '<div class="top" style="align-items:center"><span class="back">‹</span><span class="h2">' + (title || '') + '</span>' + (right ?? '<span class="demo">Demo</span>') + '</div>';
+const next = (k, big, s) => '<div class="next"><div style="flex:1"><div style="font-size:9.5px;color:#C9CCD3">' + k + '</div><div><span class="big">' + big + '</span> <span class="lime">' + s + '</span></div></div><span class="go">→</span></div>';
+const row = (t, title, sub, c, done, extra) => '<div class="row">' + (t ? '<span class="t">' + t + '</span>' : '') + (c ? '<span class="dot" style="background:' + C[c][1] + '"></span>' : '') + '<div class="x"><b' + (done ? ' style="color:#8A8F9A;text-decoration:line-through"' : '') + '>' + title + '</b>' + (sub ? '<span>' + sub + '</span>' : '') + '</div>' + (extra ?? '<span class="cb' + (done ? ' on' : '') + '">' + (done ? '✓' : '') + '</span>') + '</div>';
+const gap = (txt) => '<div class="gap"><span style="width:30px"></span><i></i>' + txt + '</div>';
+const chips = (arr, on) => '<div class="chips">' + arr.map((x, i) => '<span class="chip' + (i === on ? ' on' : '') + '">' + x + '</span>').join('') + '</div>';
+const cchip = (txt, c) => '<span class="chip" style="' + st(c) + '">' + txt + '</span>';
+const seg = (arr, on) => '<div class="seg">' + arr.map((x, i) => '<span' + (i === on ? ' class="on"' : '') + '>' + x + '</span>').join('') + '</div>';
+const btn = (t, k) => '<div class="btn' + (k ? ' ' + k : '') + '">' + t + '</div>';
+const fld = (l, v) => '<div class="fld"><span>' + l + '</span><b>' + v + '</b></div>';
+const tiles = (arr, n) => '<div class="tiles" style="--n:' + (n || arr.length) + '">' + arr.map(([v, l, c]) => '<div class="tile" style="' + (c ? st(c) : '') + '"><b>' + v + '</b><span>' + l + '</span></div>').join('') + '</div>';
+const av = (ch, c) => '<span class="av" style="' + st(c) + '">' + ch + '</span>';
+const h2 = (t, r) => '<div class="top" style="align-items:baseline"><span class="h2">' + t + '</span>' + (r ? '<span class="sub">' + r + '</span>' : '<span></span>') + '</div>';
+const sub = (t) => '<div class="sub">' + t + '</div>';
+const tog = (l, on, s) => '<div class="row"><div class="x"><b>' + l + '</b>' + (s ? '<span>' + s + '</span>' : '') + '</div><span class="tog' + (on ? '' : ' off') + '"></span></div>';
+const bub = (t, me, who) => '<div class="bub' + (me ? ' me' : '') + '">' + (who ? '<small>' + who + '</small>' : '') + t + '</div>';
+const bar = (p) => '<div class="bar"><i style="width:' + p + '%"></i></div>';
+const nav = (on) => '<div class="nav">' + ['Heute', 'Kalender', '+', 'Gemeinsam', 'Ich'].map((x, i) => x === '+' ? '<div class="plus">+</div>' : '<span' + (i === on ? ' class="on"' : '') + '><i></i>' + x + '</span>').join('') + '</div>';
+const sheet = (html) => '<div class="dim"></div><div class="sheet"><span class="grab"></span>' + html + '</div>';
+function month(withChips) {
+  const ev = { 2: [['Workout', 'peach']], 3: [['Elternabend', 'sand']], 5: [['Meeting', 'rose'], ['Dinner', 'peach']], 9: [['Nägel', 'lav']], 10: [['Fest', 'mint']], 12: [['Workout', 'peach']], 13: [['Zahnarzt', 'sky'], ['Lunch', 'lav']], 14: [['Lauftreff', 'mint']], 16: [['Tom Geb.', 'rose']], 17: [['Arzt', 'sky']], 18: [['Grillen', 'mint']], 19: [['Lunch', 'peach']], 22: [['Meeting', 'rose']], 25: [['Workout', 'peach']], 26: [['Advent', 'rose']] };
+  const wd = ['M', 'D', 'M', 'D', 'F', 'S', 'S'];
+  if (!withChips) {
+    let h = '<div class="mgrid">' + wd.map((w) => '<span class="wd">' + w + '</span>').join('');
+    for (let i = 0; i < 35; i++) { const n = i - 5; h += n < 1 || n > 30 ? '<span></span>' : '<span class="d' + (n === 13 ? ' today' : '') + '"><span>' + n + '</span><i style="' + (ev[n] ? '' : 'background:transparent') + '"></i></span>'; }
+    return h + '</div>';
+  }
+  let h = '<div class="mgrid" style="row-gap:0">' + wd.map((w) => '<span class="wd">' + w + '</span>').join('') + '</div><div class="xgrid">';
+  for (let i = 0; i < 35; i++) { const n = i - 5; if (n < 1 || n > 30) { h += '<div></div>'; continue; } h += '<div><span class="n' + (n === 13 ? ' today' : '') + '">' + n + '</span>' + (ev[n] || []).map(([t, c]) => '<span class="ec" style="' + st(c) + '">' + t + '</span>').join('') + '</div>'; }
+  return h + '</div>';
+}
+const wrow = (n, w, today, blocks) => '<div class="wrow"><span class="dl' + (today ? ' today' : '') + '">' + n + '<small>' + w + '</small></span><div class="bl">' + blocks.map(([t, s, c]) => '<span class="blk" style="' + st(c) + '">' + t + '<small>' + s + '</small></span>').join('') + '</div></div>';
+
+// ---------- the screens ----------
+const S = {
+  onboarding: () => '<div style="flex:1"></div><span class="demo" style="align-self:flex-start">Demo</span><div class="h" style="font-size:26px">Endlich pünktlich.<br>Ohne Stress.</div>' + sub('Nowish plant rückwärts vom Termin und sagt dir, wann du losmusst.') +
+    row('', 'Losgeh-Zeit für jeden Termin', 'Weg + Puffer + Vorbereitung', 'lav', false, '') + row('', 'Treffen an einem Ort', 'Zusagen, Umfrage, Mitbringliste', 'mint', false, '') + row('', 'Familie im Blick', 'Fahrten, Einkauf, Ämtchen', 'peach', false, '') +
+    '<div class="row" style="border:0"><span class="cb on">✓</span><div class="x"><b>Ich bin mindestens 16 Jahre alt</b></div></div>' + btn("Los geht’s", 'lime') + btn('14 Tage Plus testen', 'ghost'),
+  paywall: () => back('', '<span class="sub">Schließen</span>') + '<div class="h">Mehr Ruhe mit Plus</div>' + seg(['Monatlich', 'Jährlich −30 %'], 1) +
+    '<div class="card"><div class="top" style="align-items:center"><b class="h2">Free</b><b>0 €</b></div>' + sub('Losgeh-Zeit + 1 Erinnerung · 5 Events') + '</div>' +
+    '<div class="card" style="border:1.5px solid #0D0E12"><div class="top" style="align-items:center"><b class="h2">Plus</b><b>24,99 €/Jahr</b></div>' + sub('Alle Erinnerungsstufen, Bereit-Check, Puffer lernt mit, unbegrenzte Events') + '<span class="chip" style="align-self:flex-start;background:#C8F031">Beliebt</span></div>' +
+    '<div class="card"><div class="top" style="align-items:center"><b class="h2">Family</b><b>59,99 €/Jahr</b></div>' + sub('Für bis zu 6 Erwachsene + Kinderprofile') + '</div>' +
+    btn('Plan wählen, dann 14 Tage testen') + '<div class="sub" style="text-align:center">Preise inkl. MwSt. · Kündigen in 2 Taps · Kauf ist Demo</div>',
+  heute: () => top('Freitag', '13. November', null, true) + next('Zahnarzt 08:30 · Praxis Dr. Sommer', '07:55', 'los · in 25 Min.') +
+    '<div class="row" style="background:#FFF1E6;border:0;border-radius:10px;padding:5px 8px"><span class="dot" style="background:#E0702F"></span><div class="x"><b>Spieleabend → Physio wird knapp</b></div><b>Lösen</b></div>' +
+    h2('Dein Tag', '6 Termine') + row('07:00', 'Physio', 'im Zentrum', 'rose', true) + row('08:30', 'Zahnarzt', 'los 07:55', 'sky') + row('12:30', 'Mittagessen mit Alex', 'Café Lindner', 'lav') + gap('3 Std. frei · planen') + row('17:45', 'Friseur', 'Salon Schnittpunkt', 'peach') + row('19:00', 'Spieleabend bei Olivia', 'knapp nach Physio', 'lav') + nav(0),
+  quick: () => S.heute() + sheet('<span class="h2">Neuer Termin</span><div class="fld"><span>In einer Zeile</span><b>Fr 19 Uhr Grillen bei Tom</b></div>' +
+    '<div class="chips">' + cchip('Was: Grillen', 'lav') + cchip('Wann: Fr 13.11. 19:00', 'sky') + cchip('Wo: bei Tom', 'mint') + '</div>' + sub('Beispiele: „Mo 9:30 Zahnarzt“ · „morgen Lauftreff Stadtpark“') + btn('Speichern', 'lime') + '<div class="sub" style="text-align:center">Mehr Details</div>'),
+  later: () => S.heute() + sheet('<span class="h2">Verschieben: Zahnarzt</span>' + sub('Freitag, 13. November, 08:30') + btn('15 Min. später', 'ghost') + btn('1 Std. später', 'ghost') + btn('Morgen, gleiche Zeit', 'ghost')),
+  los: () => back('Zahnarzt · 08:30', '<span class="demo">Demo</span>') + '<div class="ring"><div><span class="sub">los in</span><b>25:00</b><span class="sub">um 07:55</span></div></div>' +
+    h2('Bereit-Check', '1 von 3') + '<div class="chips"><span class="chip" style="background:#C8F031">✓ Schlüssel</span><span class="chip">Karte</span><span class="chip">Helm</span></div>' +
+    '<div class="card"><b>Ich verspäte mich um …</b><div class="chips"><span class="chip">5 Min.</span><span class="chip">10 Min.</span><span class="chip">15 Min.</span></div>' + sub('Praxis bekommt Bescheid (Demo)') + '</div>' + btn('Bin unterwegs', 'lime') + btn('Angekommen', 'ghost'),
+  monat: () => top('2026', 'November', '<span class="sub">Heute</span>') + seg(['Woche', 'Monat', 'Liste'], 1) + chips(['Alle', 'Du', 'Sam', 'Lena', 'Paul'], 0) + month(false) + h2('Heute, 13. Nov', '4 Termine') + row('08:30', 'Zahnarzt', 'Praxis Dr. Sommer', 'sky') + row('12:30', 'Mittagessen mit Alex', 'Café Lindner', 'lav') + nav(1),
+  liste: () => top('2026', 'November', '<span class="sub">Heute</span>') + seg(['Woche', 'Monat', 'Liste'], 2) + '<span class="k" style="color:#0D0E12">Heute · Fr 13.</span>' + row('08:30', 'Zahnarzt', '', 'sky') + row('12:30', 'Mittagessen mit Alex', '', 'lav') + row('19:00', 'Spieleabend bei Olivia', '', 'lav') +
+    '<span class="k">Sa 14.</span>' + row('09:00', 'Lauftreff', 'Stadtpark', 'mint') + row('15:00', 'Schwimmkurs Lena', 'Hallenbad', 'sky') + '<span class="k">Mo 16.</span>' + row('19:30', 'Geburtstag Tom', 'Antwort offen', 'rose') + nav(1),
+  monatX: () => top('Erweitert', 'November', '<span class="sub">Woche · <b style="color:#0D0E12">Monat</b></span>') + month(true) + nav(1),
+  wocheX: () => top('November 2026', '9.–15. Nov', '<span class="sub"><b style="color:#0D0E12">Woche</b> · Monat</span>') +
+    '<div class="chips"><span class="chip">2–8</span><span class="chip on">9–15</span><span class="chip">16–22</span><span class="chip">23–29</span></div>' +
+    wrow(10, 'Di', false, [['Fest', 'ganztägig', 'mint'], ['Elternabend', '19:00', 'sand']]) + wrow(11, 'Mi', false, [['Kochkurs', '18:00', 'sand']]) + wrow(12, 'Do', false, [['Workout', '10:00', 'peach'], ['Feedback', '14:00', 'mint']]) +
+    wrow(13, 'Fr', true, [['Zahnarzt', '08:30', 'sky'], ['Lunch Alex', '12:30', 'lav'], ['Spieleabend', '19:00', 'lav']]) + wrow(14, 'Sa', false, [['Lauftreff', '09:00', 'mint'], ['Schwimmen', '15:00', 'sky']]) + nav(1),
+  ics: () => back('Kalenderdatei') + '<div class="h">Termine übernehmen</div>' + sub('Eine .ics-Datei aus einem anderen Kalender auswählen. Nichts wird hochgeladen.') +
+    '<div class="card"><div class="top" style="align-items:center"><b>familie.ics</b><span class="sub">12 Termine</span></div>' + bar(100) + '</div>' + tog('Wiederholungen übernehmen', true) + tog('Doppelte überspringen', true, '2 gefunden') + btn('10 Termine importieren') + btn('Meinen Kalender exportieren', 'ghost'),
+  termin: () => back('', '<span class="sub">•••</span>') + '<div class="chips">' + cchip('Freunde', 'lav') + cchip('Olivia lädt ein', 'sand') + '</div><div class="h">Spieleabend bei Olivia</div>' +
+    row('', 'Fr, 13. Nov · 19:00 – 23:00', 'in 11 Std.', null, false, '') + row('', 'Lindenstraße 8', '22 Min. Rad', null, false, '<b>Karte</b>') + seg(['Plan', 'Gemeinsam'], 0) +
+    '<div class="card">' + row('17:58', 'Fertig machen', '', null, false, '') + row('18:28', 'Losgehen', '', null, false, '<span class="chip" style="background:#C8F031">jetzt los</span>') + row('19:00', 'Ankommen', '', null, false, '') + '</div>' + seg(['Dabei', 'Vielleicht', 'Kann nicht'], 0),
+  editor: () => back('Neuer Termin', '<b>Sichern</b>') + fld('Titel', 'Zahnarzt') + '<div class="tiles">' + '<div class="fld"><span>Tag</span><b>Fr, 13. Nov</b></div><div class="fld"><span>Zeit</span><b>08:30 – 09:15</b></div></div>' +
+    fld('Ort', 'Praxis Dr. Sommer, Bergstr. 4') + '<span class="k">Weg</span>' + chips(['Zu Fuß', 'Rad 20 Min.', 'Auto', 'ÖPNV'], 1) + '<div class="card" style="background:#0D0E12;color:#fff;border:0"><span style="font-size:9.5px;color:#C9CCD3">Losgeh-Zeit</span><b style="font-size:18px">07:55 <span class="lime" style="font-size:11px">20 Min. + 10 Puffer</span></b></div>' +
+    tog('Erinnern, wenn ich los muss', true, '3 Stufen') + fld('Wiederholung', 'Keine') + btn('Speichern', 'lime'),
+  vorlagen: () => back('Vorlagen') + '<div class="h">Womit starten?</div>' + sub('Mit fertigen Listen, Aufgaben und Erinnerungen.') +
+    '<div class="tiles">' + [['Grillabend', '8 Mitbring-Punkte', 'mint'], ['Spieleabend', 'Snacks · Spiele', 'lav'], ['Geburtstag', 'Geschenk-Pool', 'rose'], ['Umzug', '12 Aufgaben', 'sand'], ['Kino', 'Umfrage Film', 'sky'], ['Brunch', 'Wer bringt was', 'peach']].map(([t, s, c]) => '<div class="tile" style="' + st(c) + ';min-height:58px"><b style="font-size:13px">' + t + '</b><span>' + s + '</span></div>').join('') + '</div>' + btn('Leer starten', 'ghost'),
+  ready: () => back('Bereit-Check') + '<div class="h">Alles dabei?</div>' + sub('Zahnarzt · los um 07:55') + bar(33) +
+    row('', 'Schlüssel', '', null, true) + row('', 'Versichertenkarte', 'liegt im Flur', null, false) + row('', 'Fahrradhelm', '', null, false) + '<div class="sub">+ Eigenen Punkt hinzufügen</div><div style="flex:1"></div>' + btn('Bin unterwegs', 'lime'),
+  fokus: () => back('Fokus', '<span class="sub">Beenden</span>') + '<div style="flex:1"></div><span class="k" style="text-align:center">Jetzt</span><div class="h" style="text-align:center;font-size:24px">Schuhe anziehen</div>' +
+    '<div class="ring" style="background:conic-gradient(#C8F031 0 70%, #ECE8DF 70% 100%)"><div><b>4</b><span class="sub">Min. übrig</span></div></div>' + '<div class="sub" style="text-align:center">Danach: Helm holen · los um 07:55</div><div style="flex:1"></div>' + btn('Erledigt') + btn('Mehr Zeit', 'ghost'),
+  events: () => top('Mit deinen Leuten', 'Gemeinsam', null) + seg(['Events', 'Gruppen', 'Familie'], 0) + '<div class="card" style="background:#FDE3EA;border:0"><span class="k" style="color:#9E2347">Wartet auf deine Antwort</span><b class="h2">Geburtstagsfeier von Tom</b>' + sub('Mo, 16. Nov · 19:30 · 3 dabei') + '<div class="tiles">' + btn('Dabei') + btn('Andere Antwort', 'ghost') + '</div></div>' +
+    h2('Diese Woche', '5') + row('', 'Mittagessen mit Alex', 'Fr · 12:30 · Dabei', null, false, av('A', 'lav')) + row('', 'Spieleabend bei Olivia', 'Fr · 19:00 · Dabei', null, false, av('O', 'lav')) + row('', 'Lauftreff', 'Sa · 09:00 · Gastgeber:in', null, false, av('D', 'mint')) + nav(3),
+  gaeste: () => back('Gäste') + '<div class="h">6 eingeladen</div>' + tiles([['4', 'dabei', 'mint'], ['1', 'vielleicht', 'peach'], ['1', 'offen', 'sand']]) + sub('„Vielleicht“ gilt bis So, 15. Nov – danach zählt es als offen.') +
+    row('', 'Tom', 'Bringt Spiele', null, false, av('T', 'rose')) + row('', 'Mia', '+1 Begleitung', null, false, av('M', 'lav')) + row('', 'Jonas', 'Vielleicht', null, false, av('J', 'peach')) + row('', 'Sara', 'Noch keine Antwort', null, false, av('S', 'sand')) + btn('Per Link einladen', 'ghost'),
+  umfrage: () => back('Umfrage') + '<div class="h">Wann grillen wir?</div>' + '<span class="chip" style="align-self:flex-start;background:#FFF1E6;color:#9A3F0B">Endet So, 18:00</span>' +
+    [['Sa 21. Nov', 5, 83], ['So 22. Nov', 3, 50], ['Sa 28. Nov', 1, 17]].map(([d, v, p]) => '<div class="card"><div class="top" style="align-items:center"><b>' + d + '</b><span class="sub">' + v + ' Stimmen</span></div>' + bar(p) + '</div>').join('') + sub('Wischen: rechts = passt, links = passt nicht') + btn('Abstimmen', 'lime'),
+  bring: () => back('Mitbringliste') + '<div class="h">Wer bringt was?</div>' + sub('1 von 4 noch offen') + row('', 'Kartoffelsalat', 'Mia', null, false, av('M', 'lav')) + row('', 'Getränke', 'Tom', null, false, av('T', 'rose')) + row('', 'Grillkohle', 'Du', null, false, av('D', 'mint')) +
+    row('', 'Nachtisch', 'noch offen', null, false, '<span class="chip">Ich</span>') + '<div class="input">+ Etwas hinzufügen</div>',
+  aufgaben: () => back('Aufgaben') + '<div class="h">To-dos</div>' + bar(25) + row('', 'Grill reinigen', 'Du · bis Fr', null, true) + row('', 'Musik-Box laden', 'Tom · bis Sa', null, false) + row('', 'Tische leihen', 'Mia · bis Do', null, false) + row('', 'Einkauf Fleisch', 'offen', null, false) + '<div class="input">+ Aufgabe</div>',
+  chat: () => back('Spieleabend · Chat') + bub('Wer bringt Catan mit? 🎲'.replace(' 🎲', ''), false, 'Olivia') + bub('Ich!', true) + bub('Ich komme 10 Min. später', false, 'Tom') + bub('Pizza bestellen wir um 20 Uhr', false, 'Olivia') + bub('Perfekt', true) + '<div class="sub" style="text-align:center">Antworten sind im Prototyp simuliert</div><div class="input">Nachricht <b>↑</b></div>',
+  kosten: () => back('Kosten') + '<span class="k">Spieleabend</span><div class="h" style="font-size:28px">84,50 €</div>' + sub('4 Personen · gleich verteilt') + row('', 'Pizza', 'Olivia', null, false, '<b>52,00 €</b>') + row('', 'Getränke', 'Du', null, false, '<b>24,50 €</b>') + row('', 'Snacks', 'Tom', null, false, '<b>8,00 €</b>') +
+    '<div class="card" style="background:#E3F5DA;border:0"><b style="color:#2F6B1F">Du bekommst 3,38 €</b>' + sub('Tom schuldet dir 3,38 €') + '</div>' + btn('PayPal-Link teilen') + btn('+ Ausgabe', 'ghost'),
+  gruppen: () => top('Mit deinen Leuten', 'Gemeinsam', null) + seg(['Events', 'Gruppen', 'Familie'], 1) +
+    '<div class="card"><div class="top" style="align-items:center"><b class="h2">Lauftreff</b>' + av('7', 'mint') + '</div>' + sub('Jeden Samstag 09:00 · Stadtpark') + '<span class="chip" style="align-self:flex-start;background:#E3F5DA;color:#2F6B1F">Nächstes Treffen: morgen</span></div>' +
+    '<div class="card"><div class="top" style="align-items:center"><b class="h2">Spieleclub</b>' + av('5', 'lav') + '</div>' + sub('Jeden 2. Freitag · reihum') + '</div>' +
+    '<div class="card"><div class="top" style="align-items:center"><b class="h2">Elternrat 3b</b>' + av('9', 'sand') + '</div>' + sub('Nächstes Treffen 24. Nov') + '</div>' + btn('Neue Gruppe', 'ghost') + nav(3),
+  gchat: () => back('Lauftreff · Chat') + bub('Morgen 5 km oder 10?', false, 'Dana') + bub('5, ich bin erkältet', false, 'Kai') + bub('Ich mach 10, wer mit?', true) + bub('Ich!', false, 'Dana') + '<div class="input">Nachricht <b>↑</b></div>',
+  familie: () => top('Familie Berger', 'Wer macht was?', null) + '<div class="chips">' + [['Du', 'lav'], ['Sam', 'sky'], ['Lena', 'peach'], ['Paul', 'rose']].map(([n, c]) => '<span class="chip" style="' + st(c) + '">' + n + '</span>').join('') + '</div>' +
+    tiles([['3', 'offene Fahrten'], ['5', 'auf der Liste'], ['1/2', 'Ämtchen heute']]) + '<div class="card" style="background:#E3F5DA;border:0"><span class="k" style="color:#2F6B1F">Fahrt offen</span><b class="h2">Lena vom Schwimmen abholen</b>' + sub('Sa · 16:00 · Hallenbad Mitte') + '<div class="tiles">' + btn('Ich fahre') + btn('Sam fragen', 'ghost') + '</div></div>' +
+    row('', 'Milch, Brot, Äpfel', 'Einkauf · Sam', null, false) + row('', 'Spülmaschine', 'Paul · heute', null, true) + nav(3),
+  gast: () => '<span class="url">nowish.app/e/•••••• · ohne App</span><span class="k">Olivia lädt dich ein</span><div class="h">Spieleabend bei Olivia</div>' + sub('Fr, 13. Nov · 19:00 · Lindenstraße 8') + seg(['Ich komme', 'Vielleicht', 'Absagen'], 0) + fld('Dein Name', 'Gabi') +
+    h2('Ich bringe mit', 'freiwillig') + row('', 'Nachtisch', 'noch offen', null, false, '<span class="cb on">✓</span>') + row('', 'Spiele', 'Tom', null, false, '') + btn('Antwort senden', 'lime') + '<div class="sub" style="text-align:center">Mit Nowish geplant · kostenlos für Gäste</div>',
+  ich: () => top('Dein Konto', 'Ich', null) + '<div class="row" style="border:0">' + av('K', 'lav') + '<div class="x"><b>Kim</b><span>Plus · Test noch 12 Tage</span></div><b>›</b></div>' +
+    tiles([['92 %', 'pünktlich', 'mint'], ['14', 'Termine/Woche', 'sky']]) + row('', 'Personalisieren', 'Farbe, Dichte, Start-Ansicht', null, false, '<b>›</b>') + row('', 'Erinnerungen', 'sanft · 3 Stufen', null, false, '<b>›</b>') + row('', 'Datenschutz-Center', 'nur auf dem Gerät', null, false, '<b>›</b>') + row('', 'Abo & Preise', 'Plus', null, false, '<b>›</b>') + row('', 'Sprache', 'Deutsch', null, false, '<b>›</b>') + nav(4),
+  profil: () => back('Profil') + '<span class="av" style="width:56px;height:56px;border-radius:28px;font-size:22px;align-self:center;' + st('lav') + '">K</span><div class="h" style="text-align:center">Kim</div>' +
+    '<div class="card"><div class="top" style="align-items:baseline"><b style="font-size:22px">92 %</b><span class="sub" style="color:#2F6B1F">+8 % zur Vorwoche</span></div>' + sub('pünktlich diese Woche') +
+    '<div style="display:flex;align-items:flex-end;gap:5px;height:46px">' + [96, 88, 100, 82, 92, 0, 0].map((p) => '<i style="flex:1;border-radius:4px;height:' + Math.max(8, p * 0.46) + 'px;background:' + (p ? '#0D0E12' : '#ECE8DF') + '"></i>').join('') + '</div></div>' + row('', 'Gelernter Puffer', 'Rad: +10 Min. · Auto: +5 Min.', null, false, '') + row('', 'Name & Avatar', '', null, false, '<b>›</b>'),
+  personal: () => back('Personalisieren') + '<span class="k">Akzentfarbe</span><div class="chips">' + ['#C8F031', '#7FC8E0', '#FFB98C', '#B9A7EE'].map((c, i) => '<span class="sw' + (i === 0 ? ' on' : '') + '" style="background:' + c + '"></span>').join('') + '</div>' +
+    '<span class="k">Darstellung</span>' + seg(['Luftig', 'Kompakt'], 0) + '<span class="k">„Heute“ anordnen</span>' + row('', 'Als Nächstes', '', null, false, '<b>≡</b>') + row('', 'Helfer', '', null, false, '<b>≡</b>') + row('', 'Dein Tag', '', null, false, '<b>≡</b>') + tog('Wochen-Kacheln', false) + '<span class="k">Start-Ansicht</span>' + seg(['Heute', 'Kalender', 'Gemeinsam'], 0),
+  privacy: () => back('Datenschutz') + '<div class="h">Deine Daten</div>' + sub('Alles liegt nur auf diesem Gerät. Nichts wird hochgeladen.') + row('', 'Termine', '', null, false, '<b>48</b>') + row('', 'Abgehakte Termine', '30 Tage', null, false, '<b>12</b>') + row('', 'Gelernter Puffer', '', null, false, '<b>2</b>') + row('', 'Einstellungen', '', null, false, '<b>9</b>') +
+    btn('Daten exportieren', 'ghost') + '<div class="btn" style="background:#FDE3EA;color:#9E2347">Alle Daten löschen</div>',
+  widgets: () => '<div class="sc wall" style="gap:10px"><span class="k" style="color:#2A2E38;text-align:center">Homescreen · Mockup</span><div class="wd2"><div class="wg dark"><span class="lime" style="font-size:9px">LOS IN 25 MIN.</span><b style="font-size:22px;letter-spacing:-0.5px">07:55</b><span style="font-size:9.5px">Zahnarzt 08:30</span></div>' +
+    '<div class="wg"><span class="k red">FREITAG</span><b style="font-size:20px">13</b><span class="ec" style="' + st('sky') + ';font-size:8.5px">08:30 Zahnarzt</span><span class="ec" style="' + st('lav') + ';font-size:8.5px">12:30 Lunch</span></div>' +
+    '<div class="wg wide"><div class="top" style="align-items:baseline"><b>Heute</b><span class="sub">als Nächstes 07:55</span></div>' + ['08:30 Zahnarzt|sky', '12:30 Mittagessen mit Alex|lav', '19:00 Spieleabend|lav'].map((x) => { const [t, c] = x.split('|'); return '<span class="ec" style="' + st(c) + ';font-size:9px;padding:3px 6px">' + t + '</span>'; }).join('') + '</div>' +
+    '<div class="wg wide"><b>Diese Woche</b><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px">' + ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].map((d, i) => '<span style="display:flex;flex-direction:column;gap:2px;align-items:center"><span style="font-size:8.5px;font-weight:700;' + (i === 4 ? 'background:#0D0E12;color:#C8F031;border-radius:6px;padding:0 3px' : '') + '">' + d + '</span>' + [['lav'], ['mint', 'sand'], ['sand'], ['peach', 'mint'], ['sky', 'lav', 'lav'], ['mint', 'sky'], ['peach']][i].map((c) => '<i style="width:100%;height:9px;border-radius:3px;background:' + C[c][0] + '"></i>').join('') + '</span>').join('') + '</div></div></div>' +
+    '<div class="chips" style="justify-content:center"><span class="chip" style="background:rgba(255,255,255,0.5)">◔ 25 Min.</span><span class="chip" style="background:rgba(255,255,255,0.5)">Zahnarzt · los 07:55</span></div><span class="sub" style="text-align:center;color:#2A2E38">Sperrbildschirm</span></div>',
+  sync: () => back('Kalender verbinden') + '<div class="h">Alles an einem Ort</div>' + sub('Termine aus anderen Kalendern erscheinen in Nowish – Losgeh-Zeit inklusive.') +
+    row('', 'Google Kalender', 'nicht verbunden', null, false, '<span class="chip on">Verbinden</span>') + row('', 'Outlook', 'nicht verbunden', null, false, '<span class="chip on">Verbinden</span>') + row('', 'iCloud', 'nicht verbunden', null, false, '<span class="chip on">Verbinden</span>') +
+    '<div class="card" style="background:#F6F4EF;border:0"><b>Echte Wegzeit</b>' + sub('Aus der Adresse berechnet, sobald Karten verbunden sind.') + '</div>',
+  login: () => '<div style="flex:1"></div><div class="h" style="font-size:26px">Willkommen zurück</div>' + sub('Melde dich an, damit Einladungen und deine Familie überall synchron sind.') + fld('E-Mail', 'kim@beispiel.de') + btn('Mit Passkey anmelden', 'lime') + btn('Link per E-Mail senden') +
+    '<div class="sub" style="text-align:center">oder</div>' + btn('Mit Apple fortfahren', 'ghost') + btn('Mit Google fortfahren', 'ghost') + '<div class="sub" style="text-align:center">Kein Passwort nötig</div>',
+  admin: () => top('Intern · Web', 'Admin', '<span class="demo">Rollen</span>') + tiles([['1 284', 'aktive Nutzer', 'sky'], ['3,9 %', 'Test → Abo', 'mint'], ['0', 'Meldungen offen', 'sand'], ['5', 'Hinweis-Slots', 'lav']], 2) +
+    h2('Hinweise im eigenen System', '') + tog('agenda_feed', true, 'max. 1 pro 10 Einträge') + tog('post_event_create', false, 'nie in der ersten Woche') + h2('Audit-Log', '') + row('', 'Comp-Abo vergeben', 'heute 09:12 · admin', null, false, '') + row('', 'Slot geändert', 'gestern · admin', null, false, ''),
+};
+
 const AREAS = [
   { id: 'start', title: 'Einstieg', what: 'Erster Start und Abo-Entscheidung.', screens: [
-    { name: 'Onboarding', route: '/onboarding', live: true, what: 'Willkommen, Alter bestätigen (16+), Testphase anbieten – ohne Konto.', wf: ['t1','t2','hero','text','text','btn','btn.ghost'] },
-    { name: 'Paywall', route: '/paywall', live: true, what: 'Free, Plus, Pro, Family im Vergleich; Kauf ist im Prototyp eine Demo.', wf: ['t1','seg','tiles','row','row','row','btn'] },
+    ['Onboarding', '/onboarding', 1, 'Willkommen, Alter bestätigen (16+), Testphase anbieten – ohne Konto.', 'onboarding'],
+    ['Paywall', '/paywall', 1, 'Free, Plus, Family im Vergleich; nichts ist vorausgewählt, Kauf ist im Prototyp eine Demo.', 'paywall'],
   ]},
   { id: 'heute', title: 'Heute', what: 'Der Start-Tab: Wann muss ich los, was steht an, wo wird es knapp.', screens: [
-    { name: 'Heute', route: '/(tabs)/index', live: true, what: 'Nächster Aufbruch mit Losgeh-Zeit, Helfer-Hinweis, Tagesliste mit Haken und freien Lücken.', wf: ['t1','t2','hero.accent','row','row','row','row', N] },
-    { name: 'Schnell-Eintrag', route: 'Blatt über +', live: true, what: 'Eine Zeile tippen („Fr 19 Uhr Grillen bei Tom“) – Titel, Tag, Zeit und Ort werden erkannt.', wf: ['t1','row','row', 'sheet:field,chips,row,btn'] },
-    { name: 'Verschieben', route: 'Blatt per Wischen', live: true, what: 'Nach links wischen: +15 Min., +1 Std. oder morgen. Bei fremden Events: Termin öffnen.', wf: ['t1','row','row','row', 'sheet:t1,btn.ghost,btn.ghost,btn.ghost'] },
-    { name: 'Losgeh-Modus', route: 'Idee aus dem Konzept', live: false, what: 'Großer Countdown bis zum Losgehen, Bereit-Check, „Ich verspäte mich“ mit einem Tipp.', wf: ['t2','ring','chips','field','btn'] },
+    ['Heute', '/(tabs)/index', 1, 'Nächster Aufbruch, Helfer-Hinweis, Tagesliste mit Haken und freien Lücken.', 'heute'],
+    ['Schnell-Eintrag', 'Blatt über +', 1, 'Eine Zeile tippen – Titel, Tag, Zeit und Ort werden erkannt.', 'quick'],
+    ['Verschieben', 'Blatt per Wischen', 1, 'Nach links wischen: +15 Min., +1 Std. oder morgen.', 'later'],
+    ['Losgeh-Modus', 'Idee aus dem Konzept', 0, 'Countdown bis zum Losgehen, Bereit-Check, „Ich verspäte mich“ mit einem Tipp.', 'los'],
   ]},
   { id: 'kalender', title: 'Kalender', what: 'Alle Termine im Überblick, auch erweitert und als Widget.', screens: [
-    { name: 'Monat', route: '/(tabs)/calendar', live: true, what: 'Monatsraster mit Punkten, darunter der gewählte Tag; Filter nach Person.', wf: ['t1','chips','grid','row','row', N] },
-    { name: 'Woche & Liste', route: '/(tabs)/calendar', live: true, what: 'Woche als Tageszeilen, Liste der nächsten 30 Tage; Abhaken und Wischen wie auf Heute.', wf: ['t1','seg','row','row','row','row','row', N] },
-    { name: 'Monat erweitert', route: 'Idee v7', live: false, what: 'Jeder Tag zeigt bis zu zwei Termine mit Uhrzeit; Tippen öffnet die Tagesliste.', wf: ['t1','grid','grid','grid','grid', N] },
-    { name: 'Woche erweitert', route: 'Idee v7', live: false, what: 'Eine Zeile pro Tag, Termine als Blöcke nebeneinander, „Jetzt“-Linie.', wf: ['t1','chips','tiles','tiles','tiles', N] },
-    { name: 'Kalenderdatei', route: '/ics-import', live: true, what: 'Termine aus einer .ics-Datei übernehmen oder exportieren.', wf: ['t1','text','field','row','row','btn'] },
+    ['Monat', '/(tabs)/calendar', 1, 'Monatsraster mit Punkten, Filter nach Person, darunter der gewählte Tag.', 'monat'],
+    ['Woche & Liste', '/(tabs)/calendar', 1, 'Liste der nächsten 30 Tage nach Tagen gruppiert; Abhaken und Wischen wie auf Heute.', 'liste'],
+    ['Monat erweitert', 'Idee v7', 0, 'Jeder Tag zeigt bis zu zwei Termine; Tippen öffnet die Tagesliste.', 'monatX'],
+    ['Woche erweitert', 'Idee v7', 0, 'Eine Zeile pro Tag, Termine als Blöcke nebeneinander.', 'wocheX'],
+    ['Kalenderdatei', '/ics-import', 1, 'Termine aus einer .ics-Datei übernehmen oder exportieren.', 'ics'],
   ]},
   { id: 'termin', title: 'Termin & Event', what: 'Alles zu einem Termin an einem Ort.', screens: [
-    { name: 'Termin', route: '/event/[id]', live: true, what: 'Wann, wo, deine Antwort, Losgeh-Plan; bei Events Tab „Gemeinsam“.', wf: ['t2','t1','seg','hero','row','row','btn'] },
-    { name: 'Editor', route: '/editor', live: true, what: 'Neu oder bearbeiten: Titel, Zeit, Ort, Wegzeit, Wiederholung, Erinnerungen, Gäste.', wf: ['t1','field','field','field','chips','field','btn'] },
-    { name: 'Vorlagen', route: '/templates', live: true, what: 'Grillabend, Spieleabend, Geburtstag … mit fertigen Listen und Aufgaben.', wf: ['t1','tiles','tiles','tiles'] },
-    { name: 'Bereit-Check', route: '/ready', live: true, what: 'Was muss mit? Schritte abhaken, bevor es losgeht.', wf: ['t1','t2','row','row','row','btn'] },
-    { name: 'Fokus-Modus', route: '/focus', live: true, what: 'Für Zeitblindheit: nur der nächste Schritt, sichtbare Zeit, Mikroschritte.', wf: ['t2','ring','t1','btn'] },
+    ['Termin', '/event/[id]', 1, 'Wann, wo, Losgeh-Plan, deine Antwort; Tab „Gemeinsam“ bei Events.', 'termin'],
+    ['Editor', '/editor', 1, 'Titel, Zeit, Ort, Weg, Losgeh-Vorschau, Erinnerungen, Wiederholung.', 'editor'],
+    ['Vorlagen', '/templates', 1, 'Grillabend, Spieleabend, Geburtstag … mit fertigen Listen und Aufgaben.', 'vorlagen'],
+    ['Bereit-Check', '/ready', 1, 'Was muss mit? Abhaken, dann „Bin unterwegs“.', 'ready'],
+    ['Fokus-Modus', '/focus', 1, 'Nur der nächste Schritt, sichtbare Zeit, Mikroschritte.', 'fokus'],
   ]},
   { id: 'gemeinsam', title: 'Gemeinsam', what: 'Events, Gruppen und Familie – alles, was man mit anderen plant.', screens: [
-    { name: 'Events', route: '/(tabs)/events', live: true, what: 'Offene Einladungen, diese Woche, später; Event erstellen oder Vorlage wählen.', wf: ['t1','seg','btn','row','row','row','row', N] },
-    { name: 'Gäste & Zusagen', route: '/event/[id]/guests', live: true, what: 'Wer kommt, wer vielleicht; „Vielleicht“ läuft zur Frist ab.', wf: ['t1','tiles','row','row','row','row'] },
-    { name: 'Umfrage', route: '/event/[id]/poll', live: true, what: 'Termin oder Ort abstimmen, per Wischen, mit Deadline.', wf: ['t1','t2','hero','chips','btn'] },
-    { name: 'Mitbringliste', route: '/event/[id]/bring', live: true, what: 'Wer bringt was; doppelte Salate vermeiden.', wf: ['t1','row','row','row','row','field'] },
-    { name: 'Aufgaben', route: '/event/[id]/tasks', live: true, what: 'To-dos mit Zuständigen und Fälligkeit.', wf: ['t1','row','row','row','field'] },
-    { name: 'Chat', route: '/event/[id]/chat', live: true, what: 'Nachrichten zum Event (im Prototyp simuliert).', wf: ['t1','bubble','bubble.me','bubble','bubble.me','field'] },
-    { name: 'Kosten', route: '/event/[id]/costs', live: true, what: 'Ausgaben erfassen und fair aufteilen, mit PayPal-Link.', wf: ['t1','hero','row','row','btn'] },
-    { name: 'Gruppen', route: '/group/[id]', live: true, what: 'Feste Runden mit wiederkehrenden Treffen; neue Gruppe anlegen.', wf: ['t1','t2','row','row','row','btn'] },
-    { name: 'Gruppen-Chat', route: '/group/[id]/chat', live: true, what: 'Austausch innerhalb der Gruppe.', wf: ['t1','bubble','bubble.me','bubble','field'] },
-    { name: 'Familie', route: '/family/*', live: true, what: 'Mitglieder und Kinderprofile, Fahrdienste, Einkauf, Ämtchen.', wf: ['t1','tiles','row','row','row','row', N] },
-    { name: 'Gast-Weblink', route: 'Web · Block B2', live: false, what: 'Gäste ohne App: zusagen, abstimmen, mitbringen – sicherer Link.', wf: ['t1','t2','hero','btn','btn.ghost','row'] },
+    ['Events', '/(tabs)/events', 1, 'Was auf deine Antwort wartet, darunter diese Woche.', 'events'],
+    ['Gäste & Zusagen', '/event/[id]/guests', 1, 'Wer kommt; „Vielleicht“ läuft zur Frist ab.', 'gaeste'],
+    ['Umfrage', '/event/[id]/poll', 1, 'Termin abstimmen, per Wischen, mit Deadline.', 'umfrage'],
+    ['Mitbringliste', '/event/[id]/bring', 1, 'Wer bringt was; Offenes mit einem Tipp übernehmen.', 'bring'],
+    ['Aufgaben', '/event/[id]/tasks', 1, 'To-dos mit Zuständigen und Fälligkeit.', 'aufgaben'],
+    ['Chat', '/event/[id]/chat', 1, 'Nachrichten zum Event (im Prototyp simuliert).', 'chat'],
+    ['Kosten', '/event/[id]/costs', 1, 'Ausgaben erfassen, fair aufteilen, PayPal-Link teilen.', 'kosten'],
+    ['Gruppen', '/group/[id]', 1, 'Feste Runden mit wiederkehrenden Treffen.', 'gruppen'],
+    ['Gruppen-Chat', '/group/[id]/chat', 1, 'Austausch innerhalb der Gruppe.', 'gchat'],
+    ['Familie', '/family/*', 1, 'Mitglieder, Fahrdienste, Einkauf, Ämtchen.', 'familie'],
+    ['Gast-Weblink', 'Web · Block B2', 0, 'Gäste ohne App: zusagen, mitbringen – sicherer Link.', 'gast'],
   ]},
   { id: 'ich', title: 'Ich', what: 'Profil, Abo, Look und Daten.', screens: [
-    { name: 'Ich & Einstellungen', route: '/(tabs)/settings', live: true, what: 'Profil, Abo, Sprache, Erinnerungen, Haptik, Hilfe.', wf: ['t1','hero','row','row','row','row', N] },
-    { name: 'Profil', route: '/profile', live: true, what: 'Name, Avatar, Pünktlichkeits-Rückblick.', wf: ['ring','t1','bars','row','row'] },
-    { name: 'Personalisieren', route: '/personalize', live: true, what: 'Akzentfarbe, Dichte, Reihenfolge auf Heute, Start-Ansicht.', wf: ['t1','chips','seg','row','row','row'] },
-    { name: 'Datenschutz-Center', route: '/privacy', live: true, what: 'Was gespeichert ist, Export, alles löschen.', wf: ['t1','text','row','row','row','btn'] },
+    ['Ich & Einstellungen', '/(tabs)/settings', 1, 'Profil, Abo, Erinnerungen, Sprache, Datenschutz.', 'ich'],
+    ['Profil', '/profile', 1, 'Pünktlichkeits-Rückblick und gelernter Puffer.', 'profil'],
+    ['Personalisieren', '/personalize', 1, 'Akzentfarbe, Dichte, Reihenfolge auf Heute, Start-Ansicht.', 'personal'],
+    ['Datenschutz-Center', '/privacy', 1, 'Was gespeichert ist, Export, alles löschen.', 'privacy'],
   ]},
   { id: 'spaeter', title: 'Später', what: 'Kommt mit Konten, Servern oder nativen Zusatzmodulen.', screens: [
-    { name: 'Widgets', route: 'iOS / Android', live: false, what: 'Losgeh-Zeit, Heute, Woche, Sperrbildschirm-Countdown.', wf: ['t2','widget'] },
-    { name: 'Kalender-Sync', route: 'Block B3', live: false, what: 'Google, Outlook, iCloud verbinden; echte Wegzeit aus der Adresse.', wf: ['t1','row','row','row','btn'] },
-    { name: 'Anmeldung', route: 'Block B1', live: false, what: 'E-Mail oder Passkey, später Apple/Google/Microsoft.', wf: ['t1','t2','field','field','btn','btn.ghost'] },
-    { name: 'Admin', route: 'Web · Block B4', live: false, what: 'Abos, Hinweise im eigenen System, Audit-Log (intern).', wf: ['t1','tiles','tiles','row','row'] },
+    ['Widgets', 'iOS / Android', 0, 'Losgeh-Zeit, Heute, Woche, Sperrbildschirm.', 'widgets'],
+    ['Kalender-Sync', 'Block B3', 0, 'Google, Outlook, iCloud verbinden; echte Wegzeit.', 'sync'],
+    ['Anmeldung', 'Block B1', 0, 'Passkey oder Link per E-Mail, später Apple/Google.', 'login'],
+    ['Admin', 'Web · Block B4', 0, 'Kennzahlen ohne Tracking, Hinweis-Slots, Audit-Log (intern).', 'admin'],
   ]},
 ];
 
-function block(spec) {
-  const [kind, mod] = spec.split('.');
-  const el = document.createElement('div');
-  const add = (cls, n, tag) => { for (let i = 0; i < n; i++) { const s = document.createElement(tag || 'span'); if (cls) s.className = cls; el.appendChild(s); } };
-  switch (kind) {
-    case 't1': el.className = 't1'; break;
-    case 't2': el.className = 'b t2'; break;
-    case 'text': el.className = 'b'; el.style.height = '5px'; break;
-    case 'hero': el.className = 'b hero' + (mod ? ' ' + mod : ''); break;
-    case 'row': { el.className = 'row'; add('dot', 1); const l = document.createElement('div'); l.className = 'lines'; l.innerHTML = '<i></i><i></i>'; el.appendChild(l); break; }
-    case 'tiles': el.className = 'tiles'; add('', 2); break;
-    case 'chips': el.className = 'chips'; add('', 4); break;
-    case 'seg': el.className = 'seg'; add('', 3); break;
-    case 'grid': el.className = 'grid'; for (let i = 0; i < 14; i++) { const s = document.createElement('span'); if (i === 4) s.className = 'on'; el.appendChild(s); } break;
-    case 'btn': el.className = 'btn' + (mod ? ' ' + mod : ''); break;
-    case 'field': el.className = 'field'; break;
-    case 'ring': el.className = 'ring'; break;
-    case 'bubble': el.className = 'bubble' + (mod ? ' ' + mod : ''); break;
-    case 'bars': el.className = 'bars'; [40, 70, 55, 90, 75].forEach((h) => { const s = document.createElement('span'); s.style.height = h + '%'; el.appendChild(s); }); break;
-    case 'widget': el.className = 'widget'; add('', 2); add('wide', 2); break;
-    case 'nav': el.className = 'nav'; ['on', '', 'plus', '', ''].forEach((c) => { const i = document.createElement('i'); if (c) i.className = c; el.appendChild(i); }); break;
-  }
-  return el;
-}
-
-function phone(wf, tabIndex) {
-  const p = document.createElement('div');
-  p.className = 'phone';
-  p.setAttribute('aria-hidden', 'true');
-  wf.forEach((spec) => {
-    if (spec.startsWith('sheet:')) {
-      const d = document.createElement('div'); d.className = 'dim'; p.appendChild(d);
-      const s = document.createElement('div'); s.className = 'sheet';
-      spec.slice(6).split(',').forEach((x) => s.appendChild(block(x)));
-      p.appendChild(s);
-    } else {
-      const b = block(spec);
-      if (spec === 'nav') b.querySelectorAll('i').forEach((i, k) => { i.classList.toggle('on', k === tabIndex); });
-      p.appendChild(b);
-    }
-  });
-  return p;
-}
-
-const TAB = { heute: 0, kalender: 1, gemeinsam: 3, ich: 4 };
 const root = document.getElementById('areas');
 let live = 0, total = 0;
 AREAS.forEach((a) => {
@@ -234,21 +362,26 @@ AREAS.forEach((a) => {
   sec.querySelector('h2').textContent = a.title + ' · ' + a.screens.length;
   sec.querySelector('p').textContent = a.what;
   const list = sec.querySelector('.screens');
-  a.screens.forEach((s) => {
-    total++; if (s.live) live++;
+  a.screens.forEach(([name, route, isLive, what, key]) => {
+    total++; if (isLive) live++;
     const fig = document.createElement('figure');
     fig.className = 'screen';
-    fig.style.margin = '0';
-    fig.appendChild(phone(s.wf, TAB[a.id] ?? 0));
+    const ph = document.createElement('div');
+    ph.className = 'ph';
+    ph.setAttribute('role', 'img');
+    ph.setAttribute('aria-label', 'Mockup: ' + name);
+    const html = S[key]();
+    ph.innerHTML = html.startsWith('<div class="sc') ? html : '<div class="sc">' + html + '</div>';
+    fig.appendChild(ph);
     const cap = document.createElement('figcaption');
     cap.className = 'caption';
     cap.innerHTML = '<span class="name"><span></span><span class="pill"></span></span><span class="what"></span><span class="route"></span>';
-    cap.querySelector('.name span').textContent = s.name;
+    cap.querySelector('.name span').textContent = name;
     const pill = cap.querySelector('.pill');
-    pill.textContent = s.live ? 'im Prototyp' : 'geplant';
-    pill.classList.add(s.live ? 'live' : 'plan');
-    cap.querySelector('.what').textContent = s.what;
-    cap.querySelector('.route').textContent = s.route;
+    pill.textContent = isLive ? 'im Prototyp' : 'geplant';
+    pill.classList.add(isLive ? 'live' : 'plan');
+    cap.querySelector('.what').textContent = what;
+    cap.querySelector('.route').textContent = route;
     fig.appendChild(cap);
     list.appendChild(fig);
   });
