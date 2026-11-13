@@ -1,0 +1,258 @@
+<title>Nowish App-Landkarte</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: a quiet sitemap — one band per app area, each screen a wireframe phone with a short caption. */
+:root {
+  --bg: #F7F7F5; --surface: #FFFFFF; --ink: #16171A; --muted: #62656D; --line: #E3E2DD;
+  --wire: #D9D8D2; --wire-strong: #B9B8B1; --accent: #C8F031; --accent-ink: #16171A; --planned: #6B5BD6;
+  --f-display: "Space Grotesk", "Inter", system-ui, sans-serif; --f-body: "Inter", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121315; --surface: #1B1C1F; --ink: #EDEDEA; --muted: #A2A4AA; --line: #2C2D31;
+  --wire: #34363B; --wire-strong: #4A4C52; --accent: #C8F031; --accent-ink: #16171A; --planned: #A99CF5; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121315; --surface: #1B1C1F; --ink: #EDEDEA; --muted: #A2A4AA; --line: #2C2D31;
+  --wire: #34363B; --wire-strong: #4A4C52; --accent: #C8F031; --accent-ink: #16171A; --planned: #A99CF5; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 40px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 48px; }
+h1, h2 { font-family: var(--f-display); letter-spacing: -0.02em; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.05; }
+h2 { font-size: 22px; }
+p { margin: 0; max-width: 68ch; }
+.lead { color: var(--muted); font-size: 16px; }
+.intro { display: flex; flex-direction: column; gap: 12px; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.pill { font-size: 11px; font-weight: 600; letter-spacing: 0.02em; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.pill.live { background: var(--accent); color: var(--accent-ink); }
+.pill.plan { border: 1px solid var(--planned); color: var(--planned); }
+.flow { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; overflow-x: auto; }
+.flow pre { margin: 0; }
+.area { display: flex; flex-direction: column; gap: 16px; }
+.area-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+.area-head p { color: var(--muted); font-size: 14px; }
+.screens { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 28px 20px; }
+.screen { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.phone { width: 150px; height: 300px; box-sizing: border-box; border: 1.5px solid var(--wire-strong); border-radius: 22px; background: var(--surface); padding: 14px 10px 0; display: flex; flex-direction: column; gap: 6px; position: relative; overflow: hidden; }
+.phone > * { flex-shrink: 0; }
+.b { background: var(--wire); border-radius: 4px; }
+.t1 { height: 10px; width: 70%; background: var(--wire-strong); border-radius: 3px; }
+.t2 { height: 6px; width: 45%; }
+.hero { height: 70px; border-radius: 10px; }
+.hero.accent { background: var(--accent); opacity: 0.85; }
+.row { display: flex; gap: 6px; align-items: center; }
+.row .dot { width: 14px; height: 14px; border-radius: 7px; background: var(--wire); flex-shrink: 0; }
+.row .lines { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.row .lines i { display: block; height: 5px; border-radius: 3px; background: var(--wire); }
+.row .lines i:last-child { width: 60%; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.tiles span { height: 40px; border-radius: 8px; background: var(--wire); }
+.chips { display: flex; gap: 4px; }
+.chips span { height: 12px; width: 28px; border-radius: 6px; background: var(--wire); }
+.chips span:first-child { background: var(--ink); opacity: 0.75; }
+.seg { height: 14px; border-radius: 7px; background: var(--wire); display: grid; grid-template-columns: repeat(3, 1fr); padding: 2px; gap: 2px; }
+.seg span:first-child { background: var(--surface); border-radius: 5px; }
+.grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.grid span { height: 13px; border-radius: 3px; background: var(--wire); }
+.grid span.on { background: var(--ink); opacity: 0.75; }
+.btn { height: 16px; border-radius: 8px; background: var(--ink); opacity: 0.8; }
+.btn.ghost { background: transparent; border: 1.5px solid var(--wire-strong); opacity: 1; }
+.field { height: 16px; border-radius: 5px; border: 1.5px solid var(--wire); }
+.ring { width: 70px; height: 70px; border-radius: 50%; border: 7px solid var(--wire); border-top-color: var(--ink); align-self: center; box-sizing: border-box; }
+.bubble { height: 14px; width: 60%; border-radius: 7px; background: var(--wire); }
+.bubble.me { align-self: flex-end; background: var(--wire-strong); }
+.bars { display: flex; align-items: flex-end; gap: 4px; height: 40px; }
+.bars span { flex: 1; border-radius: 3px; background: var(--wire); }
+.nav { position: absolute; left: 0; right: 0; bottom: 0; height: 22px; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; justify-items: center; background: var(--surface); }
+.nav i { width: 8px; height: 8px; border-radius: 4px; background: var(--wire); }
+.nav i.on { background: var(--ink); }
+.nav i.plus { width: 14px; height: 14px; border-radius: 7px; background: var(--ink); }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; height: 46%; border-radius: 14px 14px 0 0; background: var(--surface); border-top: 1.5px solid var(--wire-strong); padding: 10px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; }
+.dim { position: absolute; inset: 0; background: var(--ink); opacity: 0.08; }
+.widget { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.widget span { height: 54px; border-radius: 10px; background: var(--wire); }
+.widget span.wide { grid-column: span 2; }
+.caption { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.caption .name { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-weight: 600; }
+.caption .what { font-size: 13px; color: var(--muted); }
+.caption .route { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11px; color: var(--muted); }
+.note { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>Nowish App-Landkarte</h1>
+    <p class="lead">Alle Seiten, die für die App angedacht sind, als schlichte Skizzen – ohne Farben und ohne endgültiges Design, damit nur der Aufbau zählt. Die Design-Richtung wird separat entschieden.</p>
+    <div class="legend">
+      <span><span class="pill live">im Prototyp</span> gebaut und durchspielbar (Beispieldaten)</span>
+      <span><span class="pill plan">geplant</span> folgt mit Konten, Servern oder später</span>
+      <span id="count"></span>
+    </div>
+  </header>
+
+  <section class="area" aria-labelledby="flow-h">
+    <div class="area-head"><h2 id="flow-h">So hängen die Seiten zusammen</h2><p>Vier Tabs, ein Plus-Knopf, alles andere öffnet sich aus ihnen.</p></div>
+    <div class="flow">
+<pre class="mermaid">
+flowchart LR
+  O[Onboarding] --> H
+  subgraph Tabs
+    H[Heute]
+    K[Kalender]
+    G[Gemeinsam]
+    I[Ich]
+  end
+  P((+)) --> Q[Schnell-Eintrag] --> E[Editor]
+  H --> T[Termin]
+  K --> T
+  G --> T
+  H --> L[Losgeh-Modus] --> B[Bereit-Check]
+  T --> C[Gäste · Umfrage · Mitbringliste · Aufgaben · Chat · Kosten]
+  G --> F[Familie] --> FR[Fahrten · Einkauf · Ämtchen]
+  G --> GR[Gruppen] --> GC[Gruppen-Chat]
+  I --> PE[Personalisieren]
+  I --> DS[Datenschutz-Center]
+  I --> AB[Abo & Paywall]
+</pre>
+    </div>
+  </section>
+
+  <div id="areas" style="display: flex; flex-direction: column; gap: 48px"></div>
+
+  <p class="note">Stand 13.11.2026 · Prototyp lokal mit Beispieldaten, ohne Konten. Routen in Klammern entsprechen den Pfaden in <code>apps/mobile/app</code>. Skizzen sind keine App-Screenshots.</p>
+</div>
+
+<script>
+const N = 'nav';
+// Wireframe vocabulary: each screen is a list of block names, rendered as grey shapes.
+const AREAS = [
+  { id: 'start', title: 'Einstieg', what: 'Erster Start und Abo-Entscheidung.', screens: [
+    { name: 'Onboarding', route: '/onboarding', live: true, what: 'Willkommen, Alter bestätigen (16+), Testphase anbieten – ohne Konto.', wf: ['t1','t2','hero','text','text','btn','btn.ghost'] },
+    { name: 'Paywall', route: '/paywall', live: true, what: 'Free, Plus, Pro, Family im Vergleich; Kauf ist im Prototyp eine Demo.', wf: ['t1','seg','tiles','row','row','row','btn'] },
+  ]},
+  { id: 'heute', title: 'Heute', what: 'Der Start-Tab: Wann muss ich los, was steht an, wo wird es knapp.', screens: [
+    { name: 'Heute', route: '/(tabs)/index', live: true, what: 'Nächster Aufbruch mit Losgeh-Zeit, Helfer-Hinweis, Tagesliste mit Haken und freien Lücken.', wf: ['t1','t2','hero.accent','row','row','row','row', N] },
+    { name: 'Schnell-Eintrag', route: 'Blatt über +', live: true, what: 'Eine Zeile tippen („Fr 19 Uhr Grillen bei Tom“) – Titel, Tag, Zeit und Ort werden erkannt.', wf: ['t1','row','row', 'sheet:field,chips,row,btn'] },
+    { name: 'Verschieben', route: 'Blatt per Wischen', live: true, what: 'Nach links wischen: +15 Min., +1 Std. oder morgen. Bei fremden Events: Termin öffnen.', wf: ['t1','row','row','row', 'sheet:t1,btn.ghost,btn.ghost,btn.ghost'] },
+    { name: 'Losgeh-Modus', route: 'Idee aus dem Konzept', live: false, what: 'Großer Countdown bis zum Losgehen, Bereit-Check, „Ich verspäte mich“ mit einem Tipp.', wf: ['t2','ring','chips','field','btn'] },
+  ]},
+  { id: 'kalender', title: 'Kalender', what: 'Alle Termine im Überblick, auch erweitert und als Widget.', screens: [
+    { name: 'Monat', route: '/(tabs)/calendar', live: true, what: 'Monatsraster mit Punkten, darunter der gewählte Tag; Filter nach Person.', wf: ['t1','chips','grid','row','row', N] },
+    { name: 'Woche & Liste', route: '/(tabs)/calendar', live: true, what: 'Woche als Tageszeilen, Liste der nächsten 30 Tage; Abhaken und Wischen wie auf Heute.', wf: ['t1','seg','row','row','row','row','row', N] },
+    { name: 'Monat erweitert', route: 'Idee v7', live: false, what: 'Jeder Tag zeigt bis zu zwei Termine mit Uhrzeit; Tippen öffnet die Tagesliste.', wf: ['t1','grid','grid','grid','grid', N] },
+    { name: 'Woche erweitert', route: 'Idee v7', live: false, what: 'Eine Zeile pro Tag, Termine als Blöcke nebeneinander, „Jetzt“-Linie.', wf: ['t1','chips','tiles','tiles','tiles', N] },
+    { name: 'Kalenderdatei', route: '/ics-import', live: true, what: 'Termine aus einer .ics-Datei übernehmen oder exportieren.', wf: ['t1','text','field','row','row','btn'] },
+  ]},
+  { id: 'termin', title: 'Termin & Event', what: 'Alles zu einem Termin an einem Ort.', screens: [
+    { name: 'Termin', route: '/event/[id]', live: true, what: 'Wann, wo, deine Antwort, Losgeh-Plan; bei Events Tab „Gemeinsam“.', wf: ['t2','t1','seg','hero','row','row','btn'] },
+    { name: 'Editor', route: '/editor', live: true, what: 'Neu oder bearbeiten: Titel, Zeit, Ort, Wegzeit, Wiederholung, Erinnerungen, Gäste.', wf: ['t1','field','field','field','chips','field','btn'] },
+    { name: 'Vorlagen', route: '/templates', live: true, what: 'Grillabend, Spieleabend, Geburtstag … mit fertigen Listen und Aufgaben.', wf: ['t1','tiles','tiles','tiles'] },
+    { name: 'Bereit-Check', route: '/ready', live: true, what: 'Was muss mit? Schritte abhaken, bevor es losgeht.', wf: ['t1','t2','row','row','row','btn'] },
+    { name: 'Fokus-Modus', route: '/focus', live: true, what: 'Für Zeitblindheit: nur der nächste Schritt, sichtbare Zeit, Mikroschritte.', wf: ['t2','ring','t1','btn'] },
+  ]},
+  { id: 'gemeinsam', title: 'Gemeinsam', what: 'Events, Gruppen und Familie – alles, was man mit anderen plant.', screens: [
+    { name: 'Events', route: '/(tabs)/events', live: true, what: 'Offene Einladungen, diese Woche, später; Event erstellen oder Vorlage wählen.', wf: ['t1','seg','btn','row','row','row','row', N] },
+    { name: 'Gäste & Zusagen', route: '/event/[id]/guests', live: true, what: 'Wer kommt, wer vielleicht; „Vielleicht“ läuft zur Frist ab.', wf: ['t1','tiles','row','row','row','row'] },
+    { name: 'Umfrage', route: '/event/[id]/poll', live: true, what: 'Termin oder Ort abstimmen, per Wischen, mit Deadline.', wf: ['t1','t2','hero','chips','btn'] },
+    { name: 'Mitbringliste', route: '/event/[id]/bring', live: true, what: 'Wer bringt was; doppelte Salate vermeiden.', wf: ['t1','row','row','row','row','field'] },
+    { name: 'Aufgaben', route: '/event/[id]/tasks', live: true, what: 'To-dos mit Zuständigen und Fälligkeit.', wf: ['t1','row','row','row','field'] },
+    { name: 'Chat', route: '/event/[id]/chat', live: true, what: 'Nachrichten zum Event (im Prototyp simuliert).', wf: ['t1','bubble','bubble.me','bubble','bubble.me','field'] },
+    { name: 'Kosten', route: '/event/[id]/costs', live: true, what: 'Ausgaben erfassen und fair aufteilen, mit PayPal-Link.', wf: ['t1','hero','row','row','btn'] },
+    { name: 'Gruppen', route: '/group/[id]', live: true, what: 'Feste Runden mit wiederkehrenden Treffen; neue Gruppe anlegen.', wf: ['t1','t2','row','row','row','btn'] },
+    { name: 'Gruppen-Chat', route: '/group/[id]/chat', live: true, what: 'Austausch innerhalb der Gruppe.', wf: ['t1','bubble','bubble.me','bubble','field'] },
+    { name: 'Familie', route: '/family/*', live: true, what: 'Mitglieder und Kinderprofile, Fahrdienste, Einkauf, Ämtchen.', wf: ['t1','tiles','row','row','row','row', N] },
+    { name: 'Gast-Weblink', route: 'Web · Block B2', live: false, what: 'Gäste ohne App: zusagen, abstimmen, mitbringen – sicherer Link.', wf: ['t1','t2','hero','btn','btn.ghost','row'] },
+  ]},
+  { id: 'ich', title: 'Ich', what: 'Profil, Abo, Look und Daten.', screens: [
+    { name: 'Ich & Einstellungen', route: '/(tabs)/settings', live: true, what: 'Profil, Abo, Sprache, Erinnerungen, Haptik, Hilfe.', wf: ['t1','hero','row','row','row','row', N] },
+    { name: 'Profil', route: '/profile', live: true, what: 'Name, Avatar, Pünktlichkeits-Rückblick.', wf: ['ring','t1','bars','row','row'] },
+    { name: 'Personalisieren', route: '/personalize', live: true, what: 'Akzentfarbe, Dichte, Reihenfolge auf Heute, Start-Ansicht.', wf: ['t1','chips','seg','row','row','row'] },
+    { name: 'Datenschutz-Center', route: '/privacy', live: true, what: 'Was gespeichert ist, Export, alles löschen.', wf: ['t1','text','row','row','row','btn'] },
+  ]},
+  { id: 'spaeter', title: 'Später', what: 'Kommt mit Konten, Servern oder nativen Zusatzmodulen.', screens: [
+    { name: 'Widgets', route: 'iOS / Android', live: false, what: 'Losgeh-Zeit, Heute, Woche, Sperrbildschirm-Countdown.', wf: ['t2','widget'] },
+    { name: 'Kalender-Sync', route: 'Block B3', live: false, what: 'Google, Outlook, iCloud verbinden; echte Wegzeit aus der Adresse.', wf: ['t1','row','row','row','btn'] },
+    { name: 'Anmeldung', route: 'Block B1', live: false, what: 'E-Mail oder Passkey, später Apple/Google/Microsoft.', wf: ['t1','t2','field','field','btn','btn.ghost'] },
+    { name: 'Admin', route: 'Web · Block B4', live: false, what: 'Abos, Hinweise im eigenen System, Audit-Log (intern).', wf: ['t1','tiles','tiles','row','row'] },
+  ]},
+];
+
+function block(spec) {
+  const [kind, mod] = spec.split('.');
+  const el = document.createElement('div');
+  const add = (cls, n, tag) => { for (let i = 0; i < n; i++) { const s = document.createElement(tag || 'span'); if (cls) s.className = cls; el.appendChild(s); } };
+  switch (kind) {
+    case 't1': el.className = 't1'; break;
+    case 't2': el.className = 'b t2'; break;
+    case 'text': el.className = 'b'; el.style.height = '5px'; break;
+    case 'hero': el.className = 'b hero' + (mod ? ' ' + mod : ''); break;
+    case 'row': { el.className = 'row'; add('dot', 1); const l = document.createElement('div'); l.className = 'lines'; l.innerHTML = '<i></i><i></i>'; el.appendChild(l); break; }
+    case 'tiles': el.className = 'tiles'; add('', 2); break;
+    case 'chips': el.className = 'chips'; add('', 4); break;
+    case 'seg': el.className = 'seg'; add('', 3); break;
+    case 'grid': el.className = 'grid'; for (let i = 0; i < 14; i++) { const s = document.createElement('span'); if (i === 4) s.className = 'on'; el.appendChild(s); } break;
+    case 'btn': el.className = 'btn' + (mod ? ' ' + mod : ''); break;
+    case 'field': el.className = 'field'; break;
+    case 'ring': el.className = 'ring'; break;
+    case 'bubble': el.className = 'bubble' + (mod ? ' ' + mod : ''); break;
+    case 'bars': el.className = 'bars'; [40, 70, 55, 90, 75].forEach((h) => { const s = document.createElement('span'); s.style.height = h + '%'; el.appendChild(s); }); break;
+    case 'widget': el.className = 'widget'; add('', 2); add('wide', 2); break;
+    case 'nav': el.className = 'nav'; ['on', '', 'plus', '', ''].forEach((c) => { const i = document.createElement('i'); if (c) i.className = c; el.appendChild(i); }); break;
+  }
+  return el;
+}
+
+function phone(wf, tabIndex) {
+  const p = document.createElement('div');
+  p.className = 'phone';
+  p.setAttribute('aria-hidden', 'true');
+  wf.forEach((spec) => {
+    if (spec.startsWith('sheet:')) {
+      const d = document.createElement('div'); d.className = 'dim'; p.appendChild(d);
+      const s = document.createElement('div'); s.className = 'sheet';
+      spec.slice(6).split(',').forEach((x) => s.appendChild(block(x)));
+      p.appendChild(s);
+    } else {
+      const b = block(spec);
+      if (spec === 'nav') b.querySelectorAll('i').forEach((i, k) => { i.classList.toggle('on', k === tabIndex); });
+      p.appendChild(b);
+    }
+  });
+  return p;
+}
+
+const TAB = { heute: 0, kalender: 1, gemeinsam: 3, ich: 4 };
+const root = document.getElementById('areas');
+let live = 0, total = 0;
+AREAS.forEach((a) => {
+  const sec = document.createElement('section');
+  sec.className = 'area';
+  sec.setAttribute('aria-labelledby', 'a-' + a.id);
+  sec.innerHTML = '<div class="area-head"><h2 id="a-' + a.id + '"></h2><p></p></div><div class="screens"></div>';
+  sec.querySelector('h2').textContent = a.title + ' · ' + a.screens.length;
+  sec.querySelector('p').textContent = a.what;
+  const list = sec.querySelector('.screens');
+  a.screens.forEach((s) => {
+    total++; if (s.live) live++;
+    const fig = document.createElement('figure');
+    fig.className = 'screen';
+    fig.style.margin = '0';
+    fig.appendChild(phone(s.wf, TAB[a.id] ?? 0));
+    const cap = document.createElement('figcaption');
+    cap.className = 'caption';
+    cap.innerHTML = '<span class="name"><span></span><span class="pill"></span></span><span class="what"></span><span class="route"></span>';
+    cap.querySelector('.name span').textContent = s.name;
+    const pill = cap.querySelector('.pill');
+    pill.textContent = s.live ? 'im Prototyp' : 'geplant';
+    pill.classList.add(s.live ? 'live' : 'plan');
+    cap.querySelector('.what').textContent = s.what;
+    cap.querySelector('.route').textContent = s.route;
+    fig.appendChild(cap);
+    list.appendChild(fig);
+  });
+  root.appendChild(sec);
+});
+document.getElementById('count').textContent = total + ' Seiten · ' + live + ' im Prototyp · ' + (total - live) + ' geplant';
+</script>

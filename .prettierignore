@@ -13,3 +13,4 @@ README.md
 
 # Design-canvas mockups (own .dc.html format, reformatting can break them)
 docs/design/concept/**/*.dc.html
+docs/product/overview/*.html

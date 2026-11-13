@@ -1,0 +1,277 @@
+<title>Nowish Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: a single reading column with a sticky chapter bar; the leave-time clock is the recurring motif. */
+:root {
+  --bg: #FAFAF8; --surface: #FFFFFF; --ink: #15161A; --muted: #5F626A; --line: #E4E3DE;
+  --lime: #C8F031; --lime-ink: #15161A; --lav: #EDE7FF; --lav-ink: #4B2FD6; --peach: #FFE8D6; --peach-ink: #94400E;
+  --f-display: "Space Grotesk", "Inter", system-ui, sans-serif; --f-body: "Inter", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111214; --surface: #1A1B1E; --ink: #EDEDEA; --muted: #A4A6AC; --line: #2B2C30;
+  --lav: #2A2445; --lav-ink: #C9BDFF; --peach: #3A2A1F; --peach-ink: #FFC9A3; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111214; --surface: #1A1B1E; --ink: #EDEDEA; --muted: #A4A6AC; --line: #2B2C30;
+  --lav: #2A2445; --lav-ink: #C9BDFF; --peach: #3A2A1F; --peach-ink: #FFC9A3; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.6; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.gut { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.col { max-width: 880px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--f-display); letter-spacing: -0.02em; text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(36px, 7vw, 64px); }
+h2 { font-size: clamp(26px, 4vw, 34px); }
+h3 { font-size: 19px; }
+p { margin: 0; max-width: 66ch; }
+a { color: inherit; }
+.hero { padding-block: 56px 40px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: center; }
+.hero .claim { font-size: 20px; color: var(--muted); margin-top: 14px; }
+.hero .kicker { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.clock { width: 168px; height: 168px; border-radius: 50%; background: var(--surface); border: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+.clock b { font-family: var(--f-display); font-size: 40px; letter-spacing: -0.03em; line-height: 1; }
+.clock span { font-size: 13px; color: var(--muted); }
+.clock .tag { position: absolute; bottom: -10px; background: var(--lime); color: var(--lime-ink); font-weight: 700; font-size: 12px; padding: 3px 10px; border-radius: 999px; }
+@media (max-width: 560px) { .hero { grid-template-columns: 1fr; } .clock { width: 132px; height: 132px; } .clock b { font-size: 32px; } }
+nav.chapters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.chapters .col { display: flex; gap: 4px; overflow-x: auto; padding-block: 10px; }
+nav.chapters a { flex-shrink: 0; text-decoration: none; font-size: 14px; font-weight: 600; color: var(--muted); padding: 6px 12px; border-radius: 999px; }
+nav.chapters a:hover, nav.chapters a:focus-visible { color: var(--ink); background: var(--surface); outline: none; box-shadow: 0 0 0 1px var(--line); }
+section.ch { padding-block: 56px 8px; display: flex; flex-direction: column; gap: 20px; scroll-margin-top: 64px; }
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.pitch { font-family: var(--f-display); font-size: clamp(22px, 3.4vw, 30px); line-height: 1.3; letter-spacing: -0.01em; max-width: 30ch; }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.usp h3 { display: flex; align-items: center; gap: 10px; }
+.usp .mark { width: 10px; height: 10px; border-radius: 5px; background: var(--lime); flex-shrink: 0; box-shadow: 0 0 0 3px var(--surface), 0 0 0 4px var(--line); }
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 14px; }
+th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+ol.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+ol.steps li:first-child { border-top: 0; }
+ol.steps li::before { content: counter(s); width: 28px; height: 28px; border-radius: 14px; background: var(--ink); color: var(--bg); font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+ol.steps b { display: block; }
+.timeline { display: flex; flex-direction: column; }
+.tl { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-top: 1px solid var(--line); }
+.tl:first-child { border-top: 0; }
+.tl time { font-family: var(--f-display); font-weight: 700; font-variant-numeric: tabular-nums; }
+.chip { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--lav); color: var(--lav-ink); margin-right: 6px; }
+.chip.p { background: var(--peach); color: var(--peach-ink); }
+.chip.l { background: var(--lime); color: var(--lime-ink); }
+ul.tight { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.quote { font-family: var(--f-display); font-size: 22px; line-height: 1.3; }
+.phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.phase { border-radius: 18px; padding: 18px; border: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; gap: 8px; }
+.phase.now { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.phase .when { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.dont { border-left: 0; }
+footer { padding-block: 56px 72px; color: var(--muted); font-size: 13px; }
+</style>
+
+<div class="gut">
+  <header class="col hero">
+    <div>
+      <span class="kicker">Nowish · Social Planner · Arbeitsname</span>
+      <h1>Der Planer, der weiß, wann du losmusst.</h1>
+      <p class="claim">„Du chillst. Wir planen.“ – Kalender, Terminplaner und Event-Organisator in einer App.</p>
+    </div>
+    <div class="clock" role="img" aria-label="Beispiel: Zahnarzt um 8:30, losgehen um 7:55">
+      <span>Zahnarzt 08:30</span><b>07:55</b><span>losgehen</span><span class="tag">in 25 Min.</span>
+    </div>
+  </header>
+</div>
+
+<nav class="chapters gut" aria-label="Kapitel">
+  <div class="col">
+    <a href="#kurz">Kurz</a><a href="#lang">Lang</a><a href="#vorteile">Vorteile</a><a href="#nutzen">Optimal nutzen</a><a href="#workflows">Workflows</a><a href="#beispiele">Beispiele</a><a href="#werben">Werbung</a><a href="#preise">Preise</a><a href="#phasen">Phasen</a>
+  </div>
+</nav>
+
+<main class="gut">
+<div class="col">
+
+  <section class="ch" id="kurz">
+    <span class="eyebrow">Kurzfassung</span>
+    <p class="pitch">Nowish plant rückwärts vom Termin: Es sagt dir, wann du losmusst, was mit muss und wer noch nicht zugesagt hat.</p>
+    <div class="grid3">
+      <div class="box"><h3>In 10 Sekunden</h3><p class="small">Ein Kalender mit eingebautem Helfer, der Wegzeiten mitdenkt, rechtzeitig erinnert und Treffen mit Freunden und Familie an einem Ort organisiert.</p></div>
+      <div class="box"><h3>Für wen</h3><p class="small">Für alle, die oft knapp dran sind, viel organisieren oder eine Familie koordinieren – und für Gäste, die keine App installieren wollen.</p></div>
+      <div class="box"><h3>Was anders ist</h3><p class="small">Andere Kalender sagen, <em>wann</em> etwas anfängt. Nowish sagt, <em>wann du losmusst</em> – und hält Zusagen, Umfragen, Mitbringliste und Chat beim Termin.</p></div>
+    </div>
+  </section>
+
+  <section class="ch" id="lang">
+    <span class="eyebrow">Langfassung</span>
+    <h2>Planung ist heute auf sechs Apps verteilt</h2>
+    <p>Termine stehen im Kalender, die Abstimmung läuft über Doodle, die Absprachen in einer WhatsApp-Gruppe, die Kosten in Splitwise, die Einkaufsliste in den Notizen und die Wegzeit in Google Maps. Dabei gehen Infos verloren, und wer organisiert, läuft allen hinterher. Vor allem fehlt eine Antwort auf die Frage, die im Alltag zählt: <strong>Wann muss ich eigentlich los?</strong></p>
+    <p>Nowish führt das zusammen. Jeder Termin kennt seinen Weg: Aus Wegzeit, persönlichem Puffer und Vorbereitung entsteht die <strong>Losgeh-Zeit</strong>. Erinnerungen kommen gestuft, ein Bereit-Check fragt ab, was mit muss, und „Ich verspäte mich“ informiert alle mit einem Tipp. Bei Treffen mit anderen liegt alles am Termin: Einladung, Zusagen mit Frist, Umfrage, Mitbringliste, Aufgaben, Chat und Kosten. Gäste machen über einen sicheren Link mit, ganz ohne App.</p>
+    <p>Dazu kommen ein Familienbereich mit Fahrdiensten, Einkauf und Ämtchen, Gruppen für feste Runden, ein Fokus-Modus für Menschen mit Zeitblindheit und ein Datenschutz-Center, das zeigt, was gespeichert ist. Nowish ist werbefrei für zahlende Nutzer, ohne fremde Tracker und mit Servern in der EU geplant.</p>
+    <div class="box"><p class="quote">„Andere Kalender sagen dir, wann etwas anfängt. Nowish sagt dir, wann du losmusst.“</p></div>
+  </section>
+
+  <section class="ch" id="vorteile">
+    <span class="eyebrow">Vorteile</span>
+    <h2>Acht Gründe für Nowish</h2>
+    <div class="grid2">
+      <div class="box usp"><h3><span class="mark"></span>Losgeh-Zeit statt Startzeit</h3><p class="small muted">Wegzeit + Puffer + Vorbereitung. Der Puffer lernt mit: Wer oft spät dran ist, bekommt automatisch mehr Luft.</p></div>
+      <div class="box usp"><h3><span class="mark"></span>Erinnerungen, die eskalieren</h3><p class="small muted">Erst sanft, dann deutlicher. Bereit-Check vor dem Losgehen, „Ich verspäte mich“ mit einem Tipp.</p></div>
+      <div class="box usp"><h3><span class="mark"></span>Ein Helfer, der mitdenkt</h3><p class="small muted">Erkennt Überschneidungen und knappe Übergänge, findet freie Zeit und schlägt fertige Lösungen vor.</p></div>
+      <div class="box usp"><h3><span class="mark"></span>Events von der Idee bis zum Danach</h3><p class="small muted">Terminfindung, Einladung, Zusagen, Mitbringliste, Aufgaben, Chat, Kosten – alles beim Termin.</p></div>
+      <div class="box usp"><h3><span class="mark"></span>Gäste ohne App-Zwang</h3><p class="small muted">Zusagen, abstimmen und mitbringen über einen sicheren Link. Gast-Funktionen sind immer kostenlos.</p></div>
+      <div class="box usp"><h3><span class="mark"></span>Entscheidungen, die enden</h3><p class="small muted">Umfragen mit Deadline, „Vielleicht“ läuft ab. Kein ewiges Hin und Her.</p></div>
+      <div class="box usp"><h3><span class="mark"></span>Familie und Fokus</h3><p class="small muted">Fahrdienste, Einkauf, Ämtchen, Kinderprofile ohne Konto. Fokus-Modus mit sichtbarer Zeit und Mikroschritten.</p></div>
+      <div class="box usp"><h3><span class="mark"></span>Datenschutz als Funktion</h3><p class="small muted">Keine fremden Werbe-Tracker, EU-Hosting geplant, Datenschutz-Center mit Export und „Alles löschen“.</p></div>
+    </div>
+    <h3>Was jede Zielgruppe davon hat</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Wer</th><th>Kennt das Problem</th><th>Nowish hilft mit</th></tr></thead>
+      <tbody>
+        <tr><td>Chaos-Chris</td><td>Vergisst Termine, unterschätzt Wegzeiten</td><td>Losgeh-Zeit, gestufte Erinnerungen, Bereit-Check</td></tr>
+        <tr><td>Orga-Olivia</td><td>Läuft Zusagen, Geld und Mitbringseln hinterher</td><td>Zusagen mit Frist, Mitbringliste, Kosten, Aufgaben</td></tr>
+        <tr><td>Familien-Frank</td><td>Fahrdienste, Einkauf, kollidierende Termine</td><td>Familienbereich, Kinderprofile, Personen-Filter im Kalender</td></tr>
+        <tr><td>ADHS-Alex</td><td>Zeitblindheit, Überforderung</td><td>Fokus-Modus, sichtbare Zeit, Mikroschritte</td></tr>
+        <tr><td>Gast-Gabi</td><td>Will keine App installieren</td><td>Web-Link: zusagen, abstimmen, mitbringen</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="ch" id="nutzen">
+    <span class="eyebrow">So nutzt man Nowish optimal</span>
+    <h2>Acht Gewohnheiten, die den Unterschied machen</h2>
+    <div class="grid2">
+      <div class="box"><h3>Immer einen Ort angeben</h3><p class="small muted">Nur mit Ort und Weg (zu Fuß, Rad, Auto, ÖPNV) kann Nowish die Losgeh-Zeit berechnen. Später kommt die Wegzeit automatisch aus der Adresse.</p></div>
+      <div class="box"><h3>Schnell-Eintrag statt Formular</h3><p class="small muted">„Fr 19 Uhr Grillen bei Tom“ in eine Zeile tippen – Tag, Zeit und Ort werden erkannt.</p></div>
+      <div class="box"><h3>„Bin unterwegs“ drücken</h3><p class="small muted">So lernt der Puffer, wie viel Luft du wirklich brauchst. Nach ein paar Wochen passen die Zeiten.</p></div>
+      <div class="box"><h3>Bereit-Check pflegen</h3><p class="small muted">Schlüssel, Karte, Helm: Was du einmal einträgst, wird vor dem Losgehen abgefragt.</p></div>
+      <div class="box"><h3>Umfrage mit Frist</h3><p class="small muted">Für Terminfindung immer eine Deadline setzen. Danach steht das Ergebnis fest und die Einladung geht raus.</p></div>
+      <div class="box"><h3>Gäste per Link einladen</h3><p class="small muted">Nicht jeder muss die App haben. Der Link reicht für Zusage, Abstimmung und Mitbringliste.</p></div>
+      <div class="box"><h3>Abhaken und wischen</h3><p class="small muted">Rechts wischen = erledigt, links = später. Hält „Heute“ aufgeräumt.</p></div>
+      <div class="box"><h3>Die App zu deiner machen</h3><p class="small muted">Farbe, Dichte, Start-Ansicht und Reihenfolge auf „Heute“ unter Ich → Personalisieren.</p></div>
+    </div>
+  </section>
+
+  <section class="ch" id="workflows">
+    <span class="eyebrow">Workflows</span>
+    <h2>Die vier wichtigsten Abläufe</h2>
+    <div class="grid2">
+      <div class="box"><h3>Termin mit Losgeh-Zeit</h3>
+        <ol class="steps">
+          <li><span><b>Plus tippen</b>Schnell-Eintrag: „Di 8:30 Zahnarzt Praxis Sommer“.</span></li>
+          <li><span><b>Weg wählen</b>Rad, 20 Min. – Nowish rechnet 10 Min. Puffer dazu.</span></li>
+          <li><span><b>Erinnert werden</b>Vorbereiten, gleich los, jetzt los – in Stufen.</span></li>
+          <li><span><b>Bereit-Check</b>Karte und Schlüssel abhaken, „Bin unterwegs“.</span></li>
+        </ol>
+      </div>
+      <div class="box"><h3>Event organisieren</h3>
+        <ol class="steps">
+          <li><span><b>Idee</b>Vorlage „Grillabend“ wählen, Liste und Aufgaben sind schon da.</span></li>
+          <li><span><b>Termin finden</b>Umfrage mit drei Terminen, Frist Sonntag.</span></li>
+          <li><span><b>Einladen</b>Freunde in der App, alle anderen per Link.</span></li>
+          <li><span><b>Planen</b>Mitbringliste verteilt sich, Aufgaben haben Zuständige.</span></li>
+          <li><span><b>Danach</b>Kosten aufteilen, PayPal-Link teilen, Fotos sammeln.</span></li>
+        </ol>
+      </div>
+      <div class="box"><h3>Familienwoche</h3>
+        <ol class="steps">
+          <li><span><b>Sonntagabend</b>Kalender nach Person filtern, Überschneidungen sehen.</span></li>
+          <li><span><b>Fahrten verteilen</b>„Lena abholen“ – „Ich fahre“ oder Sam fragen.</span></li>
+          <li><span><b>Einkauf & Ämtchen</b>Liste teilen, Ämtchen im Wechsel.</span></li>
+        </ol>
+      </div>
+      <div class="box"><h3>Wenn es knapp wird</h3>
+        <ol class="steps">
+          <li><span><b>Helfer meldet sich</b>„Spieleabend → Physio wird knapp.“</span></li>
+          <li><span><b>Lösung antippen</b>Eigenen Termin verschieben oder Gastgeber:in fragen.</span></li>
+          <li><span><b>Unterwegs zu spät?</b>„Ich verspäte mich um 10 Min.“ – alle wissen Bescheid.</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="beispiele">
+    <span class="eyebrow">Beispiele</span>
+    <h2>Ein Freitag mit Nowish</h2>
+    <div class="box timeline">
+      <div class="tl"><time>07:30</time><span><span class="chip l">Heute</span>„Zahnarzt 08:30 – los um 07:55.“ Der Bereit-Check erinnert an die Versichertenkarte.</span></div>
+      <div class="tl"><time>07:55</time><span><span class="chip l">Los</span>Erinnerung „Jetzt los“. Ein Tipp auf „Bin unterwegs“, der Puffer lernt mit.</span></div>
+      <div class="tl"><time>10:12</time><span><span class="chip">Helfer</span>„Mittagessen und Physio überschneiden sich um 15 Min.“ – Vorschlag: Physio auf 14:15. Ein Tipp, erledigt.</span></div>
+      <div class="tl"><time>12:30</time><span><span class="chip">Event</span>Mittagessen mit Alex. Alex hat per Link zugesagt, ohne App.</span></div>
+      <div class="tl"><time>16:00</time><span><span class="chip p">Familie</span>Grillen. Sam übernimmt die Fahrt zu Lenas Schwimmkurs am Samstag.</span></div>
+      <div class="tl"><time>18:28</time><span><span class="chip l">Los</span>Spieleabend bei Olivia: 22 Min. Rad. Unterwegs: „Ich verspäte mich um 5 Min.“ – Olivia weiß Bescheid.</span></div>
+      <div class="tl"><time>23:10</time><span><span class="chip">Danach</span>Pizza-Kosten aufgeteilt, jeder bekommt den PayPal-Link.</span></div>
+    </div>
+  </section>
+
+  <section class="ch" id="werben">
+    <span class="eyebrow">Werbung & Marketing</span>
+    <h2>Wie man für Nowish wirbt</h2>
+    <div class="grid2">
+      <div class="box"><h3>Positionierung</h3><p class="small">Der Planer für alle, die sonst planlos sind. Nicht der x-te Kalender, sondern der einzige, der weiß, wann du losmusst.</p></div>
+      <div class="box"><h3>Claims (Entwürfe)</h3><ul class="tight small"><li>„Du chillst. Wir planen.“</li><li>„Endlich pünktlich. Ohne Stress.“</li><li>„Andere sagen wann. Wir sagen: jetzt los.“</li><li>EN: „You show up. We handle the rest.“</li></ul></div>
+    </div>
+    <h3>Botschaften je Zielgruppe</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Zielgruppe</th><th>Botschaft</th><th>Wo</th></tr></thead>
+      <tbody>
+        <tr><td>Immer-zu-spät</td><td>„Dein Kalender sagt dir endlich, wann du losmusst.“</td><td>Kurzvideos (Reels, TikTok), Memes über Zuspätkommen</td></tr>
+        <tr><td>Organisierende</td><td>„Ein Link statt fünf Gruppen-Chats.“</td><td>Instagram, Vorlagen zum Teilen, Hochzeits- und Party-Communities</td></tr>
+        <tr><td>Familien</td><td>„Wer fährt? Steht schon fest.“</td><td>Eltern-Blogs, Kita-/Schul-Newsletter, Facebook-Elterngruppen</td></tr>
+        <tr><td>Neurodivergente Menschen</td><td>„Sichtbare Zeit, kleine Schritte.“</td><td>Mit Fach-Creator:innen, vorsichtig formuliert, ohne Heilversprechen</td></tr>
+        <tr><td>Gäste</td><td>„Zusagen in 5 Sekunden, ohne App.“</td><td>Der Gast-Link selbst – mit dezentem Hinweis „Mit Nowish geplant“</td></tr>
+      </tbody>
+    </table></div>
+    <div class="grid3">
+      <div class="box"><h3>Wachstumsmotor</h3><p class="small muted">Jedes Event bringt im Schnitt mehrere Gäste. Der Gast-Link zeigt Nowish ganz nebenbei; ein Teil legt später ein eigenes Konto an.</p></div>
+      <div class="box"><h3>App-Store</h3><p class="small muted">Screenshots mit der Losgeh-Zeit als erstes Bild, Suchbegriffe wie „pünktlich“, „Familienkalender“, „Termin abstimmen“.</p></div>
+      <div class="box"><h3>Empfehlen (Idee)</h3><p class="small muted">Vorschlag: Freunde einladen schenkt beiden einen Monat Plus. Freiwillig, ohne Zähler-Druck – noch nicht entschieden.</p></div>
+    </div>
+    <div class="box"><h3>Leitplanken für jede Werbung</h3>
+      <ul class="tight small">
+        <li>Kein künstlicher Zeitdruck, keine Countdown-Angebote, kein vorausgewähltes teuerstes Paket.</li>
+        <li>Preise immer inklusive MwSt.; Kündigung in zwei Taps erklärt.</li>
+        <li>Datenschutz nur versprechen, was technisch stimmt (z. B. „keine fremden Werbe-Tracker“).</li>
+        <li>Keine Gesundheits- oder Heilversprechen beim Fokus-Modus.</li>
+        <li>Name „Nowish“ ist ein Arbeitsname – Markenprüfung und Rechtsfreigabe vor jeder öffentlichen Werbung.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ch" id="preise">
+    <span class="eyebrow">Preise (Vorschlag)</span>
+    <h2>Kostenlos starten, für mehr Ruhe upgraden</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th></th><th>Free</th><th>Plus</th><th>Pro</th><th>Family</th></tr></thead>
+      <tbody>
+        <tr><td>Preis mtl. / jährl.</td><td class="num">0 €</td><td class="num">2,99 € / 24,99 €</td><td class="num">5,99 € / 49,99 €</td><td class="num">6,99 € / 59,99 €</td></tr>
+        <tr><td>Für</td><td>Einsteiger, Gäste</td><td>Pünktlicher werden</td><td>Viel organisieren</td><td>Bis 6 Erwachsene + Kinder</td></tr>
+        <tr><td>Anti-Chaos</td><td>Losgeh-Zeit + 1 Erinnerung</td><td>voll</td><td>voll</td><td>voll für alle</td></tr>
+        <tr><td>Aktive eigene Events</td><td class="num">5</td><td>unbegrenzt</td><td>unbegrenzt</td><td>unbegrenzt</td></tr>
+        <tr><td>Hinweise auf eigene Angebote</td><td>dezent</td><td>keine</td><td>keine</td><td>keine</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small muted">14 Tage kostenlos testen. Gast-Funktionen sind immer kostenlos. Preise sind Vorschläge des PO vom 9.11.2026, inkl. MwSt.</p>
+  </section>
+
+  <section class="ch" id="phasen">
+    <span class="eyebrow">Kurz- und langfristig</span>
+    <h2>Wo Nowish steht und wohin es geht</h2>
+    <div class="phases">
+      <div class="phase now"><span class="when">Jetzt</span><h3>Prototyp</h3><p class="small muted">Alle Kernfunktionen lokal mit Beispieldaten. Design-Richtung wird entschieden, dann Usability-Test.</p></div>
+      <div class="phase"><span class="when">Kurzfristig</span><h3>Konten & echte Gäste</h3><p class="small muted">Anmeldung, Server in der EU, echte Einladungen, Chat in Echtzeit, Push, Gast-Weblink.</p></div>
+      <div class="phase"><span class="when">Mittelfristig</span><h3>Sync & Launch</h3><p class="small muted">Echte Wegzeit, Google/Outlook/iCloud-Sync, Abos, Admin, Rechtsprüfung, Beta, Start in DACH.</p></div>
+      <div class="phase"><span class="when">Danach (v1.x)</span><h3>Mehr Komfort</h3><p class="small muted">Widgets, Mitfahren, Erinnerungs-Album, Premium-Themes, Wetter/Plan B mit echten Daten.</p></div>
+      <div class="phase"><span class="when">Langfristig (v2+)</span><h3>Der Assistent</h3><p class="small muted">KI-Helfer (Entscheidung offen), Smartwatch, Live Activities, Vereins-Funktionen, weitere Sprachen.</p></div>
+    </div>
+  </section>
+
+</div>
+</main>
+
+<footer class="gut"><div class="col">Stand 13.11.2026 · Arbeitsname „Nowish“ · Inhalte aus Projekt-Brief, Personas, Roadmap und Monetarisierung. Claims, Preise und Rechtstexte sind Entwürfe und nicht rechtlich geprüft.</div></footer>
