@@ -962,10 +962,11 @@ appId: ${APP_ID}
     visible:
       id: 'screen-calendar'
     timeout: 10000
-# The list is already at the top (today first); scrolling DOWN first would push the row out of view on iOS.
-- scrollUntilVisible:
-    element:
-      id: 'done-demo-dentist'
-    direction: UP
+# The list is already at the top (today first). Wait for the row itself: scrolling first pushes it out of view on
+# iOS, and the dimmed (ticked) check is not reported as fully visible there.
+- extendedWaitUntil:
+    visible:
+      id: 'event-demo-dentist'
+    timeout: 10000
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-54-calendar-ticked
