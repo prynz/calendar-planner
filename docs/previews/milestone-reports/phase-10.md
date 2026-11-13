@@ -43,7 +43,13 @@ Events-Screenshots zeigen jetzt die Haken.
   lieber „Zusagen/Absagen“ stehen sollte, ist eine gute Frage für den Usability-Test.
 - Wischen weiterhin nur im Emulator/Simulator geprüft, nicht auf einem echten Gerät.
 
-## 6. Offene Fragen an den PO
+## 6. Funde & Risiken
+
+| Fund | Status |
+| --- | --- |
+| Mit Haken + Avatar + „Antwort offen“ brach in der Events-Liste der Titel mitten im Wort um („Geburtstag­sfeier“) | ✅ Hinweis rechts entfernt – der Antwortstand steht als Wort in der Zeile darunter („Noch offen · …“) und wird vorgelesen |
+
+## 7. Offene Fragen an den PO
 
 1. **Freigabe Phase 10?**
 2. Danach wie vereinbart: deine gesammelten Änderungswünsche, dann der **Usability-Test** ([Leitfaden](../../product/usability-test.md)).

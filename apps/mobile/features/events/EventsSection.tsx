@@ -133,6 +133,8 @@ function EventRow({
         .filter(Boolean)
         .join(' · ')
     : null;
+  // Phase 10: the answer state stays as words in the meta line ("Noch offen · …"); no trailing note, so the title
+  // keeps its width next to the tick and the avatar. Screen readers still hear "answer open".
   const open = role === 'pending' || role === 'expired';
   return (
     <ListRow
@@ -140,7 +142,6 @@ function EventRow({
       title={card.title}
       subtitle={when}
       {...(meta ? { meta: { text: meta, testID: `rsvp-${item.event.id}` } } : {})}
-      {...(open ? { note: t('events.answerOpen') } : {})}
       onPress={() => openEvent(item.event.id, item.occurrenceKey)}
       accessibilityLabel={
         [card.title, when, card.subtitle, meta, open ? t('events.answerOpen') : null].filter(Boolean).join(', ') +
