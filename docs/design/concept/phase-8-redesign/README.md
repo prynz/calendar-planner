@@ -1,6 +1,6 @@
 # Phase 8 – Redesign-Konzept (**Mockup**)
 
-> **Status:** 2026-11-13 · v3 „Schlank“ und v4 „Weich & groß“ ergänzt · **Mockup zur Abnahme durch den PO – keine App-Screenshots.** Alle Daten sind erfunden.
+> **Status:** 2026-11-13 · v3 „Schlank“ , v4 „Weich & groß“ und v5 „Dunkel & Lime“ ergänzt · **Mockup zur Abnahme durch den PO – keine App-Screenshots.** Alle Daten sind erfunden.
 > Klickbare Fassung: Design-Canvas „Nowish Redesign Konzept“ (privat, Link im Chat).
 
 Vorgaben des PO (2026-11-12): Lesbarkeit, Übersichtlichkeit, einfache Bedienung, moderne und nicht
@@ -68,3 +68,15 @@ gelten weiter.
 | `KalenderV4.dc.html` | Tages-Picker wie ein Zahlenrad (gewählter Tag groß, Nachbarn kleiner), Termine als runde Karten mit großer Uhrzeit |
 | `TerminV4.dc.html` | Verlauf-Kopf, Termin als große Karte im Fokus (leicht gestapelt), Antwort als drei runde Knöpfe, unten schwebende Leiste „Losgehen 18:28“ + runder Lime-Knopf |
 | `GemeinsamV4.dc.html` | „Wartet auf dich“ als wischbares Karten-Karussell in Pastell, darunter „Deine Woche auf einen Blick“ |
+
+## v5 – „Dunkel & Lime“ (Test nach PO-Referenz 2 vom 2026-11-13, **Mockup**)
+
+PO: „zum Test auch in diesem Style probieren“ – Referenz mit dunklem Grund, leuchtendem Lime, großem Ring, Kurve und
+Glas-Kacheln. Übernommen wird nur die Stil-Richtung. Könnte als eigenes „Dunkel“-Theme neben v4 bestehen.
+
+| Datei | Kernidee |
+| --- | --- |
+| `HeuteV5.dc.html` | Großer Countdown-Ring „los in 25 Min.“ als Hauptelement, eckig-runder Lime-Knopf „Bin unterwegs“ mit Leuchten, zwei Glas-Kacheln, Helfer-Zeile |
+| `KalenderV5.dc.html` | „Deine Woche“ als leuchtende Kurve (wie voll jeder Tag ist), Tage als Kacheln, aktiver Termin als Lime-Karte |
+| `TerminV5.dc.html` | Glas-Kacheln mit großer Zahl + Einheit; „Losgehen 18:28“ als große Lime-Kachel; Antwort als Segment-Umschalter |
+| `GemeinsamV5.dc.html` | Offene Einladung als Lime-Karte mit Antwort-Knöpfen, darunter „Diese Woche“ als dunkle Glas-Zeilen |
