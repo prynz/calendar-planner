@@ -1,6 +1,6 @@
 # Phase 8 – Redesign-Konzept (**Mockup**)
 
-> **Status:** 2026-11-13 · v3 „Schlank“, v4 „Weich & groß“ und v5 „Dunkel & Lime“ ergänzt · **Mockup zur Abnahme durch den PO – keine App-Screenshots.** Alle Daten sind erfunden.
+> **Status:** 2026-11-13 · v3 „Schlank“, v4 „Weich & groß“, v5 „Dunkel & Lime“ und v6 „Kurven“ ergänzt · **Mockup zur Abnahme durch den PO – keine App-Screenshots.** Alle Daten sind erfunden.
 > Klickbare Fassung: Design-Canvas „Nowish Redesign Konzept“ (privat, Link im Chat).
 
 Vorgaben des PO (2026-11-12): Lesbarkeit, Übersichtlichkeit, einfache Bedienung, moderne und nicht
@@ -80,3 +80,15 @@ Glas-Kacheln. Übernommen wird nur die Stil-Richtung. Könnte als eigenes „Dun
 | `KalenderV5.dc.html` | „Deine Woche“ als leuchtende Kurve (wie voll jeder Tag ist), Tage als Kacheln, aktiver Termin als Lime-Karte |
 | `TerminV5.dc.html` | Glas-Kacheln mit großer Zahl + Einheit; „Losgehen 18:28“ als große Lime-Kachel; Antwort als Segment-Umschalter |
 | `GemeinsamV5.dc.html` | Offene Einladung als Lime-Karte mit Antwort-Knöpfen, darunter „Diese Woche“ als dunkle Glas-Zeilen |
+
+## v6 – v4 + Kurven-Boxen (PO-Referenz 3 vom 2026-11-13, **Mockup**)
+
+PO: „kannst du solche abstrakten Box-Kurven-Darstellungen umsetzen zum Testen mit V4“. Übernommen wird die Idee,
+Bereiche mit **einer großen Fläche und einer weichen S-Kurve** zu trennen statt mit Kästen: Ein „Reiter“ mit der
+Überschrift ragt heraus, die Kante fällt weich ab. Farben und Schrift bleiben wie v4.
+
+| Datei | Kernidee |
+| --- | --- |
+| `HeuteV6.dc.html` | Pastell-Verlauf mit riesiger Losgeh-Zeit und rundem Lime-Knopf, darunter ein weißes Kurven-Panel „Heute“ mit Zeitleiste (Punkte + Linie), nächster Termin als hervorgehobene Karte |
+| `KalenderV6.dc.html` | Monat als Karussell (Okt · **November** · Dez), gewählter Tag als hohe dunkle Pille, darunter ein dunkles Kurven-Panel mit Zeitleiste |
+| `NeuV6.dc.html` | Neuer Termin: Kurven-Panel mit Reitern (Details/Wer/Erinnerung), Rad-Auswahl für Tag/Monat/Stunde/Minute, Schalter „Erinnern, wenn ich los muss“ |
