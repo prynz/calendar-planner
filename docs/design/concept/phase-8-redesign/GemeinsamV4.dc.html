@@ -20,12 +20,17 @@ button{font:inherit;cursor:pointer}
 <div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF8F4; font-family: Inter, system-ui, sans-serif; color: #0D0E12; position: relative; overflow: hidden">
   <div aria-hidden="true" style="position: absolute; top: -160px; right: -160px; width: 520px; height: 480px; border-radius: 50%; background: radial-gradient(closest-side, #E4DAFB 0%, rgba(251,248,244,0) 100%)"></div>
 
-  <div style="position: relative; height: 844px; overflow-y: auto; box-sizing: border-box; padding: 20px 0 120px; display: flex; flex-direction: column; gap: 24px">
+  <div style="position: relative; height: 844px; overflow-y: auto; box-sizing: border-box; padding: 20px 0 130px; display: flex; flex-direction: column; gap: 24px">
 
     <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 24px">
       <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.5px">Gemeinsam</span>
       <span style="font-size: 12px; font-weight: 600; color: #4B2FD6; background: rgba(255,255,255,0.75); padding: 4px 9px; border-radius: 999px">Demo</span>
     </div>
+
+    <a href="FamilieV4.dc.html" style="margin: 0 24px; border-radius: 24px; background: rgba(255,255,255,0.85); padding: 14px 18px; display: flex; align-items: center; gap: 12px; box-shadow: 0 8px 24px rgba(13,14,18,0.05)">
+      <span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 5px; background: #7C5CFF"></span>
+      <span style="flex: 1; font-size: 15px; font-weight: 600">Familie: 1 Fahrt sucht noch jemanden</span>
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></a>
 
     <div role="tablist" aria-label="Bereich" style="display: flex; gap: 8px; padding: 0 24px">
       <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
@@ -68,15 +73,27 @@ button{font:inherit;cursor:pointer}
     </section>
   </div>
 
-  <nav aria-label="Hauptnavigation" style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 24px; height: 64px; border-radius: 32px; background: #FFFFFF; box-shadow: 0 12px 32px rgba(75,47,214,0.14); display: flex; align-items: center; gap: 6px; padding: 0 10px">
-    <a href="HeuteV4.dc.html" aria-label="Heute" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center">
-      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A4E58" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"></path></svg></a>
-    <a href="KalenderV4.dc.html" aria-label="Kalender" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center">
-      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A4E58" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg></a>
-    <button type="button" aria-label="Neues Event" style="width: 48px; height: 48px; border: 0; border-radius: 24px; background: linear-gradient(140deg, #FFB98C, #B9A7EE); display: flex; align-items: center; justify-content: center; padding: 0">
-      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
-    <a href="GemeinsamV4.dc.html" aria-current="page" aria-label="Gemeinsam" style="width: 48px; height: 48px; border-radius: 24px; background: #0D0E12; display: flex; align-items: center; justify-content: center">
-      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6M16 4a4 4 0 0 1 0 8M22 21c0-3-2-5-4-6"></path></svg></a>
+  <nav aria-label="Hauptnavigation" style="position: absolute; left: 0; right: 0; bottom: 0; height: 92px">
+    <svg aria-hidden="true" width="390" height="92" viewBox="0 0 390 92" style="position: absolute; left: 0; top: 0; filter: drop-shadow(0 -6px 18px rgba(75,47,214,0.10))">
+      <path d="M0 24 Q0 0 24 0 H139 C154 0 157 4 161 12 A38 38 0 0 0 229 12 C233 4 236 0 251 0 H366 Q390 0 390 24 V92 H0 Z" fill="#FFFFFF"></path>
+    </svg>
+    <div style="position: absolute; left: 0; right: 0; top: 10px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: start">
+      <a href="HeuteV4.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 48px; color: #6B6F7A">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"></path></svg>
+        <span style="font-size: 11px; font-weight: 500">Heute</span></a>
+      <a href="KalenderV4.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 48px; color: #6B6F7A">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>
+        <span style="font-size: 11px; font-weight: 500">Kalender</span></a>
+      <span></span>
+      <a href="GemeinsamV4.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 48px; color: #0D0E12">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.2" stroke-linecap="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6M16 4a4 4 0 0 1 0 8M22 21c0-3-2-5-4-6"></path></svg>
+        <span style="font-size: 11px; font-weight: 700">Gemeinsam</span></a>
+      <a href="IchV4.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 48px; color: #6B6F7A">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>
+        <span style="font-size: 11px; font-weight: 500">Ich</span></a>
+    </div>
+    <button type="button" aria-label="Neuer Termin" style="position: absolute; left: 50%; top: -34px; transform: translateX(-50%); width: 62px; height: 62px; border: 0; border-radius: 31px; background: linear-gradient(145deg, #9B7DFF, #6A4CF0); display: flex; align-items: center; justify-content: center; padding: 0; box-shadow: 0 12px 26px rgba(106,76,240,0.40)">
+      <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
   </nav>
 </div>
 </x-dc>

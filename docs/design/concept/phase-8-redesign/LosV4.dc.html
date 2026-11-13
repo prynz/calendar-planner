@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Losgeh-Modus v4 – Konzept</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0D0E12;text-decoration:none}
+a:hover{color:#2A2E38}
+button{font:inherit;cursor:pointer}
+@keyframes hue{0%{transform:rotate(0deg) scale(1)}100%{transform:rotate(30deg) scale(1.12)}}
+@keyframes tick{from{stroke-dashoffset:0}to{stroke-dashoffset:754}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+@keyframes pop{0%{transform:scale(0.6);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.aura{animation:hue 10s ease-in-out infinite alternate}
+.countdown{animation:tick 1500s linear both}
+.breathe{animation:breathe 4s ease-in-out infinite}
+.pop{animation:pop 380ms cubic-bezier(.2,.9,.3,1.3) both}
+@media (prefers-reduced-motion: reduce){.aura,.countdown,.breathe,.pop{animation:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F6F0FF; font-family: Inter, system-ui, sans-serif; color: #0D0E12; position: relative; overflow: hidden">
+  <div aria-hidden="true" class="aura" style="position: absolute; top: -200px; left: -200px; width: 790px; height: 790px; border-radius: 50%; background: conic-gradient(from 200deg, #DCCFFF, #FFD2B0, #F6C9DA, #CDEFF6, #DCCFFF); filter: blur(40px); opacity: 0.85"></div>
+
+  <div style="position: relative; height: 844px; overflow-y: auto; box-sizing: border-box; padding: 20px 24px 40px; display: flex; flex-direction: column; gap: 20px">
+
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <a href="HeuteV4.dc.html" aria-label="Losgeh-Modus schließen" style="width: 44px; height: 44px; border-radius: 22px; background: rgba(255,255,255,0.75); display: flex; align-items: center; justify-content: center">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg></a>
+      <span style="font-size: 14px; font-weight: 600">Zahnarzt · 08:30</span>
+      <span style="font-size: 12px; font-weight: 600; color: #4B2FD6; background: rgba(255,255,255,0.75); padding: 4px 9px; border-radius: 999px">Demo</span>
+    </div>
+
+    <div class="breathe" style="position: relative; width: 280px; height: 280px; align-self: center; margin-top: 6px">
+      <svg role="img" aria-label="{{ringLabel}}" width="280" height="280" viewBox="0 0 280 280" style="transform: rotate(-90deg)">
+        <circle cx="140" cy="140" r="120" fill="rgba(255,255,255,0.7)" stroke="rgba(13,14,18,0.06)" stroke-width="16"></circle>
+        <circle class="countdown" cx="140" cy="140" r="120" fill="none" stroke="#7C5CFF" stroke-width="16" stroke-linecap="round" stroke-dasharray="754"></circle>
+      </svg>
+      <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px">
+        <span style="font-size: 14px; color: #4A4E58">{{ringTop}}</span>
+        <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 72px; line-height: 72px; letter-spacing: -2px">{{ringBig}}</span>
+        <span style="font-size: 14px; color: #4A4E58">{{ringBottom}}</span>
+      </div>
+    </div>
+
+    <section aria-label="Bereit-Check" style="display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <span style="font-weight: 600; font-size: 17px">Bereit-Check</span>
+        <span style="font-size: 14px; font-weight: 600; color: #4A4E58">{{readyCount}}</span>
+      </div>
+      <div style="display: flex; gap: 10px">
+        <sc-for list="{{items}}" as="i" hint-placeholder-count="3">
+          <button type="button" onClick="{{i.toggle}}" aria-pressed="{{i.done}}" style="{{i.style}}">
+            <span aria-hidden="true" style="{{i.check}}">
+              <sc-if value="{{i.done}}" hint-placeholder-val="{{ false }}"><svg class="pop" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if>
+            </span>
+            {{i.label}}</button>
+        </sc-for>
+      </div>
+    </section>
+
+    <section aria-label="Ich verspäte mich" style="border-radius: 28px; background: rgba(255,255,255,0.8); padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 28px rgba(75,47,214,0.08)">
+      <span style="font-weight: 600; font-size: 15px">Ich verspäte mich um …</span>
+      <sc-if value="{{noLate}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; gap: 8px">
+          <sc-for list="{{late}}" as="l" hint-placeholder-count="3">
+            <button type="button" onClick="{{l.pick}}" style="flex: 1; height: 44px; border: 0; border-radius: 22px; background: #F3EFE8; font-size: 15px; font-weight: 600">{{l.label}}</button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{hasLate}}" hint-placeholder-val="{{ false }}">
+        <span class="pop" style="font-size: 15px">{{lateText}}</span>
+      </sc-if>
+    </section>
+
+    <button type="button" onClick="{{arrive}}" style="height: 60px; border: 0; border-radius: 30px; background: #0D0E12; color: #FFFFFF; font-size: 17px; font-weight: 600; margin-top: 4px">{{arriveLabel}}</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { ready: { keys: true, card: false, helmet: false }, late: 0, arrived: false };
+  }
+  renderVals() {
+    const defs = [['keys', 'Schlüssel'], ['card', 'Karte'], ['helmet', 'Helm']];
+    const items = defs.map(([k, label]) => {
+      const done = Boolean(this.state.ready[k]);
+      return {
+        label, done,
+        style: 'flex: 1; height: 52px; border: 0; border-radius: 26px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; ' +
+          (done ? 'background: #C8F031' : 'background: rgba(255,255,255,0.85)'),
+        check: 'width: 22px; height: 22px; border-radius: 11px; display: flex; align-items: center; justify-content: center; ' +
+          (done ? 'background: rgba(255,255,255,0.7)' : 'border: 2px solid #A3A9B7; box-sizing: border-box'),
+        toggle: () => this.setState({ ready: { ...this.state.ready, [k]: !done } }),
+      };
+    });
+    const doneCount = defs.filter(([k]) => this.state.ready[k]).length;
+    const late = this.state.late;
+    const arrived = this.state.arrived;
+    return {
+      ringTop: arrived ? 'Angekommen' : late ? 'neue Losgeh-Zeit' : 'los in',
+      ringBig: arrived ? '✓' : late ? (late === 5 ? '08:00' : late === 10 ? '08:05' : '08:10') : '25:00',
+      ringBottom: arrived ? '3 Min. vor 08:30' : late ? 'Ankunft ' + (late === 5 ? '08:35' : late === 10 ? '08:40' : '08:45') : 'Min. · um 07:55',
+      ringLabel: arrived ? 'Angekommen' : 'Noch 25 Minuten bis zum Losgehen um 07:55',
+      items,
+      readyCount: doneCount + ' von 3',
+      late: [5, 10, 15].map((m) => ({ label: m + ' Min.', pick: () => this.setState({ late: m }) })),
+      noLate: late === 0,
+      hasLate: late > 0,
+      lateText: 'Praxis Dr. Sommer weiß Bescheid: ' + late + ' Min. später (Demo).',
+      arriveLabel: arrived ? 'Schön, dass du da bist' : 'Angekommen',
+      arrive: () => this.setState({ arrived: true }),
+    };
+  }
+}
+</script>
+</body>
+</html>

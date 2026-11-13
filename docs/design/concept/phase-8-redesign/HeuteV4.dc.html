@@ -15,94 +15,112 @@ body{margin:0}
 a{color:#0D0E12;text-decoration:none}
 a:hover{color:#2A2E38}
 button{font:inherit;cursor:pointer}
-@keyframes cardIn{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
-.card{animation:cardIn 420ms cubic-bezier(.2,.9,.3,1)}
-@media (prefers-reduced-motion: reduce){.card{animation:none}}
+@keyframes driftA{0%{transform:translate(0,0) scale(1)}100%{transform:translate(60px,40px) scale(1.15)}}
+@keyframes driftB{0%{transform:translate(0,0) scale(1.1)}100%{transform:translate(-50px,60px) scale(0.95)}}
+@keyframes ringFill{from{stroke-dashoffset:176}to{stroke-dashoffset:44}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(124,92,255,0.45)}100%{box-shadow:0 0 0 12px rgba(124,92,255,0)}}
+@keyframes rise{from{transform:translateY(18px);opacity:0}to{transform:none;opacity:1}}
+.auraA{animation:driftA 14s ease-in-out infinite alternate}
+.auraB{animation:driftB 17s ease-in-out infinite alternate}
+.ring{animation:ringFill 2.4s cubic-bezier(.2,.8,.2,1) both}
+.now{animation:pulse 1.8s ease-out infinite}
+.rise{animation:rise 520ms cubic-bezier(.2,.9,.3,1) both}
+.stackcard{transition:transform 520ms cubic-bezier(.2,.9,.25,1.15), opacity 400ms ease}
+@media (prefers-reduced-motion: reduce){.auraA,.auraB,.ring,.now,.rise{animation:none}.stackcard{transition:none}}
 </style>
 </helmet>
 <div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF8F4; font-family: Inter, system-ui, sans-serif; color: #0D0E12; position: relative; overflow: hidden">
-  <div aria-hidden="true" style="position: absolute; top: -140px; left: -80px; width: 560px; height: 520px; border-radius: 50%; background: radial-gradient(closest-side, #E4DAFB 0%, #F3D9E6 45%, rgba(251,248,244,0) 100%)"></div>
-  <div aria-hidden="true" style="position: absolute; top: 60px; right: -140px; width: 360px; height: 360px; border-radius: 50%; background: radial-gradient(closest-side, #FFD7BA 0%, rgba(251,248,244,0) 100%)"></div>
+  <div aria-hidden="true" class="auraA" style="position: absolute; top: -160px; left: -120px; width: 560px; height: 520px; border-radius: 50%; background: radial-gradient(closest-side, #DCCFFF 0%, #F3D9E6 45%, rgba(251,248,244,0) 100%)"></div>
+  <div aria-hidden="true" class="auraB" style="position: absolute; top: 40px; right: -160px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(closest-side, #FFD2B0 0%, rgba(251,248,244,0) 100%)"></div>
 
-  <div style="position: relative; height: 844px; overflow-y: auto; box-sizing: border-box; padding: 20px 24px 120px; display: flex; flex-direction: column; gap: 24px">
+  <div style="position: relative; height: 844px; overflow-y: auto; box-sizing: border-box; padding: 20px 24px 130px; display: flex; flex-direction: column; gap: 22px">
 
     <div style="display: flex; align-items: center; justify-content: space-between">
       <div style="display: flex; flex-direction: column; gap: 2px">
         <span style="font-size: 14px; color: #4A4E58">Freitag, 13. Nov</span>
         <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.5px">Hallo, Kim</span>
       </div>
-      <div style="display: flex; gap: 8px; align-items: center">
-        <span style="font-size: 12px; font-weight: 600; color: #4B2FD6; background: rgba(255,255,255,0.7); padding: 4px 9px; border-radius: 999px">Demo</span>
-        <a href="HeuteV4.dc.html" aria-label="Ich" style="width: 44px; height: 44px; border-radius: 22px; background: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(75,47,214,0.10)">
-          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg></a>
-      </div>
+      <span style="font-size: 12px; font-weight: 600; color: #4B2FD6; background: rgba(255,255,255,0.75); padding: 4px 9px; border-radius: 999px">Demo</span>
     </div>
 
-    <div style="position: relative; height: 330px; margin-top: 8px">
-      <div aria-hidden="true" style="position: absolute; left: 28px; right: 28px; top: 0; height: 300px; border-radius: 36px; background: rgba(255,255,255,0.45)"></div>
-      <div aria-hidden="true" style="position: absolute; left: 14px; right: 14px; top: 12px; height: 300px; border-radius: 36px; background: rgba(255,255,255,0.7)"></div>
-      <section class="card" aria-label="Als Nächstes" style="position: absolute; left: 0; right: 0; top: 26px; height: 304px; box-sizing: border-box; border-radius: 36px; background: #FFFFFF; padding: 24px; display: flex; flex-direction: column; box-shadow: 0 20px 50px rgba(75,47,214,0.14)">
-        <div style="display: flex; align-items: center; gap: 10px">
-          <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 18px; background: #CDEFF6; display: flex; align-items: center; justify-content: center">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-4.4-7-10a7 7 0 0 1 14 0c0 5.6-7 10-7 10z"></path><circle cx="12" cy="11" r="2.5"></circle></svg></span>
-          <span style="display: flex; flex-direction: column">
-            <span style="font-weight: 600; font-size: 15px">Zahnarzt · 08:30</span>
-            <span style="font-size: 13px; color: #4A4E58">Praxis Dr. Sommer</span>
-          </span>
+    <section aria-label="Deine nächsten Aufbrüche" style="position: relative; height: 336px">
+      <sc-for list="{{cards}}" as="c" hint-placeholder-count="3">
+        <div class="stackcard" style="{{c.style}}">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <span style="display: flex; align-items: center; gap: 10px">
+              <span aria-hidden="true" style="{{c.icon}}">{{c.initial}}</span>
+              <span style="display: flex; flex-direction: column">
+                <span style="font-weight: 600; font-size: 15px">{{c.title}} · {{c.at}}</span>
+                <span style="font-size: 13px; color: #4A4E58">{{c.place}}</span>
+              </span>
+            </span>
+            <span style="font-size: 12px; font-weight: 600; color: #4A4E58">{{c.pos}}</span>
+          </div>
+          <span style="margin-top: 20px; font-size: 14px; color: #4A4E58">Losgehen um</span>
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 78px; line-height: 78px; letter-spacing: -2px">{{c.leave}}</span>
+          <span style="font-size: 14px; color: #4A4E58; margin-top: 6px">{{c.detail}}</span>
+          <span style="flex: 1"></span>
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <button type="button" onClick="{{next}}" style="height: 48px; border: 0; border-radius: 24px; background: #F3EFE8; padding: 0 18px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px">
+              Danach
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+            <a href="LosV4.dc.html" aria-label="Bin unterwegs – Losgeh-Modus öffnen" style="position: relative; width: 68px; height: 68px; display: flex; align-items: center; justify-content: center">
+              <svg aria-hidden="true" width="68" height="68" viewBox="0 0 68 68" style="position: absolute; inset: 0; transform: rotate(-90deg)">
+                <circle cx="34" cy="34" r="28" fill="none" stroke="rgba(13,14,18,0.08)" stroke-width="5"></circle>
+                <circle class="ring" cx="34" cy="34" r="28" fill="none" stroke="#7C5CFF" stroke-width="5" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="44"></circle>
+              </svg>
+              <span style="width: 52px; height: 52px; border-radius: 26px; background: #C8F031; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 24px rgba(160,200,20,0.4)">
+                <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+            </a>
+          </div>
         </div>
-        <span style="margin-top: 22px; font-size: 14px; color: #4A4E58">Losgehen um</span>
-        <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 76px; line-height: 76px; letter-spacing: -2px">07:55</span>
-        <span style="font-size: 14px; color: #4A4E58; margin-top: 6px">in 25 Min. · 20 Min. Rad + 10 Puffer</span>
-        <div style="flex: 1"></div>
-        <div style="display: flex; align-items: center; justify-content: space-between">
-          <button type="button" onClick="{{toggleMore}}" aria-label="Mehr: Ich verspäte mich, Bereit-Check" style="width: 48px; height: 48px; border: 0; border-radius: 24px; background: #F3EFE8; display: flex; align-items: center; justify-content: center; padding: 0">
-            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="#0D0E12"><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></svg></button>
-          <button type="button" onClick="{{go}}" style="height: 56px; border: 0; border-radius: 28px; background: #C8F031; color: #0D0E12; font-weight: 600; font-size: 16px; padding: 0 8px 0 22px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 24px rgba(160,200,20,0.35)">
-            {{goLabel}}
-            <span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 20px; background: #0D0E12; display: flex; align-items: center; justify-content: center">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8F031" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></button>
-        </div>
-      </section>
-    </div>
-
-    <sc-if value="{{moreOpen}}" hint-placeholder-val="{{ false }}">
-      <div style="display: flex; gap: 8px">
-        <button type="button" style="flex: 1; height: 48px; border: 0; border-radius: 24px; background: #FFFFFF; font-size: 14px; font-weight: 600; box-shadow: 0 6px 18px rgba(13,14,18,0.06)">Ich verspäte mich</button>
-        <button type="button" style="flex: 1; height: 48px; border: 0; border-radius: 24px; background: #FFFFFF; font-size: 14px; font-weight: 600; box-shadow: 0 6px 18px rgba(13,14,18,0.06)">Bereit-Check 0/3</button>
-      </div>
-    </sc-if>
-
-    <section aria-label="Dein Tag auf einen Blick" style="display: flex; flex-direction: column; gap: 12px">
-      <span style="font-weight: 600; font-size: 17px">Dein Tag auf einen Blick</span>
-      <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 12px">
-        <a href="KalenderV4.dc.html" style="border-radius: 28px; padding: 18px; background: linear-gradient(150deg, #E4DAFB 0%, #FFE3CF 100%); display: flex; flex-direction: column; gap: 6px; min-height: 132px; box-sizing: border-box">
-          <span style="font-size: 13px; font-weight: 600; color: #3A3550">Noch heute</span>
-          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 40px; line-height: 44px">5</span>
-          <span style="font-size: 13px; color: #3A3550">Termine · nächster 12:30</span>
-        </a>
-        <div style="border-radius: 28px; padding: 18px; background: #FFFFFF; display: flex; flex-direction: column; gap: 6px; min-height: 132px; box-sizing: border-box; box-shadow: 0 8px 24px rgba(13,14,18,0.05)">
-          <span style="font-size: 13px; font-weight: 600; color: #4A4E58">Frei</span>
-          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 40px; line-height: 44px">3 h</span>
-          <span style="font-size: 13px; color: #4A4E58">ab 13:30</span>
-        </div>
-      </div>
-      <button type="button" style="border: 0; border-radius: 24px; background: #FFF1E6; padding: 14px 18px; display: flex; align-items: center; gap: 12px; text-align: start">
-        <span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 4px; background: #E0702F; flex-shrink: 0"></span>
-        <span style="flex: 1; font-size: 15px">Spieleabend → Physio wird knapp</span>
-        <span style="font-size: 14px; font-weight: 600">Lösen</span>
-      </button>
+      </sc-for>
     </section>
+
+    <section class="rise" aria-label="Dein Tag als Band" style="display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <span style="font-weight: 600; font-size: 17px">Dein Tag</span>
+        <a href="KalenderV4.dc.html" style="font-size: 14px; font-weight: 600; color: #4A4E58">6 Termine · 3 h frei</a>
+      </div>
+      <div role="img" aria-label="Tagesband von 6 bis 24 Uhr: Termine um 7, 8:30, 12:30, 16, 17:45 und 19 Uhr, jetzt 7:30 Uhr" style="position: relative; height: 44px; border-radius: 22px; background: rgba(255,255,255,0.85); box-shadow: 0 8px 24px rgba(13,14,18,0.05); overflow: hidden">
+        <sc-for list="{{segs}}" as="s" hint-placeholder-count="6">
+          <span style="{{s.style}}"></span>
+        </sc-for>
+        <span class="now" style="position: absolute; top: 8px; bottom: 8px; left: 15.5%; width: 4px; border-radius: 2px; background: #7C5CFF"></span>
+      </div>
+      <div aria-hidden="true" style="display: flex; justify-content: space-between; font-size: 11px; color: #6B6F7A; padding: 0 4px">
+        <span>6</span><span>9</span><span>12</span><span>15</span><span>18</span><span>21</span><span>24</span>
+      </div>
+    </section>
+
+    <button type="button" class="rise" style="border: 0; border-radius: 24px; background: #FFF1E6; padding: 14px 18px; display: flex; align-items: center; gap: 12px; text-align: start">
+      <span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 4px; background: #E0702F; flex-shrink: 0"></span>
+      <span style="flex: 1; font-size: 15px">Spieleabend → Physio wird knapp</span>
+      <span style="font-size: 14px; font-weight: 600">Lösen</span>
+    </button>
   </div>
 
-  <nav aria-label="Hauptnavigation" style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 24px; height: 64px; border-radius: 32px; background: #FFFFFF; box-shadow: 0 12px 32px rgba(75,47,214,0.14); display: flex; align-items: center; gap: 6px; padding: 0 10px">
-    <a href="HeuteV4.dc.html" aria-current="page" aria-label="Heute" style="width: 48px; height: 48px; border-radius: 24px; background: #0D0E12; display: flex; align-items: center; justify-content: center">
-      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"></path></svg></a>
-    <a href="KalenderV4.dc.html" aria-label="Kalender" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center">
-      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A4E58" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg></a>
-    <button type="button" aria-label="Neuer Termin" style="width: 48px; height: 48px; border: 0; border-radius: 24px; background: linear-gradient(140deg, #FFB98C, #B9A7EE); display: flex; align-items: center; justify-content: center; padding: 0">
-      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
-    <a href="GemeinsamV4.dc.html" aria-label="Gemeinsam" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center">
-      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A4E58" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6M16 4a4 4 0 0 1 0 8M22 21c0-3-2-5-4-6"></path></svg></a>
+  <nav aria-label="Hauptnavigation" style="position: absolute; left: 0; right: 0; bottom: 0; height: 92px">
+    <svg aria-hidden="true" width="390" height="92" viewBox="0 0 390 92" style="position: absolute; left: 0; top: 0; filter: drop-shadow(0 -6px 18px rgba(75,47,214,0.10))">
+      <path d="M0 24 Q0 0 24 0 H139 C154 0 157 4 161 12 A38 38 0 0 0 229 12 C233 4 236 0 251 0 H366 Q390 0 390 24 V92 H0 Z" fill="#FFFFFF"></path>
+    </svg>
+    <div style="position: absolute; left: 0; right: 0; top: 10px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: start">
+      <a href="HeuteV4.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 48px; color: #0D0E12">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"></path></svg>
+        <span style="font-size: 11px; font-weight: 700">Heute</span></a>
+      <a href="KalenderV4.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 48px; color: #6B6F7A">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>
+        <span style="font-size: 11px; font-weight: 500">Kalender</span></a>
+      <span></span>
+      <a href="GemeinsamV4.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 48px; color: #6B6F7A">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6M16 4a4 4 0 0 1 0 8M22 21c0-3-2-5-4-6"></path></svg>
+        <span style="font-size: 11px; font-weight: 500">Gemeinsam</span></a>
+      <a href="IchV4.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 48px; color: #6B6F7A">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>
+        <span style="font-size: 11px; font-weight: 500">Ich</span></a>
+    </div>
+    <button type="button" aria-label="Neuer Termin" style="position: absolute; left: 50%; top: -34px; transform: translateX(-50%); width: 62px; height: 62px; border: 0; border-radius: 31px; background: linear-gradient(145deg, #9B7DFF, #6A4CF0); display: flex; align-items: center; justify-content: center; padding: 0; box-shadow: 0 12px 26px rgba(106,76,240,0.40)">
+      <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
   </nav>
 </div>
 </x-dc>
@@ -110,14 +128,33 @@ button{font:inherit;cursor:pointer}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { more: false, going: false };
+    this.state = { idx: 0 };
   }
   renderVals() {
+    const data = [
+      { title: 'Zahnarzt', at: '08:30', place: 'Praxis Dr. Sommer', leave: '07:55', detail: 'in 25 Min. · 20 Min. Rad + 10 Puffer', initial: 'Z', color: '#CDEFF6' },
+      { title: 'Mittagessen', at: '12:30', place: 'Café Lindner · mit Alex', leave: '12:08', detail: 'in 4 Std. 38 Min. · 12 Min. zu Fuß', initial: 'A', color: '#E4DAFB' },
+      { title: 'Friseur', at: '17:45', place: 'Salon Schnittpunkt', leave: '17:27', detail: 'in 10 Std. · 8 Min. Rad + 10 Puffer', initial: 'F', color: '#FFE0C7' },
+    ];
+    const n = data.length;
+    const cards = data.map((d, i) => {
+      const pos = (i - this.state.idx + n) % n;
+      const top = [26, 12, 0][pos];
+      const inset = [0, 14, 28][pos];
+      return {
+        ...d,
+        pos: (i + 1) + ' von ' + n,
+        icon: 'width: 36px; height: 36px; border-radius: 18px; background: ' + d.color + '; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px',
+        style: 'position: absolute; left: ' + inset + 'px; right: ' + inset + 'px; top: 0; height: 304px; box-sizing: border-box; border-radius: 36px; padding: 24px; display: flex; flex-direction: column; ' +
+          'transform: translateY(' + top + 'px) scale(' + (1 - pos * 0.0) + '); z-index: ' + (10 - pos) + '; ' +
+          (pos === 0 ? 'background: #FFFFFF; box-shadow: 0 20px 50px rgba(75,47,214,0.16); opacity: 1' : 'background: rgba(255,255,255,' + (pos === 1 ? '0.72' : '0.45') + '); box-shadow: none; opacity: 1; pointer-events: none'),
+      };
+    });
+    const seg = (from, to, c) => ({ style: 'position: absolute; top: 8px; bottom: 8px; border-radius: 14px; left: ' + ((from - 6) / 18 * 100) + '%; width: ' + ((to - from) / 18 * 100) + '%; background: ' + c }));
     return {
-      moreOpen: this.state.more,
-      toggleMore: () => this.setState({ more: !this.state.more }),
-      goLabel: this.state.going ? 'Unterwegs' : 'Bin unterwegs',
-      go: () => this.setState({ going: !this.state.going }),
+      cards,
+      next: () => this.setState({ idx: (this.state.idx + 1) % n }),
+      segs: [seg(7, 8, '#E4DAFB'), seg(8.5, 9.25, '#9EE0EE'), seg(12.5, 13.5, '#CDBBFA'), seg(16, 21, '#FFD2B0'), seg(17.75, 18.67, '#9EE0EE'), seg(19, 23, '#B9A7EE')],
     };
   }
 }

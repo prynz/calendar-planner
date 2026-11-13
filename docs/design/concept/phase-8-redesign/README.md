@@ -1,6 +1,6 @@
 # Phase 8 – Redesign-Konzept (**Mockup**)
 
-> **Status:** 2026-11-13 · v3 „Schlank“, v4 „Weich & groß“, v5 „Dunkel & Lime“ und v6 „Kurven“ ergänzt · **Mockup zur Abnahme durch den PO – keine App-Screenshots.** Alle Daten sind erfunden.
+> **Status:** 2026-11-13 · v3 „Schlank“, v4 „Weich & groß“ (Basis, optimiert) – v5/v6 verworfen · **Mockup zur Abnahme durch den PO – keine App-Screenshots.** Alle Daten sind erfunden.
 > Klickbare Fassung: Design-Canvas „Nowish Redesign Konzept“ (privat, Link im Chat).
 
 Vorgaben des PO (2026-11-12): Lesbarkeit, Übersichtlichkeit, einfache Bedienung, moderne und nicht
@@ -69,26 +69,24 @@ gelten weiter.
 | `TerminV4.dc.html` | Verlauf-Kopf, Termin als große Karte im Fokus (leicht gestapelt), Antwort als drei runde Knöpfe, unten schwebende Leiste „Losgehen 18:28“ + runder Lime-Knopf |
 | `GemeinsamV4.dc.html` | „Wartet auf dich“ als wischbares Karten-Karussell in Pastell, darunter „Deine Woche auf einen Blick“ |
 
-## v5 – „Dunkel & Lime“ (Test nach PO-Referenz 2 vom 2026-11-13, **Mockup**)
+## v5 und v6 verworfen (PO, 2026-11-13)
 
-PO: „zum Test auch in diesem Style probieren“ – Referenz mit dunklem Grund, leuchtendem Lime, großem Ring, Kurve und
-Glas-Kacheln. Übernommen wird nur die Stil-Richtung. Könnte als eigenes „Dunkel“-Theme neben v4 bestehen.
+„v6, v5 gefällt mir nicht so gut, löschen“ – beide Reihen sind aus Canvas und Repo entfernt.
 
-| Datei | Kernidee |
+## v4 optimiert – „Wow“ + neue Navigation (PO, 2026-11-13, **Mockup**)
+
+PO: „v4 finde ich insgesamt am besten, aber es fehlt noch ein Wow-Effekt; zeige weitere Seiten in der v4 und
+optimiere. Navigation unten auch in diese Richtung anpassen von der Form her“ (Referenz: Leiste mit Mulde und rundem
+Plus-Knopf in der Mitte).
+
+| Datei | Neu / geändert |
 | --- | --- |
-| `HeuteV5.dc.html` | Großer Countdown-Ring „los in 25 Min.“ als Hauptelement, eckig-runder Lime-Knopf „Bin unterwegs“ mit Leuchten, zwei Glas-Kacheln, Helfer-Zeile |
-| `KalenderV5.dc.html` | „Deine Woche“ als leuchtende Kurve (wie voll jeder Tag ist), Tage als Kacheln, aktiver Termin als Lime-Karte |
-| `TerminV5.dc.html` | Glas-Kacheln mit großer Zahl + Einheit; „Losgehen 18:28“ als große Lime-Kachel; Antwort als Segment-Umschalter |
-| `GemeinsamV5.dc.html` | Offene Einladung als Lime-Karte mit Antwort-Knöpfen, darunter „Diese Woche“ als dunkle Glas-Zeilen |
+| `HeuteV4.dc.html` | Lebendiger Hintergrund (Pastell-Flächen wandern langsam), **Karten-Stapel** „Danach“ blättert mit Feder-Animation durch die nächsten Aufbrüche, Lime-Knopf mit **Ring, der sich bis zur Losgeh-Zeit füllt**, **Tagesband** 6–24 Uhr mit pulsierendem „Jetzt“ |
+| `LosV4.dc.html` | **Losgeh-Modus** (neu, über „Bin unterwegs“): fließender Farbverlauf, großer Countdown-Ring, Bereit-Check als Chips mit Plopp-Haken, „Ich verspäte mich um 5/10/15 Min.“ mit einem Tipp, „Angekommen“ |
+| `FamilieV4.dc.html` | Familie (neu): Avatare mit Farbring für die gewählte Person, offene Fahrt als große Pastell-Karte („Ich fahre“ / „Sam fragen“), Einkauf und Ämtchen als Kacheln mit Fortschritt |
+| `IchV4.dc.html` | Ich (neu): Pünktlichkeit „92 %“ mit wachsenden Säulen, **Farbwelt wählen** färbt den Kopf live um (Lavendel, Ozean, Pfirsich, Minze), Einstellungen als ruhige Zeilen |
+| `KalenderV4.dc.html`, `GemeinsamV4.dc.html` | Neue Navigation; Gemeinsam mit Hinweis-Zeile zur Familie |
 
-## v6 – v4 + Kurven-Boxen (PO-Referenz 3 vom 2026-11-13, **Mockup**)
-
-PO: „kannst du solche abstrakten Box-Kurven-Darstellungen umsetzen zum Testen mit V4“. Übernommen wird die Idee,
-Bereiche mit **einer großen Fläche und einer weichen S-Kurve** zu trennen statt mit Kästen: Ein „Reiter“ mit der
-Überschrift ragt heraus, die Kante fällt weich ab. Farben und Schrift bleiben wie v4.
-
-| Datei | Kernidee |
-| --- | --- |
-| `HeuteV6.dc.html` | Pastell-Verlauf mit riesiger Losgeh-Zeit und rundem Lime-Knopf, darunter ein weißes Kurven-Panel „Heute“ mit Zeitleiste (Punkte + Linie), nächster Termin als hervorgehobene Karte |
-| `KalenderV6.dc.html` | Monat als Karussell (Okt · **November** · Dez), gewählter Tag als hohe dunkle Pille, darunter ein dunkles Kurven-Panel mit Zeitleiste |
-| `NeuV6.dc.html` | Neuer Termin: Kurven-Panel mit Reitern (Details/Wer/Erinnerung), Rad-Auswahl für Tag/Monat/Stunde/Minute, Schalter „Erinnern, wenn ich los muss“ |
+**Navigation:** weiße Leiste über die ganze Breite mit **Mulde in der Mitte**, darin ein runder violetter
+Plus-Knopf; vier Ziele mit Symbol **und** Beschriftung (Heute, Kalender, Gemeinsam, Ich). Alle Bewegungen sind bei
+„Bewegung reduzieren“ aus.

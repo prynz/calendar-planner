@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Ich v4 – Konzept</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0D0E12;text-decoration:none}
+a:hover{color:#2A2E38}
+button{font:inherit;cursor:pointer}
+@keyframes grow{from{transform:scaleY(0.1)}to{transform:scaleY(1)}}
+.col{transform-origin:bottom;animation:grow 700ms cubic-bezier(.2,.9,.3,1.2) both}
+.tint{transition:background 500ms ease}
+@media (prefers-reduced-motion: reduce){.col{animation:none}.tint{transition:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF8F4; font-family: Inter, system-ui, sans-serif; color: #0D0E12; position: relative; overflow: hidden">
+  <div aria-hidden="true" class="tint" style="position: absolute; top: 0; left: 0; right: 0; height: 300px; border-radius: 0 0 44px 44px; background: {{headerBg}}"></div>
+
+  <div style="position: relative; height: 844px; overflow-y: auto; box-sizing: border-box; padding: 20px 24px 130px; display: flex; flex-direction: column; gap: 22px">
+
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.5px">Ich</span>
+      <span style="font-size: 12px; font-weight: 600; color: #4B2FD6; background: rgba(255,255,255,0.75); padding: 4px 9px; border-radius: 999px">Demo</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 14px">
+      <span aria-hidden="true" style="width: 64px; height: 64px; border-radius: 32px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 26px; box-shadow: 0 10px 24px rgba(13,14,18,0.10)">K</span>
+      <span style="display: flex; flex-direction: column; gap: 2px">
+        <span style="font-weight: 700; font-size: 20px">Kim</span>
+        <span style="font-size: 14px; color: #3A3550">Nowish Plus · Test noch 12 Tage</span>
+      </span>
+    </div>
+
+    <section aria-label="Deine Pünktlichkeit" style="border-radius: 32px; background: #FFFFFF; padding: 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 16px 40px rgba(75,47,214,0.10)">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end">
+        <span style="display: flex; flex-direction: column">
+          <span style="font-size: 13px; font-weight: 600; color: #4A4E58">Pünktlich diese Woche</span>
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 52px; line-height: 56px">92 %</span>
+        </span>
+        <span style="font-size: 13px; color: #2F7A3F; font-weight: 600; padding-bottom: 10px">+8 % zur Vorwoche</span>
+      </div>
+      <div role="img" aria-label="Pünktlichkeit pro Tag: Montag bis Freitag zwischen 80 und 100 Prozent" style="display: flex; align-items: flex-end; gap: 10px; height: 80px">
+        <sc-for list="{{bars}}" as="b" hint-placeholder-count="7">
+          <span style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px">
+            <span class="col" style="{{b.style}}"></span>
+            <span style="font-size: 11px; color: #6B6F7A">{{b.wd}}</span>
+          </span>
+        </sc-for>
+      </div>
+    </section>
+
+    <section aria-label="Personalisieren" style="display: flex; flex-direction: column; gap: 12px">
+      <span style="font-weight: 600; font-size: 17px">Dein Look</span>
+      <div role="radiogroup" aria-label="Farbwelt" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{themes}}" as="t" hint-placeholder-count="4">
+          <button type="button" role="radio" aria-checked="{{t.sel}}" onClick="{{t.pick}}" style="border: 0; background: transparent; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 6px">
+            <span aria-hidden="true" style="{{t.swatch}}"></span>
+            <span style="font-size: 12px; font-weight: 600">{{t.name}}</span>
+          </button>
+        </sc-for>
+      </div>
+      <sc-for list="{{rows}}" as="r" hint-placeholder-count="4">
+        <button type="button" style="min-height: 56px; border: 0; border-radius: 22px; background: #FFFFFF; padding: 0 18px; display: flex; align-items: center; gap: 12px; text-align: start; box-shadow: 0 6px 18px rgba(13,14,18,0.04)">
+          <span style="flex: 1; font-size: 15px; font-weight: 500">{{r.label}}</span>
+          <span style="font-size: 14px; color: #4A4E58">{{r.value}}</span>
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A3A9B7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+        </button>
+      </sc-for>
+    </section>
+  </div>
+
+  <nav aria-label="Hauptnavigation" style="position: absolute; left: 0; right: 0; bottom: 0; height: 92px">
+    <svg aria-hidden="true" width="390" height="92" viewBox="0 0 390 92" style="position: absolute; left: 0; top: 0; filter: drop-shadow(0 -6px 18px rgba(75,47,214,0.10))">
+      <path d="M0 24 Q0 0 24 0 H139 C154 0 157 4 161 12 A38 38 0 0 0 229 12 C233 4 236 0 251 0 H366 Q390 0 390 24 V92 H0 Z" fill="#FFFFFF"></path>
+    </svg>
+    <div style="position: absolute; left: 0; right: 0; top: 10px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: start">
+      <a href="HeuteV4.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 48px; color: #6B6F7A">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"></path></svg>
+        <span style="font-size: 11px; font-weight: 500">Heute</span></a>
+      <a href="KalenderV4.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 48px; color: #6B6F7A">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>
+        <span style="font-size: 11px; font-weight: 500">Kalender</span></a>
+      <span></span>
+      <a href="GemeinsamV4.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 48px; color: #6B6F7A">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6F7A" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6M16 4a4 4 0 0 1 0 8M22 21c0-3-2-5-4-6"></path></svg>
+        <span style="font-size: 11px; font-weight: 500">Gemeinsam</span></a>
+      <a href="IchV4.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 48px; color: #0D0E12">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D0E12" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>
+        <span style="font-size: 11px; font-weight: 700">Ich</span></a>
+    </div>
+    <button type="button" aria-label="Neuer Termin" style="position: absolute; left: 50%; top: -34px; transform: translateX(-50%); width: 62px; height: 62px; border: 0; border-radius: 31px; background: linear-gradient(145deg, #9B7DFF, #6A4CF0); display: flex; align-items: center; justify-content: center; padding: 0; box-shadow: 0 12px 26px rgba(106,76,240,0.40)">
+      <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { theme: 'lavender' };
+  }
+  renderVals() {
+    const themes = {
+      lavender: ['Lavendel', 'linear-gradient(160deg, #DCCFFF 0%, #FFD9C2 100%)'],
+      ocean: ['Ozean', 'linear-gradient(160deg, #C7ECF7 0%, #DCCFFF 100%)'],
+      peach: ['Pfirsich', 'linear-gradient(160deg, #FFD2B0 0%, #F6C9DA 100%)'],
+      mint: ['Minze', 'linear-gradient(160deg, #D9F2C4 0%, #FFF1C9 100%)'],
+    };
+    const pct = [96, 88, 100, 82, 92, 0, 0];
+    const wds = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+    return {
+      headerBg: themes[this.state.theme][1],
+      themes: Object.keys(themes).map((k) => {
+        const sel = this.state.theme === k;
+        return {
+          name: themes[k][0], sel,
+          swatch: 'width: 56px; height: 56px; border-radius: 28px; background: ' + themes[k][1] + '; box-sizing: border-box; ' +
+            (sel ? 'border: 3px solid #0D0E12; box-shadow: 0 0 0 3px #FBF8F4 inset' : 'border: 3px solid #FFFFFF; box-shadow: 0 6px 16px rgba(13,14,18,0.08)'),
+          pick: () => this.setState({ theme: k }),
+        };
+      }),
+      bars: pct.map((p, i) => ({
+        wd: wds[i],
+        style: 'display: block; width: 100%; border-radius: 10px; height: ' + Math.max(6, Math.round(p * 0.56)) + 'px; animation-delay: ' + (i * 60) + 'ms; background: ' +
+          (p === 0 ? '#F1ECE2' : i === 4 ? 'linear-gradient(180deg, #9B7DFF, #6A4CF0)' : '#E4DAFB'),
+      })),
+      rows: [
+        { label: 'Start-Ansicht', value: 'Heute' },
+        { label: '„Heute“ anordnen', value: '3 Bereiche' },
+        { label: 'Erinnerungen', value: 'sanft' },
+        { label: 'Datenschutz', value: 'nur auf dem Gerät' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
