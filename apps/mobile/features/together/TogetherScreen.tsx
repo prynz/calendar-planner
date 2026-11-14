@@ -1,11 +1,14 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
-import { Badge, Gutter, Screen, ScreenHeader, SegmentedControl } from '@nowish/ui';
+import { View } from 'react-native';
+
+import { Badge, Gutter, Screen, ScreenHeader, SegmentedControl, space } from '@nowish/ui';
 
 import { useAgendaContext } from '../agenda/use-agenda';
 import { EventsSection } from '../events/EventsSection';
 import { FamilySection } from '../family/FamilySection';
 import { GroupsSection } from '../groups/GroupsSection';
+import { AccountButton } from '../shell/AccountButton';
 import { haptic } from '@/services/haptics';
 
 const SECTIONS = ['events', 'groups', 'family'] as const;
@@ -33,7 +36,12 @@ export function TogetherScreen() {
       <ScreenHeader
         eyebrow={t('together.eyebrow')}
         title={titles[section]}
-        trailing={<Badge label={t('demo.badge')} tone="demo" testID="together-badge" />}
+        trailing={
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: space[2] }}>
+            <Badge label={t('demo.badge')} tone="demo" testID="together-badge" />
+            <AccountButton />
+          </View>
+        }
       />
       <Gutter>
         <SegmentedControl<Section>

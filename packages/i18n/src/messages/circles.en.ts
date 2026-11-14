@@ -2,7 +2,7 @@ import type { circlesDe } from './circles.de';
 
 /** English texts for Phase 5 (see circles.de.ts). */
 export const circlesEn: Record<keyof typeof circlesDe, string> = {
-  'tabs.together': 'Together',
+  'tabs.together': 'People',
   'together.eyebrow': 'With your people',
   'together.section': 'Section',
   'together.events': 'Events',

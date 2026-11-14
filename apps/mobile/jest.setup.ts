@@ -43,7 +43,7 @@ jest.mock('expo-notifications', () => {
 });
 
 // Router: screens are tested in isolation; navigation calls are recorded.
-const mockRouter = { push: jest.fn(), back: jest.fn(), replace: jest.fn(), setParams: jest.fn() };
+const mockRouter = { navigate: jest.fn(), push: jest.fn(), back: jest.fn(), replace: jest.fn(), setParams: jest.fn() };
 /** Route params a test wants a screen to see (reset in afterEach below). */
 const mockParams: Record<string, string> = {};
 jest.mock('expo-router', () => ({

@@ -142,6 +142,12 @@ appId: ${APP_ID}
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-07-list-after-save
 # German + light theme + reminder settings
+# Kompass: "Me" is the avatar in the tab's header – make sure the header is on screen.
+- scrollUntilVisible:
+    element:
+      id: 'tab-settings'
+    direction: UP
+    timeout: 15000
 - tapOn:
     id: 'tab-settings'
 - extendedWaitUntil:
@@ -514,6 +520,12 @@ appId: ${APP_ID}
     id: 'focus-close'
     retryTapIfNoChange: true
 # Tone, buffer learning and the private punctuality summary
+# Kompass: "Me" is the avatar in the tab's header – make sure the header is on screen.
+- scrollUntilVisible:
+    element:
+      id: 'tab-settings'
+    direction: UP
+    timeout: 15000
 - tapOn:
     id: 'tab-settings'
 - scrollUntilVisible:
@@ -715,6 +727,12 @@ appId: ${APP_ID}
 - tapOn:
     id: 'group-back'
     retryTapIfNoChange: true
+# Kompass: "Me" is the avatar in the tab's header – make sure the header is on screen.
+- scrollUntilVisible:
+    element:
+      id: 'tab-settings'
+    direction: UP
+    timeout: 15000
 - tapOn:
     id: 'tab-settings'
 - scrollUntilVisible:
@@ -877,6 +895,12 @@ appId: ${APP_ID}
     visible:
       id: 'screen-today'
     timeout: 60000
+# Kompass: "Me" is the avatar in the tab's header – make sure the header is on screen.
+- scrollUntilVisible:
+    element:
+      id: 'tab-settings'
+    direction: UP
+    timeout: 15000
 - tapOn:
     id: 'tab-settings'
     retryTapIfNoChange: true

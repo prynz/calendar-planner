@@ -10,7 +10,13 @@ export { EmptyState, ErrorState, Skeleton, type EmptyStateProps, type ErrorState
 export { AvatarStack, initialsOf, type AvatarStackProps } from './components/AvatarStack';
 export { EventCard, type EventCardProps } from './components/EventCard';
 export { DateStrip, type DateStripDay, type DateStripProps } from './components/DateStrip';
-export { FloatingTabBar, FLOATING_TAB_BAR_CLEARANCE, type FloatingTab } from './components/FloatingTabBar';
+export {
+  FloatingTabBar,
+  FLOATING_TAB_BAR_CLEARANCE,
+  type DockComposer,
+  type FloatingTab,
+} from './components/FloatingTabBar';
+export { Orb, type OrbProps } from './components/Orb';
 export { Screen, Gutter, ScreenHeader, SectionTitle } from './components/Layout';
 export { PressableScale, type PressableScaleProps } from './components/PressableScale';
 export { FadeIn, useSpringTo } from './components/FadeIn';
@@ -24,9 +30,7 @@ export {
   ValueRow,
   type ChipOption,
 } from './components/Controls';
-export { LeaveHero, type LeaveHeroProps } from './components/LeaveHero';
 export { MonthGrid, type MonthCell } from './components/MonthGrid';
-export { Fab } from './components/Fab';
 export { ProgressBar } from './components/ProgressBar';
 export { Tile, type TileProps } from './components/Tile';
 export { SwipeDeck, type SwipeChoice, type SwipeDeckProps } from './components/SwipeDeck';

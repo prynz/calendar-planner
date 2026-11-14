@@ -8,6 +8,7 @@ import {
   eventCardProps,
   leaveHero,
   monthRows,
+  nextUp,
   statusLabel,
 } from '@/features/agenda/presenters';
 
@@ -65,6 +66,16 @@ describe('presenters', () => {
     });
     // 14:00: games leave 18:33 is more than 3 h away
     expect(leaveHero(events, new Date('2026-11-09T13:00:00Z'), 'de', t, 5, TZ)).toBeNull();
+  });
+
+  it('finds what the calm orb counts down to when no departure is close', () => {
+    // 14:00: the hairdresser at 17:45 is next; with its way it counts to the leave time.
+    const next = nextUp(events, new Date('2026-11-09T13:00:00Z'), 'de', 5, TZ);
+    expect(next).toMatchObject({ eventId: 'demo-hairdresser', hasLeave: true });
+    expect(next?.minutes).toBeGreaterThan(180);
+    // Late in the evening tomorrow's first timed plan is next.
+    expect(nextUp(events, new Date('2026-11-09T22:30:00Z'), 'de', 5, TZ)?.occurrenceKey).toBe('2026-11-10');
+    expect(nextUp([], NOW, 'de', 5, TZ)).toBeNull();
   });
 
   it('builds day pills with weekday, marker and spoken label', () => {

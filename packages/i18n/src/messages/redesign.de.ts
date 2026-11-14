@@ -142,8 +142,8 @@ export const redesignDe = {
   'personal.block.day': 'Dein Tag',
   'personal.block.week': 'Diese Woche',
   'personal.start': 'Start-Ansicht',
-  'personal.start.today': 'Heute',
+  'personal.start.today': 'Jetzt',
   'personal.start.calendar': 'Kalender',
-  'personal.start.together': 'Gemeinsam',
+  'personal.start.together': 'Leute',
   'personal.start.hint': 'Mit dieser Ansicht öffnet sich die App.',
 } as const;

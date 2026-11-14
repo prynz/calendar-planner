@@ -8,11 +8,11 @@ export interface Theme {
   colors: ThemeColors;
 }
 
-const ThemeContext = createContext<Theme>({ name: 'dark', accent: 'lime', colors: themes.dark });
+const ThemeContext = createContext<Theme>({ name: 'dark', accent: 'sunrise', colors: themes.dark });
 
 export function ThemeProvider({
   name,
-  accent = 'lime',
+  accent = 'sunrise',
   children,
 }: {
   name: ThemeName;

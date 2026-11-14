@@ -32,6 +32,7 @@ import { haptic } from '@/services/haptics';
 import { categoryIcon } from '../agenda/category-icons';
 import { dotColor, memberName } from '../family/names';
 import { useQuickAdd } from '../quick-add/QuickAddProvider';
+import { AccountButton } from '../shell/AccountButton';
 import { useRowActions } from '../today/row-actions';
 import { calendarPeople, isFor, type PersonFilter } from './people';
 
@@ -212,7 +213,12 @@ export function CalendarScreen() {
     <Screen testID="screen-calendar">
       <ScreenHeader
         title={t('calendar.title')}
-        trailing={<Button label={t('calendar.today')} variant="secondary" onPress={goToday} testID="cal-today" />}
+        trailing={
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: space[2] }}>
+            <Button label={t('calendar.today')} variant="secondary" onPress={goToday} testID="cal-today" />
+            <AccountButton />
+          </View>
+        }
       />
       <Gutter>
         <SegmentedControl

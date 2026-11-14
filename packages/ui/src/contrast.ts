@@ -28,7 +28,7 @@ export interface ColorPair {
 }
 
 /** Every foreground/background combination the components are allowed to render. */
-export function themePairs(name: ThemeName, accent: AccentName = 'lime'): ColorPair[] {
+export function themePairs(name: ThemeName, accent: AccentName = 'sunrise'): ColorPair[] {
   const t: ThemeColors = themeColors(name, accent);
   const textOn = (bgName: keyof ThemeColors) =>
     (['textPrimary', 'textSecondary', 'accentText', 'secondaryText', 'dangerText'] as const).map((fg): ColorPair => ({

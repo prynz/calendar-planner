@@ -1,6 +1,6 @@
 # Roadmap & Priorisierung
 
-> **Status:** v1.2 · 2026-11-13 · **Block A abgeschlossen** (Phasen 1–7 freigegeben). Phasen 8–9 (Redesign, Helfer, Gesten) freigegeben; Phase 10 (Gesten in Kalender & Events) freigegeben. Jetzt: gesammelte Änderungswünsche des PO, danach Usability-Test. Roadmap neu geschnitten: lokaler Prototyp (Block A) vor Infrastruktur (Block B), ADR 0010. **Prototyp zuerst**:
+> **Status:** v1.3 · 2026-11-14 · **Block A abgeschlossen** (Phasen 1–7 freigegeben). Phasen 8–9 (Redesign, Helfer, Gesten) freigegeben; Phase 10 freigegeben. **Neu (2026-11-14): Konzept „Kompass“ vom PO gewählt** – Umbau in Phasen 11–15 (ADR 0017), danach Usability-Test. Roadmap neu geschnitten: lokaler Prototyp (Block A) vor Infrastruktur (Block B), ADR 0010. **Prototyp zuerst**:
 > Phasen 1–9 bauen einen nicht veröffentlichten Prototyp mit Beispieldaten, Veröffentlichung erst nach
 > Phase 10 ([ADR 0008](../decisions/0008-prototype-first.md)). Phase 1 startet nach Freigabe durch den PO.
 
@@ -33,6 +33,11 @@ Konten, Logins oder Server. Die Infrastruktur folgt danach schrittweise (Block B
 | **8** – Redesign & persönlicher Helfer | Ruhige Bereiche (weiße Karten, max. 3 Einträge + „Alle ansehen“), Helfer erkennt Konflikte und freie Zeit, Schnell-Eintrag in einer Zeile, Personalisierung (Akzentfarbe, Dichte, Reihenfolge, Start-Ansicht, Wochen-Kacheln), Kalender mit Personen-Filter, Termin mit Tabs | Prototyp, der sich wie ein eigener Planer-Helfer anfühlt | ✅ freigegeben (2026-11-12, [Report](../previews/milestone-reports/phase-8.md), [ADR 0016](../decisions/0016-redesign-helper-personalisation.md)) |
 | **9** – Gesten & neuer Aufbau überall | Abhaken und Wischgesten (Erledigt / Verschieben, immer auch per Knopf und Screenreader-Aktion), neuer Aufbau für Events-Liste, Familie, Gruppen und die Kacheln im Tab „Gemeinsam“ | Ein durchgängiges Erlebnis vor dem Usability-Test | ✅ freigegeben (2026-11-12, [Report](../previews/milestone-reports/phase-9.md)) |
 | **10** – Gesten auch in Kalender & Events | Abhaken und Wischen (Erledigt / Verschieben) gleich wie auf „Heute“ in allen Kalender-Ansichten und in der Events-Liste; Häkchen sind überall dieselben | Eine Geste, überall gleich | ✅ freigegeben (2026-11-13, [Report](../previews/milestone-reports/phase-10.md)) |
+| **11** – Kompass-Fundament | Neuer Look (Nebel, Indigo, Sonnenaufgang nur für „jetzt“), **Jetzt-Kugel**, Dock mit **Schreibleiste** statt Plus, drei Tabs (Jetzt · Kalender · Leute), „Ich“ hinter dem Avatar, ruhige Standard-Ansicht | Die App beantwortet zuerst „Wie viel Zeit habe ich noch?“ | 🔧 umgesetzt, wartet auf Freigabe ([Report](../previews/milestone-reports/phase-11.md), [ADR 0017](../decisions/0017-kompass.md)) |
+| **12** – Zoom-Kalender | Jahr → Monat (Wärmekarte) → Woche → Tag → Termin per Spreizen/Tippen, Brotkrümel-Zeile, Fokus-Tag | Kalender wie eine Karte | geplant |
+| **13** – Termin als Satz & Faden | Lückentext-Editor, Tag als Faden mit freien Lücken, Termin-Seite neu, Verschieben mit Vorschlägen | Schreiben statt Formulare | geplant |
+| **14** – Leute | Leute-Seite, Einladungskarten, „Wann passt’s allen?“ als Wärmekarte, Chat mit „Festgehalten“, Gruppen-Rituale, Familien-Spuren | Gemeinsam planen ohne Hin und Her | geplant |
+| **15** – Gelassenheit (Premium) | Morgen-Briefing, Puffer-Coach, Ruhe-Modus, Losgeh-Modus; Premium-Zuordnung mit PO | Premium, das Gelassenheit kauft | geplant |
 
 ### Block B – Ausbau (erst wenn der Prototyp überzeugt, Schritt für Schritt)
 

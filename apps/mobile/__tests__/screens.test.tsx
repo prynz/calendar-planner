@@ -23,12 +23,28 @@ describe('TodayScreen', () => {
     expect(await screen.findByText('Dein Tag')).toBeTruthy();
     expect(screen.getByTestId('demo-badge')).toBeTruthy();
     expect(screen.getByTestId('leave-hero')).toBeTruthy();
-    expect(screen.getByText('08:00 los')).toBeTruthy();
+    // Kompass: the orb shows the minutes; the leave time is in its spoken label and in the sentence above.
+    expect(screen.getByLabelText(/08:00 los/)).toBeTruthy();
+    expect(screen.getByTestId('now-sentence')).toHaveTextContent(/Jetzt los/); // test clock = leave time
     expect(screen.getByTestId('today-count')).toHaveTextContent('4 Termine');
     expect(screen.getByText(/Salon Schnittpunkt · los 17:\d\d/)).toBeTruthy();
     // The demo hairdresser ends after the leave time for game night – the helper speaks up.
     expect(screen.getByText('Friseur → Spieleabend bei Olivia wird knapp')).toBeTruthy();
     expect(screen.getByTestId('helper-ask')).toHaveTextContent(/Olivia fragen: 19:\d\d\? \(Demo\)/);
+  });
+
+  it('shows the calm orb for the next plan when no departure is close, and "Me" behind the avatar', async () => {
+    await renderApp(<TodayScreen />, { now: new Date('2026-11-09T13:00:00Z') });
+    expect(await screen.findByTestId('next-orb')).toBeTruthy();
+    expect(screen.queryByTestId('leave-hero')).toBeNull();
+    expect(screen.getByTestId('now-sentence')).toHaveTextContent(/^Noch .+, dann los: Friseur\.$/);
+    await fireEvent.press(screen.getByTestId('next-orb'));
+    expect(router.push).toHaveBeenCalledWith({
+      pathname: '/event/[id]',
+      params: { id: 'demo-hairdresser', occurrence: '2026-11-09' },
+    });
+    await fireEvent.press(screen.getByLabelText('Ich: Profil und Einstellungen'));
+    expect(router.navigate).toHaveBeenCalledWith('/settings');
   });
 
   it('opens the detail of a tapped plan', async () => {
@@ -63,7 +79,7 @@ describe('TodayScreen', () => {
   it('follows the system language', async () => {
     await renderApp(<TodayScreen />, { systemLanguageTags: ['en-AT'] });
     expect(await screen.findByText('Your day')).toBeTruthy();
-    expect(screen.getByText('Go at 08:00')).toBeTruthy();
+    expect(screen.getByLabelText(/Go at 08:00/)).toBeTruthy();
   });
 });
 

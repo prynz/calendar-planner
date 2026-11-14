@@ -68,12 +68,12 @@ export function DateStrip({ days, selectedKey, onSelect }: DateStripProps) {
               alignItems: 'center',
               justifyContent: 'center',
               gap: space[1],
-              backgroundColor: selected ? colors.accentFill : colors.surface,
+              backgroundColor: selected ? colors.tabActiveFill : colors.surface,
             }}
           >
             <Text
               variant="titleM"
-              color={selected ? 'onAccentFill' : 'textPrimary'}
+              color={selected ? 'onTabActiveFill' : 'textPrimary'}
               tabular
               maxFontSizeMultiplier={FIXED_SIZE_TEXT_SCALE}
             >
@@ -81,7 +81,7 @@ export function DateStrip({ days, selectedKey, onSelect }: DateStripProps) {
             </Text>
             <Text
               variant="label"
-              color={selected ? 'onAccentFill' : 'textSecondary'}
+              color={selected ? 'onTabActiveFill' : 'textSecondary'}
               maxFontSizeMultiplier={FIXED_SIZE_TEXT_SCALE}
             >
               {d.weekday}
@@ -91,7 +91,11 @@ export function DateStrip({ days, selectedKey, onSelect }: DateStripProps) {
                 width: space[1] + space[0.5],
                 height: space[1] + space[0.5],
                 borderRadius: radii.pill,
-                backgroundColor: d.hasEvents ? (selected ? colors.onAccentFill : colors.accentText) : 'transparent',
+                backgroundColor: d.hasEvents
+                  ? selected
+                    ? colors.onTabActiveFill
+                    : colors.secondaryText
+                  : 'transparent',
               }}
             />
           </PressableScale>

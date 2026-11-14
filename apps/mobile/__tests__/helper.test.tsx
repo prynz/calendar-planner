@@ -151,6 +151,7 @@ describe('Today personalisation', () => {
 
   it('lets me pick up to three week tiles', async () => {
     const store = createMemorySettingsStore();
+    await store.set('settings.homeHidden', ''); // the week tiles are opt-in since Kompass
     await renderApp(<TodayScreen />, { store });
     expect(await screen.findByTestId('week-tile-events')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('week-customize'));

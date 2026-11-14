@@ -21,6 +21,12 @@ appId: ${APP_ID}
     timeout: 10000
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-44-large-text-events
+# Kompass: "Me" is the avatar in the tab's header – make sure the header is on screen.
+- scrollUntilVisible:
+    element:
+      id: 'tab-settings'
+    direction: UP
+    timeout: 15000
 - tapOn:
     id: 'tab-settings'
     retryTapIfNoChange: true

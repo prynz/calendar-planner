@@ -22,11 +22,11 @@ describe('settings model', () => {
       bufferLearning: true,
       punctualityStats: true,
       haptics: true,
-      accent: 'lime',
+      accent: 'sunrise',
       density: 'airy',
       startTab: 'today',
       homeOrder: ['summary', 'leave', 'helper', 'day', 'week'],
-      homeHidden: [],
+      homeHidden: ['summary', 'week'],
       weekTiles: ['events', 'free', 'punctual'],
     });
     expect(

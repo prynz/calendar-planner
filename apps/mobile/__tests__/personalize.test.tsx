@@ -23,7 +23,7 @@ describe('PersonalizeScreen', () => {
       </>,
       { store },
     );
-    expect(screen.getByTestId('probe')).toHaveTextContent('lime #C8F031');
+    expect(screen.getByTestId('probe')).toHaveTextContent('sunrise #FFB547');
     await fireEvent.press(await screen.findByTestId('accent-ocean'));
     expect(screen.getByTestId('probe')).toHaveTextContent('ocean #8EDBEA');
     await waitFor(async () => expect(await store.get('settings.accent')).toBe('ocean'));
@@ -35,8 +35,11 @@ describe('PersonalizeScreen', () => {
     await fireEvent.press(await screen.findByTestId('home-up-day'));
     await waitFor(async () => expect(await store.get('settings.homeOrder')).toBe('summary,leave,day,helper,week'));
     expect(screen.getByTestId('home-up-summary')).toBeDisabled();
-    await fireEvent(screen.getByTestId('home-show-week'), 'valueChange', false);
-    await waitFor(async () => expect(await store.get('settings.homeHidden')).toBe('week'));
+    // Kompass: the summary and the week tiles start hidden; they can be switched on, others off.
+    await fireEvent(screen.getByTestId('home-show-week'), 'valueChange', true);
+    await waitFor(async () => expect(await store.get('settings.homeHidden')).toBe('summary'));
+    await fireEvent(screen.getByTestId('home-show-helper'), 'valueChange', false);
+    await waitFor(async () => expect(await store.get('settings.homeHidden')).toBe('summary,helper'));
   });
 
   it('sets density and start view', async () => {

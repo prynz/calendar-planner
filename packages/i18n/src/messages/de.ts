@@ -5,6 +5,7 @@ import { antiChaosDe } from './anti-chaos.de';
  */
 import { circlesDe } from './circles.de';
 import { premiumDe } from './premium.de';
+import { kompassDe } from './kompass.de';
 import { redesignDe } from './redesign.de';
 import { collabDe } from './collab.de';
 
@@ -14,7 +15,8 @@ export const de = {
   ...circlesDe,
   ...premiumDe,
   ...redesignDe,
-  'tabs.today': 'Heute',
+  ...kompassDe,
+  'tabs.today': 'Jetzt',
   'tabs.events': 'Events',
   'tabs.settings': 'Ich',
 

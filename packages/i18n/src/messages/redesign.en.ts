@@ -144,8 +144,8 @@ export const redesignEn: Record<keyof typeof redesignDe, string> = {
   'personal.block.day': 'Your day',
   'personal.block.week': 'This week',
   'personal.start': 'Start view',
-  'personal.start.today': 'Today',
+  'personal.start.today': 'Now',
   'personal.start.calendar': 'Calendar',
-  'personal.start.together': 'Together',
+  'personal.start.together': 'People',
   'personal.start.hint': 'The app opens with this view.',
 };

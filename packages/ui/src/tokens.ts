@@ -41,6 +41,27 @@ export const palette = {
   textOnDark: '#F3F4F6',
   textMutedOnDark: '#A3A9B7',
   textMutedOnLight: '#5B5F69',
+  /** Kompass (Phase 11, ADR 0017): cool fog page, indigo ink, periwinkle for calm, sunrise for "now". */
+  fog: '#F3F4F8',
+  fogDeep: '#E6E7EF',
+  fogLine: '#D3D5E2',
+  indigoInk: '#17163A',
+  indigoMuted: '#55576F',
+  periwinkle: '#4F5BE0',
+  periwinkleInk: '#3B48C9',
+  periwinkleLight: '#A5ACFF',
+  periwinkleSoft: '#C9CEFF',
+  sunriseA: '#FF6B4A',
+  sunriseB: '#FFB547',
+  sunriseGlow: '#FFD9A0',
+  sunriseInk: '#A3350C',
+  night900: '#0F0F1E',
+  night800: '#18182C',
+  night700: '#22223A',
+  night600: '#2A2A42',
+  nightText: '#ECECF6',
+  nightMuted: '#A3A4BC',
+  red300: '#FF7A7E',
 } as const;
 
 export type PaletteKey = keyof typeof palette;
@@ -78,6 +99,8 @@ export type ThemeName = 'dark' | 'light';
  * `ink` is the same hue dark enough for text on the light theme. All combinations are contrast-tested.
  */
 export const ACCENTS = {
+  /** Kompass default: the sunrise that only ever means "now". */
+  sunrise: { fill: palette.sunriseB, ink: palette.sunriseInk },
   lime: { fill: palette.lime400, ink: palette.limeInk },
   ocean: { fill: palette.oceanFill, ink: palette.oceanInk },
   coral: { fill: palette.coralFill, ink: palette.coralInk },
@@ -112,66 +135,62 @@ export interface ThemeColors {
 
 export const themes: Record<ThemeName, ThemeColors> = {
   dark: {
-    canvas: palette.ink900,
-    surface: palette.ink800,
-    elevated: palette.ink700,
-    border: palette.ink600,
-    textPrimary: palette.textOnDark,
-    textSecondary: palette.textMutedOnDark,
-    accentFill: palette.lime400,
-    onAccentFill: palette.ink900,
-    accentText: palette.lime400,
-    secondaryFill: palette.violet700,
+    canvas: palette.night900,
+    surface: palette.night800,
+    elevated: palette.night700,
+    border: palette.night600,
+    textPrimary: palette.nightText,
+    textSecondary: palette.nightMuted,
+    accentFill: palette.sunriseB,
+    onAccentFill: palette.indigoInk,
+    accentText: palette.sunriseB,
+    secondaryFill: palette.periwinkle,
     onSecondaryFill: palette.white,
-    secondaryText: palette.violet300,
-    dangerText: palette.red400,
-    onCategoryFill: palette.ink900,
-    tabBar: palette.ink700,
-    tabActiveFill: palette.lime400,
-    onTabActiveFill: palette.ink900,
-    tabInactiveText: palette.textMutedOnDark,
-    scrim: 'rgba(13, 14, 18, 0.6)',
+    secondaryText: palette.periwinkleLight,
+    dangerText: palette.red300,
+    onCategoryFill: palette.indigoInk,
+    tabBar: palette.night700,
+    tabActiveFill: palette.nightText,
+    onTabActiveFill: palette.indigoInk,
+    tabInactiveText: palette.nightMuted,
+    scrim: 'rgba(15, 15, 30, 0.6)',
   },
   light: {
-    canvas: palette.paper,
-    surface: palette.sand,
+    canvas: palette.fog,
+    surface: palette.fogDeep,
     elevated: palette.white,
-    border: palette.cream200,
-    textPrimary: palette.ink900,
-    textSecondary: palette.textMutedOnLight,
-    accentFill: palette.lime400,
-    onAccentFill: palette.ink900,
-    accentText: palette.limeInk,
-    secondaryFill: palette.violet700,
+    border: palette.fogLine,
+    textPrimary: palette.indigoInk,
+    textSecondary: palette.indigoMuted,
+    accentFill: palette.sunriseB,
+    onAccentFill: palette.indigoInk,
+    accentText: palette.sunriseInk,
+    secondaryFill: palette.periwinkle,
     onSecondaryFill: palette.white,
-    secondaryText: palette.violet700,
+    secondaryText: palette.periwinkleInk,
     dangerText: palette.red700,
-    onCategoryFill: palette.ink900,
-    tabBar: palette.ink900,
-    tabActiveFill: palette.lime400,
-    onTabActiveFill: palette.ink900,
-    tabInactiveText: palette.textMutedOnDark,
-    scrim: 'rgba(13, 14, 18, 0.6)',
+    onCategoryFill: palette.indigoInk,
+    tabBar: palette.white,
+    tabActiveFill: palette.indigoInk,
+    onTabActiveFill: palette.white,
+    tabInactiveText: palette.indigoMuted,
+    scrim: 'rgba(23, 22, 58, 0.45)',
   },
 };
 
 /** Theme colours with a personal accent applied (fill for buttons/active tabs, readable text shade per theme). */
-export function themeColors(name: ThemeName, accent: AccentName = 'lime'): ThemeColors {
+export function themeColors(name: ThemeName, accent: AccentName = 'sunrise'): ThemeColors {
   const a = ACCENTS[accent];
-  return {
-    ...themes[name],
-    accentFill: a.fill,
-    accentText: name === 'dark' ? a.fill : a.ink,
-    tabActiveFill: a.fill,
-  };
+  // Kompass: the dock stays ink/white – the accent is reserved for "now" and the main action.
+  return { ...themes[name], accentFill: a.fill, accentText: name === 'dark' ? a.fill : a.ink };
 }
 
 /** Soft card shadow for white cards on the light page (Phase 8). Flat on dark, where surfaces carry depth. */
 export function cardShadow(name: ThemeName) {
   return name === 'light'
     ? {
-        shadowColor: palette.ink900,
-        shadowOpacity: 0.06,
+        shadowColor: palette.indigoInk,
+        shadowOpacity: 0.07,
         shadowRadius: 14,
         shadowOffset: { width: 0, height: 6 },
         elevation: 2,

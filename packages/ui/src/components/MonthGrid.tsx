@@ -65,12 +65,12 @@ export function MonthGrid({
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: space[0.5],
-                    backgroundColor: selected ? colors.accentFill : c.isToday ? colors.elevated : 'transparent',
+                    backgroundColor: selected ? colors.tabActiveFill : c.isToday ? colors.elevated : 'transparent',
                   }}
                 >
                   <Text
                     variant="label"
-                    color={selected ? 'onAccentFill' : c.inMonth ? 'textPrimary' : 'textSecondary'}
+                    color={selected ? 'onTabActiveFill' : c.inMonth ? 'textPrimary' : 'textSecondary'}
                     tabular
                   >
                     {c.dayNumber}
@@ -83,7 +83,7 @@ export function MonthGrid({
                           width: space[1] + space[0.5],
                           height: space[1] + space[0.5],
                           borderRadius: radii.pill,
-                          backgroundColor: selected ? colors.onAccentFill : d,
+                          backgroundColor: selected ? colors.onTabActiveFill : d,
                         }}
                       />
                     ))}

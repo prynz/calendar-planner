@@ -1,6 +1,6 @@
 /** Phase 5: Familie, Gruppen und Kalender-Dateien (ICS). Englisch in circles.en.ts. */
 export const circlesDe = {
-  'tabs.together': 'Gemeinsam',
+  'tabs.together': 'Leute',
   'together.eyebrow': 'Mit deinen Leuten',
   'together.section': 'Bereich',
   'together.events': 'Events',

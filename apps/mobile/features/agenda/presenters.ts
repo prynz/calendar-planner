@@ -6,7 +6,6 @@ import {
   displayLocation,
   displayTitle,
   eventStatus,
-  HERO_WINDOW_MIN,
   humanizeMinutes,
   leaveState,
   noonOf,
@@ -18,13 +17,7 @@ import {
   type LeavePlan,
 } from '@nowish/domain';
 import { formatDayNumber, formatLongDate, formatTime, formatWeekday, type Locale, type Translate } from '@nowish/i18n';
-import {
-  categoryColors,
-  type DateStripDay,
-  type EventCardProps,
-  type LeaveHeroProps,
-  type MonthCell,
-} from '@nowish/ui';
+import { categoryColors, type DateStripDay, type EventCardProps, type MonthCell } from '@nowish/ui';
 
 /** Pure view-model mapping: stored events → UI component props. Unit-tested without React. */
 
@@ -105,9 +98,23 @@ export function eventCardProps(
   };
 }
 
-export interface HeroModel extends Omit<LeaveHeroProps, 'onPress' | 'openHint'> {
+/** The next departure for the "now" orb (Kompass) – texts are ready to show and to read aloud. */
+export interface HeroModel {
   eventId: string;
   occurrenceKey: DayKey;
+  /** "18:30 los" */
+  headline: string;
+  /** "Spieleabend bei Olivia · 19:00" */
+  label: string;
+  /** "22 Min. Rad + 8 Min. Puffer" (empty without travel) */
+  breakdown: string;
+  /** "Noch 47 Min. bis zum Losgehen" */
+  status: string;
+  /** Whole minutes until leaving; 0 or less means "go now". */
+  minutesUntilLeave: number;
+  leaveTime: string;
+  title: string;
+  testID: string;
 }
 
 /** The next occurrence whose leave time is within the hero window (design-system.md §12), if any. */
@@ -134,7 +141,6 @@ export function leaveHero(
           : state.kind === 'late'
             ? t('leave.state.late', { minutes: state.minutesLate })
             : t('leave.state.leaveNow');
-    const windowStart = plan.leaveAt.getTime() - HERO_WINDOW_MIN * 60_000;
     const travel = e.travel;
     return {
       eventId: e.id,
@@ -149,8 +155,49 @@ export function leaveHero(
           })
         : '',
       status,
-      progress: (now.getTime() - windowStart) / (plan.leaveAt.getTime() - windowStart),
+      minutesUntilLeave: Math.ceil((plan.leaveAt.getTime() - now.getTime()) / 60_000),
+      leaveTime: formatTime(plan.leaveAt, locale, tz),
+      title: displayTitle(e, locale),
       testID: 'leave-hero',
+    };
+  }
+  return null;
+}
+
+/** What the calm orb counts down to when no departure is close (Kompass). */
+export interface NextUpModel {
+  eventId: string;
+  occurrenceKey: DayKey;
+  /** Whole minutes until leaving – or until the start, when the plan has no way to travel. */
+  minutes: number;
+  time: string;
+  title: string;
+  /** True when `minutes` counts to the leave time. */
+  hasLeave: boolean;
+}
+
+/** The next timed plan today or tomorrow that has not started (or whose leave time has not come) yet. */
+export function nextUp(
+  events: readonly CalendarEvent[],
+  now: Date,
+  locale: Locale,
+  bufferMinutes: number,
+  timeZone: string,
+): NextUpModel | null {
+  const today = dayKeyOf(now, timeZone);
+  for (const item of agendaBetween(events, today, addDays(today, 2), timeZone)) {
+    if (item.allDay) continue;
+    const plan = leavePlanFor(item.event, item.start, bufferMinutes);
+    const target = plan ? plan.leaveAt : item.start;
+    const minutes = Math.ceil((target.getTime() - now.getTime()) / 60_000);
+    if (minutes <= 0) continue;
+    return {
+      eventId: item.event.id,
+      occurrenceKey: item.occurrenceKey,
+      minutes,
+      time: formatTime(target, locale, item.event.timeZone),
+      title: displayTitle(item.event, locale),
+      hasLeave: plan !== null,
     };
   }
   return null;

@@ -22,7 +22,7 @@ import type { SettingsStore } from '@/storage/settings-store';
 export const NOW = new Date('2026-11-09T07:00:00Z');
 
 const routerMock = jest.requireMock('expo-router') as {
-  __router: { push: jest.Mock; back: jest.Mock; replace: jest.Mock; setParams: jest.Mock };
+  __router: { push: jest.Mock; back: jest.Mock; replace: jest.Mock; setParams: jest.Mock; navigate: jest.Mock };
   __params: Record<string, string>;
 };
 export const router = routerMock.__router;

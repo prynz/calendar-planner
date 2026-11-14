@@ -11,7 +11,7 @@ import {
   FadeIn,
   Gutter,
   IconButton,
-  LeaveHero,
+  Orb,
   Screen,
   ScreenHeader,
   SoftCard,
@@ -25,16 +25,27 @@ import { haptic } from '@/services/haptics';
 
 import { agendaBetweenFor } from '../leave/hero-item';
 import { LeavePanel } from '../leave/LeavePanel';
-import { dateStripDays, dayHeading, leaveHero, leavePlanFor } from '../agenda/presenters';
+import { dateStripDays, dayHeading, duration, leaveHero, leavePlanFor, nextUp } from '../agenda/presenters';
 import { StoreGate } from '../agenda/StoreGate';
 import { useAgendaContext } from '../agenda/use-agenda';
+import { AccountButton } from '../shell/AccountButton';
 import { DaySection } from './DaySection';
 import { HelperCard } from './HelperCard';
 import { dayInsights } from './insights';
 import { SummaryCard, WeekSection } from './OverviewBlocks';
 
+/** The orb turns from calm to sunrise this many minutes before leaving. */
+const NOW_WINDOW_MIN = 30;
+
+/** "25" below an hour, "1:40" above; never negative. */
+function orbValue(minutes: number): string {
+  const m = Math.max(0, minutes);
+  return m < 60 ? String(m) : `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
+}
+
 /**
- * Today (Phase 8): calm sections in the user's own order – overview, next departure, helper, the day, the week.
+ * "Now" (Kompass, ADR 0017): one sentence and the orb answer "how much time do I have?"; below, the day.
+ * Built on Today (Phase 8): calm sections in the user's own order – overview, next departure, helper, the day, the week.
  * Only one strong colour (the accent on the departure card); everything else is white cards on warm white.
  */
 export function TodayScreen() {
@@ -48,6 +59,7 @@ export function TodayScreen() {
   const heading = dayHeading(selected, today, tz, locale, t);
   const insight = dayInsights(store.events, selected, tz, now, buffer);
   const hero = isToday ? leaveHero(store.events, now, locale, t, buffer, tz) : null;
+  const upcoming = isToday && !hero ? nextUp(store.events, now, locale, buffer, tz) : null;
   const heroItem = hero ? agendaBetweenFor(store.events, hero.eventId, hero.occurrenceKey, tz) : null;
   const heroPlan = heroItem ? leavePlanFor(heroItem.event, heroItem.start, buffer) : null;
   const hour = wallParts(now, tz).hour;
@@ -66,7 +78,37 @@ export function TodayScreen() {
     leave: hero ? (
       <Gutter>
         <FadeIn>
-          <LeaveHero {...hero} openHint={t('event.openHint')} onPress={() => openEvent(hero.eventId, today)} />
+          <View style={{ gap: space[4] }}>
+            <Text variant="titleM" testID="now-sentence">
+              {hero.minutesUntilLeave > 0
+                ? t('now.sentence', { duration: duration(hero.minutesUntilLeave, t), title: hero.title })
+                : hero.status}
+            </Text>
+            <Orb
+              value={orbValue(hero.minutesUntilLeave)}
+              top={hero.minutesUntilLeave > 0 ? t('orb.top') : t('orb.topNow')}
+              bottom={t(
+                hero.minutesUntilLeave <= 0
+                  ? 'orb.bottomNow'
+                  : hero.minutesUntilLeave >= 60
+                    ? 'orb.bottomHours'
+                    : 'orb.bottom',
+                { time: hero.leaveTime },
+              )}
+              tone={hero.minutesUntilLeave <= NOW_WINDOW_MIN ? 'now' : 'calm'}
+              onPress={() => openEvent(hero.eventId, today)}
+              accessibilityLabel={`${hero.headline}. ${hero.label}. ${hero.breakdown}. ${hero.status}`}
+              accessibilityHint={t('event.openHint')}
+              testID={hero.testID}
+            />
+            {hero.breakdown ? (
+              <View style={{ alignItems: 'center' }}>
+                <Text variant="label" color="textSecondary">
+                  {hero.breakdown}
+                </Text>
+              </View>
+            ) : null}
+          </View>
         </FadeIn>
         {heroItem && heroPlan ? (
           <LeavePanel
@@ -77,6 +119,32 @@ export function TodayScreen() {
             compact
           />
         ) : null}
+      </Gutter>
+    ) : upcoming ? (
+      <Gutter>
+        <FadeIn>
+          <View style={{ gap: space[4] }}>
+            <Text variant="titleM" testID="now-sentence">
+              {t(upcoming.hasLeave ? 'now.sentence' : 'now.sentenceStart', {
+                duration: duration(upcoming.minutes, t),
+                title: upcoming.title,
+              })}
+            </Text>
+            <Orb
+              value={orbValue(upcoming.minutes)}
+              top={t(upcoming.hasLeave ? 'orb.top' : 'orb.topStart')}
+              bottom={t(upcoming.minutes >= 60 ? 'orb.bottomHours' : 'orb.bottom', { time: upcoming.time })}
+              tone="calm"
+              onPress={() => openEvent(upcoming.eventId, upcoming.occurrenceKey)}
+              accessibilityLabel={t(upcoming.hasLeave ? 'now.sentence' : 'now.sentenceStart', {
+                duration: duration(upcoming.minutes, t),
+                title: upcoming.title,
+              })}
+              accessibilityHint={t('event.openHint')}
+              testID="next-orb"
+            />
+          </View>
+        </FadeIn>
       </Gutter>
     ) : isToday ? (
       <Gutter>
@@ -132,6 +200,7 @@ export function TodayScreen() {
               testID="open-focus"
             />
             <Badge label={t('demo.badge')} tone="demo" testID="demo-badge" />
+            <AccountButton />
           </View>
         }
       />

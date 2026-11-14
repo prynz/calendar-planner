@@ -53,11 +53,12 @@ export const DEFAULT_SETTINGS: Settings = {
   bufferLearning: true,
   punctualityStats: true,
   haptics: true,
-  accent: 'lime',
+  accent: 'sunrise',
   density: 'airy',
   startTab: 'today',
   homeOrder: HOME_BLOCKS,
-  homeHidden: [],
+  // Kompass: calm first – the day summary and week tiles are opt-in under Personalise.
+  homeHidden: ['summary', 'week'],
   weekTiles: ['events', 'free', 'punctual'],
 };
 export const BUFFER_RANGE = { min: 0, max: 30, step: 5 } as const;

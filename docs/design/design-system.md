@@ -1,6 +1,10 @@
 # Design System
 
 > **Status:** v0.2 · 2026-11-09 · **Tokens implementiert** in `packages/ui/src/tokens.ts`; alle Theme-Farbpaare werden
+> **2026-11-14 – Kompass (ADR 0017):** Die Farb-Tokens unten (§2) sind durch den Kompass-Look ersetzt: Grund `fog #F3F4F8`,
+> Fläche `fogDeep #E6E7EF`, Text `indigoInk #17163A`, Ruhe/Sekundär `periwinkle #4F5BE0`, Akzent „Sonnenaufgang“
+> `#FFB547` (Verlauf `#FF6B4A → #FFB547` nur in der Jetzt-Kugel), dunkel `night #0F0F1E`. Auswahl-Zustände sind Tinte, nicht
+> Akzent. Quelle der Wahrheit ist `packages/ui/src/tokens.ts`; die Tabellen in §2 werden mit Phase 12 neu geschrieben.
 > in `packages/ui/test/contrast.test.ts` gegen WCAG AA geprüft. Komponenten: siehe §7 (Phase-1-Stand markiert).
 
 ## 1. Herleitung aus den Referenzen

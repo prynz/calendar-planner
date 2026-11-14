@@ -56,13 +56,13 @@ export function SegmentedControl<T extends string>({
               alignItems: 'center',
               justifyContent: 'center',
               paddingHorizontal: space[2],
-              backgroundColor: selected ? colors.accentFill : 'transparent',
+              backgroundColor: selected ? colors.tabActiveFill : 'transparent',
             }}
           >
             {/* One line that shrinks instead of breaking a word ("Gruppe-n") at 200 % text size. */}
             <Text
               variant="label"
-              color={selected ? 'onAccentFill' : 'textSecondary'}
+              color={selected ? 'onTabActiveFill' : 'textSecondary'}
               numberOfLines={1}
               adjustsFontSizeToFit
               minimumFontScale={0.6}
