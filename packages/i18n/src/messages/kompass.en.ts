@@ -13,5 +13,12 @@ export const kompassEn: Record<keyof typeof kompassDe, string> = {
   'orb.bottom': 'min · {time}',
   'orb.bottomHours': 'h · {time}',
   'orb.bottomNow': 'go · {time}',
+  'calendar.view.year': 'Year',
+  'calendar.view.day': 'Day',
+  'calendar.zoomHint': 'Spread two fingers to zoom in, pinch to zoom out.',
+  'calendar.heat.free': 'free',
+  'calendar.heat.full': 'full',
+  'calendar.heat.a11y': 'Colour shows how full a day is: light is free, strong is full.',
+  'calendar.openDay': 'Open {date}',
   'personal.accent.sunrise': 'Sunrise',
 };

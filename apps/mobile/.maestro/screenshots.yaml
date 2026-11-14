@@ -73,7 +73,7 @@ appId: ${APP_ID}
 - tapOn:
     id: 'detail-back'
     retryTapIfNoChange: true
-# Calendar: month, week, list
+# Calendar (zoom levels, Phase 12): month heat map, week, day, year
 - tapOn:
     id: 'tab-calendar'
 - extendedWaitUntil:
@@ -87,9 +87,13 @@ appId: ${APP_ID}
 - waitForAnimationToEnd
 - takeScreenshot: screenshots/shot-${PLATFORM}-04-calendar-week
 - tapOn:
-    id: 'cal-view-list'
+    id: 'cal-view-day'
 - waitForAnimationToEnd
-- takeScreenshot: screenshots/shot-${PLATFORM}-05-calendar-list
+- takeScreenshot: screenshots/shot-${PLATFORM}-05-calendar-day
+- tapOn:
+    id: 'cal-view-year'
+- waitForAnimationToEnd
+- takeScreenshot: screenshots/shot-${PLATFORM}-55-calendar-year
 # Create a plan with a leave time – Phase 8: the + opens the one-line quick entry, "More details" the editor.
 - tapOn:
     id: 'fab-add'
@@ -941,10 +945,10 @@ appId: ${APP_ID}
     timeout: 10000
 - scrollUntilVisible:
     element:
-      id: 'cal-view-list'
+      id: 'cal-view-week'
     direction: UP
 - tapOn:
-    id: 'cal-view-list'
+    id: 'cal-view-week'
 - tapOn:
     id: 'cal-person-lena'
     retryTapIfNoChange: true
@@ -986,8 +990,14 @@ appId: ${APP_ID}
     visible:
       id: 'screen-calendar'
     timeout: 10000
-# The list is already at the top (today first). Wait for the row itself: scrolling first pushes it out of view on
-# iOS, and the dimmed (ticked) check is not reported as fully visible there.
+# Zoom to the day (today): the ticked plan is at the top. Wait for the row itself – scrolling first pushes it out
+# of view on iOS, and the dimmed (ticked) check is not reported as fully visible there.
+- scrollUntilVisible:
+    element:
+      id: 'cal-view-day'
+    direction: UP
+- tapOn:
+    id: 'cal-view-day'
 - extendedWaitUntil:
     visible:
       id: 'event-demo-dentist'

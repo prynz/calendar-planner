@@ -1,7 +1,7 @@
 # CLAUDE.md – Arbeitsregeln für Nowish
 
 > **Status:** 2026-11-14 · Block A + Phasen 8–10 freigegeben. **Konzept „Kompass“ vom PO gewählt (ADR 0017):** Umbau in Phasen 11–15.
-> **Phase 11 (Kompass-Fundament: Look, Jetzt-Kugel, Schreibleiste, drei Tabs) wartet auf Freigabe.** Danach Zoom-Kalender (12). Logo v1.1 nur für die Demo.
+> Phase 11 (Kompass-Fundament) freigegeben. **Phase 12 (Zoom-Kalender: Jahr → Monat → Woche → Tag) wartet auf Freigabe.** Danach Termin als Satz & Faden (13). Schrift bleibt (PO). Logo v1.1 nur für die Demo.
 > Web-Vorschau: https://prynz.github.io/calendar-planner/ (ADR 0011).
 > Prototyp lokal und simuliert, **ohne Login, Konten und Server** (ADR 0008, ADR 0010). Wird ein Konto/Dienst nötig
 > (API-Schlüssel, Apple-Konto, Hosting), vorher den PO fragen. Apple-Developer-Konto existiert seit 2026-11-10; TestFlight-Workflow folgt,

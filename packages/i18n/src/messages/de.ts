@@ -56,12 +56,10 @@ export const de = {
   'calendar.title': 'Kalender',
   'calendar.view.week': 'Woche',
   'calendar.view.month': 'Monat',
-  'calendar.view.list': 'Liste',
   'calendar.prev': 'Zurück',
   'calendar.next': 'Weiter',
   'calendar.today': 'Heute',
   'calendar.free': 'Frei',
-  'calendar.list.empty': 'In den nächsten 30 Tagen ist nichts geplant.',
   'calendar.range': '{from} – {to}',
 
   'category.social': 'Freunde',

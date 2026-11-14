@@ -30,7 +30,9 @@ export {
   ValueRow,
   type ChipOption,
 } from './components/Controls';
-export { MonthGrid, type MonthCell } from './components/MonthGrid';
+export { HEAT_ALPHA, MonthGrid, type HeatLevel, type MonthCell } from './components/MonthGrid';
+export { YearGrid, type YearMonth } from './components/YearGrid';
+export { ZoomStage } from './components/ZoomStage';
 export { ProgressBar } from './components/ProgressBar';
 export { Tile, type TileProps } from './components/Tile';
 export { SwipeDeck, type SwipeChoice, type SwipeDeckProps } from './components/SwipeDeck';

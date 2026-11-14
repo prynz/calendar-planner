@@ -12,5 +12,12 @@ export const kompassDe = {
   'orb.bottom': 'Min. · {time}',
   'orb.bottomHours': 'Std. · {time}',
   'orb.bottomNow': 'los · {time}',
+  'calendar.view.year': 'Jahr',
+  'calendar.view.day': 'Tag',
+  'calendar.zoomHint': 'Zwei Finger auseinander: näher heran. Zusammen: weiter weg.',
+  'calendar.heat.free': 'frei',
+  'calendar.heat.full': 'voll',
+  'calendar.heat.a11y': 'Farbe zeigt, wie voll ein Tag ist: hell ist frei, kräftig ist voll.',
+  'calendar.openDay': '{date} öffnen',
   'personal.accent.sunrise': 'Sonnenaufgang',
 } as const;

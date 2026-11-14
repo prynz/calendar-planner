@@ -32,8 +32,7 @@ Mittelpunkt – **„Wie viel Zeit habe ich noch?“** – und ordnet alles ande
 ## Folgen
 
 - Entfernt: `LeaveHero`, `Fab` (ersetzt durch `Orb` und das Dock).
-- Schrift bleibt vorerst Bricolage Grotesque + Inter. Das Konzept zeigt Sora für Zahlen – das wäre eine neue
-  Abhängigkeit und wird mit dem PO in Phase 12 entschieden.
+- Schrift bleibt Bricolage Grotesque + Inter (PO-Entscheidung 2026-11-14) – keine neue Abhängigkeit für Sora.
 - Offen für die nächsten Phasen: Zoom-Kalender (12), Termin als Satz / Lückentext-Editor und Tag als Faden (13),
   Leute-Seite, Einladungskarte, Wärmekarten-Umfrage (14), Morgen-Briefing, Puffer-Coach, Ruhe-Modus (15).
   Live-Ankunft, Widgets, Uhr brauchen Konten bzw. native Module und bleiben in Block B.

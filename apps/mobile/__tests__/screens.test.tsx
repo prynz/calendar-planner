@@ -84,17 +84,27 @@ describe('TodayScreen', () => {
 });
 
 describe('CalendarScreen', () => {
-  it('shows the month grid and the selected day, then switches views', async () => {
+  it('shows the month as a heat map and zooms between year, month, week and day', async () => {
     await renderApp(<CalendarScreen />);
     expect(await screen.findByText('November 2026')).toBeTruthy();
+    // Heat instead of dots; the count is spoken.
+    expect(screen.getByTestId('month-2026-11-09')).toHaveProp('accessibilityLabel', expect.stringMatching(/4 Termine/));
     await fireEvent.press(screen.getByTestId('month-2026-11-10'));
     expect(screen.getByText('Fußballtraining')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('cal-next'));
     expect(screen.getByText('Dezember 2026')).toBeTruthy();
+    // Zooming keeps the focus day (10 Nov), wherever the pager went.
     await fireEvent.press(screen.getByTestId('cal-view-week'));
     expect(screen.getByTestId('cal-label')).toHaveTextContent('9. Nov. – 15. Nov.');
-    await fireEvent.press(screen.getByTestId('cal-view-list'));
-    expect(screen.getAllByText('Fußballtraining').length).toBeGreaterThanOrEqual(4); // weekly series over 30 days
+    await fireEvent.press(screen.getByTestId('week-day-2026-11-12'));
+    expect(screen.getByTestId('cal-label')).toHaveTextContent('Donnerstag, 12. November');
+    await fireEvent.press(screen.getByTestId('cal-next'));
+    expect(screen.getByTestId('cal-label')).toHaveTextContent('Freitag, 13. November');
+    await fireEvent.press(screen.getByTestId('cal-view-year'));
+    expect(screen.getByTestId('cal-label')).toHaveTextContent('2026');
+    expect(screen.getByLabelText(/^November 2026, \d+ Termine$/)).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('year-2026-03-01'));
+    expect(screen.getByTestId('cal-label')).toHaveTextContent('März 2026');
   });
 });
 
@@ -177,9 +187,9 @@ describe('TogetherScreen – events', () => {
 });
 
 describe('CalendarScreen person filter (Phase 8)', () => {
-  it('shows only the plans of the chosen family member', async () => {
+  it('shows only the plans of the chosen family member – on every zoom level', async () => {
     await renderApp(<CalendarScreen />);
-    await fireEvent.press(await screen.findByTestId('cal-view-list'));
+    await fireEvent.press(await screen.findByTestId('cal-view-week'));
     expect((await screen.findAllByTestId('event-demo-swim')).length).toBeGreaterThan(0);
     expect(screen.getAllByTestId('event-demo-games').length).toBeGreaterThan(0);
     await fireEvent.press(screen.getByTestId('cal-person-lena'));

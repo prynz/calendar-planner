@@ -39,6 +39,13 @@ export function formatMonthYear(date: Date, locale: Locale, timeZone?: string): 
   }).format(date);
 }
 
+/** "Nov" / "Nov" – for the year view of the zoom calendar. */
+export function formatMonthShort(date: Date, locale: Locale, timeZone?: string): string {
+  return new Intl.DateTimeFormat(intlTag[locale], { month: 'short', ...(timeZone ? { timeZone } : {}) })
+    .format(date)
+    .replace(/\.$/, '');
+}
+
 export function formatShortDate(date: Date, locale: Locale, timeZone?: string): string {
   return new Intl.DateTimeFormat(intlTag[locale], {
     day: 'numeric',

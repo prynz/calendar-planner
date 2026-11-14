@@ -1,6 +1,6 @@
 # Milestone-Report Phase 11 – Kompass-Fundament
 
-> **Status:** 2026-11-14 · Phase 11 umgesetzt · **Stopp – wartet auf Review und Freigabe durch den PO.**
+> **Status:** 2026-11-14 · Phase 11 **freigegeben** durch den PO (2026-11-14, „bleibt und weiter ja“: Schrift bleibt, weiter mit Phase 12).
 > Auftrag (PO, 2026-11-14): „Setze die App-Idee um“ – gewählt: **Kompass komplett**, in Phasen
 > ([ADR 0017](../../decisions/0017-kompass.md)).
 

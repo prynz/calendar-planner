@@ -9,6 +9,7 @@ import {
   leaveHero,
   monthRows,
   nextUp,
+  yearMonths,
   statusLabel,
 } from '@/features/agenda/presenters';
 
@@ -76,6 +77,18 @@ describe('presenters', () => {
     // Late in the evening tomorrow's first timed plan is next.
     expect(nextUp(events, new Date('2026-11-09T22:30:00Z'), 'de', 5, TZ)?.occurrenceKey).toBe('2026-11-10');
     expect(nextUp([], NOW, 'de', 5, TZ)).toBeNull();
+  });
+
+  it('builds the year of the zoom calendar as heat levels per day', () => {
+    const months = yearMonths(2026, TODAY, events, TZ, 'de', t);
+    expect(months).toHaveLength(12);
+    const nov = months[10];
+    expect(nov).toMatchObject({ key: '2026-11-01', label: 'Nov', isCurrent: true });
+    // 1 Nov 2026 is a Sunday: six padded days first; 9 Nov has four plans → level 4.
+    expect(nov?.weeks[0]).toEqual([null, null, null, null, null, null, expect.any(Number)]);
+    expect(nov?.weeks[2]?.[0]).toBe(4);
+    expect(nov?.weeks.flat().filter((l) => l !== null)).toHaveLength(30);
+    expect(months[0]?.isCurrent).toBe(false);
   });
 
   it('builds day pills with weekday, marker and spoken label', () => {

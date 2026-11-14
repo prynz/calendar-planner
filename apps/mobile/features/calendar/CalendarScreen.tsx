@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 
 import { agendaBetween, agendaForDay, type AgendaItem } from '@nowish/demo';
-import { addDays, noonOf, weekdayOf, type DayKey } from '@nowish/domain';
+import { addDays, noonOf, parseDayKey, weekdayOf, type DayKey } from '@nowish/domain';
 import { formatLongDate, formatMonthYear, formatShortDate } from '@nowish/i18n';
 import {
   Button,
@@ -12,19 +12,34 @@ import {
   FadeIn,
   FilterChips,
   Gutter,
+  HEAT_ALPHA,
   IconButton,
   ListCard,
   ListRow,
   MemberAvatar,
   MonthGrid,
+  PressableScale,
   Screen,
   ScreenHeader,
   SegmentedControl,
   space,
   Text,
+  touch,
+  useTheme,
+  withAlpha,
+  YearGrid,
+  ZoomStage,
 } from '@nowish/ui';
 
-import { addMonths, eventCardProps, groupByDay, monthRows, monthStart, weekdayLabels } from '../agenda/presenters';
+import {
+  addMonths,
+  eventCardProps,
+  groupByDay,
+  monthRows,
+  monthStart,
+  weekdayLabels,
+  yearMonths,
+} from '../agenda/presenters';
 import { StoreGate } from '../agenda/StoreGate';
 import { useAgendaContext } from '../agenda/use-agenda';
 import { haptic } from '@/services/haptics';
@@ -36,17 +51,22 @@ import { AccountButton } from '../shell/AccountButton';
 import { useRowActions } from '../today/row-actions';
 import { calendarPeople, isFor, type PersonFilter } from './people';
 
-type View_ = 'week' | 'month' | 'list';
-const LIST_DAYS = 30;
+/** Zoom levels, widest first (Phase 12, ADR 0017). The deepest step – one plan – is the detail screen. */
+const LEVELS = ['year', 'month', 'week', 'day'] as const;
+type Level = (typeof LEVELS)[number];
+const weekOf = (day: DayKey) => addDays(day, -weekdayOf(day));
 
 export function CalendarScreen() {
   const ctx = useAgendaContext();
   const { store, locale, t, today } = ctx;
+  const { colors } = useTheme();
   const tz = store.timeZone;
-  const [mode, setMode] = useState<View_>('month');
+  const [mode, setMode] = useState<Level>('month');
+  /** The focus day: it stays the anchor while zooming in and out. */
   const [selected, setSelected] = useState<DayKey>(today);
   const [monthAnchor, setMonthAnchor] = useState<DayKey>(monthStart(today));
-  const [weekStart, setWeekStart] = useState<DayKey>(addDays(today, -weekdayOf(today)));
+  const [weekStart, setWeekStart] = useState<DayKey>(weekOf(today));
+  const [year, setYear] = useState<number>(parseDayKey(today).year);
   const [person, setPerson] = useState<PersonFilter>('all');
   const quick = useQuickAdd();
   const actions = useRowActions();
@@ -55,11 +75,26 @@ export function CalendarScreen() {
   const activePerson = person === 'all' || people.includes(person) ? person : 'all';
   const events = store.events.filter((e) => isFor(household, e, activePerson));
 
+  /** Change the level around a focus day, so nobody gets lost while zooming. */
+  const zoomTo = (next: Level, focus: DayKey = selected) => {
+    haptic('selection');
+    setSelected(focus);
+    setMonthAnchor(monthStart(focus));
+    setWeekStart(weekOf(focus));
+    setYear(parseDayKey(focus).year);
+    setMode(next);
+  };
+  const zoomBy = (direction: 1 | -1) => {
+    const next = LEVELS[LEVELS.indexOf(mode) + direction];
+    if (next) zoomTo(next);
+  };
+
   const goToday = () => {
     haptic('selection');
     setSelected(today);
     setMonthAnchor(monthStart(today));
-    setWeekStart(addDays(today, -weekdayOf(today)));
+    setWeekStart(weekOf(today));
+    setYear(parseDayKey(today).year);
   };
 
   const pager = (label: string, onPrev: () => void, onNext: () => void) => (
@@ -115,9 +150,70 @@ export function CalendarScreen() {
       {formatLongDate(noonOf(d, tz), locale, tz)}
     </Text>
   );
+  /** In the week, a day's heading zooms into that day. */
+  const dayLink = (d: DayKey) => (
+    <PressableScale
+      onPress={() => zoomTo('day', d)}
+      accessibilityRole="button"
+      accessibilityLabel={t('calendar.openDay', { date: formatLongDate(noonOf(d, tz), locale, tz) })}
+      testID={`week-day-${d}`}
+      style={{ minHeight: touch.min, justifyContent: 'center' }}
+    >
+      <Text variant="label" color={d === today ? 'accentText' : 'textSecondary'}>
+        {formatLongDate(noonOf(d, tz), locale, tz)}
+      </Text>
+    </PressableScale>
+  );
+
+  const legend = (
+    <View
+      style={{ flexDirection: 'row', alignItems: 'center', gap: space[1] }}
+      accessible
+      accessibilityLabel={t('calendar.heat.a11y')}
+    >
+      <Text variant="label" color="textSecondary">
+        {t('calendar.heat.free')}
+      </Text>
+      {([0, 1, 2, 3, 4] as const).map((l) => (
+        <View
+          key={l}
+          style={{
+            width: space[5],
+            height: space[3],
+            borderRadius: space[1],
+            backgroundColor: l === 0 ? colors.elevated : withAlpha(colors.secondaryFill, HEAT_ALPHA[l]),
+          }}
+        />
+      ))}
+      <Text variant="label" color="textSecondary">
+        {t('calendar.heat.full')}
+      </Text>
+    </View>
+  );
 
   let body: React.ReactNode = null;
-  if (mode === 'month') {
+  if (mode === 'year') {
+    body = (
+      <Gutter gap={4}>
+        {pager(
+          String(year),
+          () => {
+            haptic('selection');
+            setYear(year - 1);
+          },
+          () => {
+            haptic('selection');
+            setYear(year + 1);
+          },
+        )}
+        <YearGrid
+          months={yearMonths(year, today, events, tz, locale, t)}
+          onSelect={(key) => zoomTo('month', key === monthStart(selected) ? selected : key)}
+        />
+        {legend}
+      </Gutter>
+    );
+  } else if (mode === 'month') {
     const items = agendaForDay(events, selected, tz);
     body = (
       <Gutter gap={4}>
@@ -141,6 +237,7 @@ export function CalendarScreen() {
             setSelected(k);
           }}
         />
+        {legend}
         {dayTitle(selected)}
         {items.length === 0 ? (
           <EmptyState
@@ -173,8 +270,8 @@ export function CalendarScreen() {
           },
         )}
         {groups.map((g) => (
-          <View key={g.day} style={{ gap: space[2] }}>
-            {dayTitle(g.day)}
+          <View key={g.day} style={{ gap: space[1] }}>
+            {dayLink(g.day)}
             {g.items.length === 0 ? (
               <Text variant="bodyM" color="textSecondary">
                 {t('calendar.free')}
@@ -187,23 +284,22 @@ export function CalendarScreen() {
       </Gutter>
     );
   } else {
-    const end = addDays(today, LIST_DAYS);
-    const groups = groupByDay(agendaBetween(events, today, end, tz), today, end, tz, false);
+    const items = agendaForDay(events, selected, tz);
     body = (
-      <Gutter gap={5}>
-        {groups.length === 0 ? (
+      <Gutter gap={4}>
+        {pager(
+          formatLongDate(noonOf(selected, tz), locale, tz),
+          () => zoomTo('day', addDays(selected, -1)),
+          () => zoomTo('day', addDays(selected, 1)),
+        )}
+        {items.length === 0 ? (
           <EmptyState
             title={t('calendar.free')}
-            body={t('calendar.list.empty')}
-            action={{ label: t('today.addEvent'), onPress: () => quick.open(), testID: 'list-add' }}
+            body={t('today.empty.body')}
+            action={{ label: t('today.addEvent'), onPress: () => quick.open(selected), testID: 'day-add' }}
           />
         ) : (
-          groups.map((g) => (
-            <View key={g.day} style={{ gap: space[2] }}>
-              {dayTitle(g.day)}
-              {cards(g.items)}
-            </View>
-          ))
+          cards(items)
         )}
       </Gutter>
     );
@@ -223,15 +319,13 @@ export function CalendarScreen() {
       <Gutter>
         <SegmentedControl
           options={[
-            { value: 'week', label: t('calendar.view.week') },
+            { value: 'year', label: t('calendar.view.year') },
             { value: 'month', label: t('calendar.view.month') },
-            { value: 'list', label: t('calendar.view.list') },
+            { value: 'week', label: t('calendar.view.week') },
+            { value: 'day', label: t('calendar.view.day') },
           ]}
           value={mode}
-          onChange={(v) => {
-            haptic('selection');
-            setMode(v);
-          }}
+          onChange={(v) => zoomTo(v)}
           accessibilityLabel={t('calendar.title')}
           testIDPrefix="cal-view"
         />
@@ -261,7 +355,16 @@ export function CalendarScreen() {
           testIDPrefix="cal-person"
         />
       ) : null}
-      <StoreGate>{body}</StoreGate>
+      <StoreGate>
+        <ZoomStage level={LEVELS.indexOf(mode)} onZoom={zoomBy}>
+          {body}
+        </ZoomStage>
+        <Gutter>
+          <Text variant="label" color="textSecondary">
+            {t('calendar.zoomHint')}
+          </Text>
+        </Gutter>
+      </StoreGate>
       {actions.sheet}
     </Screen>
   );

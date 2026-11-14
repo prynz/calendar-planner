@@ -54,12 +54,10 @@ export const en: Messages = {
   'calendar.title': 'Calendar',
   'calendar.view.week': 'Week',
   'calendar.view.month': 'Month',
-  'calendar.view.list': 'List',
   'calendar.prev': 'Previous',
   'calendar.next': 'Next',
   'calendar.today': 'Today',
   'calendar.free': 'Free',
-  'calendar.list.empty': 'Nothing planned for the next 30 days.',
   'calendar.range': '{from} – {to}',
 
   'category.social': 'Friends',

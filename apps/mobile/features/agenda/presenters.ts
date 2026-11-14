@@ -16,8 +16,24 @@ import {
   type DayKey,
   type LeavePlan,
 } from '@nowish/domain';
-import { formatDayNumber, formatLongDate, formatTime, formatWeekday, type Locale, type Translate } from '@nowish/i18n';
-import { categoryColors, type DateStripDay, type EventCardProps, type MonthCell } from '@nowish/ui';
+import {
+  formatDayNumber,
+  formatLongDate,
+  formatMonthShort,
+  formatMonthYear,
+  formatTime,
+  formatWeekday,
+  type Locale,
+  type Translate,
+} from '@nowish/i18n';
+import {
+  categoryColors,
+  type DateStripDay,
+  type EventCardProps,
+  type HeatLevel,
+  type MonthCell,
+  type YearMonth,
+} from '@nowish/ui';
 
 /** Pure view-model mapping: stored events → UI component props. Unit-tested without React. */
 
@@ -273,7 +289,54 @@ export function addMonths(day: DayKey, n: number): DayKey {
   return `${Math.floor(total / 12)}-${String((total % 12) + 1).padStart(2, '0')}-01`;
 }
 
-/** 6 × 7 grid (Monday first) for the month of `anchor`, with category dots per day. */
+/** Plans on a day → heat level of the zoom calendar: 0 = free, 4 = four or more. */
+export function heatLevel(count: number): HeatLevel {
+  return Math.max(0, Math.min(4, Math.floor(count))) as HeatLevel; // clamped to 0..4 above
+}
+
+/** Year level of the zoom calendar: twelve months with a heat level per day (Monday first, padded with null). */
+export function yearMonths(
+  year: number,
+  today: DayKey,
+  events: readonly CalendarEvent[],
+  timeZone: string,
+  locale: Locale,
+  t: Translate,
+): YearMonth[] {
+  const from: DayKey = `${year}-01-01`;
+  const countByDay = new Map<DayKey, number>();
+  for (const item of agendaBetween(events, from, `${year + 1}-01-01`, timeZone)) {
+    for (const d of daysCovered(item, timeZone)) countByDay.set(d, (countByDay.get(d) ?? 0) + 1);
+  }
+  const current = monthStart(today);
+  return Array.from({ length: 12 }, (_, m) => {
+    const first = addMonths(from, m);
+    const next = addMonths(first, 1);
+    const weeks: (HeatLevel | null)[][] = [];
+    let total = 0;
+    let week: (HeatLevel | null)[] = Array.from({ length: weekdayOf(first) }, () => null);
+    for (let d = first; d < next; d = addDays(d, 1)) {
+      const count = countByDay.get(d) ?? 0;
+      total += count;
+      week.push(heatLevel(count));
+      if (week.length === 7) {
+        weeks.push(week);
+        week = [];
+      }
+    }
+    if (week.length > 0) weeks.push([...week, ...Array.from({ length: 7 - week.length }, () => null)]);
+    const noon = noonOf(first, timeZone);
+    return {
+      key: first,
+      label: formatMonthShort(noon, locale, timeZone),
+      weeks,
+      isCurrent: first === current,
+      accessibilityLabel: `${formatMonthYear(noon, locale, timeZone)}, ${t('today.count', { count: total })}`,
+    };
+  });
+}
+
+/** 6 × 7 grid (Monday first) for the month of `anchor`, with category dots and a heat level per day. */
 export function monthRows(
   anchor: DayKey,
   today: DayKey,
@@ -307,6 +370,7 @@ export function monthRows(
         inMonth: parseDayKey(key).month === month,
         isToday: key === today,
         dots,
+        load: heatLevel(dots.length),
         accessibilityLabel: `${t('today.dayA11y', { date: formatLongDate(noon, locale, timeZone), isToday: key === today, hasEvents: dots.length > 0 })}${dots.length > 0 ? `, ${t('today.count', { count: dots.length })}` : ''}`,
       });
     }
