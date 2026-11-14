@@ -14,7 +14,7 @@ Jetzt-Kugel, einem Satz in Klartext und der Schreibleiste statt des Plus-Knopfs.
 | Bereich | Ergebnis |
 | --- | --- |
 | Look | Kühles Nebelweiß, Indigo-Tinte, weiße Karten; dunkles Thema als Indigo-Nacht. Sonnenaufgang (Orange) nur für „jetzt“ und die Hauptaktion; Auswahl (Tabs, Segmente, Datumspillen, Monatstag) ist Tinte |
-| Jetzt-Kugel | Ersetzt die Losgeh-Karte: Minuten bis zum Aufbruch (ab 1 Std. als `1:40`), ruhig blau, in den letzten 30 Min. Sonnenaufgang. Darüber ein Satz („Noch 25 Min., dann los: Zahnarzt.“). Tippen öffnet den Termin. Atmet langsam; bei „Bewegung reduzieren“ still |
+| Jetzt-Kugel | Ersetzt die Losgeh-Karte: Minuten bis zum Aufbruch (ab 1 Std. als `1:40`), ruhig blau, in den letzten 30 Min. Sonnenaufgang. Darüber ein Satz („Noch 25 Min., dann los: Zahnarzt.“). Tippen öffnet den Termin. Atmet zweimal, wenn sich die Zahl ändert, und ruht dann; bei „Bewegung reduzieren“ still |
 | Kugel außerhalb des 3-Stunden-Fensters | Zählt ruhig blau zum nächsten Termin von heute oder morgen (zum Losgehen, sonst zum Beginn) |
 | Schreibleiste | Dock unten: drei Symbol-Tabs + Feld „Was steht an?“; öffnet den Schnell-Eintrag in einer Zeile |
 | Drei Tabs | **Jetzt · Kalender · Leute**. „Ich“ liegt hinter dem Avatar oben rechts in jedem Tab |
@@ -54,6 +54,7 @@ Präfix `2026-11-14-phase-11` – werden nach den CI-Läufen ergänzt.
 | Kugel erschien nur 3 Std. vor dem Aufbruch – die Seite wirkte sonst leer | ✅ ruhige Kugel für den nächsten Termin |
 | Orange an Segmenten und Datumspillen verwässerte „Orange = jetzt“ | ✅ Auswahl-Zustände auf Tinte umgestellt |
 | Der Avatar existiert in jedem der drei Tabs (gleiche Test-ID) | Beobachten in der CI; Abläufe scrollen vor dem Tippen zum Kopf |
+| Android-CI rot (iOS grün): zwei Versuche scheiterten an verschiedenen Scroll-Schritten – vermutlich hielt die endlos atmende Kugel die App für den Test „beschäftigt“ | 🔧 Kugel atmet nur noch zweimal pro Minutenwechsel; Bestätigung mit dem nächsten CI-Lauf |
 
 ## 7. Offene Fragen an den PO
 

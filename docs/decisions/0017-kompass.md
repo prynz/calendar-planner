@@ -18,7 +18,8 @@ Mittelpunkt – **„Wie viel Zeit habe ich noch?“** – und ordnet alles ande
    Nebelweiß, Text Indigo-Tinte; das dunkle Thema ist ein Indigo-Nachtton. Alle Paare bleiben per Test WCAG AA.
 2. **Jetzt-Kugel (`Orb`)** ersetzt die Losgeh-Karte: ruhig blau, solange Zeit ist; Sonnenaufgang in den letzten
    30 Minuten. Die Kugel zeigt Minuten (ab einer Stunde `1:40`), darüber steht ein Satz in Klartext. Farbe ist nie
-   der einzige Hinweis; die Kugel hat ein vollständiges Sprach-Label und atmet nur ohne „Bewegung reduzieren“.
+   der einzige Hinweis; die Kugel hat ein vollständiges Sprach-Label. Sie atmet zweimal, wenn sich die Zahl ändert (einmal pro Minute), und
+   ruht dann – ohne „Bewegung reduzieren“; eine Dauer-Animation hielt Android-UI-Tests auf.
    Außerhalb des 3-Stunden-Fensters zählt sie zum nächsten Termin von heute oder morgen (`nextUp`).
 3. **Schreibleiste statt Plus-Knopf.** Die Leiste unten (`FloatingTabBar` als Dock) hat drei Symbol-Tabs und ein
    Feld „Was steht an?“; es öffnet den Schnell-Eintrag in einer Zeile (ADR 0016). Tab-Namen bleiben für

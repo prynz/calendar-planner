@@ -16,6 +16,9 @@ import { palette, space, withAlpha } from '../tokens';
 import { PressableScale } from './PressableScale';
 import { Text } from './Text';
 
+/** Breaths per change of the figure. */
+const BREATHS = 2;
+
 export interface OrbProps {
   /** Big figure, e.g. "25" or "1:40". */
   value: string;
@@ -34,7 +37,7 @@ export interface OrbProps {
 
 /**
  * The "now" orb (Kompass, ADR 0017): time as a shape. Calm periwinkle while there is time, sunrise when it is
- * time to leave. It breathes slowly; with Reduce Motion it stays still.
+ * time to leave. It takes two slow breaths when the figure changes; with Reduce Motion it stays still.
  */
 export function Orb({
   value,
@@ -50,14 +53,16 @@ export function Orb({
   const { colors } = useTheme();
   const reduceMotion = useReducedMotion();
   const breath = useSharedValue(1);
+  // Two calm breaths whenever the figure changes (once a minute), then it rests. An endless animation would keep
+  // the UI thread busy on every screen behind it – and Android UI tests never see the app as idle.
   useEffect(() => {
     if (reduceMotion) {
       breath.set(1);
       return;
     }
-    breath.set(withRepeat(withTiming(1.03, { duration: 2600, easing: Easing.inOut(Easing.sin) }), -1, true));
+    breath.set(withRepeat(withTiming(1.03, { duration: 1800, easing: Easing.inOut(Easing.sin) }), BREATHS * 2, true));
     return () => cancelAnimation(breath);
-  }, [breath, reduceMotion]);
+  }, [breath, reduceMotion, value]);
   const style = useAnimatedStyle(() => ({ transform: [{ scale: breath.get() }] }));
 
   const [inner, mid, outer] =
